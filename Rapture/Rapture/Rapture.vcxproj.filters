@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="resource">
+      <UniqueIdentifier>{76fd04e0-1178-4153-a849-c9812f5c5a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture">
+      <UniqueIdentifier>{4c4f6325-724e-41bc-8662-aca7b2cc58aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource\shader">
+      <UniqueIdentifier>{00f5098c-fc61-4f85-944a-4ee34e1b9aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture\app_manager">
+      <UniqueIdentifier>{e435c175-10c0-48e8-b5ee-b09b234bf4dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture\game_manager">
+      <UniqueIdentifier>{c7a47427-6b14-47ee-b246-e1b52658adff}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rapture\main.cpp">
+      <Filter>rapture</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>

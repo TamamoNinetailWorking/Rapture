@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="eden">
+      <UniqueIdentifier>{f225f8a4-1cb4-4198-b7bf-042dd0832f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include">
+      <UniqueIdentifier>{7cb74ce7-e2ef-4190-912f-763a267bf894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src">
+      <UniqueIdentifier>{ecb4f23e-912c-4825-955d-12c2e7742587}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="eden\eden_base.h">
+      <Filter>eden</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
