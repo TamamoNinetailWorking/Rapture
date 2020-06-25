@@ -10,10 +10,86 @@
     <Filter Include="eden\src">
       <UniqueIdentifier>{ecb4f23e-912c-4825-955d-12c2e7742587}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\template">
+      <UniqueIdentifier>{bf95d80b-6ab7-4784-9cbb-e3cfe407283b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\utility">
+      <UniqueIdentifier>{6ff7e88e-1573-46ed-b90e-59572d6da34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\system">
+      <UniqueIdentifier>{1a7739dd-d628-4a2a-808d-0f0e6fd96be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\system\directory">
+      <UniqueIdentifier>{ccf3db4d-bcc0-483f-aa95-e6ba2cf778c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system">
+      <UniqueIdentifier>{ce20596b-7347-476e-968d-6a803e269f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\directory">
+      <UniqueIdentifier>{3a723458-9a2d-4a98-a6a9-358c5a6cc0c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\gadget">
+      <UniqueIdentifier>{b769aabf-1dd2-4c19-8f35-30b75f53d2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\gadget">
+      <UniqueIdentifier>{81f0a5ac-7fb0-4b9e-a3a7-1c759f685076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\common">
+      <UniqueIdentifier>{c803d99c-1389-41d4-861d-fc1fbd951bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\gadget\timer">
+      <UniqueIdentifier>{bda485a3-4712-4822-b1f8-0ec267956e57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\gadget\timer">
+      <UniqueIdentifier>{29b303a3-c789-4a90-8b08-73fb790363ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\math">
+      <UniqueIdentifier>{e73bf9b2-70f7-4a65-b343-dd7a7388ddc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="eden\include\template\singleton.h">
+      <Filter>eden\include\template</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\utility\ender_utility.h">
+      <Filter>eden\include\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\system\directory\directory_manager.h">
+      <Filter>eden\include\system\directory</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\common\types.h">
+      <Filter>eden\include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\eden_define.h">
+      <Filter>eden</Filter>
+    </ClInclude>
     <ClInclude Include="eden\eden_base.h">
       <Filter>eden</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\gadget\timer\timer.h">
+      <Filter>eden\include\gadget\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\math\random_utility.h">
+      <Filter>eden\include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\math\math_utility.h">
+      <Filter>eden\include\math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
+      <Filter>eden\src\system\directory</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\gadget\timer\timer.cpp">
+      <Filter>eden\src\gadget\timer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="eden\include\math\random_uitility.inl">
+      <Filter>eden\include\math</Filter>
+    </Text>
+    <Text Include="eden\include\math\math_utility.inl">
+      <Filter>eden\include\math</Filter>
+    </Text>
   </ItemGroup>
 </Project>
