@@ -14,10 +14,10 @@ EDENS_NAMESPACE_BEGIN
 //	Exit();
 //}
 
-void CDirectoryManager::Init(uquad name_size)
+void CDirectoryManager::Init(u32 name_size)
 {
 	m_directory_name_size = name_size;
-	m_default_current_directory = new unichar[m_directory_name_size];
+	m_default_current_directory = new c8[m_directory_name_size];
 
 	GetCurrentDirectory(m_directory_name_size, m_default_current_directory);
 }
@@ -36,7 +36,7 @@ void CDirectoryManager::RestoreDefaultDirectory()
 	SetCurrentDirectory(m_default_current_directory);
 }
 
-void CDirectoryManager::SetDirectory(const unichar* directory)
+void CDirectoryManager::SetDirectory(const c8* directory)
 {
 	SetCurrentDirectory(directory);
 }

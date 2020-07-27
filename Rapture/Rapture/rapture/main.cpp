@@ -5,23 +5,31 @@
 ////////////////////////////////////////////////////////////////////////////
 
 //Include Header
-#include <eden/include/system/directory/directory_manager.h>
-#include <eden/include/math/random_utility.h>
-#include <eden/include/math/math_utility.h>
+#include <rapture/app_manager/app_manager.h>
+#include <eden/include/system/window/window.h>
 
 using namespace EDENS_NAMESPACE;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmd)
 {
-	CDirectoryManager& directoryManager = CDirectoryManager::GetInstance();
+	CAppManager& appManager = CAppManager::GetInstance();
+	
+	if (!appManager.Initialize())
+	{
+		PRINT("AppManager is not initialized.\n");
+		AssertMsg(false, "Initialize Failed.\n");
+		return cmd;
+	}
 
-	directoryManager.Init();
+	appManager.ApplicationMain();
 
-	CRandomizer& randomUtility = CRandomizer::GetInstance();
-
-	uquad m = randomUtility.RandomRangeInteger<uquad>(0, 10);
-
-	uquad n = CMathUtility::Clamp(3, 0, 1);
+	appManager.Finalize();
 
 	return 0;
+}
+
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	return CAppManager::GetInstance().GetWindow()->MsgProc(hWnd,uMsg,wParam,lParam);
 }

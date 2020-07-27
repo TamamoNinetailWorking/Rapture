@@ -24,16 +24,16 @@ public:
 
 	~CDirectoryManager() { Exit(); };
 
-	void Init(uquad name_size = 1024);
+	void Init(u32 name_size = 1024);
 	void Exit();
 
 	void RestoreDefaultDirectory();
-	void SetDirectory(const unichar* directory);
+	void SetDirectory(const c8* directory);
 
 protected:
 
-	unichar* m_default_current_directory = nullptr;
-	uquad m_directory_name_size = 0;
+	c8* m_default_current_directory = nullptr;
+	u32 m_directory_name_size = 0;
 
 };
 

@@ -17,16 +17,18 @@ class CTimer
 {
 public:
 
-	void Initialize();
+	void SetUp();
 
 	void RecordStartTime();
 
 	void RecordCurrentTime();
 
+	u32 CalculateExecuteTime();
+
 private:
 
-	uquad m_StartTime = 0;
-	uquad m_CurrentTime = 0;
+	u32 m_StartTime = 0;
+	u32 m_CurrentTime = 0;
 
 };
 

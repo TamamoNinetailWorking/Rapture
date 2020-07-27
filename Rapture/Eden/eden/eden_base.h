@@ -12,7 +12,7 @@
 #define EDENS_NAMESPACE eden
 #define EDENS_NAMESPACE_BEGIN namespace EDENS_NAMESPACE{
 #define EDENS_NAMESPACE_END };
-#define EDENS_NAMESPACE_USING using namespace EDENS_NAMESPACE
+#define EDENS_NAMESPACE_USING using namespace EDENS_NAMESPACE;
 //--------------------------------------------------------------
 
 #endif

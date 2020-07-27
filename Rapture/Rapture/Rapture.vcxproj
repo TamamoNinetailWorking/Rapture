@@ -151,7 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="rapture\app_manager\app_manager.cpp" />
     <ClCompile Include="rapture\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rapture\app_manager\app_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

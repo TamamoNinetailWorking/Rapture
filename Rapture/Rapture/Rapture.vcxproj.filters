@@ -21,5 +21,13 @@
     <ClCompile Include="rapture\main.cpp">
       <Filter>rapture</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\app_manager\app_manager.cpp">
+      <Filter>rapture\app_manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rapture\app_manager\app_manager.h">
+      <Filter>rapture\app_manager</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

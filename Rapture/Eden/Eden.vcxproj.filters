@@ -46,6 +46,33 @@
     <Filter Include="eden\include\math">
       <UniqueIdentifier>{e73bf9b2-70f7-4a65-b343-dd7a7388ddc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\system\window">
+      <UniqueIdentifier>{7fe3a28b-f2f8-4f4d-824d-7b7ed1fb8852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\window">
+      <UniqueIdentifier>{13f6f0c0-ad9b-491e-989e-6d94c4cb7b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\system\console">
+      <UniqueIdentifier>{2546c253-ad22-4027-afce-f2bd4501885f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\console">
+      <UniqueIdentifier>{8aa426e4-de96-473f-a457-3bc1c61468ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\system\frame_rate">
+      <UniqueIdentifier>{7d965569-0045-4531-921f-469947e6c10f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\frame_rate">
+      <UniqueIdentifier>{2b4c8a39-5b31-43d4-9da0-c71654368c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\common">
+      <UniqueIdentifier>{369ed044-d3c2-4429-a0f5-0f9d7cd739d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\gadget\serializer">
+      <UniqueIdentifier>{17ba1af2-4ee0-49fd-8d15-849bc6d86d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\gadget\serializer">
+      <UniqueIdentifier>{c52b9025-7005-45dd-bebe-5a878f4da343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -75,6 +102,21 @@
     <ClInclude Include="eden\include\math\math_utility.h">
       <Filter>eden\include\math</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\system\window\window.h">
+      <Filter>eden\include\system\window</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\system\console\console_window.h">
+      <Filter>eden\include\system\console</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h">
+      <Filter>eden\include\system\frame_rate</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\common\print.h">
+      <Filter>eden\include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\gadget\serializer\serializer.h">
+      <Filter>eden\include\gadget\serializer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -82,6 +124,21 @@
     </ClCompile>
     <ClCompile Include="eden\src\gadget\timer\timer.cpp">
       <Filter>eden\src\gadget\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\system\window\window.cpp">
+      <Filter>eden\src\system\window</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\system\console\console_window.cpp">
+      <Filter>eden\src\system\console</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\system\frame_rate\frame_rate_manager.cpp">
+      <Filter>eden\src\system\frame_rate</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\common\print.cpp">
+      <Filter>eden\src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\gadget\serializer\serializer.cpp">
+      <Filter>eden\src\gadget\serializer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,19 +5,30 @@
 ////////////////////////////////////////////////////////////////////////////
 #ifndef __TYPES_H__
 #define __TYPES_H__
-#include <list>
+
+
 //base type define
-typedef				char			uni;
-typedef				short			du;
-typedef				int				quad;
-typedef				long long		octa;
-typedef				float			fquad;
-typedef				double			focta;
+typedef				char			s8;
+typedef				short			s16;
+typedef				int				s32;
+typedef				long long		s64;
+typedef				float			f32;
+typedef				double			f64;
 
-typedef unsigned	char			uuni;
-typedef unsigned	int				uquad;
-typedef unsigned	long long		uocta;
+typedef unsigned	char			u8;
+typedef unsigned	short			u16;
+typedef unsigned	int				u32;
+typedef unsigned	long long		u64;
 
-typedef				char			unichar;
+typedef				char			c8;
+
+typedef				bool			b8;
+
+
+#define SCast static_cast
+#define PCast static_cast
+#define DCast dynamic_cast
+#define RCast reinterpret_cast
+#define CCast const_cast
 
 #endif

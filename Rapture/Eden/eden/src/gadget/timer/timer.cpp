@@ -12,7 +12,7 @@
 
 EDENS_NAMESPACE_BEGIN
 
-void CTimer::Initialize()
+void CTimer::SetUp()
 {
 	m_StartTime = m_CurrentTime = timeGetTime();
 }
@@ -25,6 +25,11 @@ void CTimer::RecordStartTime()
 void CTimer::RecordCurrentTime()
 {
 	m_CurrentTime = timeGetTime();
+}
+
+u32 CTimer::CalculateExecuteTime()
+{
+	return m_CurrentTime - m_StartTime;
 }
 
 
