@@ -27,7 +27,7 @@ protected:
 
 public:
 
-	b8 Initialize();
+	b8 Initialize(HINSTANCE _hInstance);
 
 	void Finalize();
 
@@ -41,7 +41,7 @@ protected:
 	EDENS_NAMESPACE::CConsoleWindow* m_pConsoleWindow = nullptr;
 
 
-	b8 InitializeWindow();
+	b8 InitializeWindow(HINSTANCE _hInstance);
 	void FinalizeWindow();
 
 	b8 InitializeConsole();

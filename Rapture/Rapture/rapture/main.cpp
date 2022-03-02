@@ -14,7 +14,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine
 {
 	CAppManager& appManager = CAppManager::GetInstance();
 	
-	if (!appManager.Initialize())
+	if (!appManager.Initialize(hInstance))
 	{
 		PRINT("AppManager is not initialized.\n");
 		AssertMsg(false, "Initialize Failed.\n");

@@ -117,6 +117,9 @@
     <ClInclude Include="eden\include\gadget\serializer\serializer.h">
       <Filter>eden\include\gadget\serializer</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\system\window\window_def.h">
+      <Filter>eden\include\system\window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">

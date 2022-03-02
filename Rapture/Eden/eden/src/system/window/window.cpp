@@ -6,9 +6,27 @@
 
 //Include Header
 #include <eden/include/system/window/window.h>
+#include <eden/include/system/window/window_def.h>
 
 EDENS_NAMESPACE_BEGIN
 
+
+b8 CWindow::Initialize(const FWindowInitializer* _Initializer)
+{
+	if (_Initializer == nullptr) { return false; }
+
+	SetWindowName(_Initializer->WindowName, _Initializer->WindowTitle);
+	SetWindowSize(_Initializer->WindowWidth, _Initializer->WindowHeight,_Initializer->IsFullScreen);
+
+	b8 result = EdenCreateWindow(_Initializer->Instance, _Initializer->WindowMode);
+
+	return result;
+}
+
+void CWindow::Finalize()
+{
+	UnregisterClass(m_ApplicationClass.lpszClassName, m_ApplicationClass.hInstance);
+}
 
 void CWindow::SetWindowName(const c8* _name, const c8* _title)
 {
@@ -48,9 +66,13 @@ HRESULT CWindow::WNDC_initialize(const HINSTANCE hInstance,const c8* name)
 	wcex.cbWndExtra = 0;
 	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);//îwåiêFîí
 
-	if (!RegisterClassEx(&wcex)) {
+	if (!RegisterClassEx(&wcex)) 
+	{
 		return FALSE;
-	}else{
+	}
+	else
+	{
+		m_ApplicationClass = wcex;
 		return S_OK;
 	}
 }
@@ -111,7 +133,7 @@ HRESULT CWindow::HWND_initialize(const HINSTANCE hInstance, const c8* name, cons
 	}
 }
 
-b8 CWindow::Create_Window(const HINSTANCE hInstance, const s32 nWindMode)
+b8 CWindow::EdenCreateWindow(const HINSTANCE hInstance, const s32 nWindMode)
 {
 	m_hInstance = hInstance;
 
@@ -135,9 +157,9 @@ b8 CWindow::Create_Window(const HINSTANCE hInstance, const s32 nWindMode)
 	return true;
 }
 
-bool CWindow::IsLoop()
+bool CWindow::IsMessageQuit()
 {
-	return m_msg.message != WM_QUIT;
+	return m_msg.message== WM_QUIT;
 }
 
 bool CWindow::CheckPeekMessage()
@@ -162,6 +184,7 @@ LRESULT CWindow::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 		case VK_ESCAPE:
 			DestroyWindow(hWnd);
+			//PostQuitMessage(0);
 			break;
 		}
 		break;

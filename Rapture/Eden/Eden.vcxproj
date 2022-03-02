@@ -169,6 +169,7 @@
     <ClInclude Include="eden\include\system\directory\directory_manager.h" />
     <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h" />
     <ClInclude Include="eden\include\system\window\window.h" />
+    <ClInclude Include="eden\include\system\window\window_def.h" />
     <ClInclude Include="eden\include\template\singleton.h" />
     <ClInclude Include="eden\include\utility\ender_utility.h" />
   </ItemGroup>
