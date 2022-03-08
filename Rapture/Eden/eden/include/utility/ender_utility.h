@@ -39,6 +39,16 @@ inline void Exit(T*& p)
 }
 
 template <class T>
+inline void FinalizeObject(T& p)
+{
+	if (p)
+	{
+		p->Finalize();
+		p.reset(nullptr);
+	}
+}
+
+template <class T>
 inline void DeleteArray(T*& p)
 {
 	if (p)
@@ -48,6 +58,18 @@ inline void DeleteArray(T*& p)
 	p = nullptr;
 }
 
+
+template <class T>
+inline void ReleasePtr(T& _Ptr)
+{
+	if (_Ptr)
+	{
+		_Ptr->Release();
+		_Ptr.release();
+	}
+}
+
+#if 0
 #include <list>
 #include <vector>
 
@@ -89,6 +111,7 @@ void ReleaseVector(std::vector<T*>& arr)
 	}
 	arr.clear();
 }
+#endif
 
 EDENS_NAMESPACE_END
 

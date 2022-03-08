@@ -15,4 +15,11 @@
 #define EDENS_NAMESPACE_USING using namespace EDENS_NAMESPACE;
 //--------------------------------------------------------------
 
+EDENS_NAMESPACE_BEGIN
+EDENS_NAMESPACE_END
+
+
+// Base Macro
+#define ARRAYOF(_Array) sizeof(_Array) / sizeof(_Array[0])
+
 #endif

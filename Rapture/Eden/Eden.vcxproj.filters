@@ -73,6 +73,12 @@
     <Filter Include="eden\src\gadget\serializer">
       <UniqueIdentifier>{c52b9025-7005-45dd-bebe-5a878f4da343}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\system\sha1">
+      <UniqueIdentifier>{66645c40-3c6f-4487-a52f-264dedcec196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\sha1">
+      <UniqueIdentifier>{756b0922-8581-4380-94f9-68540ee1d965}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -120,6 +126,12 @@
     <ClInclude Include="eden\include\system\window\window_def.h">
       <Filter>eden\include\system\window</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\template\NonCopyable.h">
+      <Filter>eden\include\template</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\system\sha1\sha1.h">
+      <Filter>eden\include\system\sha1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -142,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="eden\src\gadget\serializer\serializer.cpp">
       <Filter>eden\src\gadget\serializer</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\system\sha1\sha1.cpp">
+      <Filter>eden\src\system\sha1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

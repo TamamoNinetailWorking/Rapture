@@ -168,8 +168,10 @@
     <ClInclude Include="eden\include\system\console\console_window.h" />
     <ClInclude Include="eden\include\system\directory\directory_manager.h" />
     <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h" />
+    <ClInclude Include="eden\include\system\sha1\sha1.h" />
     <ClInclude Include="eden\include\system\window\window.h" />
     <ClInclude Include="eden\include\system\window\window_def.h" />
+    <ClInclude Include="eden\include\template\NonCopyable.h" />
     <ClInclude Include="eden\include\template\singleton.h" />
     <ClInclude Include="eden\include\utility\ender_utility.h" />
   </ItemGroup>
@@ -180,6 +182,7 @@
     <ClCompile Include="eden\src\system\console\console_window.cpp" />
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp" />
     <ClCompile Include="eden\src\system\frame_rate\frame_rate_manager.cpp" />
+    <ClCompile Include="eden\src\system\sha1\sha1.cpp" />
     <ClCompile Include="eden\src\system\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
