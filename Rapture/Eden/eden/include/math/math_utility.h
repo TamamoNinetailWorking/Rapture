@@ -21,6 +21,12 @@ public:
 	template <typename Number>
 	static Number Saturate(Number target);
 
+	template <typename Number>
+	static Number CircularShift(u8 _Bit, Number _Target);
+
+	template <typename Number>
+	static bool CheckWithinRange(Number _Target, Number _A, Number _B);
+
 };
 
 

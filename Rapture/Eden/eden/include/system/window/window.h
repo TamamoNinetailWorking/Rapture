@@ -21,6 +21,8 @@ public:
 	void Finalize();
 
 
+	void EdenShowWindow(const s32 nWindMode) const;
+
 	void ChangeWindowTitle(const c8* _title);
 
 
@@ -65,7 +67,7 @@ private:
 	void SetWindowName(const c8* _name, const c8* _title);
 	void SetWindowSize(s32 _width, s32 _height, b8 _fullScreen);
 
-	b8 EdenCreateWindow(const HINSTANCE hInstance, const s32 nWindMode);
+	b8 EdenCreateWindow(const HINSTANCE hInstance/*, const s32 nWindMode*/);
 
 };
 

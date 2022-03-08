@@ -18,7 +18,7 @@ b8 CWindow::Initialize(const FWindowInitializer* _Initializer)
 	SetWindowName(_Initializer->WindowName, _Initializer->WindowTitle);
 	SetWindowSize(_Initializer->WindowWidth, _Initializer->WindowHeight,_Initializer->IsFullScreen);
 
-	b8 result = EdenCreateWindow(_Initializer->Instance, _Initializer->WindowMode);
+	b8 result = EdenCreateWindow(_Initializer->Instance/*, _Initializer->WindowMode*/);
 
 	return result;
 }
@@ -42,6 +42,12 @@ void CWindow::SetWindowSize(s32 _width, s32 _height, b8 _fullScreen)
 	m_full_screen_flag = _fullScreen;
 }
 
+
+void CWindow::EdenShowWindow(const s32 nWindMode) const
+{
+	ShowWindow(m_hWnd, nWindMode);
+	//UpdateWindow(m_hWnd);
+}
 
 void CWindow::ChangeWindowTitle(const c8* _title)
 {
@@ -133,7 +139,7 @@ HRESULT CWindow::HWND_initialize(const HINSTANCE hInstance, const c8* name, cons
 	}
 }
 
-b8 CWindow::EdenCreateWindow(const HINSTANCE hInstance, const s32 nWindMode)
+b8 CWindow::EdenCreateWindow(const HINSTANCE hInstance/*, const s32 nWindMode*/)
 {
 	m_hInstance = hInstance;
 
@@ -150,9 +156,6 @@ b8 CWindow::EdenCreateWindow(const HINSTANCE hInstance, const s32 nWindMode)
 		MessageBox(m_hWnd, "ERROR!", "HWND Error", MB_OK);
 		return false;
 	}
-
-	ShowWindow(m_hWnd, nWindMode);
-	UpdateWindow(m_hWnd);
 
 	return true;
 }

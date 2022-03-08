@@ -10,6 +10,7 @@
 
 u32 __eden_printf(const c8* _format, ...)
 {
+#ifdef EDENS_DEBUG
 	va_list arg;
 	u32 done;
 
@@ -18,17 +19,21 @@ u32 __eden_printf(const c8* _format, ...)
 	va_end(arg);
 
 	return done;
+#endif
 }
 
 
 void __assert(b8 _expr)
 {
+#ifdef EDENS_DEBUG
 	assert(_expr);
+#endif
 }
 
 
 void __assert_msg(b8 _expr, const c8* _format, ...)
 {
+#ifdef EDENS_DEBUG
 	va_list arg;
 	u32 done;
 
@@ -37,4 +42,5 @@ void __assert_msg(b8 _expr, const c8* _format, ...)
 	va_end(arg);
 
 	assert(_expr);
+#endif
 }
