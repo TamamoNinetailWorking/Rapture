@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Atlantis">
+      <UniqueIdentifier>{0ed26605-d565-48cf-8388-d08bf3eef54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12">
+      <UniqueIdentifier>{433d9c8f-c073-42fa-b8f7-9fcad3e36c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\MainDevice">
+      <UniqueIdentifier>{3acc90e5-69f4-411a-be19-4f924e471edd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Command">
+      <UniqueIdentifier>{15584a0c-afae-47e9-bf9a-3471957bb529}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
+      <Filter>Atlantis\DirectX12\MainDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectX12BaseDefine.h">
+      <Filter>Atlantis\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\AtlantisBase.h">
+      <Filter>Atlantis</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\AtlantisDefine.h">
+      <Filter>Atlantis</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Command\CommandContext.h">
+      <Filter>Atlantis\DirectX12\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Command\CommandQueue.h">
+      <Filter>Atlantis\DirectX12\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h">
+      <Filter>Atlantis\DirectX12</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
+      <Filter>Atlantis\DirectX12\MainDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Command\CommandContext.cpp">
+      <Filter>Atlantis\DirectX12\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Command\CommandQueue.cpp">
+      <Filter>Atlantis\DirectX12\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp">
+      <Filter>Atlantis\DirectX12</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
