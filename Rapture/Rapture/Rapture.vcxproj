@@ -75,16 +75,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,13 +105,13 @@
       <PreprocessorDefinitions>DEBUG_MODE;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Eden.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;Atlantis.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -147,15 +147,34 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Eden.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;Atlantis.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />
+    <ClCompile Include="rapture\game_manager\game_manager.cpp" />
     <ClCompile Include="rapture\main.cpp" />
+    <ClCompile Include="rapture\Test\SHA1Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h" />
+    <ClInclude Include="rapture\game_manager\game_manager.h" />
+    <ClInclude Include="rapture\game_manager\game_manager_def.h" />
+    <ClInclude Include="rapture\Test\Test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\shader\BasicPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="resource\shader\BasicVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

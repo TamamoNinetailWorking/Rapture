@@ -5,10 +5,16 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rapture", "Rapture\Rapture.vcxproj", "{D8A14B7C-59DF-4377-B922-A11DFFFFAB8D}"
 	ProjectSection(ProjectDependencies) = postProject
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5} = {6CF83228-329C-41A8-81B6-08C2DB0D16A5}
 		{66239687-3A1F-4586-A958-12A21574EE39} = {66239687-3A1F-4586-A958-12A21574EE39}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eden", "Eden\Eden.vcxproj", "{66239687-3A1F-4586-A958-12A21574EE39}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Atlantis", "Atlantis\Atlantis.vcxproj", "{6CF83228-329C-41A8-81B6-08C2DB0D16A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{66239687-3A1F-4586-A958-12A21574EE39} = {66239687-3A1F-4586-A958-12A21574EE39}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,14 @@ Global
 		{66239687-3A1F-4586-A958-12A21574EE39}.Release|x64.Build.0 = Release|x64
 		{66239687-3A1F-4586-A958-12A21574EE39}.Release|x86.ActiveCfg = Release|Win32
 		{66239687-3A1F-4586-A958-12A21574EE39}.Release|x86.Build.0 = Release|Win32
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Debug|x64.ActiveCfg = Debug|x64
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Debug|x64.Build.0 = Debug|x64
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Debug|x86.ActiveCfg = Debug|Win32
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Debug|x86.Build.0 = Debug|Win32
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Release|x64.ActiveCfg = Release|x64
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Release|x64.Build.0 = Release|x64
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Release|x86.ActiveCfg = Release|Win32
+		{6CF83228-329C-41A8-81B6-08C2DB0D16A5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

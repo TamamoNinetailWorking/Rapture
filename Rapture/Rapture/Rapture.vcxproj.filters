@@ -16,6 +16,9 @@
     <Filter Include="rapture\game_manager">
       <UniqueIdentifier>{c7a47427-6b14-47ee-b246-e1b52658adff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapture\Test">
+      <UniqueIdentifier>{5ad1671a-fcb3-4b69-829c-2aa6582798a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rapture\main.cpp">
@@ -24,10 +27,33 @@
     <ClCompile Include="rapture\app_manager\app_manager.cpp">
       <Filter>rapture\app_manager</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\game_manager\game_manager.cpp">
+      <Filter>rapture\game_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\Test\SHA1Test.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
       <Filter>rapture\app_manager</Filter>
     </ClInclude>
+    <ClInclude Include="rapture\game_manager\game_manager.h">
+      <Filter>rapture\game_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\game_manager\game_manager_def.h">
+      <Filter>rapture\game_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\Test\Test.h">
+      <Filter>rapture\Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\shader\BasicVertexShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resource\shader\BasicPixelShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

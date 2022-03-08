@@ -16,6 +16,8 @@ class CConsoleWindow;
 
 EDENS_NAMESPACE_END
 
+class CGameManager;
+
 /*
 *	アプリケーションマネージャー
 */
@@ -39,6 +41,7 @@ protected:
 
 	EDENS_NAMESPACE::CWindow* m_pWindow = nullptr;
 	EDENS_NAMESPACE::CConsoleWindow* m_pConsoleWindow = nullptr;
+	CGameManager* m_pGameManager = nullptr;
 
 
 	b8 InitializeWindow(HINSTANCE _hInstance);
@@ -46,6 +49,9 @@ protected:
 
 	b8 InitializeConsole();
 	void FinalizeConsole();
+
+	b8 InitializeGameManager();
+	void FinalizeGameManager();
 
 };
 
