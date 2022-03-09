@@ -229,6 +229,7 @@ void CSHA1::SHA1Process(FSHAProxy* _proxy)
 void CSHA1::SHA1Result(FSHAProxy* _proxy)
 {
 	if (!_proxy) { return; }
+#if 0
 
 	// 一時的に保存したハッシュ値を上位32bitずつ抜き出して結合(20Byte)
 	array<u8, DigestSize> digest = {};
@@ -265,7 +266,7 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 	}
 
 	size += sizeof(m_Hash.MiddleByte);
-	for (u8 i = 0; count < size ; ++i)
+	for (u8 i = 0; count < size; ++i)
 	{
 		u8 wordByte = BitPerByte * sizeof(m_Hash.MiddleByte);
 		u8 shiftBit = wordByte - BitPerByte * (i + 1);
@@ -283,6 +284,32 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 		u32 bit = digest[count++];
 		m_Hash.UnderByte |= (bit << shiftBit) & mask;
 	}
+#endif
+
+	auto& hash = _proxy->TempHash;
+
+	//for (auto& elem : hash)
+	//{
+	//	PRINT("%x ", elem);
+	//}
+	//PRINT("\n");
+
+	auto LeftShiftHash = [](u32 _hash, u8 _bit)
+	{
+		u64 temp = _hash;
+		return temp << _bit;
+	};
+
+	m_Hash.UpperByte = LeftShiftHash(hash[0], 32);
+	m_Hash.UpperByte |= hash[1];
+	//PRINT("%llx ", m_Hash.UpperByte);
+
+	m_Hash.MiddleByte = LeftShiftHash(hash[2], 32);
+	m_Hash.MiddleByte |= hash[3];
+	//PRINT("%llx ", m_Hash.MiddleByte);
+
+	m_Hash.UnderByte = hash[4];
+	//PRINT("%x ", m_Hash.UnderByte);
 }
 
 bool CSHA1::Check00(u32 _Num)
