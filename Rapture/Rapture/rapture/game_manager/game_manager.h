@@ -5,15 +5,19 @@
 
 #include <d3d12.h>
 
-#include <Atlantis/DirectX12/MainDevice/MainDevice.h>
-#include <Atlantis/DirectX12/Command/CommandContext.h>
-#include <Atlantis/DirectX12/Command/CommandQueue.h>
+//#include <Atlantis/DirectX12/MainDevice/MainDevice.h>
+//#include <Atlantis/DirectX12/Command/CommandContext.h>
+//#include <Atlantis/DirectX12/Command/CommandQueue.h>
+//#include <Atlantis/DirectX12/SwapChain/SwapChain.h>
+//#include <Atlantis/DirectX12/Fence/Fence.h>
 
 ATLANTIS_NAMESPACE_BEGIN
 
 class CDX12MainDevice;
 class CCommandContext;
 class CCommandQueue;
+class CSwapChain;
+class CFence;
 
 ATLANTIS_NAMESPACE_END
 
@@ -37,10 +41,17 @@ private:
 	void Render();
 
 
-	std::unique_ptr<ATLANTIS_NAMESPACE::CDX12MainDevice> m_MainDevice = nullptr;
-	std::unique_ptr<ATLANTIS_NAMESPACE::CCommandContext> m_CommandContext = nullptr;
-	std::unique_ptr<ATLANTIS_NAMESPACE::CCommandQueue> m_CommandQueue = nullptr;
+	//std::unique_ptr<ATLANTIS_NAMESPACE::CDX12MainDevice> m_MainDevice = nullptr;
+	//std::unique_ptr<ATLANTIS_NAMESPACE::CCommandContext> m_CommandContext = nullptr;
+	//std::unique_ptr<ATLANTIS_NAMESPACE::CCommandQueue> m_CommandQueue = nullptr;
+	//std::unique_ptr<ATLANTIS_NAMESPACE::CSwapChain> m_SwapChain = nullptr;
+	//std::unique_ptr<ATLANTIS_NAMESPACE::CFence> m_Fence = nullptr;
 
+	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
+	ATLANTIS_NAMESPACE::CCommandContext* m_CommandContext = nullptr;
+	ATLANTIS_NAMESPACE::CCommandQueue* m_CommandQueue = nullptr;
+	ATLANTIS_NAMESPACE::CSwapChain* m_SwapChain = nullptr;
+	ATLANTIS_NAMESPACE::CFence* m_Fence = nullptr;
 
 	//// こいつは1つのはず
 	//struct ID3D12Device* m_Device = nullptr;
@@ -50,14 +61,14 @@ private:
 	//struct ID3D12GraphicsCommandList* m_CmdList = nullptr;
 	//struct ID3D12CommandQueue* m_CmdQueue = nullptr;
 
-	// ディスクリプタヒープはディスクリプタの数存在する。
-	// >>今回の用途でいくと、RTV毎にあっても良さそう。
-	struct ID3D12DescriptorHeap* m_RtvHeaps = nullptr;
+	//// ディスクリプタヒープはディスクリプタの数存在する。
+	//// >>今回の用途でいくと、RTV毎にあっても良さそう。
+	//struct ID3D12DescriptorHeap* m_RtvHeaps = nullptr;
 
-	// フェンスはGPUの処理が完了したかどうかを見ることができる
-	// >>こいつはつまり１描画に１つ対応する形だろうから、
-	// >> 同時に描画しない限りは複数なくても良さそう。
-	struct ID3D12Fence* m_Fence = nullptr;
+	//// フェンスはGPUの処理が完了したかどうかを見ることができる
+	//// >>こいつはつまり１描画に１つ対応する形だろうから、
+	//// >> 同時に描画しない限りは複数なくても良さそう。
+	//struct ID3D12Fence* m_Fence = nullptr;
 
 
 	// メッシュ単位で持つもの
@@ -85,15 +96,15 @@ private:
 	//// 1つで良さそうだ。
 	//struct IDXGIFactory6* m_GIFactory = nullptr;
 
-	// スワップチェーンは画面の切り替え時に使うものなので、
-	// こいつも1つで良さそう
-	struct IDXGISwapChain4* m_SwapChain = nullptr;
+	//// スワップチェーンは画面の切り替え時に使うものなので、
+	//// こいつも1つで良さそう
+	//struct IDXGISwapChain4* m_SwapChain = nullptr;
 
 
-	// BackBufferはRTVに使っているので、あれとセットだろう
-	std::vector<struct ID3D12Resource*> m_BackBuffers;
+	//// BackBufferはRTVに使っているので、あれとセットだろう
+	//std::vector<struct ID3D12Resource*> m_BackBuffers;
 
-	// フェンスとセット
-	u64 m_FenceValue = 0;
+	//// フェンスとセット
+	//u64 m_FenceValue = 0;
 
 };

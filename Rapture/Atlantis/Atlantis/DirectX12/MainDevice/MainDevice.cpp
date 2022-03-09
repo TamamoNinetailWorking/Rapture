@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include <dxgi1_6.h>
+
 using namespace std;
 
 USING_ATLANTIS;

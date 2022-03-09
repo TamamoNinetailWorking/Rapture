@@ -33,6 +33,22 @@ void CCommandContext::Finalize()
 	ReleaseD3DPtr(m_CmdAllocator);
 }
 
+void CCommandContext::Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource)
+{
+	if (!_Resource) { return; }
+	m_CmdList->ResourceBarrier(_Num, _Resource);
+}
+
+void CCommandContext::OMSetRenderTargets(uint32 NumRenderTargetDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor)
+{
+	m_CmdList->OMSetRenderTargets(NumRenderTargetDescriptors, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange, pDepthStencilDescriptor);
+}
+
+void CCommandContext::Close()
+{
+	m_CmdList->Close();
+}
+
 
 void CCommandContext::Reset(ID3D12PipelineState* _PipelineState)
 {

@@ -13,6 +13,15 @@
     <Filter Include="Atlantis\DirectX12\Command">
       <UniqueIdentifier>{15584a0c-afae-47e9-bf9a-3471957bb529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\DirectX12\SwapChain">
+      <UniqueIdentifier>{5d245f43-9cb6-48ac-bd95-4e4a7fbdb781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\RenderTargetView">
+      <UniqueIdentifier>{46d48479-8c99-4a9e-90f8-29a23e76bb94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Fence">
+      <UniqueIdentifier>{10b063a4-a78b-457d-acdd-f80f62eddf0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -36,6 +45,15 @@
     <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h">
       <Filter>Atlantis\DirectX12</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\SwapChain\SwapChain.h">
+      <Filter>Atlantis\DirectX12\SwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.h">
+      <Filter>Atlantis\DirectX12\RenderTargetView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h">
+      <Filter>Atlantis\DirectX12\Fence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -49,6 +67,15 @@
     </ClCompile>
     <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp">
       <Filter>Atlantis\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\SwapChain\SwapChain.cpp">
+      <Filter>Atlantis\DirectX12\SwapChain</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.cpp">
+      <Filter>Atlantis\DirectX12\RenderTargetView</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Fence\Fence.cpp">
+      <Filter>Atlantis\DirectX12\Fence</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

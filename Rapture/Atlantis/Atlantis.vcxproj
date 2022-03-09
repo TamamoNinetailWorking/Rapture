@@ -25,13 +25,19 @@
     <ClInclude Include="Atlantis\DirectX12\Command\CommandQueue.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectX12BaseDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h" />
+    <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h" />
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h" />
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.h" />
+    <ClInclude Include="Atlantis\DirectX12\SwapChain\SwapChain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\Command\CommandContext.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandQueue.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Fence\Fence.cpp" />
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\SwapChain\SwapChain.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

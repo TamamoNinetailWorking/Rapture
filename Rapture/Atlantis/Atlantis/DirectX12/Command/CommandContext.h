@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <d3d12.h>
+//#include <d3d12.h>
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
 
@@ -21,6 +21,19 @@ public:
 
 	bool Initialize(const FCommandContextInitializer& _Initializer);
 	void Finalize();
+
+	// リソースバリア
+	void Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource);
+
+	// OMSetRenderTargets
+	void OMSetRenderTargets(
+		uint32 NumRenderTargetDescriptors,
+		const D3D12_CPU_DESCRIPTOR_HANDLE* pRenderTargetDescriptors,
+		bool RTsSingleHandleToDescriptorRange,
+		const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor);
+
+	// クローズ
+	void Close();
 
 	// リセット
 	void Reset(ID3D12PipelineState* _PipelineState = nullptr);

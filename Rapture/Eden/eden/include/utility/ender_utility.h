@@ -39,13 +39,24 @@ inline void Exit(T*& p)
 }
 
 template <class T>
-inline void FinalizeObject(T& p)
+inline void FinalizePtr(T& p)
 {
 	if (p)
 	{
 		p->Finalize();
 		p.reset(nullptr);
 	}
+}
+
+template <class T>
+inline void FinalizeObject(T& p)
+{
+	if (p)
+	{
+		p->Finalize();
+		delete p;
+	}
+	p = nullptr;
 }
 
 template <class T>

@@ -24,6 +24,8 @@
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 #include <Atlantis/DirectX12/Command/CommandContext.h>
 #include <Atlantis/DirectX12/Command/CommandQueue.h>
+#include <Atlantis/DirectX12/SwapChain/SwapChain.h>
+#include <Atlantis/DirectX12/Fence/Fence.h>
 
 #include <rapture/Test/Test.h>
 
@@ -43,12 +45,14 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	do 
 	{
-		m_MainDevice = move(unique_ptr<CDX12MainDevice>(new CDX12MainDevice()));
+		//m_MainDevice = move(unique_ptr<CDX12MainDevice>(new CDX12MainDevice()));
+		m_MainDevice = new CDX12MainDevice();
 		if (!m_MainDevice) { break; };
 
 		if (!m_MainDevice->Initialize()){ break;}
 
-		m_CommandContext = move(unique_ptr<CCommandContext>(new CCommandContext()));
+		//m_CommandContext = move(unique_ptr<CCommandContext>(new CCommandContext()));
+		m_CommandContext = new CCommandContext();
 		if (!m_CommandContext) { break; };
 
 		CCommandContext::FCommandContextInitializer Initializer;
@@ -62,7 +66,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			break;
 		}
 
-		m_CommandQueue = move(unique_ptr<CCommandQueue>(new CCommandQueue()));
+		//m_CommandQueue = move(unique_ptr<CCommandQueue>(new CCommandQueue()));
+		m_CommandQueue = new CCommandQueue();
 		if (!m_CommandQueue) { break; };
 
 		CCommandQueue::FCommandQueueInitializer queueInitializer;
@@ -75,7 +80,36 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		{
 			break;
 		}
+
+		//m_SwapChain.reset(new CSwapChain());
+		m_SwapChain = new CSwapChain();
+		if (!m_SwapChain) { break; }
 	
+		CSwapChain::FSwapChainInitializer swapchainInitializer;
+		swapchainInitializer.Device = m_MainDevice->GetDevice();
+		swapchainInitializer.Factory = m_MainDevice->GetGIFactory();
+		swapchainInitializer.Queue = m_CommandQueue->GetCommandQueue();
+		swapchainInitializer.ViewportWidth = _Initializer->ViewportWidth;
+		swapchainInitializer.ViewportHeight = _Initializer->ViewportHeight;
+		swapchainInitializer.WindowHandle = _Initializer->WindowHandle;
+
+		if (!m_SwapChain->Initialize(swapchainInitializer))
+		{
+			break;
+		}
+
+		//m_Fence.reset(new CFence());]
+		m_Fence = new CFence();
+		if (!m_Fence) { break; }
+
+		CFence::FFenceInitializer fenceInitializer;
+		fenceInitializer.Device = m_MainDevice->GetDevice();
+
+		if (!m_Fence->Initialize(fenceInitializer))
+		{
+			break;
+		}
+
 
 #if 0
 #ifdef DEBUG_MODE
@@ -186,7 +220,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 	D3D_ERROR_CHECK_TEMP(m_Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_CmdQueue)));
 #endif
 
-
+#if 0
 	// スワップチェーンの作成
 	DXGI_SWAP_CHAIN_DESC1 swapchainDesc = {};
 	swapchainDesc.Width = _Initializer->ViewportWidth;
@@ -248,12 +282,14 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_Device->CreateRenderTargetView(m_BackBuffers[i], nullptr, handle);
 		handle.ptr += m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	}
+#endif
 
+#if 0
 	// フェンス？
 	// GPUの処理待ちを行うための仕組みの1つらしい
 	/*result = m_Device->CreateFence(m_FenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence));*/
 	D3D_ERROR_CHECK_TEMP(m_Device->CreateFence(m_FenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
-
+#endif
 
 	// テストメッシュ
 
@@ -552,9 +588,8 @@ void CGameManager::Finalize()
 		delete m_VertexBufferView;
 	}
 
-	m_SwapChain->Release();
-	m_SwapChain = nullptr;
 
+	FinalizeObject(m_SwapChain);
 	FinalizeObject(m_CommandQueue);
 	FinalizeObject(m_CommandContext);
 	FinalizeObject(m_MainDevice);
@@ -576,10 +611,11 @@ void CGameManager::GameUpdate()
 
 void CGameManager::Render()
 {
-	ID3D12Device* m_Device = m_MainDevice->GetDevice();
+	//ID3D12Device* m_Device = m_MainDevice->GetDevice();
 	ID3D12GraphicsCommandList* m_CmdList = m_CommandContext->GetCommandList();
-	ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
+	//ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
 
+#if 0
 	u32 backBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
 
 	D3D12_RESOURCE_BARRIER barrierDesc = {};
@@ -591,19 +627,22 @@ void CGameManager::Render()
 	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
 	m_CmdList->ResourceBarrier(1, &barrierDesc);
+#endif
+
+	m_SwapChain->Begin(m_MainDevice,m_CommandContext);
 
 	// パイプラインセット
 	m_CmdList->SetPipelineState(m_PipeLineState);
 
 
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RtvHeaps->GetCPUDescriptorHandleForHeapStart();
-	rtvHandle.ptr += SCast<ULONG_PTR>(backBufferIndex * m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-	
-	m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RtvHeaps->GetCPUDescriptorHandleForHeapStart();
+	//rtvHandle.ptr += SCast<ULONG_PTR>(backBufferIndex * m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	//
+	//m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
 
 	float clearColor[] = { 0.f,0.f,0.f,1.f };
-	m_CmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	m_CmdList->ClearRenderTargetView(m_SwapChain->GetRenderTargetViewHandle(), clearColor, 0, nullptr);
 
 	m_CmdList->RSSetViewports(1, m_Viewport);
 	m_CmdList->RSSetScissorRects(1, &m_ScissorRect);
@@ -617,34 +656,30 @@ void CGameManager::Render()
 	m_CmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 
-	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+	//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 
-	m_CmdList->ResourceBarrier(1, &barrierDesc);
+	//m_CmdList->ResourceBarrier(1, &barrierDesc);
+
+	m_SwapChain->End(m_CommandContext);
 
 	// 命令をクローズ
-	m_CmdList->Close();
+	m_CommandContext->Close();
 
 
 	// コマンドリストの実行
-	ID3D12CommandList* cmdLists[] = { m_CmdList };
-	m_CmdQueue->ExecuteCommandLists(1, cmdLists);
+	m_CommandQueue->CommandListPush(m_CommandContext);
+	m_CommandQueue->Execute();
 
 	// 待ち
-	m_CmdQueue->Signal(m_Fence, ++m_FenceValue);
+	m_CommandQueue->Signal(m_Fence);
 
-	if (m_Fence->GetCompletedValue() != m_FenceValue)
-	{
-		auto event = CreateEvent(nullptr, false, false, nullptr);
-		m_Fence->SetEventOnCompletion(m_FenceValue, event);
-		WaitForSingleObject(event, INFINITE);
-		CloseHandle(event);
-	}
+	m_Fence->WaitEvent();
 
 	m_CommandContext->Reset();
 
 	// フリップ
-	m_SwapChain->Present(1, 0);
+	m_SwapChain->Present();
 
 
 }

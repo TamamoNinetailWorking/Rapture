@@ -1,11 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <d3d12.h>
+#include <deque>
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
 
 ATLANTIS_NAMESPACE_BEGIN
+
+class CCommandContext;
 
 class CCommandQueue
 {
@@ -24,6 +26,12 @@ public:
 	bool Initialize(const FCommandQueueInitializer& _Initializer);
 	void Finalize();
 
+	void Signal(class CFence* _Fence);
+
+	void CommandListPush(CCommandContext* _List);
+
+	void Execute();
+
 
 	ID3D12CommandQueue* GetCommandQueue() const { return m_CmdQueue.get(); };
 
@@ -37,6 +45,9 @@ private:
 
 	// コマンドキュー
 	std::unique_ptr<ID3D12CommandQueue> m_CmdQueue = nullptr;
+
+	// コマンドリストのキュー
+	std::deque<CCommandContext*> m_ListQueue = {};
 };
 
 

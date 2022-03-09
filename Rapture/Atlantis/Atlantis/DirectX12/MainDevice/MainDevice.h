@@ -1,9 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <d3d12.h>
-#include <dxgi1_6.h>
 #include <eden/include/template/NonCopyable.h>
+
+#include <d3d12.h>
+
+struct ID3D12Device;
+struct IDXGIFactory6;
+struct IDXGIAdapter;
 
 ATLANTIS_NAMESPACE_BEGIN
 
@@ -25,11 +29,7 @@ public:
 
 
 	// ÉQÉbÉ^Å[
-	//const ID3D12Device* GetDevice() const { return m_Device.get(); };
-	//ID3D12Device* GetDeviceEdit() const { return m_Device.get(); };
 	ID3D12Device* GetDevice() const { return m_Device.get(); };
-	//const IDXGIFactory6* GetGIFactory() const { return m_GIFactory.get(); };
-	//IDXGIFactory6* GetGIFactoryEdit() const { return m_GIFactory.get(); };
 	IDXGIFactory6* GetGIFactory() const { return m_GIFactory.get(); };
 
 	CDX12MainDevice() {};
