@@ -1,6 +1,7 @@
 #pragma once
 
 #include <d3d12.h>
+#include <DirectXmath.h>
 
 #define USING_GLUE using namespace ATLANTIS_NAMESPACE::Glue;
 
@@ -39,6 +40,23 @@ namespace Glue
 	};
 
 	const D3D12_COMMAND_QUEUE_PRIORITY GetD3DCommandQueuePriority(ECommandQueuePriority _Priority);
+
+};
+
+
+
+// éZèpââéZån
+namespace Glue
+{
+
+	typedef DirectX::XMFLOAT3 Vector2;
+	typedef DirectX::XMFLOAT3 Vector3;
+	typedef DirectX::XMFLOAT4 Vector4;
+
+
+	typedef DirectX::XMFLOAT3X4 Matrix34;
+	typedef DirectX::XMFLOAT4X3 Matrix43;
+	typedef DirectX::XMFLOAT4X4 Matrix44;
 
 };
 

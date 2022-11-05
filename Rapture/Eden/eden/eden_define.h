@@ -9,5 +9,6 @@
 //Include Header
 #include <eden/include/common/types.h>
 #include <eden/include/common/print.h>
+#include <eden/include/system/HashTable/HashTable.h>
 
 #endif

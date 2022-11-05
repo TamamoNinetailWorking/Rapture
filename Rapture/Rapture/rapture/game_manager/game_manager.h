@@ -19,6 +19,15 @@ class CCommandQueue;
 class CSwapChain;
 class CFence;
 
+class CViewport;
+class CScissorRect;
+
+class CVertexShader;
+class CPixelShader;
+
+class CGraphicsPipeline;
+class CRootSignature;
+
 ATLANTIS_NAMESPACE_END
 
 /*
@@ -53,6 +62,14 @@ private:
 	ATLANTIS_NAMESPACE::CSwapChain* m_SwapChain = nullptr;
 	ATLANTIS_NAMESPACE::CFence* m_Fence = nullptr;
 
+	ATLANTIS_NAMESPACE::CViewport* m_Viewport = nullptr;
+	ATLANTIS_NAMESPACE::CScissorRect* m_ScissorRect = nullptr;
+	ATLANTIS_NAMESPACE::CVertexShader* m_VertexShader = nullptr;
+	ATLANTIS_NAMESPACE::CPixelShader* m_PixelShader = nullptr;
+
+	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_Pipeline = nullptr;
+	ATLANTIS_NAMESPACE::CRootSignature* m_RootSignature = nullptr;
+
 	//// こいつは1つのはず
 	//struct ID3D12Device* m_Device = nullptr;
 
@@ -80,17 +97,17 @@ private:
 	// -メッシュ単位で持つもの
 
 	// グラフィックパイプライン
-	struct D3D12_GRAPHICS_PIPELINE_STATE_DESC* m_PipeLine = nullptr;
-	struct ID3D12PipelineState* m_PipeLineState = nullptr;
+	//struct D3D12_GRAPHICS_PIPELINE_STATE_DESC* m_PipeLine = nullptr;
+	//struct ID3D12PipelineState* m_PipeLineState = nullptr;
 
 	// ルートシグネチャ
-	struct ID3D12RootSignature* m_RootSignature = nullptr;
+	//struct ID3D12RootSignature* m_RootSignature = nullptr;
 
-	// ビューポート
-	struct D3D12_VIEWPORT* m_Viewport = nullptr;
+	//// ビューポート
+	//struct D3D12_VIEWPORT* m_Viewport = nullptr;
 
 	// 切り抜き矩形
-	D3D12_RECT m_ScissorRect = {};
+	//D3D12_RECT m_ScissorRect = {};
 
 	//// GIFactoryはDeviceと同じように他のオブジェクトを生み出すのに使うので
 	//// 1つで良さそうだ。

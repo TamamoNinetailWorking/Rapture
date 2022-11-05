@@ -32,6 +32,18 @@ public:
 		bool RTsSingleHandleToDescriptorRange,
 		const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor);
 
+	// RSSetViewport
+	void SetViewport(class CViewport* _viewport);
+
+	// RSSetScissorRect
+	void SetScissorRect(class CScissorRect* _rect);
+
+	// SetPipelineState
+	void SetPipelineState(class CGraphicsPipeline* _pipeline);
+
+	// SetRootSignature
+	void SetRootSignature(class CRootSignature* _RootSignature);
+
 	// ÉNÉçÅ[ÉY
 	void Close();
 

@@ -33,7 +33,7 @@ public:
 	IDXGIFactory6* GetGIFactory() const { return m_GIFactory.get(); };
 
 	CDX12MainDevice() {};
-	~CDX12MainDevice() {};
+	~CDX12MainDevice();
 
 private:
 

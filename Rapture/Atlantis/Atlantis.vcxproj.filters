@@ -22,6 +22,30 @@
     <Filter Include="Atlantis\DirectX12\Fence">
       <UniqueIdentifier>{10b063a4-a78b-457d-acdd-f80f62eddf0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\DirectX12\Viewport">
+      <UniqueIdentifier>{c619d592-fcec-49f2-965f-9400f2961799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\ScissorRect">
+      <UniqueIdentifier>{1f0206b2-f337-4791-843f-52b636e24cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Shader">
+      <UniqueIdentifier>{17765fba-d5e0-4f9e-bd9e-e98ac9260112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\GraphicsPipeline">
+      <UniqueIdentifier>{42c2bf84-f343-40ed-97b5-d4fcc187c7da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\RootSignature">
+      <UniqueIdentifier>{61edcde5-96d7-4b58-aed9-ea8423275eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\DirectXTex">
+      <UniqueIdentifier>{6118ae06-4f1d-4133-bb72-fbb256b05aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Texture">
+      <UniqueIdentifier>{cd6986f1-d384-49b8-8b7a-0374441b3487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Utility">
+      <UniqueIdentifier>{17fbf6e5-3f76-46c8-91a0-e20846f14bb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -54,6 +78,33 @@
     <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h">
       <Filter>Atlantis\DirectX12\Fence</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Viewport\Viewport.h">
+      <Filter>Atlantis\DirectX12\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\ScissorRect\ScissorRect.h">
+      <Filter>Atlantis\DirectX12\ScissorRect</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBase.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\GraphicsShader.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.h">
+      <Filter>Atlantis\DirectX12\GraphicsPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\RootSignature\RootSignature.h">
+      <Filter>Atlantis\DirectX12\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXTex\DirectXTex.h">
+      <Filter>Atlantis\DirectX12\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Texture\Texture.h">
+      <Filter>Atlantis\DirectX12\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Utility\DirectXUtility.h">
+      <Filter>Atlantis\DirectX12\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -77,5 +128,34 @@
     <ClCompile Include="Atlantis\DirectX12\Fence\Fence.cpp">
       <Filter>Atlantis\DirectX12\Fence</Filter>
     </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp">
+      <Filter>Atlantis\DirectX12\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\ScissorRect\ScissorRect.cpp">
+      <Filter>Atlantis\DirectX12\ScissorRect</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Shader\ShaderBase.cpp">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Shader\GraphicsShader.cpp">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.cpp">
+      <Filter>Atlantis\DirectX12\GraphicsPipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\RootSignature\RootSignature.cpp">
+      <Filter>Atlantis\DirectX12\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Texture\Texture.cpp">
+      <Filter>Atlantis\DirectX12\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Utility\DirectXUtility.cpp">
+      <Filter>Atlantis\DirectX12\Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Atlantis\DirectX12\DirectXTex\DirectXTex.inl">
+      <Filter>Atlantis\DirectX12\DirectXTex</Filter>
+    </None>
   </ItemGroup>
 </Project>

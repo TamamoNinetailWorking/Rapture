@@ -79,6 +79,18 @@
     <Filter Include="eden\src\system\sha1">
       <UniqueIdentifier>{756b0922-8581-4380-94f9-68540ee1d965}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\system\HashTable">
+      <UniqueIdentifier>{963ff738-8ba3-4a35-87f7-d9933bfff3ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\system\HashTable">
+      <UniqueIdentifier>{e084d9eb-b4df-4e96-b0ce-6c94e1fdf723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\include\Resource">
+      <UniqueIdentifier>{016ab7dd-7990-4c80-a7cd-74212bf06fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\Resource">
+      <UniqueIdentifier>{ddbf415b-06ac-4dff-9bc3-c60b9e6708a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -132,6 +144,12 @@
     <ClInclude Include="eden\include\system\sha1\sha1.h">
       <Filter>eden\include\system\sha1</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\system\HashTable\HashTable.h">
+      <Filter>eden\include\system\HashTable</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\Resource\Resource.h">
+      <Filter>eden\include\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -157,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="eden\src\system\sha1\sha1.cpp">
       <Filter>eden\src\system\sha1</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\system\HashTable\HashTable.cpp">
+      <Filter>eden\src\system\HashTable</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\Resource\Resource.cpp">
+      <Filter>eden\src\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 
 #include <dxgi1_6.h>
 
+
 using namespace std;
 
 USING_ATLANTIS;
@@ -69,6 +70,11 @@ bool CDX12MainDevice::EnableDebugLayer() const
 #endif
 
 	return true;
+}
+
+CDX12MainDevice::~CDX12MainDevice()
+{
+
 }
 
 bool CDX12MainDevice::CreateGIFacotry()

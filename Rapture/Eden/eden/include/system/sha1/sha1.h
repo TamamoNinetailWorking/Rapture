@@ -18,38 +18,89 @@ public:
 		UpperByte = _right.UpperByte;
 		MiddleByte = _right.MiddleByte;
 		UnderByte = _right.UnderByte;
+		return *this;
 	}
 
-	bool operator==(const FSHA1& _right)
+	bool operator==(const FSHA1& _right) const
 	{
 		return (UpperByte == _right.UpperByte) &&
 			(MiddleByte == _right.MiddleByte) &&
 			(UnderByte == _right.UnderByte);
 	}
 
-	bool operator !=(const FSHA1& _right)
+	bool operator!=(const FSHA1& _right) const
 	{
 		return !(*this == _right);
 	}
 
-	bool operator >(const FSHA1& _right)
+	bool operator>(const FSHA1& _right) const
 	{
-		return UnderByte > _right.UnderByte;
+		if (UpperByte > _right.UpperByte)
+		{
+			return true;
+		}
+		else if (UpperByte == _right.UpperByte)
+		{
+			if (MiddleByte > _right.MiddleByte)
+			{
+				return true;
+			}
+			else if (MiddleByte == _right.MiddleByte)
+			{
+				if (UnderByte > _right.UnderByte)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+
+		return false;
 	}
 
-	bool operator >=(const FSHA1& _right)
+	bool operator>=(const FSHA1& _right) const
 	{
-		return UnderByte >= _right.UnderByte;
+		if (*this == _right) { return true; };
+		if (*this > _right) { return true; }
+		return false;
 	}
 
-	bool operator <(const FSHA1& _right)
+	bool operator<(const FSHA1& _right) const
 	{
-		return UnderByte < _right.UnderByte;
+		if (UpperByte < _right.UpperByte)
+		{
+			return true;
+		}
+		else if (UpperByte == _right.UpperByte)
+		{
+			if (MiddleByte < _right.MiddleByte)
+			{
+				return true;
+			}
+			else if (MiddleByte == _right.MiddleByte)
+			{
+				if (UnderByte < _right.UnderByte)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+
+		return false;
 	}
 
-	bool operator <=(const FSHA1& _right)
+	bool operator<=(const FSHA1& _right) const
 	{
-		return UnderByte <= _right.UnderByte;
+		if (*this == _right) { return true; };
+		if (*this < _right) { return true; }
+		return false;
 	}
 
 private:
@@ -69,39 +120,49 @@ public:
 	CSHA1() {};
 	explicit CSHA1(const char* _string);
 	explicit CSHA1(const std::string& _string);
+	CSHA1(const CSHA1& _sha1) { m_Hash = _sha1.m_Hash; };
+	CSHA1(const FSHA1& _sha1) { m_Hash = _sha1; };
+
 	~CSHA1() {};
 
-	CSHA1 operator=(const CSHA1& _right)
+	FSHA1 operator=(const CSHA1& _right)
 	{
 		m_Hash = _right.m_Hash;
+		return m_Hash;
 	}
 
-	bool operator==(const CSHA1& _right)
+	FSHA1 operator=(const FSHA1& _right)
+	{
+		m_Hash = _right;
+		return m_Hash;
+	}
+
+	bool operator==(const CSHA1& _right) const
 	{
 		return m_Hash == _right.m_Hash;
 	}
 
-	bool operator !=(const CSHA1& _right)
+	bool operator!=(const CSHA1& _right) const
 	{
 		return m_Hash != _right.m_Hash;
 	}
 
-	bool operator >(const CSHA1& _right)
+	bool operator>(const CSHA1& _right) const
 	{
 		return m_Hash > _right.m_Hash;
 	}
 
-	bool operator >=(const CSHA1& _right)
+	bool operator>=(const CSHA1& _right) const
 	{
 		return m_Hash >= _right.m_Hash;
 	}
 
-	bool operator <(const CSHA1& _right)
+	bool operator<(const CSHA1& _right) const
 	{
 		return m_Hash < _right.m_Hash;
 	}
 
-	bool operator <=(const CSHA1& _right)
+	bool operator<=(const CSHA1& _right) const
 	{
 		return m_Hash <= _right.m_Hash;
 	}
@@ -158,9 +219,9 @@ private:
 
 };
 
-
-#define StaticSHA1(string) static const CSHA1(string);
-
-
+//typedef FSHA1 Hash160;
 
 EDENS_NAMESPACE_END
+
+
+typedef EDENS_NAMESPACE::CSHA1 Hash160;

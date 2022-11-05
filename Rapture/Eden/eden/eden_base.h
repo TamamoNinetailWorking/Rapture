@@ -21,5 +21,12 @@ EDENS_NAMESPACE_END
 
 // Base Macro
 #define ARRAYOF(_Array) sizeof(_Array) / sizeof(_Array[0])
+// CheckPointer normal return
+#define CHECK(ptr) if(!ptr) { return; };
+// CheckResult if not ,return false
+#define CHECK_RESULT_FALSE(result) if(!result) { return false; };
+// CheckResult if not , break
+#define CHECK_RESULT_BREAK(result) if(!result) { break; };
+
 
 #endif

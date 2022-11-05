@@ -2,6 +2,11 @@
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 
+#include <Atlantis/DirectX12/Viewport/Viewport.h>
+#include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
+#include <Atlantis/DirectX12/GraphicsPipeline/GraphicsPipeline.h>
+#include <Atlantis/DirectX12/RootSignature/RootSignature.h>
+
 using namespace std;
 
 USING_ATLANTIS;
@@ -42,6 +47,30 @@ void CCommandContext::Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource)
 void CCommandContext::OMSetRenderTargets(uint32 NumRenderTargetDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor)
 {
 	m_CmdList->OMSetRenderTargets(NumRenderTargetDescriptors, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange, pDepthStencilDescriptor);
+}
+
+void CCommandContext::SetViewport(CViewport* _viewport)
+{
+	D3D_CHECK(_viewport);
+	m_CmdList->RSSetViewports(1, _viewport->GetViewport());
+}
+
+void CCommandContext::SetScissorRect(CScissorRect* _rect)
+{
+	D3D_CHECK(_rect);
+	m_CmdList->RSSetScissorRects(1, _rect->GetScissorRect());
+}
+
+void CCommandContext::SetPipelineState(CGraphicsPipeline* _pipeline)
+{
+	D3D_CHECK(_pipeline);
+	m_CmdList->SetPipelineState(_pipeline->GetPipelineState());
+}
+
+void CCommandContext::SetRootSignature(CRootSignature* _RootSignature)
+{
+	D3D_CHECK(_RootSignature);
+	m_CmdList->SetGraphicsRootSignature(_RootSignature->GetRootSignature());
 }
 
 void CCommandContext::Close()

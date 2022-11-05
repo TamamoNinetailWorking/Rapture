@@ -56,4 +56,9 @@
       <Filter>resource\shader</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\shader\BasicShader.hlsli">
+      <Filter>resource\shader</Filter>
+    </None>
+  </ItemGroup>
 </Project>

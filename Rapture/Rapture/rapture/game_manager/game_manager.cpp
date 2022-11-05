@@ -13,9 +13,11 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"d3dcompiler.lib")
+//#pragma comment(lib,"d3d12.lib")
+//#pragma comment(lib,"dxgi.lib")
+//#pragma comment(lib,"d3dcompiler.lib")
+
+#include <Atlantis/DirectX12/DirectXTex/DirectXTex.h>
 
 #include <eden/include/utility/ender_utility.h>
 
@@ -26,6 +28,13 @@
 #include <Atlantis/DirectX12/Command/CommandQueue.h>
 #include <Atlantis/DirectX12/SwapChain/SwapChain.h>
 #include <Atlantis/DirectX12/Fence/Fence.h>
+
+#include <Atlantis/DirectX12/Viewport/Viewport.h>
+#include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
+#include <Atlantis/DirectX12/Shader/GraphicsShader.h>
+
+#include <Atlantis/DirectX12/GraphicsPipeline/GraphicsPipeline.h>
+#include <Atlantis/DirectX12/RootSignature/RootSignature.h>
 
 #include <rapture/Test/Test.h>
 
@@ -55,13 +64,13 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_CommandContext = new CCommandContext();
 		if (!m_CommandContext) { break; };
 
-		CCommandContext::FCommandContextInitializer Initializer;
-		Initializer.Device = m_MainDevice->GetDevice();
-		Initializer.listType = Glue::COMMAND_LIST_TYPE_DIRECT;
-		Initializer.NodeMask = 0;
+		CCommandContext::FCommandContextInitializer cmdInitializer;
+		cmdInitializer.Device = m_MainDevice->GetDevice();
+		cmdInitializer.listType = Glue::COMMAND_LIST_TYPE_DIRECT;
+		cmdInitializer.NodeMask = 0;
 
 
-		if (!m_CommandContext->Initialize(Initializer))
+		if (!m_CommandContext->Initialize(cmdInitializer))
 		{
 			break;
 		}
@@ -72,7 +81,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 		CCommandQueue::FCommandQueueInitializer queueInitializer;
 		queueInitializer.Device = m_MainDevice->GetDevice();
-		queueInitializer.listType = Initializer.listType;
+		queueInitializer.listType = cmdInitializer.listType;
 		queueInitializer.QueueFlag = Glue::COMMAND_QUEUE_FLAG_NONE;
 		queueInitializer.QueuePriority = Glue::COMMAND_QUEUE_PRIORITY_NORMAL;
 
@@ -109,6 +118,31 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		{
 			break;
 		}
+
+		m_Viewport = new CViewport();
+		if (!m_Viewport) { break; };
+
+		CViewport::FViewportInitializer viewportInitializer;
+		viewportInitializer.ViewportWidth = SCast<float>(_Initializer->ViewportWidth);
+		viewportInitializer.VIewportHeight = SCast<float>(_Initializer->ViewportHeight);
+		if (!m_Viewport->Initialize(viewportInitializer))
+		{
+			break;
+		}
+
+		{
+			m_ScissorRect = new CScissorRect();
+			CHECK_RESULT_BREAK(m_ScissorRect);
+
+			CScissorRect::FInitializer initializer = {};
+			initializer.RectWidth = _Initializer->ViewportWidth;
+			initializer.RectHeight = _Initializer->ViewportHeight;
+
+			CHECK_RESULT_BREAK(m_ScissorRect->Initialize(initializer));
+			
+		}
+		
+		
 
 
 #if 0
@@ -319,12 +353,35 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		2,3,0,
 	};
 
-	vector<XMFLOAT3> testMesh = sampleMesh;
-	//vector<XMFLOAT3> testMesh = square;
-	//vector<u16> testIndicies = squareIndices;
-	vector<u16> testIndicies = sampleIndices;
+	struct PositionAndUV
+	{
+		XMFLOAT3 Position = {};
+		XMFLOAT2 UV = {};
+	};
 
-	u32 meshSize = sizeof(XMFLOAT3) * SCast<u32>(testMesh.size());
+#define MESH_TYPE PositionAndUV
+#define MESH_VECTOR vector<MESH_TYPE>
+#define MESH_PTR MESH_TYPE*
+
+#define TEST_MESH_DECLARATION(x) MESH_VECTOR testMesh = x;
+
+	const vector<PositionAndUV> uvSquare =
+	{
+		{{-0.5f,0.5f,0.0f},{0.f,0.f}}, // 左上
+		{{0.5f,0.5f,0.0f},{1.f,0.f}}, //  右上
+		{{0.5f,-0.5f,0.0f},{1.f,1.f}}, // 右下
+		{{-0.5f,-0.5f,0.0f},{0.f,1.f}}, // 左下
+	};
+
+	//vector<XMFLOAT3> testMesh = sampleMesh;
+	TEST_MESH_DECLARATION(uvSquare);
+	//vector<XMFLOAT3> testMesh = square;
+	vector<u16> testIndicies = squareIndices;
+	//vector<u16> testIndicies = sampleIndices;
+
+	u32 vertexSize = sizeof(MESH_TYPE);
+
+	u32 meshSize = vertexSize * SCast<u32>(testMesh.size());
 	u32 indexSize = sizeof(u16) * SCast<u32>(squareIndices.size());
 
 	// 頂点バッファ
@@ -361,7 +418,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		nullptr,
 		IID_PPV_ARGS(&m_VertexBuffer)));
 
-	XMFLOAT3* vertexMap = nullptr;
+	//XMFLOAT3* vertexMap = nullptr;
+	MESH_PTR vertexMap = nullptr;
 	result = m_VertexBuffer->Map(0, nullptr, (void**)(&vertexMap));
 
 	copy(begin(testMesh), end(testMesh), vertexMap);
@@ -373,8 +431,11 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	m_VertexBufferView->BufferLocation = m_VertexBuffer->GetGPUVirtualAddress();
 	m_VertexBufferView->SizeInBytes = meshSize;
-	m_VertexBufferView->StrideInBytes = sizeof(XMFLOAT3);
+	m_VertexBufferView->StrideInBytes = vertexSize;
 
+#undef MESH_PTR
+#undef MESH_VECTO
+#undef MESH_TYPE
 
 	// インデックスバッファ
 	D3D12_RESOURCE_DESC ibDesc = {};
@@ -419,7 +480,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 	m_IndexBufferView->Format = DXGI_FORMAT_R16_UINT;
 	m_IndexBufferView->SizeInBytes = indexSize;
 
-
+#if 0
 	// シェーダー // 
 	ID3DBlob* errorBlob = nullptr;
 
@@ -466,27 +527,116 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 	// PixelShader 
 	ID3DBlob* psBlob = nullptr;
 	D3D_ERROR_CHECK_TEMP(CompileFunction(L"resource/shader/BasicPixelShader.hlsl", "main", "ps_5_0",psBlob));
+#endif
 
+	{
+		m_VertexShader = new CVertexShader();
+		CHECK_RESULT_BREAK(m_VertexShader);
+
+		CVertexShader::FInitializer Initializer;
+		Initializer.Device = m_MainDevice->GetDevice();
+		Initializer.FileNameHash = CHash160("resource/shader/BasicVertexShader.hlsl");
+		Initializer.FuncNameHash = CHash160("main");
+
+		CHECK_RESULT_BREAK(m_VertexShader->Initialize(&Initializer));
+
+	}
+
+	{
+		m_PixelShader = new CPixelShader();
+		CHECK_RESULT_BREAK(m_PixelShader);
+
+		CVertexShader::FInitializer Initializer;
+		Initializer.FileNameHash = CHash160("resource/shader/BasicPixelShader.hlsl");
+		Initializer.FuncNameHash = CHash160("main");
+
+		CHECK_RESULT_BREAK(m_PixelShader->Initialize(&Initializer));
+	}
+
+#if 0
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 	{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
 	};
+#endif
+
+	{
+		m_RootSignature = new CRootSignature();
+		CHECK_RESULT_BREAK(m_RootSignature);
+
+		CRootSignature::FInitializer Initializer;
+		Initializer.Device = m_MainDevice->GetDevice();
+
+		CHECK_RESULT_BREAK(m_RootSignature->Initialize(Initializer));
+	}
+
+	{
+		m_Pipeline = new CGraphicsPipeline();
+		CHECK_RESULT_BREAK(m_Pipeline);
+
+		CHECK_RESULT_BREAK(m_Pipeline->Initialize());
+
+		m_Pipeline->SetRootSignature(m_RootSignature);
+		m_Pipeline->SetVertexShader(m_VertexShader);
+		m_Pipeline->SetPixelShader(m_PixelShader);
+
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC& m_PipelineDesc = *m_Pipeline->GetPipelineDescEdit();
+
+		m_PipelineDesc.BlendState.AlphaToCoverageEnable = true;
+		m_PipelineDesc.BlendState.IndependentBlendEnable = false;// こいつがfalseならRenderTargetの設定は最初の1つだけでOKになる Independent => 個別に
 
 
+		D3D12_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc = {};
+		renderTargetBlendDesc.BlendEnable = false;
+		renderTargetBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+		renderTargetBlendDesc.LogicOpEnable = false;
+
+		m_PipelineDesc.BlendState.RenderTarget[0] = renderTargetBlendDesc;
+
+
+		m_PipelineDesc.RasterizerState.MultisampleEnable = false;
+		m_PipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+		m_PipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		m_PipelineDesc.RasterizerState.DepthClipEnable = true;
+
+		m_PipelineDesc.RasterizerState.FrontCounterClockwise = false;
+		m_PipelineDesc.RasterizerState.DepthBias = D3D12_DEFAULT_DEPTH_BIAS;
+		m_PipelineDesc.RasterizerState.DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP;
+		m_PipelineDesc.RasterizerState.SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS;
+		m_PipelineDesc.RasterizerState.AntialiasedLineEnable = false;
+		m_PipelineDesc.RasterizerState.ForcedSampleCount = 0;
+		m_PipelineDesc.RasterizerState.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
+
+
+		m_PipelineDesc.DepthStencilState.DepthEnable = false;
+		m_PipelineDesc.DepthStencilState.StencilEnable = false;
+
+		m_PipelineDesc.NumRenderTargets = 1;
+		m_PipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+
+		CHECK_RESULT_BREAK(m_Pipeline->RecreateState(m_MainDevice));
+	}
+
+	{
+
+	}
+
+#if 0
 	// グラフィックパイプライン
 	m_PipeLine = new D3D12_GRAPHICS_PIPELINE_STATE_DESC();
 	if (m_PipeLine == nullptr) { return false; };
 
 	m_PipeLine->pRootSignature = nullptr;
 
-	m_PipeLine->VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	m_PipeLine->VS.BytecodeLength = vsBlob->GetBufferSize();
+	m_PipeLine->VS.pShaderBytecode = m_VertexShader->GetShaderBytecod();
+	m_PipeLine->VS.BytecodeLength = m_VertexShader->GetBufferSize();
 
-	m_PipeLine->InputLayout.pInputElementDescs = inputLayout;
-	m_PipeLine->InputLayout.NumElements = ARRAYOF(inputLayout);
+	m_PipeLine->InputLayout.pInputElementDescs = m_VertexShader->GetInputLayout();
+	m_PipeLine->InputLayout.NumElements = m_VertexShader->GetInputNum();
 
-	m_PipeLine->PS.pShaderBytecode = psBlob->GetBufferPointer();
-	m_PipeLine->PS.BytecodeLength = psBlob->GetBufferSize();
+	m_PipeLine->PS.pShaderBytecode = m_PixelShader->GetShaderBytecod();
+	m_PipeLine->PS.BytecodeLength = m_PixelShader->GetBufferSize();
 
 	m_PipeLine->SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
@@ -528,12 +678,14 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	m_PipeLine->SampleDesc.Count = 1;
 	m_PipeLine->SampleDesc.Quality = 0;
+#endif
 
-
+#if 0
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
 	ID3DBlob* rootSignatureBlob = nullptr;
+	ID3DBlob* errorBlob = nullptr;
 	D3D_ERROR_CHECK_TEMP(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSignatureBlob, &errorBlob));
 	
 	D3D_ERROR_CHECK_TEMP(m_Device->CreateRootSignature(0, rootSignatureBlob->GetBufferPointer(), rootSignatureBlob->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
@@ -543,10 +695,18 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 	m_PipeLine->pRootSignature = m_RootSignature;
 
 
+
 	// パイプラインステート
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateGraphicsPipelineState(m_PipeLine, IID_PPV_ARGS(&m_PipeLineState)));
+	//D3D_ERROR_CHECK_TEMP(m_Device->CreateGraphicsPipelineState(m_PipeLine, IID_PPV_ARGS(&m_PipeLineState)));
+	result = m_Device->CreateGraphicsPipelineState(m_PipeLine, IID_PPV_ARGS(&m_PipeLineState));
+	if (FAILED(result))
+	{
+		break;
+	}
+#endif
 
 
+#if 0
 	// ビューポート
 	m_Viewport = new D3D12_VIEWPORT();
 	if (m_Viewport == nullptr) { return false; }
@@ -556,12 +716,15 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 	m_Viewport->TopLeftY = 0;
 	m_Viewport->MaxDepth = 1.f;
 	m_Viewport->MinDepth = 0.f;
+#endif
 
+#if 0
 	// 切り抜き矩形
 	m_ScissorRect.top = 0;
 	m_ScissorRect.left = 0;
 	m_ScissorRect.right = m_ScissorRect.left + _Initializer->ViewportWidth;
 	m_ScissorRect.bottom = m_ScissorRect.top + _Initializer->ViewportHeight;
+#endif
 
 
 	/// <summary>
@@ -588,7 +751,13 @@ void CGameManager::Finalize()
 		delete m_VertexBufferView;
 	}
 
-
+	FinalizeObject(m_Pipeline);
+	FinalizeObject(m_RootSignature);
+	FinalizeObject(m_PixelShader);
+	FinalizeObject(m_VertexShader);
+	FinalizeObject(m_ScissorRect);
+	FinalizeObject(m_Viewport);
+	FinalizeObject(m_Fence);
 	FinalizeObject(m_SwapChain);
 	FinalizeObject(m_CommandQueue);
 	FinalizeObject(m_CommandContext);
@@ -632,7 +801,8 @@ void CGameManager::Render()
 	m_SwapChain->Begin(m_MainDevice,m_CommandContext);
 
 	// パイプラインセット
-	m_CmdList->SetPipelineState(m_PipeLineState);
+	//m_CmdList->SetPipelineState(m_PipeLineState);
+	m_CommandContext->SetPipelineState(m_Pipeline);
 
 
 	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RtvHeaps->GetCPUDescriptorHandleForHeapStart();
@@ -644,10 +814,13 @@ void CGameManager::Render()
 	float clearColor[] = { 0.f,0.f,0.f,1.f };
 	m_CmdList->ClearRenderTargetView(m_SwapChain->GetRenderTargetViewHandle(), clearColor, 0, nullptr);
 
-	m_CmdList->RSSetViewports(1, m_Viewport);
-	m_CmdList->RSSetScissorRects(1, &m_ScissorRect);
-	
-	m_CmdList->SetGraphicsRootSignature(m_RootSignature);
+	//m_CmdList->RSSetViewports(1, m_Viewport);
+	m_CommandContext->SetViewport(m_Viewport);
+	//m_CmdList->RSSetScissorRects(1, &m_ScissorRect);
+	m_CommandContext->SetScissorRect(m_ScissorRect);
+
+	//m_CmdList->SetGraphicsRootSignature(m_RootSignature);
+	m_CommandContext->SetRootSignature(m_RootSignature);
 
 	m_CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_CmdList->IASetVertexBuffers(0,1,m_VertexBufferView);

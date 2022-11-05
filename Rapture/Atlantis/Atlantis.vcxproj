@@ -25,19 +25,39 @@
     <ClInclude Include="Atlantis\DirectX12\Command\CommandQueue.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectX12BaseDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h" />
+    <ClInclude Include="Atlantis\DirectX12\DirectXTex\DirectXTex.h" />
     <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h" />
+    <ClInclude Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.h" />
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h" />
     <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.h" />
+    <ClInclude Include="Atlantis\DirectX12\RootSignature\RootSignature.h" />
+    <ClInclude Include="Atlantis\DirectX12\ScissorRect\ScissorRect.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\GraphicsShader.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBase.h" />
     <ClInclude Include="Atlantis\DirectX12\SwapChain\SwapChain.h" />
+    <ClInclude Include="Atlantis\DirectX12\Texture\Texture.h" />
+    <ClInclude Include="Atlantis\DirectX12\Utility\DirectXUtility.h" />
+    <ClInclude Include="Atlantis\DirectX12\Viewport\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\Command\CommandContext.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandQueue.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Fence\Fence.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.cpp" />
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp" />
     <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\RootSignature\RootSignature.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\ScissorRect\ScissorRect.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Shader\GraphicsShader.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Shader\ShaderBase.cpp" />
     <ClCompile Include="Atlantis\DirectX12\SwapChain\SwapChain.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Texture\Texture.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Utility\DirectXUtility.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Atlantis\DirectX12\DirectXTex\DirectXTex.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -50,26 +70,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -100,13 +120,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Library\Atlantis\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Library\Atlantis\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -161,7 +181,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;DirectXTex.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -186,7 +206,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;DirectXTex.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

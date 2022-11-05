@@ -49,6 +49,15 @@ inline void FinalizePtr(T& p)
 }
 
 template <class T>
+inline void ResetPtr(T& p)
+{
+	if (p)
+	{
+		p.reset(nullptr);
+	}
+}
+
+template <class T>
 inline void FinalizeObject(T& p)
 {
 	if (p)

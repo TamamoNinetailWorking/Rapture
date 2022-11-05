@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -165,9 +165,11 @@
     <ClInclude Include="eden\include\gadget\timer\timer.h" />
     <ClInclude Include="eden\include\math\math_utility.h" />
     <ClInclude Include="eden\include\math\random_utility.h" />
+    <ClInclude Include="eden\include\Resource\Resource.h" />
     <ClInclude Include="eden\include\system\console\console_window.h" />
     <ClInclude Include="eden\include\system\directory\directory_manager.h" />
     <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h" />
+    <ClInclude Include="eden\include\system\HashTable\HashTable.h" />
     <ClInclude Include="eden\include\system\sha1\sha1.h" />
     <ClInclude Include="eden\include\system\window\window.h" />
     <ClInclude Include="eden\include\system\window\window_def.h" />
@@ -179,9 +181,11 @@
     <ClCompile Include="eden\src\common\print.cpp" />
     <ClCompile Include="eden\src\gadget\serializer\serializer.cpp" />
     <ClCompile Include="eden\src\gadget\timer\timer.cpp" />
+    <ClCompile Include="eden\src\Resource\Resource.cpp" />
     <ClCompile Include="eden\src\system\console\console_window.cpp" />
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp" />
     <ClCompile Include="eden\src\system\frame_rate\frame_rate_manager.cpp" />
+    <ClCompile Include="eden\src\system\HashTable\HashTable.cpp" />
     <ClCompile Include="eden\src\system\sha1\sha1.cpp" />
     <ClCompile Include="eden\src\system\window\window.cpp" />
   </ItemGroup>
