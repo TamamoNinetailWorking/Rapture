@@ -19,6 +19,7 @@ public:
 	{
 		ID3D12Device* Device = nullptr;
 		IDXGISwapChain4* SwapChain = nullptr;
+		uint32 BackBufferCount = 0;
 	};
 
 	bool Initialize(const FRenderTargetViewInitializer& _Initializer);

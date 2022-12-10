@@ -32,6 +32,7 @@ public:
 		HWND WindowHandle = {};
 		uint32 ViewportWidth = 0;
 		uint32 ViewportHeight = 0;
+		uint32 BufferCount = 2;
 	};
 
 	// ‰Šú‰»

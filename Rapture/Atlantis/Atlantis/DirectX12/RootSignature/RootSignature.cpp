@@ -34,7 +34,12 @@ bool CRootSignature::CreateRootSignature(const FInitializer& _Initializer)
 	CHECK_RESULT_FALSE(_Initializer.Device);
 
 	D3D12_ROOT_SIGNATURE_DESC desc = {};
-	desc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	desc.Flags = Glue::GetD3DRootSignatureFlag(_Initializer.Flag);
+	desc.pParameters = _Initializer.pParameters;
+	desc.NumParameters = _Initializer.NumParameters;
+	desc.pStaticSamplers = _Initializer.pStaticSamplers;
+	desc.NumStaticSamplers = _Initializer.NumStaticSamplers;
+	
 
 	ID3DBlob* signatureBlob = nullptr;
 	ID3DBlob* errorBlob = nullptr;

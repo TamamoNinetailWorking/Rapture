@@ -97,7 +97,7 @@ bool CSwapChain::CreateSwapChain(const FSwapChainInitializer& _Initializer)
 	desc.SampleDesc.Quality = 0;
 
 	desc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
-	desc.BufferCount = 2;
+	desc.BufferCount = _Initializer.BufferCount;
 
 	desc.Scaling = DXGI_SCALING_STRETCH;
 
@@ -135,6 +135,7 @@ bool CSwapChain::CreateRenderTargetView(const FSwapChainInitializer& _Initialize
 		CRenderTargetView::FRenderTargetViewInitializer rtvInit;
 		rtvInit.Device = _Initializer.Device;
 		rtvInit.SwapChain = m_SwapChain.get();
+		rtvInit.BackBufferCount = _Initializer.BufferCount;
 
 		if (!renderTargetView->Initialize(rtvInit)) { break; }
 

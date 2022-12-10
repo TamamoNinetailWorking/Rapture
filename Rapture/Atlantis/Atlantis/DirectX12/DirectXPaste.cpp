@@ -19,6 +19,11 @@ namespace Glue
 	{
 		return SCast<D3D12_COMMAND_QUEUE_PRIORITY>(_Priority);
 	}
+
+	const D3D12_ROOT_SIGNATURE_FLAGS GetD3DRootSignatureFlag(ERootSignatureFlag _Flag)
+	{
+		return SCast<D3D12_ROOT_SIGNATURE_FLAGS>(_Flag);
+	}
 };
 
 ATLANTIS_NAMESPACE_END

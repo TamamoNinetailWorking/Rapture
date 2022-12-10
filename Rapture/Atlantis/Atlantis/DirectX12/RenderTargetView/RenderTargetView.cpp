@@ -45,7 +45,7 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットを作成しているようだ
 	heapDesc.NodeMask = 0;
-	heapDesc.NumDescriptors = 2; // 表裏の2つ
+	heapDesc.NumDescriptors = _Initializer.BackBufferCount; // 表裏の2つ
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; // 特にフラグの指定は無し
 
 	ID3D12DescriptorHeap* renderTargetView = nullptr;
@@ -63,12 +63,13 @@ bool CRenderTargetView::CreateRenderTargetView(const FRenderTargetViewInitialize
 	if (!_Initializer.Device) { return false; }
 	if (!_Initializer.SwapChain) { return false; }
 
-	DXGI_SWAP_CHAIN_DESC desc = {};
-	D3D_ERROR_CHECK(_Initializer.SwapChain->GetDesc(&desc));
+	//DXGI_SWAP_CHAIN_DESC desc = {};
+	//D3D_ERROR_CHECK(_Initializer.SwapChain->GetDesc(&desc));
 
 	BackBuffer* backBuffer = new BackBuffer();
 	if (!backBuffer) { return false; }
-	backBuffer->resize(desc.BufferCount);
+	//backBuffer->resize(desc.BufferCount);
+	backBuffer->resize(_Initializer.BackBufferCount);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_RenderTargetView->GetCPUDescriptorHandleForHeapStart();
 

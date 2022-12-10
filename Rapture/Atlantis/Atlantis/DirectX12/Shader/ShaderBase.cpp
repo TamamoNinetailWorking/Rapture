@@ -50,7 +50,7 @@ bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
 	//setlocale(LC_ALL, "japanese");
 	//error = mbstowcs_s(&length, fileName, RHash160(_Initializer->FileNameHash), _TRUNCATE);
 
-	Utility::ToWString(fileName, fileLength, RHash160(_Initializer->FileNameHash), length);
+	error = Utility::ToWString(fileName, fileLength, RHash160(_Initializer->FileNameHash), length);
 
 	if (error == EINVAL) { return false; }
 

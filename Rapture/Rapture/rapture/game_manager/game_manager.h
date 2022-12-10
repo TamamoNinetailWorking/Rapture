@@ -50,11 +50,6 @@ private:
 	void Render();
 
 
-	//std::unique_ptr<ATLANTIS_NAMESPACE::CDX12MainDevice> m_MainDevice = nullptr;
-	//std::unique_ptr<ATLANTIS_NAMESPACE::CCommandContext> m_CommandContext = nullptr;
-	//std::unique_ptr<ATLANTIS_NAMESPACE::CCommandQueue> m_CommandQueue = nullptr;
-	//std::unique_ptr<ATLANTIS_NAMESPACE::CSwapChain> m_SwapChain = nullptr;
-	//std::unique_ptr<ATLANTIS_NAMESPACE::CFence> m_Fence = nullptr;
 
 	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
 	ATLANTIS_NAMESPACE::CCommandContext* m_CommandContext = nullptr;
@@ -74,7 +69,7 @@ private:
 	//struct ID3D12Device* m_Device = nullptr;
 
 	//// コマンドリストが複数個ある場合はそれぞれ必要
-	//struct ID3D12CommandAllocator* m_CmdAllocator = nullptr;
+	//struct ID3D12CommandAllocator* m_CmdAllocator = nulchrome://vivaldi-webui/startpage?section=Speed-dials&background-color=#2e2f37lptr;
 	//struct ID3D12GraphicsCommandList* m_CmdList = nullptr;
 	//struct ID3D12CommandQueue* m_CmdQueue = nullptr;
 
@@ -95,6 +90,10 @@ private:
 	struct ID3D12Resource* m_IndexBuffer = nullptr;
 	struct D3D12_INDEX_BUFFER_VIEW* m_IndexBufferView = nullptr;
 	// -メッシュ単位で持つもの
+
+	// テクスチャ
+	struct ID3D12Resource* m_TextureBuffer = nullptr;
+	struct ID3D12DescriptorHeap* m_TextureDescHeap = nullptr;
 
 	// グラフィックパイプライン
 	//struct D3D12_GRAPHICS_PIPELINE_STATE_DESC* m_PipeLine = nullptr;

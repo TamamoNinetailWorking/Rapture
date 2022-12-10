@@ -37,6 +37,7 @@
 #include <Atlantis/DirectX12/RootSignature/RootSignature.h>
 
 #include <rapture/Test/Test.h>
+#include <eden/include/math/random_utility.h>
 
 using namespace std;
 using namespace DirectX;
@@ -54,13 +55,10 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	do 
 	{
-		//m_MainDevice = move(unique_ptr<CDX12MainDevice>(new CDX12MainDevice()));
 		m_MainDevice = new CDX12MainDevice();
 		if (!m_MainDevice) { break; };
-
 		if (!m_MainDevice->Initialize()){ break;}
 
-		//m_CommandContext = move(unique_ptr<CCommandContext>(new CCommandContext()));
 		m_CommandContext = new CCommandContext();
 		if (!m_CommandContext) { break; };
 
@@ -69,13 +67,12 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		cmdInitializer.listType = Glue::COMMAND_LIST_TYPE_DIRECT;
 		cmdInitializer.NodeMask = 0;
 
-
 		if (!m_CommandContext->Initialize(cmdInitializer))
 		{
 			break;
 		}
 
-		//m_CommandQueue = move(unique_ptr<CCommandQueue>(new CCommandQueue()));
+
 		m_CommandQueue = new CCommandQueue();
 		if (!m_CommandQueue) { break; };
 
@@ -90,7 +87,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			break;
 		}
 
-		//m_SwapChain.reset(new CSwapChain());
+
 		m_SwapChain = new CSwapChain();
 		if (!m_SwapChain) { break; }
 	
@@ -101,13 +98,14 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		swapchainInitializer.ViewportWidth = _Initializer->ViewportWidth;
 		swapchainInitializer.ViewportHeight = _Initializer->ViewportHeight;
 		swapchainInitializer.WindowHandle = _Initializer->WindowHandle;
+		swapchainInitializer.BufferCount = 2;
 
 		if (!m_SwapChain->Initialize(swapchainInitializer))
 		{
 			break;
 		}
 
-		//m_Fence.reset(new CFence());]
+
 		m_Fence = new CFence();
 		if (!m_Fence) { break; }
 
@@ -546,7 +544,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_PixelShader = new CPixelShader();
 		CHECK_RESULT_BREAK(m_PixelShader);
 
-		CVertexShader::FInitializer Initializer;
+		CPixelShader::FInitializer Initializer;
 		Initializer.FileNameHash = CHash160("resource/shader/BasicPixelShader.hlsl");
 		Initializer.FuncNameHash = CHash160("main");
 
@@ -561,11 +559,134 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 #endif
 
 	{
+		//　テクスチャデータの作成
+		struct TexRGBA
+		{
+			uint8 R = 0;
+			uint8 G = 0;
+			uint8 B = 0;
+			uint8 A = 0;
+		};
+		
+		constexpr uint8 COLOR_RANGE = 255;
+
+		const uint32 pixelWidth = 256;
+		const uint32 pixelHeight = 256;
+		const uint32 pixelSize = pixelWidth * pixelHeight;
+		vector<TexRGBA> textureData(pixelSize);
+
+		CRandomizer& random = CRandomizer::GetInstance();
+
+		for (uint32 i = 0; i < pixelSize; ++i)
+		{
+			auto& data = textureData[i];
+			data.R = SCast<uint8>(random.RandomRangeInteger<uint16>(0, COLOR_RANGE));
+			data.G = SCast<uint8>(random.RandomRangeInteger<uint16>(0, COLOR_RANGE));
+			data.B = SCast<uint8>(random.RandomRangeInteger<uint16>(0, COLOR_RANGE));
+			data.A = COLOR_RANGE;
+		}
+
+
+		// テクスチャバッファ
+		D3D12_HEAP_PROPERTIES heapProp = {};
+		heapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+		heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+		heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+		heapProp.CreationNodeMask = 0;
+		heapProp.VisibleNodeMask = 0;
+
+		D3D12_RESOURCE_DESC resDesc = {};
+		resDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		resDesc.Width = pixelWidth;
+		resDesc.Height = pixelHeight;
+		resDesc.DepthOrArraySize = 1;
+		resDesc.SampleDesc.Count = 1;
+		resDesc.SampleDesc.Quality = 0;
+		resDesc.MipLevels = 1;
+		resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+
+
+		D3D_ERROR_CHECK_TEMP(m_Device->CreateCommittedResource(
+			&heapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&resDesc,
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			nullptr,
+			IID_PPV_ARGS(&m_TextureBuffer)));
+
+		D3D_ERROR_CHECK_TEMP(m_TextureBuffer->WriteToSubresource(
+			0,
+			nullptr,
+			textureData.data(),
+			SCast<uint32>(sizeof(TexRGBA) * pixelWidth),
+			SCast<uint32>(sizeof(TexRGBA) * textureData.size())
+		));
+
+		//ID3D12DescriptorHeap* texDescHeap = nullptr;
+		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
+		descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		descHeapDesc.NodeMask = 0;
+		descHeapDesc.NumDescriptors = 1;
+		descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+
+		D3D_ERROR_CHECK_TEMP(m_Device->CreateDescriptorHeap(
+			&descHeapDesc,
+			IID_PPV_ARGS(&m_TextureDescHeap)
+		));
+
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+
+		m_Device->CreateShaderResourceView(
+			m_TextureBuffer,
+			&srvDesc,
+			m_TextureDescHeap->GetCPUDescriptorHandleForHeapStart()
+		);
+
+	}
+
+	{
 		m_RootSignature = new CRootSignature();
 		CHECK_RESULT_BREAK(m_RootSignature);
 
+		D3D12_DESCRIPTOR_RANGE descTableRange = {};
+		descTableRange.NumDescriptors = 1;
+		descTableRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		descTableRange.BaseShaderRegister = 0;
+		descTableRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+		D3D12_ROOT_PARAMETER rootParam = {};
+		rootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		rootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+		rootParam.DescriptorTable.pDescriptorRanges = &descTableRange;
+		rootParam.DescriptorTable.NumDescriptorRanges = 1;
+
+		D3D12_STATIC_SAMPLER_DESC samplerDesc = {};
+		samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+		samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+		samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+		samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+		//samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+		samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
+		samplerDesc.MinLOD = 0.0f;
+		samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+		samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+
+
 		CRootSignature::FInitializer Initializer;
 		Initializer.Device = m_MainDevice->GetDevice();
+		Initializer.Flag = Glue::ERootSignatureFlag::ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+		Initializer.pParameters = &rootParam;
+		Initializer.NumParameters = 1;
+		Initializer.pStaticSamplers = &samplerDesc;
+		Initializer.NumStaticSamplers = 1;
+
 
 		CHECK_RESULT_BREAK(m_RootSignature->Initialize(Initializer));
 	}
@@ -618,9 +739,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		CHECK_RESULT_BREAK(m_Pipeline->RecreateState(m_MainDevice));
 	}
 
-	{
-
-	}
+	
 
 #if 0
 	// グラフィックパイプライン
@@ -822,6 +941,10 @@ void CGameManager::Render()
 	//m_CmdList->SetGraphicsRootSignature(m_RootSignature);
 	m_CommandContext->SetRootSignature(m_RootSignature);
 
+	m_CmdList->SetDescriptorHeaps(1, &m_TextureDescHeap);
+	m_CmdList->SetGraphicsRootDescriptorTable(0, m_TextureDescHeap->GetGPUDescriptorHandleForHeapStart());
+
+
 	m_CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_CmdList->IASetVertexBuffers(0,1,m_VertexBufferView);
 	m_CmdList->IASetIndexBuffer(m_IndexBufferView);
@@ -849,7 +972,7 @@ void CGameManager::Render()
 
 	m_Fence->WaitEvent();
 
-	m_CommandContext->Reset();
+	m_CommandContext->Reset(m_Pipeline->GetPipelineState());
 
 	// フリップ
 	m_SwapChain->Present();

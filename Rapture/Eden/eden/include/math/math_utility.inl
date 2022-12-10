@@ -34,7 +34,7 @@ Number CMathUtility::Saturate(Number target)
 template <typename Number>
 Number CMathUtility::CircularShift(u8 _Bit, Number _Target)
 {
-	u8 size = sizeof(_Target) * 8;//8 = BitNum
+	u8 size = sizeof(_Target) * 8;//8 = BitNum Per Byte
 	return (_Target << _Bit) | (_Target >> (size - _Bit));
 }
 
