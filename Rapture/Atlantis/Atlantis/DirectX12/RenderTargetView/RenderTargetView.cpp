@@ -79,7 +79,7 @@ bool CRenderTargetView::CreateRenderTargetView(const FRenderTargetViewInitialize
 			i,
 			IID_PPV_ARGS(&backBuffer->at(i))));
 
-		_Initializer.Device->CreateRenderTargetView(backBuffer->at(i), nullptr, handle);
+		_Initializer.Device->CreateRenderTargetView(backBuffer->at(i), _Initializer.RtvDesc, handle);
 		handle.ptr += _Initializer.Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		
 	}

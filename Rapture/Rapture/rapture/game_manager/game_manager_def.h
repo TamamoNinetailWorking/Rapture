@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[‚ğ‰Šú‰»‚·‚éÛ‚Ì‰Šú‰»—p\‘¢‘Ì
+// ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’åˆæœŸåŒ–ã™ã‚‹éš›ã®åˆæœŸåŒ–ç”¨æ§‹é€ ä½“
 struct FGameManagerInitializer
 {
 	HWND WindowHandle = 0;

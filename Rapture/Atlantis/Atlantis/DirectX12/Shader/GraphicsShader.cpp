@@ -61,47 +61,136 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 	D3D12_SHADER_DESC shaderDesc;
 	D3D_ERROR_CHECK(m_Reflection->GetDesc(&shaderDesc));
 
-	typedef function < DXGI_FORMAT(D3D_REGISTER_COMPONENT_TYPE, BYTE)> GetFormat;
+	typedef function < DXGI_FORMAT(D3D_REGISTER_COMPONENT_TYPE, BYTE,D3D_MIN_PRECISION)> GetFormat;
 
-	static const GetFormat GetDxgiFormat = [](D3D_REGISTER_COMPONENT_TYPE type, BYTE mask)
+	static const GetFormat GetDxgiFormat = [](D3D_REGISTER_COMPONENT_TYPE type, BYTE mask,D3D_MIN_PRECISION precision)
 	{
-		if (mask == 0x0F)
+		if (mask == 0x0F) // 1111
 		{
 			//xyzw
 			switch (type)
 			{
-			case D3D10_REGISTER_COMPONENT_FLOAT32:
-				return DXGI_FORMAT_R32G32B32A32_FLOAT;
+			case D3D_REGISTER_COMPONENT_UNKNOWN:
+				return DXGI_FORMAT_R32G32B32A32_TYPELESS;
+			case D3D_REGISTER_COMPONENT_UINT32:
+				if (precision == D3D_MIN_PRECISION_UINT_16)
+				{
+					return DXGI_FORMAT_R16G16B16A16_UINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32B32A32_UINT;
+				}
+			case D3D_REGISTER_COMPONENT_SINT32:
+				if (precision == D3D_MIN_PRECISION_SINT_16)
+				{
+					return DXGI_FORMAT_R16G16B16A16_SINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32B32A32_SINT;
+				}
+			case D3D_REGISTER_COMPONENT_FLOAT32:
+				if (precision == D3D_MIN_PRECISION_FLOAT_16)
+				{
+					return DXGI_FORMAT_R16G16B16A16_FLOAT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32B32A32_FLOAT;
+				}
 			}
 		}
 
-		if (mask == 0x07)
+		if (mask == 0x07) // 0111
 		{
 			//xyz
 			switch (type)
 			{
-			case D3D10_REGISTER_COMPONENT_FLOAT32:
+			case D3D_REGISTER_COMPONENT_UNKNOWN:
+				return DXGI_FORMAT_R32G32B32_TYPELESS;
+			case D3D_REGISTER_COMPONENT_UINT32:
+				return DXGI_FORMAT_R32G32B32_UINT;
+			case D3D_REGISTER_COMPONENT_SINT32:
+				return DXGI_FORMAT_R32G32B32_SINT;
+			case D3D_REGISTER_COMPONENT_FLOAT32:
 				return DXGI_FORMAT_R32G32B32_FLOAT;
 			}
 		}
 
-		if (mask == 0x03)
+		if (mask == 0x03) // 0011
 		{
 			//xy
 			switch (type)
 			{
-			case D3D10_REGISTER_COMPONENT_FLOAT32:
-				return DXGI_FORMAT_R32G32_FLOAT;
+			case D3D_REGISTER_COMPONENT_UNKNOWN:
+				return DXGI_FORMAT_R32G32_TYPELESS;
+			case D3D_REGISTER_COMPONENT_UINT32:
+				if (precision == D3D_MIN_PRECISION_UINT_16)
+				{
+					return DXGI_FORMAT_R16G16_UINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32_UINT;
+				}
+			case D3D_REGISTER_COMPONENT_SINT32:
+				if (precision == D3D_MIN_PRECISION_SINT_16)
+				{
+					return DXGI_FORMAT_R16G16_SINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32_SINT;
+				}
+			case D3D_REGISTER_COMPONENT_FLOAT32:
+				if (precision == D3D_MIN_PRECISION_FLOAT_16)
+				{
+					return DXGI_FORMAT_R16G16_FLOAT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32G32_FLOAT;
+				}
+
 			}
 		}
 
-		if (mask == 0x01)
+		if (mask == 0x01) // 0001
 		{
 			//x
 			switch (type)
 			{
-			case D3D10_REGISTER_COMPONENT_FLOAT32:
-				return DXGI_FORMAT_R32_FLOAT;
+			case D3D_REGISTER_COMPONENT_UNKNOWN:
+				return DXGI_FORMAT_R32_TYPELESS;
+			case D3D_REGISTER_COMPONENT_UINT32:
+				if (precision == D3D_MIN_PRECISION_UINT_16)
+				{
+					//return DXGI_FORMAT_R8_UINT; // 頂点データの指定でuint8を指定されたものの、GPU内で8bit変数定義ができない！！！
+					return DXGI_FORMAT_R16_UINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32_UINT;
+				}
+			case D3D_REGISTER_COMPONENT_SINT32:
+				if (precision == D3D_MIN_PRECISION_SINT_16)
+				{
+					return DXGI_FORMAT_R16_SINT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32_SINT;
+				}
+			case D3D_REGISTER_COMPONENT_FLOAT32:
+				if (precision == D3D_MIN_PRECISION_FLOAT_16)
+				{
+					return DXGI_FORMAT_R16_FLOAT;
+				}
+				else
+				{
+					return DXGI_FORMAT_R32_FLOAT;
+				}
 			}
 		}
 
@@ -124,7 +213,7 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 		{
 			RHash160(hash),
 			desc.SemanticIndex,
-			GetDxgiFormat(desc.ComponentType, desc.Mask),
+			GetDxgiFormat(desc.ComponentType, desc.Mask,desc.MinPrecision),
 			0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,

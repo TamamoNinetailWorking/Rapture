@@ -23,6 +23,7 @@ public:
 
 	ID3D12Fence* GetFence() const { return m_Fence.get(); };
 	uint64 GetFenceValue() const { return m_FenceValue; };
+	uint64 GetFenceValueAndIncrement();
 
 	CFence() {};
 	~CFence() {};

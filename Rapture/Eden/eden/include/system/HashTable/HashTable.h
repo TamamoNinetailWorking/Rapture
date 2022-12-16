@@ -36,3 +36,4 @@ EDENS_NAMESPACE_END
 
 #define CHash160(str) EDENS_NAMESPACE::CHashTable::GetInstance().CreateHash(str)
 #define RHash160(hash) EDENS_NAMESPACE::CHashTable::GetInstance().GetHashValue(hash)
+static const Hash160 INVALID_HASH = Hash160();

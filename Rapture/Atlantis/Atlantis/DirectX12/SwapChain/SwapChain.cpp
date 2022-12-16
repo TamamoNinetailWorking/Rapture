@@ -31,9 +31,19 @@ bool CSwapChain::Initialize(const FSwapChainInitializer& _Initializer)
 
 void CSwapChain::Finalize()
 {
+	m_DepthBuffer.release();
 	m_Barrier.reset();
 	FinalizePtr(m_RenderTargetView);
 	ReleaseD3DPtr(m_SwapChain);
+}
+
+void CSwapChain::SetDepthBuffer(ID3D12DescriptorHeap* _DepthBuffer)
+{
+	if (m_DepthBuffer)
+	{
+		m_DepthBuffer.release();
+	}
+	m_DepthBuffer.reset(_DepthBuffer);
 }
 
 void CSwapChain::Begin(CDX12MainDevice* _Device, CCommandContext* _Command)
@@ -56,7 +66,9 @@ void CSwapChain::Begin(CDX12MainDevice* _Device, CCommandContext* _Command)
 	m_Handle = heap->GetCPUDescriptorHandleForHeapStart();
 	m_Handle.ptr += SCast<ULONG_PTR>(index * _Device->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
-	_Command->OMSetRenderTargets(1, &m_Handle, false, nullptr);
+	auto depthHandle = m_DepthBuffer->GetCPUDescriptorHandleForHeapStart();
+	//_Command->OMSetRenderTargets(1, &m_Handle, false, nullptr);
+	_Command->OMSetRenderTargets(1, &m_Handle, false, &depthHandle);
 }
 
 void CSwapChain::End(CCommandContext* _Command)
@@ -96,7 +108,8 @@ bool CSwapChain::CreateSwapChain(const FSwapChainInitializer& _Initializer)
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 
-	desc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
+	//desc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
+	desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	desc.BufferCount = _Initializer.BufferCount;
 
 	desc.Scaling = DXGI_SCALING_STRETCH;
@@ -136,6 +149,7 @@ bool CSwapChain::CreateRenderTargetView(const FSwapChainInitializer& _Initialize
 		rtvInit.Device = _Initializer.Device;
 		rtvInit.SwapChain = m_SwapChain.get();
 		rtvInit.BackBufferCount = _Initializer.BufferCount;
+		rtvInit.RtvDesc = _Initializer.RtvDesc;
 
 		if (!renderTargetView->Initialize(rtvInit)) { break; }
 

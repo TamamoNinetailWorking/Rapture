@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include <memory>
@@ -30,8 +30,13 @@ class CRootSignature;
 
 ATLANTIS_NAMESPACE_END
 
+namespace DirectX
+{
+	struct XMMATRIX;
+}
+
 /*
-*	ƒQ[ƒ€ˆ—‚ğ“Š‡‚·‚éƒ}ƒl[ƒWƒƒ[
+*	ã‚²ãƒ¼ãƒ å‡¦ç†ã‚’çµ±æ‹¬ã™ã‚‹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 */
 class CGameManager
 {
@@ -63,64 +68,100 @@ private:
 	ATLANTIS_NAMESPACE::CPixelShader* m_PixelShader = nullptr;
 
 	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_Pipeline = nullptr;
+	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_PmdPipeline = nullptr;
 	ATLANTIS_NAMESPACE::CRootSignature* m_RootSignature = nullptr;
+	ATLANTIS_NAMESPACE::CRootSignature* m_PmdRootSignature = nullptr;
 
-	//// ‚±‚¢‚Â‚Í1‚Â‚Ì‚Í‚¸
+	//// ã“ã„ã¤ã¯1ã¤ã®ã¯ãš
 	//struct ID3D12Device* m_Device = nullptr;
 
-	//// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ª•¡”ŒÂ‚ ‚éê‡‚Í‚»‚ê‚¼‚ê•K—v
+	//// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆãŒè¤‡æ•°å€‹ã‚ã‚‹å ´åˆã¯ãã‚Œãã‚Œå¿…è¦
 	//struct ID3D12CommandAllocator* m_CmdAllocator = nulchrome://vivaldi-webui/startpage?section=Speed-dials&background-color=#2e2f37lptr;
 	//struct ID3D12GraphicsCommandList* m_CmdList = nullptr;
 	//struct ID3D12CommandQueue* m_CmdQueue = nullptr;
 
-	//// ƒfƒBƒXƒNƒŠƒvƒ^ƒq[ƒv‚ÍƒfƒBƒXƒNƒŠƒvƒ^‚Ì”‘¶İ‚·‚éB
-	//// >>¡‰ñ‚Ì—p“r‚Å‚¢‚­‚ÆARTV–ˆ‚É‚ ‚Á‚Ä‚à—Ç‚³‚»‚¤B
+	//// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã¯ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã®æ•°å­˜åœ¨ã™ã‚‹ã€‚
+	//// >>ä»Šå›ã®ç”¨é€”ã§ã„ãã¨ã€RTVæ¯ã«ã‚ã£ã¦ã‚‚è‰¯ã•ãã†ã€‚
 	//struct ID3D12DescriptorHeap* m_RtvHeaps = nullptr;
 
-	//// ƒtƒFƒ“ƒX‚ÍGPU‚Ìˆ—‚ªŠ®—¹‚µ‚½‚©‚Ç‚¤‚©‚ğŒ©‚é‚±‚Æ‚ª‚Å‚«‚é
-	//// >>‚±‚¢‚Â‚Í‚Â‚Ü‚è‚P•`‰æ‚É‚P‚Â‘Î‰‚·‚éŒ`‚¾‚ë‚¤‚©‚çA
-	//// >> “¯‚É•`‰æ‚µ‚È‚¢ŒÀ‚è‚Í•¡”‚È‚­‚Ä‚à—Ç‚³‚»‚¤B
+	//// ãƒ•ã‚§ãƒ³ã‚¹ã¯GPUã®å‡¦ç†ãŒå®Œäº†ã—ãŸã‹ã©ã†ã‹ã‚’è¦‹ã‚‹ã“ã¨ãŒã§ãã‚‹
+	//// >>ã“ã„ã¤ã¯ã¤ã¾ã‚Šï¼‘æç”»ã«ï¼‘ã¤å¯¾å¿œã™ã‚‹å½¢ã ã‚ã†ã‹ã‚‰ã€
+	//// >> åŒæ™‚ã«æç”»ã—ãªã„é™ã‚Šã¯è¤‡æ•°ãªãã¦ã‚‚è‰¯ã•ãã†ã€‚
 	//struct ID3D12Fence* m_Fence = nullptr;
 
 
-	// ƒƒbƒVƒ…’PˆÊ‚Å‚Â‚à‚Ì
+	// ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§æŒã¤ã‚‚ã®
 	struct ID3D12Resource* m_VertexBuffer = nullptr;
 	struct D3D12_VERTEX_BUFFER_VIEW* m_VertexBufferView = nullptr;
 
 	struct ID3D12Resource* m_IndexBuffer = nullptr;
 	struct D3D12_INDEX_BUFFER_VIEW* m_IndexBufferView = nullptr;
-	// -ƒƒbƒVƒ…’PˆÊ‚Å‚Â‚à‚Ì
 
-	// ƒeƒNƒXƒ`ƒƒ
+	struct ID3D12Resource* m_ConstantBuffer = nullptr;
+	// -ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§æŒã¤ã‚‚ã®
+
+	// ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§æŒã¤ã‚‚ã®
+	struct ID3D12Resource* m_PmdVertexBuffer = nullptr;
+	struct D3D12_VERTEX_BUFFER_VIEW* m_PmdVertexBufferView = nullptr;
+
+	struct ID3D12Resource* m_PmdIndexBuffer = nullptr;
+	struct D3D12_INDEX_BUFFER_VIEW* m_PmdIndexBufferView = nullptr;
+
+	struct ID3D12Resource* m_PmdConstantBuffer = nullptr;
+
+	ATLANTIS_NAMESPACE::CVertexShader* m_PmdVertexShader = nullptr;
+	ATLANTIS_NAMESPACE::CPixelShader* m_PmdPixelShader = nullptr;
+	// -ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§æŒã¤ã‚‚ã®
+
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡
+	struct ID3D12Resource* m_DepthStencilBuffer = nullptr;
+
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	struct ID3D12Resource* m_TextureBuffer = nullptr;
-	struct ID3D12DescriptorHeap* m_TextureDescHeap = nullptr;
 
-	// ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“
+	// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿â€•ãƒ’ãƒ¼ãƒ—
+	struct ID3D12DescriptorHeap* m_DescHeap = nullptr;
+
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿â€•ãƒ’ãƒ¼ãƒ—
+	struct ID3D12DescriptorHeap* m_DepthDescHeap = nullptr;
+
+
+	// GPUé€ä¿¡ç”¨è¡Œåˆ—ãƒã‚¤ãƒ³ã‚¿
+	//DirectX::XMMATRIX* m_SceneMatricesData = nullptr;
+	struct SceneMatricesData* m_SceneMatricesData = nullptr;
+
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒãƒƒãƒ•ã‚¡
+	struct ID3D12Resource* m_MaterialBuffer = nullptr;
+	//ãƒãƒ†ãƒªã‚¢ãƒ«ç”¨ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
+	struct ID3D12DescriptorHeap* m_MaterialDescHeap = nullptr;
+
+
+	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
 	//struct D3D12_GRAPHICS_PIPELINE_STATE_DESC* m_PipeLine = nullptr;
 	//struct ID3D12PipelineState* m_PipeLineState = nullptr;
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	//struct ID3D12RootSignature* m_RootSignature = nullptr;
 
-	//// ƒrƒ…[ƒ|[ƒg
+	//// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ
 	//struct D3D12_VIEWPORT* m_Viewport = nullptr;
 
-	// Ø‚è”²‚«‹éŒ`
+	// åˆ‡ã‚ŠæŠœãçŸ©å½¢
 	//D3D12_RECT m_ScissorRect = {};
 
-	//// GIFactory‚ÍDevice‚Æ“¯‚¶‚æ‚¤‚É‘¼‚ÌƒIƒuƒWƒFƒNƒg‚ğ¶‚İo‚·‚Ì‚Ég‚¤‚Ì‚Å
-	//// 1‚Â‚Å—Ç‚³‚»‚¤‚¾B
+	//// GIFactoryã¯Deviceã¨åŒã˜ã‚ˆã†ã«ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿã¿å‡ºã™ã®ã«ä½¿ã†ã®ã§
+	//// 1ã¤ã§è‰¯ã•ãã†ã ã€‚
 	//struct IDXGIFactory6* m_GIFactory = nullptr;
 
-	//// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Í‰æ–Ê‚ÌØ‚è‘Ö‚¦‚Ég‚¤‚à‚Ì‚È‚Ì‚ÅA
-	//// ‚±‚¢‚Â‚à1‚Â‚Å—Ç‚³‚»‚¤
+	//// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã¯ç”»é¢ã®åˆ‡ã‚Šæ›¿ãˆæ™‚ã«ä½¿ã†ã‚‚ã®ãªã®ã§ã€
+	//// ã“ã„ã¤ã‚‚1ã¤ã§è‰¯ã•ãã†
 	//struct IDXGISwapChain4* m_SwapChain = nullptr;
 
 
-	//// BackBuffer‚ÍRTV‚Ég‚Á‚Ä‚¢‚é‚Ì‚ÅA‚ ‚ê‚ÆƒZƒbƒg‚¾‚ë‚¤
+	//// BackBufferã¯RTVã«ä½¿ã£ã¦ã„ã‚‹ã®ã§ã€ã‚ã‚Œã¨ã‚»ãƒƒãƒˆã ã‚ã†
 	//std::vector<struct ID3D12Resource*> m_BackBuffers;
 
-	//// ƒtƒFƒ“ƒX‚ÆƒZƒbƒg
+	//// ãƒ•ã‚§ãƒ³ã‚¹ã¨ã‚»ãƒƒãƒˆ
 	//u64 m_FenceValue = 0;
 
 };

@@ -33,6 +33,9 @@
     <ClCompile Include="rapture\Test\SHA1Test.cpp">
       <Filter>rapture\Test</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\Test\MatrixVectorTest.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -55,9 +58,18 @@
     <FxCompile Include="resource\shader\BasicPixelShader.hlsl">
       <Filter>resource\shader</Filter>
     </FxCompile>
+    <FxCompile Include="resource\shader\PmdVertexShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resource\shader\PmdPixelShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shader\BasicShader.hlsli">
+      <Filter>resource\shader</Filter>
+    </None>
+    <None Include="resource\shader\PmdShader.hlsli">
       <Filter>resource\shader</Filter>
     </None>
   </ItemGroup>

@@ -52,6 +52,7 @@ CTexture::~CTexture()
 bool CTexture::CreateTexture(const FInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
+	CHECK_RESULT_FALSE(!(_Initializer->FileNameHash == Hash160()));
 
 	TexMetadata* metaData = new TexMetadata();
 	CHECK_RESULT_FALSE(metaData);

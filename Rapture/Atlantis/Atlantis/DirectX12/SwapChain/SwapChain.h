@@ -12,6 +12,8 @@ struct ID3D12CommandQueue;
 struct IDXGIFactory6;
 struct IDXGISwapChain4;
 struct D3D12_RESOURCE_BARRIER;
+struct D3D12_RENDER_TARGET_VIEW_DESC;
+struct ID3D12DescriptorHeap;
 
 ATLANTIS_NAMESPACE_BEGIN
 
@@ -30,6 +32,7 @@ public:
 		IDXGIFactory6* Factory = nullptr;
 		ID3D12CommandQueue* Queue = nullptr;
 		HWND WindowHandle = {};
+		D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
 		uint32 ViewportWidth = 0;
 		uint32 ViewportHeight = 0;
 		uint32 BufferCount = 2;
@@ -40,6 +43,9 @@ public:
 
 	// 終了処理
 	void Finalize();
+
+	// （一時的）深度バッファの設定
+	void SetDepthBuffer(ID3D12DescriptorHeap* _DepthBuffer);
 
 	// 描画準備
 	void Begin(CDX12MainDevice* _Device, CCommandContext* _Command);
@@ -82,6 +88,9 @@ private:
 
 	// ヒープハンドル
 	D3D12_CPU_DESCRIPTOR_HANDLE m_Handle = {};
+
+	// 深度バッファ
+	std::unique_ptr<ID3D12DescriptorHeap> m_DepthBuffer = nullptr;
 
 };
 

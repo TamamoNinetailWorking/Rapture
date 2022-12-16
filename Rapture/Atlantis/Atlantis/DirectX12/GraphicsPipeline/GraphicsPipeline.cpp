@@ -42,7 +42,10 @@ bool CGraphicsPipeline::RecreateState(CDX12MainDevice* _device)
 	CHECK_RESULT_FALSE(_device);
 	if (m_PipelineState)
 	{
-		m_PipelineState->Release();
+		// この処理を一度パイプラインをセットした後に行うとまずそう
+		// >> 恐らく保持されている参照カウンタが0にならずに未開放のまま再作成しようとしてエラーになる
+		uint32 result = m_PipelineState->Release();
+		m_PipelineState.release();
 	}
 	return CreatePipelineState(_device);
 }
@@ -127,7 +130,9 @@ bool CGraphicsPipeline::CreatePipelineState(CDX12MainDevice* _device)
 	CHECK_RESULT_FALSE(m_PipelineDesc->pRootSignature);
 
 	ID3D12PipelineState* pipelineState = nullptr;
-	D3D_ERROR_CHECK(_device->GetDevice()->CreateGraphicsPipelineState(m_PipelineDesc.get(), IID_PPV_ARGS(&pipelineState)));
+	D3D_ERROR_CHECK(_device->GetDevice()->CreateGraphicsPipelineState(
+		m_PipelineDesc.get(), 
+		IID_PPV_ARGS(&pipelineState)));
 
 	m_PipelineState.reset(pipelineState);
 

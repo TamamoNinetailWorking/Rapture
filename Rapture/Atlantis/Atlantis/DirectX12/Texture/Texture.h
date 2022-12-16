@@ -33,6 +33,7 @@ public:
 	const DirectX::Image* GetImage() const;
 
 	CTexture() {};
+	CTexture(const CTexture& _resource);
 	~CTexture();
 
 private:

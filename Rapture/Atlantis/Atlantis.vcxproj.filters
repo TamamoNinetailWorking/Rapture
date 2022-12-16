@@ -46,6 +46,9 @@
     <Filter Include="Atlantis\DirectX12\Utility">
       <UniqueIdentifier>{17fbf6e5-3f76-46c8-91a0-e20846f14bb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\DirectX12\DirectXHelper">
+      <UniqueIdentifier>{86c18967-312b-4f88-b690-1d920673d368}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -104,6 +107,36 @@
     </ClInclude>
     <ClInclude Include="Atlantis\DirectX12\Utility\DirectXUtility.h">
       <Filter>Atlantis\DirectX12\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_barriers.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_core.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_default.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_pipeline_state_stream.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_check_feature_support.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_render_pass.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_resource_helpers.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_root_signature.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_state_object.h">
+      <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

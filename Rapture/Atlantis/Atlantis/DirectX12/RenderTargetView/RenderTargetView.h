@@ -8,6 +8,7 @@ struct ID3D12Device;
 struct ID3D12DescriptorHeap;
 struct ID3D12Resource;
 struct IDXGISwapChain4;
+struct D3D12_RENDER_TARGET_VIEW_DESC;
 
 ATLANTIS_NAMESPACE_BEGIN
 
@@ -19,6 +20,7 @@ public:
 	{
 		ID3D12Device* Device = nullptr;
 		IDXGISwapChain4* SwapChain = nullptr;
+		D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
 		uint32 BackBufferCount = 0;
 	};
 

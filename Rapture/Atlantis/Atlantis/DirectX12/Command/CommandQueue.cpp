@@ -37,7 +37,7 @@ void CCommandQueue::Signal(CFence* _Fence)
 {
 	if (!_Fence) { return; }
 
-	m_CmdQueue->Signal(_Fence->GetFence(), _Fence->GetFenceValue());
+	m_CmdQueue->Signal(_Fence->GetFence(), _Fence->GetFenceValueAndIncrement());
 }
 
 void CCommandQueue::CommandListPush(CCommandContext* _List)

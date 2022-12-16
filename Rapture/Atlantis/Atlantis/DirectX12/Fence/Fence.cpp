@@ -26,6 +26,11 @@ void CFence::WaitEvent()
 	}
 }
 
+uint64 CFence::GetFenceValueAndIncrement()
+{
+	return ++m_FenceValue;
+}
+
 bool CFence::CreateFence(const FFenceInitializer& _Initializer)
 {
 	if (!_Initializer.Device) { return false; };
