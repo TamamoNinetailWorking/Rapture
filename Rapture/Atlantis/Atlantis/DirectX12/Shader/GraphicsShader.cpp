@@ -29,7 +29,7 @@ bool CVertexShader::Initialize(const FInitializerBase* _Initializer)
 void CVertexShader::Finalize()
 {
 	// To DO
-	ReleaseD3DPtr(m_Reflection);
+	//ReleaseD3DUniquePtr(m_Reflection);
 	CShaderBase::Finalize();
 }
 
@@ -48,7 +48,8 @@ bool CVertexShader::CreateReflection(const FInitializer* _Initializer)
 		m_ShaderBlob->GetBufferSize(),
 		IID_PPV_ARGS(&reflection)));
 
-	m_Reflection.reset(reflection);
+	//m_Reflection.reset(reflection);
+	m_Reflection = reflection;
 
 	return true;
 }
@@ -229,9 +230,11 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 		return false;
 	}
 
-	m_InputLayout.reset(input);
+	//m_InputLayout.reset(input);
+	m_InputLayout = input;
 
-	ReleaseD3DPtr(m_Reflection);
+	//ReleaseD3DUniquePtr(m_Reflection);
+	SafeReleaseD3DPtr(m_Reflection);
 	return true;
 }
 

@@ -51,8 +51,8 @@ public:
 	void Reset(ID3D12PipelineState* _PipelineState = nullptr);
 
 	// ゲッター
-	ID3D12CommandAllocator* GetCommandAllocator() const { return m_CmdAllocator.get(); };
-	ID3D12GraphicsCommandList* GetCommandList() const { return m_CmdList.get(); };
+	ID3D12CommandAllocator* GetCommandAllocator() const { return m_CmdAllocator; };
+	ID3D12GraphicsCommandList* GetCommandList() const { return m_CmdList; };
 
 
 
@@ -67,10 +67,12 @@ private:
 
 
 	// コマンドアロケーター（コマンドの実体を保有する）
-	std::unique_ptr<ID3D12CommandAllocator> m_CmdAllocator = nullptr;
+	//std::unique_ptr<ID3D12CommandAllocator> m_CmdAllocator = nullptr;
+	ObjectPtr(ID3D12CommandAllocator) m_CmdAllocator = nullptr;
 
 	// コマンドリスト（コマンドの仮想リスト）
-	std::unique_ptr<ID3D12GraphicsCommandList> m_CmdList = nullptr;
+	//std::unique_ptr<ID3D12GraphicsCommandList> m_CmdList = nullptr;
+	ObjectPtr(ID3D12GraphicsCommandList) m_CmdList = nullptr;
 
 };
 

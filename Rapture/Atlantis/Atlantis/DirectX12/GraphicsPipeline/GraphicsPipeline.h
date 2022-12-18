@@ -48,8 +48,8 @@ public:
 
 
 	// ゲッター
-	ID3D12PipelineState* GetPipelineState() const { return m_PipelineState.get(); };
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC* GetPipelineDescEdit() const { return m_PipelineDesc.get(); };
+	ID3D12PipelineState* GetPipelineState() const { return m_PipelineState; };
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC* GetPipelineDescEdit() const { return m_PipelineDesc; };
 
 	CGraphicsPipeline() {};
 	~CGraphicsPipeline();
@@ -63,11 +63,13 @@ private:
 	bool CreatePipelineState(CDX12MainDevice* _device);
 
 	// パイプラインの構成要素
-	std::unique_ptr<D3D12_GRAPHICS_PIPELINE_STATE_DESC> m_PipelineDesc = nullptr;
+	//std::unique_ptr<D3D12_GRAPHICS_PIPELINE_STATE_DESC> m_PipelineDesc = nullptr;
+	ObjectPtr(D3D12_GRAPHICS_PIPELINE_STATE_DESC) m_PipelineDesc = nullptr;
 
 	// パイプラインステート
-	std::unique_ptr<ID3D12PipelineState> m_PipelineState = nullptr;
-};
+	//std::unique_ptr<ID3D12PipelineState> m_PipelineState = nullptr;
+	ObjectPtr(ID3D12PipelineState) m_PipelineState = nullptr;
+ };
 
 
 ATLANTIS_NAMESPACE_END

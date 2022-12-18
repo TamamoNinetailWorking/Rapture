@@ -19,8 +19,7 @@ bool CSwapChain::Initialize(const FSwapChainInitializer& _Initializer)
 	do
 	{
 		if (!CreateSwapChain(_Initializer)) { break; }
-		if (!CreateRenderTargetView(_Initializer)) { break; }
-		if (!CreateResourceBarrier()) { break; }
+		D3D_INIT_PROCESS_CHECK(CreateBackBuffer(_Initializer));
 
 		return true;
 
@@ -31,60 +30,7 @@ bool CSwapChain::Initialize(const FSwapChainInitializer& _Initializer)
 
 void CSwapChain::Finalize()
 {
-	m_DepthBuffer.release();
-	m_Barrier.reset();
-	FinalizePtr(m_RenderTargetView);
-	ReleaseD3DPtr(m_SwapChain);
-}
-
-void CSwapChain::SetDepthBuffer(ID3D12DescriptorHeap* _DepthBuffer)
-{
-	if (m_DepthBuffer)
-	{
-		m_DepthBuffer.release();
-	}
-	m_DepthBuffer.reset(_DepthBuffer);
-}
-
-void CSwapChain::Begin(CDX12MainDevice* _Device, CCommandContext* _Command)
-{
-	if (!_Command || !_Device) { return; }
-	CRenderTargetView::BackBuffer* backBuffer = m_RenderTargetView->GetBackBuffer();
-	if (!backBuffer) { return; }
-
-	uint32 index = m_SwapChain->GetCurrentBackBufferIndex();
-
-	m_Barrier->Transition.pResource = backBuffer->at(index);
-	m_Barrier->Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-	m_Barrier->Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-
-	_Command->Barrier(1, m_Barrier.get());
-
-	ID3D12DescriptorHeap* heap = m_RenderTargetView->GetRenderTargetView();
-	if (!heap) { return; }
-
-	m_Handle = heap->GetCPUDescriptorHandleForHeapStart();
-	m_Handle.ptr += SCast<ULONG_PTR>(index * _Device->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-
-	auto depthHandle = m_DepthBuffer->GetCPUDescriptorHandleForHeapStart();
-	//_Command->OMSetRenderTargets(1, &m_Handle, false, nullptr);
-	_Command->OMSetRenderTargets(1, &m_Handle, false, &depthHandle);
-}
-
-void CSwapChain::End(CCommandContext* _Command)
-{
-	if (!_Command) { return; }
-
-	m_Barrier->Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	m_Barrier->Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
-
-	_Command->Barrier(1, m_Barrier.get());
-}
-
-void CSwapChain::SetRenderTargetView(CDX12MainDevice* _Device, CCommandContext* _Command)
-{
-
-
+	SafeReleaseD3DPtr(m_SwapChain);
 }
 
 void CSwapChain::Present()
@@ -130,49 +76,25 @@ bool CSwapChain::CreateSwapChain(const FSwapChainInitializer& _Initializer)
 		nullptr,
 		(IDXGISwapChain1**)&swapChain));
 
-	m_SwapChain = move(unique_ptr<IDXGISwapChain4>(swapChain));
+	//m_SwapChain = move(unique_ptr<IDXGISwapChain4>(swapChain));
+	m_SwapChain = swapChain;
 
 	return true;
 }
 
-bool CSwapChain::CreateRenderTargetView(const FSwapChainInitializer& _Initializer)
+bool ATLANTIS_NAMESPACE::CSwapChain::CreateBackBuffer(const FSwapChainInitializer& _Initializer)
 {
+	m_BackBuffer = new BackBuffer();
+	D3D_CHECK_NULL(m_BackBuffer);
+	m_BackBuffer->resize(_Initializer.BufferCount);
 
-	do
+	for (uint32 i = 0; i < m_BackBuffer->size(); ++i)
 	{
-		if (!_Initializer.Device) { break; }
-
-		CRenderTargetView* renderTargetView = new CRenderTargetView();
-		if (!renderTargetView) { break; };
-
-		CRenderTargetView::FRenderTargetViewInitializer rtvInit;
-		rtvInit.Device = _Initializer.Device;
-		rtvInit.SwapChain = m_SwapChain.get();
-		rtvInit.BackBufferCount = _Initializer.BufferCount;
-		rtvInit.RtvDesc = _Initializer.RtvDesc;
-
-		if (!renderTargetView->Initialize(rtvInit)) { break; }
-
-		m_RenderTargetView.reset(renderTargetView);
-
-		return true;
-	} while (0);
-
-	Finalize();
-
-	return false;
-}
-
-bool CSwapChain::CreateResourceBarrier()
-{
-	D3D12_RESOURCE_BARRIER* desc = new D3D12_RESOURCE_BARRIER();
-	if (!desc) { return false; }
-
-	desc->Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	desc->Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	desc->Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-
-	m_Barrier.reset(desc);
-
+		D3D_ERROR_CHECK(m_SwapChain->GetBuffer(
+			i, 
+			IID_PPV_ARGS(&m_BackBuffer->at(i))
+		));
+	}
 	return true;
 }
+

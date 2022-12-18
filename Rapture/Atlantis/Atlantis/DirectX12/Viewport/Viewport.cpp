@@ -21,7 +21,9 @@ void CViewport::Finalize()
 {
 	if (m_Viewport)
 	{
-		m_Viewport.reset();
+		delete m_Viewport;
+		m_Viewport = nullptr;
+		//m_Viewport.reset();
 	}
 }
 
@@ -37,7 +39,8 @@ bool CViewport::CreateViewport(const FViewportInitializer& _Initializer)
 	viewport->MaxDepth = 1.f;
 	viewport->MinDepth = 0.f;
 
-	m_Viewport.reset(viewport);
+	//m_Viewport.reset(viewport);
+	m_Viewport = viewport;
 
 	return true;
 }

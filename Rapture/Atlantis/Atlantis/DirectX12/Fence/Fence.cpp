@@ -12,7 +12,8 @@ bool CFence::Initialize(const FFenceInitializer& _Initializer)
 
 void CFence::Finalize()
 {
-	ReleaseD3DPtr(m_Fence);
+	//ReleaseD3DUniquePtr(m_Fence);
+	SafeReleaseD3DPtr(m_Fence);
 }
 
 void CFence::WaitEvent()
@@ -41,7 +42,8 @@ bool CFence::CreateFence(const FFenceInitializer& _Initializer)
 		D3D12_FENCE_FLAG_NONE,
 		IID_PPV_ARGS(&fence)));
 
-	m_Fence.reset(fence);
+	//m_Fence.reset(fence);
+	m_Fence = fence;
 
 	return true;
 }

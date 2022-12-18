@@ -21,7 +21,7 @@ public:
 	void WaitEvent();
 
 
-	ID3D12Fence* GetFence() const { return m_Fence.get(); };
+	ID3D12Fence* GetFence() const { return m_Fence; };
 	uint64 GetFenceValue() const { return m_FenceValue; };
 	uint64 GetFenceValueAndIncrement();
 
@@ -34,7 +34,8 @@ private:
 	bool CreateFence(const FFenceInitializer& _Initializer);
 
 	// フェンス
-	std::unique_ptr<ID3D12Fence> m_Fence = nullptr;
+	//std::unique_ptr<ID3D12Fence> m_Fence = nullptr;
+	ObjectPtr(ID3D12Fence) m_Fence = nullptr;
 
 	// フェンスバリュー
 	uint64 m_FenceValue = 0;

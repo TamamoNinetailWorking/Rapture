@@ -91,6 +91,9 @@
     <Filter Include="eden\src\Resource">
       <UniqueIdentifier>{ddbf415b-06ac-4dff-9bc3-c60b9e6708a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\src\system\utility">
+      <UniqueIdentifier>{10ecd056-ab07-4705-a0c5-a462b5a58efe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -150,6 +153,12 @@
     <ClInclude Include="eden\include\Resource\Resource.h">
       <Filter>eden\include\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\common\pointer.h">
+      <Filter>eden\include\common</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\utility\StringUtility.h">
+      <Filter>eden\include\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -181,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="eden\src\Resource\Resource.cpp">
       <Filter>eden\src\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\utility\StringUtility.cpp">
+      <Filter>eden\src\system\utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

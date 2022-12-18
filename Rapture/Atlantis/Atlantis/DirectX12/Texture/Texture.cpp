@@ -6,7 +6,7 @@
 
 #include <Atlantis/DirectX12/DirectXTex/DirectXTex.h>
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
-#include <Atlantis/DirectX12/Utility/DirectXUtility.h>
+#include <eden/include/utility/StringUtility.h>
 
 USING_ATLANTIS;
 
@@ -35,8 +35,18 @@ bool CTexture::Initialize(const FInitializerBase* _Initializer)
 
 void CTexture::Finalize()
 {
-	ResetPtr(m_Image);
-	ResetPtr(m_MetaData);
+	//ResetPtr(m_Image);
+	if (m_Image)
+	{
+		delete m_Image;
+		m_Image = nullptr;
+	}
+	//ResetPtr(m_MetaData);
+	if (m_MetaData)
+	{
+		delete m_MetaData;
+		m_MetaData = nullptr;
+	}
 }
 
 const Image* CTexture::GetImage() const
@@ -59,28 +69,30 @@ bool CTexture::CreateTexture(const FInitializer* _Initializer)
 	ScratchImage* scratchImage = new ScratchImage();
 	CHECK_RESULT_FALSE(scratchImage);
 
+	const string& fileHash = RHash160(_Initializer->FileNameHash);
+
 	const uint32 fileNameLength = 512;
 	WCHAR fileName[fileNameLength] = {};
 	{
 		size_t length = 0;
-		int32 error = Utility::ToWString(fileName, fileNameLength, RHash160(_Initializer->FileNameHash), length);
+		int32 error = StringUtility::ToWString(fileName, fileNameLength, fileHash.c_str(), length);
 		if (error == EINVAL) { return false; }
 	}
 
 	wstring path(fileName);
 
 	size_t index = path.find_last_of(L'.');
-	wstring extension = path.substr(index + 1, path.length() - index);
-	  
+	//wstring extension = path.substr(index + 1, path.length() - index);
+	string extension = fileHash.substr(index + 1, fileHash.length() - index);
 
 	{
 		HRESULT result = S_OK;
 
-		if ((extension == L"tga") || (extension == L"TGA"))
+		if ((extension == "tga") || (extension == "TGA"))
 		{
 			result = LoadFromTGAFile(fileName, metaData, *scratchImage);
 		}
-		else if ((extension == L"dds") || (extension == L"DDS"))
+		else if ((extension == "dds") || (extension == "DDS"))
 		{
 				result = LoadFromDDSFile(fileName, DDS_FLAGS_NONE, metaData, *scratchImage);
 		}
@@ -92,8 +104,12 @@ bool CTexture::CreateTexture(const FInitializer* _Initializer)
 		D3D_ERROR_CHECK(result);
 	}
 
-	m_MetaData.reset(metaData);
-	m_Image.reset(scratchImage);
+	//m_MetaData.reset(metaData);
+	m_MetaData = metaData;
+	//m_Image.reset(scratchImage);
+	m_Image = scratchImage;
+
+	m_FileExtensionHash = CHash160(extension);
 
 	return true;
 }

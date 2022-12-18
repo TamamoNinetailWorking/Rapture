@@ -33,7 +33,7 @@ public:
 	void Execute();
 
 
-	ID3D12CommandQueue* GetCommandQueue() const { return m_CmdQueue.get(); };
+	ID3D12CommandQueue* GetCommandQueue() const { return m_CmdQueue; };
 
 	CCommandQueue() {};
 	~CCommandQueue() {};
@@ -44,7 +44,8 @@ private:
 
 
 	// コマンドキュー
-	std::unique_ptr<ID3D12CommandQueue> m_CmdQueue = nullptr;
+	//std::unique_ptr<ID3D12CommandQueue> m_CmdQueue = nullptr;
+	ObjectPtr(ID3D12CommandQueue) m_CmdQueue = nullptr;
 
 	// コマンドリストのキュー
 	std::deque<CCommandContext*> m_ListQueue = {};

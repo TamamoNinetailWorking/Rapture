@@ -21,7 +21,8 @@ void CScissorRect::Finalize()
 {
 	if (m_ScissorRect)
 	{
-		m_ScissorRect.reset();
+		//m_ScissorRect.reset();
+		delete m_ScissorRect;
 	}
 }
 
@@ -35,7 +36,8 @@ bool CScissorRect::CreateScissorRect(const FInitializer& _Initializer)
 	rect->right = rect->left + _Initializer.RectWidth;
 	rect->bottom = rect->top + _Initializer.RectHeight;
 
-	m_ScissorRect.reset(rect);
+	//m_ScissorRect.reset(rect);
+	m_ScissorRect = rect;
 
 	return true;
 }

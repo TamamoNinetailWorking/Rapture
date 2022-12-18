@@ -5,11 +5,13 @@
 #include <string>
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
-#include <Atlantis/DirectX12/Utility/DirectXUtility.h>
+#include <eden/include/utility/StringUtility.h>
 
 using namespace std;
 
 USING_ATLANTIS;
+
+EDENS_NAMESPACE_USING;
 
 bool CShaderBase::Initialize(const FInitializerBase* _Initializer)
 {
@@ -27,7 +29,8 @@ bool CShaderBase::Initialize(const FInitializerBase* _Initializer)
 
 void CShaderBase::Finalize()
 {
-	ReleaseD3DPtr(m_ShaderBlob);
+	//ReleaseD3DUniquePtr(m_ShaderBlob);
+	SafeReleaseD3DPtr(m_ShaderBlob);
 }
 
 CShaderBase::~CShaderBase()
@@ -50,7 +53,7 @@ bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
 	//setlocale(LC_ALL, "japanese");
 	//error = mbstowcs_s(&length, fileName, RHash160(_Initializer->FileNameHash), _TRUNCATE);
 
-	error = Utility::ToWString(fileName, fileLength, RHash160(_Initializer->FileNameHash), length);
+	error = StringUtility::ToWString(fileName, fileLength, RHash160(_Initializer->FileNameHash), length);
 
 	if (error == EINVAL) { return false; }
 
@@ -87,7 +90,8 @@ bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
 		return false;
 	}
 
-	m_ShaderBlob.reset(shader);
+	//m_ShaderBlob.reset(shader);
+	m_ShaderBlob = shader;
 
 	return true;
 }

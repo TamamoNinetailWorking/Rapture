@@ -24,18 +24,11 @@ bool CRenderTargetView::Initialize(const FRenderTargetViewInitializer& _Initiali
 
 void CRenderTargetView::Finalize()
 {
-	if (!m_BackBuffer)
+	if (m_IsResouceMine)
 	{
-		// 配列なので特殊
-		for (auto itr = m_BackBuffer->begin(); itr != m_BackBuffer->end();++itr)
-		{
-			(*itr)->Release();
-		}
-		m_BackBuffer->resize(0);
-		m_BackBuffer.reset();
+		SafeReleaseD3DPtr(m_Resource);
 	}
-
-	ReleaseD3DPtr(m_RenderTargetView);
+	SafeReleaseD3DPtr(m_DescriptorHeap);
 }
 
 bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer& _Initializer)
@@ -45,7 +38,7 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットを作成しているようだ
 	heapDesc.NodeMask = 0;
-	heapDesc.NumDescriptors = _Initializer.BackBufferCount; // 表裏の2つ
+	heapDesc.NumDescriptors = 1;
 	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; // 特にフラグの指定は無し
 
 	ID3D12DescriptorHeap* renderTargetView = nullptr;
@@ -53,7 +46,7 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 		&heapDesc, 
 		IID_PPV_ARGS(&renderTargetView)));
 
-	m_RenderTargetView = move(unique_ptr<ID3D12DescriptorHeap>(renderTargetView));
+	m_DescriptorHeap = renderTargetView;
 
 	return true;
 }
@@ -61,31 +54,16 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 bool CRenderTargetView::CreateRenderTargetView(const FRenderTargetViewInitializer& _Initializer)
 {
 	if (!_Initializer.Device) { return false; }
-	if (!_Initializer.SwapChain) { return false; }
 
-	//DXGI_SWAP_CHAIN_DESC desc = {};
-	//D3D_ERROR_CHECK(_Initializer.SwapChain->GetDesc(&desc));
-
-	BackBuffer* backBuffer = new BackBuffer();
-	if (!backBuffer) { return false; }
-	//backBuffer->resize(desc.BufferCount);
-	backBuffer->resize(_Initializer.BackBufferCount);
-
-	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_RenderTargetView->GetCPUDescriptorHandleForHeapStart();
-
-	for (uint32 i = 0; i < backBuffer->size(); ++i)
+	if (_Initializer.ResPtr != nullptr)
 	{
-		D3D_ERROR_CHECK(_Initializer.SwapChain->GetBuffer(
-			i,
-			IID_PPV_ARGS(&backBuffer->at(i))));
-
-		_Initializer.Device->CreateRenderTargetView(backBuffer->at(i), _Initializer.RtvDesc, handle);
-		handle.ptr += _Initializer.Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-		
+		m_IsResouceMine = false;
+		m_Resource = _Initializer.ResPtr;
 	}
 
-	m_BackBuffer.reset(backBuffer);
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 
-	
+	_Initializer.Device->CreateRenderTargetView(m_Resource, _Initializer.RtvDesc, handle);
+
 	return true;
 }

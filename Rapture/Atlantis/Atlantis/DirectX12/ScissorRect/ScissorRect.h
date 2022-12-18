@@ -21,7 +21,7 @@ public:
 	void Finalize();
 
 
-	const D3D12_RECT* GetScissorRect() const { return m_ScissorRect.get(); };
+	const D3D12_RECT* GetScissorRect() const { return m_ScissorRect; };
 
 
 	CScissorRect() {};
@@ -32,7 +32,8 @@ private:
 	bool CreateScissorRect(const FInitializer& _Initializer);
 
 
-	std::unique_ptr<D3D12_RECT> m_ScissorRect = nullptr;
+	//std::unique_ptr<D3D12_RECT> m_ScissorRect = nullptr;
+	ObjectPtr(D3D12_RECT) m_ScissorRect = nullptr;
 
 };
 

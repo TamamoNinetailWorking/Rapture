@@ -14,10 +14,13 @@
 ATLANTIS_NAMESPACE_BEGIN
 
 class CDX12MainDevice;
+class CDirectXDebug;
 class CCommandContext;
 class CCommandQueue;
 class CSwapChain;
 class CFence;
+class CRenderTargetView;
+class CBarrier;
 
 class CViewport;
 class CScissorRect;
@@ -29,11 +32,6 @@ class CGraphicsPipeline;
 class CRootSignature;
 
 ATLANTIS_NAMESPACE_END
-
-namespace DirectX
-{
-	struct XMMATRIX;
-}
 
 /*
 *	ゲーム処理を統括するマネージャー
@@ -57,10 +55,13 @@ private:
 
 
 	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
+	ATLANTIS_NAMESPACE::CDirectXDebug* m_Debug = nullptr;
 	ATLANTIS_NAMESPACE::CCommandContext* m_CommandContext = nullptr;
 	ATLANTIS_NAMESPACE::CCommandQueue* m_CommandQueue = nullptr;
 	ATLANTIS_NAMESPACE::CSwapChain* m_SwapChain = nullptr;
 	ATLANTIS_NAMESPACE::CFence* m_Fence = nullptr;
+
+	ATLANTIS_NAMESPACE::CBarrier* m_Barrier = nullptr;
 
 	ATLANTIS_NAMESPACE::CViewport* m_Viewport = nullptr;
 	ATLANTIS_NAMESPACE::CScissorRect* m_ScissorRect = nullptr;
@@ -71,6 +72,8 @@ private:
 	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_PmdPipeline = nullptr;
 	ATLANTIS_NAMESPACE::CRootSignature* m_RootSignature = nullptr;
 	ATLANTIS_NAMESPACE::CRootSignature* m_PmdRootSignature = nullptr;
+
+	std::vector<ATLANTIS_NAMESPACE::CRenderTargetView*> m_RTV = {};
 
 	//// こいつは1つのはず
 	//struct ID3D12Device* m_Device = nullptr;

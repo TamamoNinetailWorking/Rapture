@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClInclude Include="Atlantis\AtlantisBase.h" />
     <ClInclude Include="Atlantis\AtlantisDefine.h" />
+    <ClInclude Include="Atlantis\DirectX12\Barrier\Barrier.h" />
     <ClInclude Include="Atlantis\DirectX12\Command\CommandContext.h" />
     <ClInclude Include="Atlantis\DirectX12\Command\CommandQueue.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectX12BaseDefine.h" />
+    <ClInclude Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_barriers.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_check_feature_support.h" />
@@ -50,8 +52,10 @@
     <ClInclude Include="Atlantis\DirectX12\Viewport\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Atlantis\DirectX12\Barrier\Barrier.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandContext.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandQueue.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Fence\Fence.cpp" />
     <ClCompile Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.cpp" />
@@ -68,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Atlantis\DirectX12\DirectXTex\DirectXTex.inl" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -25,10 +25,13 @@
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
+#include <Atlantis/DirectX12/DirectXDebug/DirectXDebug.h>
 #include <Atlantis/DirectX12/Command/CommandContext.h>
 #include <Atlantis/DirectX12/Command/CommandQueue.h>
 #include <Atlantis/DirectX12/SwapChain/SwapChain.h>
+#include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
 #include <Atlantis/DirectX12/Fence/Fence.h>
+#include <Atlantis/DirectX12/Barrier/Barrier.h>
 
 #include <Atlantis/DirectX12/Viewport/Viewport.h>
 #include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
@@ -118,6 +121,10 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	do 
 	{
+		m_Debug = new CDirectXDebug();
+		if (!m_Debug) { break; }
+		m_Debug->EnableDebugLayer();
+
 		m_MainDevice = new CDX12MainDevice();
 		if (!m_MainDevice) { break; };
 		if (!m_MainDevice->Initialize()){ break;}
@@ -154,11 +161,6 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_SwapChain = new CSwapChain();
 		if (!m_SwapChain) { break; }
 	
-		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = {};
-		//rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-
 		CSwapChain::FSwapChainInitializer swapchainInitializer;
 		swapchainInitializer.Device = m_MainDevice->GetDevice();
 		swapchainInitializer.Factory = m_MainDevice->GetGIFactory();
@@ -167,15 +169,39 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		swapchainInitializer.ViewportHeight = _Initializer->ViewportHeight;
 		swapchainInitializer.WindowHandle = _Initializer->WindowHandle;
 		swapchainInitializer.BufferCount = 2;
-		swapchainInitializer.RtvDesc = &rtvDesc;
-		
-
 
 		if (!m_SwapChain->Initialize(swapchainInitializer))
 		{
 			break;
 		}
 
+		{
+			D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = {};
+			//rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+			rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+
+			m_RTV.resize(swapchainInitializer.BufferCount);
+			
+			CRenderTargetView::FRenderTargetViewInitializer initializer;
+			initializer.Device = m_MainDevice->GetDevice();
+			initializer.RtvDesc = &rtvDesc;
+
+			for (uint32 i = 0; i < m_RTV.size(); ++i)
+			{
+				m_RTV[i] = new CRenderTargetView();
+				initializer.ResPtr = m_SwapChain->GetBackBuffer()->at(i);
+				m_RTV[i]->Initialize(initializer);
+			}
+		}
+
+		{
+			m_Barrier = new CBarrier();
+			D3D_INIT_PROCESS_CHECK(m_Barrier);
+			CBarrier::FInitializer initializer = {};
+			initializer.BarrierType = Glue::EResourceBarrierType::BARRIER_TYPE_TRANSITION;
+			m_Barrier->Initializer(initializer);
+		}
 
 		m_Fence = new CFence();
 		if (!m_Fence) { break; }
@@ -2270,22 +2296,19 @@ void CGameManager::Render()
 	ID3D12GraphicsCommandList* m_CmdList = m_CommandContext->GetCommandList();
 	//ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
 
-#if 0
-	u32 backBufferIndex = m_SwapChain->GetCurrentBackBufferIndex();
+	uint32 bufferIndex = m_SwapChain->GetCurrentBufferIndex();
+	auto rtvHandle = m_RTV[bufferIndex]->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	auto depthHandle = m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart();
+	auto rtvResource = m_RTV[bufferIndex]->GetResource();
+	CBarrier::FTransitionState transitionState = {};
+	transitionState.Resource = rtvResource;
+	transitionState.Before = Glue::EResourceState::RESOURCE_STATE_PRESENT;
+	transitionState.After = Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET;
+	m_Barrier->SetTransitionState(transitionState);
 
-	D3D12_RESOURCE_BARRIER barrierDesc = {};
-	barrierDesc.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	barrierDesc.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	barrierDesc.Transition.pResource = m_BackBuffers[backBufferIndex];
-	barrierDesc.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	m_CommandContext->Barrier(1, m_Barrier->GetBarrier());
 
-	m_CmdList->ResourceBarrier(1, &barrierDesc);
-#endif
-
-	m_SwapChain->SetDepthBuffer(m_DepthDescHeap);
-	m_SwapChain->Begin(m_MainDevice,m_CommandContext);
+	m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, &depthHandle);
 
 	// パイプラインセット
 	//m_CmdList->SetPipelineState(m_PipeLineState);
@@ -2307,10 +2330,10 @@ void CGameManager::Render()
 
 	// レンダーターゲットのクリア
 	float clearColor[] = { 1.f,1.f,1.f,1.f };
-	m_CmdList->ClearRenderTargetView(m_SwapChain->GetRenderTargetViewHandle(), clearColor, 0, nullptr);
+	m_CmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 	// デプスバッファのクリア
-	auto depthHandle = m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart();
+	//auto depthHandle = m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart();
 	m_CmdList->ClearDepthStencilView(depthHandle, D3D12_CLEAR_FLAG_DEPTH, 1.f, 0, 0, nullptr);
 
 
@@ -2376,7 +2399,10 @@ void CGameManager::Render()
 
 	//m_CmdList->ResourceBarrier(1, &barrierDesc);
 
-	m_SwapChain->End(m_CommandContext);
+	transitionState.Before = Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET;
+	transitionState.After = Glue::EResourceState::RESOURCE_STATE_PRESENT;
+	m_Barrier->SetTransitionState(transitionState);
+	m_CommandContext->Barrier(1, m_Barrier->GetBarrier());
 
 	// 命令をクローズ
 	m_CommandContext->Close();

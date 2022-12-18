@@ -24,6 +24,16 @@ namespace Glue
 	{
 		return SCast<D3D12_ROOT_SIGNATURE_FLAGS>(_Flag);
 	}
+
+	const D3D12_RESOURCE_BARRIER_TYPE GetD3DResourceBarrierType(EResourceBarrierType _Type)
+	{
+		return SCast<D3D12_RESOURCE_BARRIER_TYPE>(_Type);
+	}
+
+	const D3D12_RESOURCE_STATES GetD3DResourceState(EResourceState _state)
+	{
+		return  SCast<D3D12_RESOURCE_STATES>(_state);
+	}
 };
 
 ATLANTIS_NAMESPACE_END

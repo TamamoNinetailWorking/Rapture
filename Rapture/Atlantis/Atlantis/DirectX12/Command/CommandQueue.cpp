@@ -30,7 +30,8 @@ bool CCommandQueue::Initialize(const FCommandQueueInitializer& _Initializer)
 
 void CCommandQueue::Finalize()
 {
-	ReleaseD3DPtr(m_CmdQueue);
+	//ReleaseD3DUniquePtr(m_CmdQueue);
+	SafeReleaseD3DPtr(m_CmdQueue);
 }
 
 void CCommandQueue::Signal(CFence* _Fence)
@@ -76,7 +77,8 @@ bool CCommandQueue::CreateCommandQueue(const FCommandQueueInitializer& _Initiali
 		&desc,
 		IID_PPV_ARGS(&queue)));
 
-	m_CmdQueue = move(unique_ptr<ID3D12CommandQueue>(queue));
+	//m_CmdQueue = move(unique_ptr<ID3D12CommandQueue>(queue));
+	m_CmdQueue = queue;
 
 	return true;
 }

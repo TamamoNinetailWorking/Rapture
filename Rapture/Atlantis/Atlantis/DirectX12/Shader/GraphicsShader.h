@@ -42,8 +42,10 @@ private:
 	bool CreateReflection(const FInitializer* _Initializer);
 	bool CreateInputLayout(const FInitializer* _Initializer);
 
-	std::unique_ptr<InputLayout> m_InputLayout = nullptr;
-	std::unique_ptr<ID3D12ShaderReflection> m_Reflection = nullptr;
+	//std::unique_ptr<InputLayout> m_InputLayout = nullptr;
+	ObjectPtr(InputLayout) m_InputLayout = nullptr;
+	//std::unique_ptr<ID3D12ShaderReflection> m_Reflection = nullptr;
+	ObjectPtr(ID3D12ShaderReflection) m_Reflection = nullptr;
 };
 
 class CHullShader : public CGraphicsShader

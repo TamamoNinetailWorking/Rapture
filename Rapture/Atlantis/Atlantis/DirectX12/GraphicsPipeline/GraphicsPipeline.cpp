@@ -30,10 +30,12 @@ bool CGraphicsPipeline::Initialize()
 
 void CGraphicsPipeline::Finalize()
 {
-	ReleaseD3DPtr(m_PipelineState);
+	//ReleaseD3DUniquePtr(m_PipelineState);
+	SafeReleaseD3DPtr(m_PipelineState);
 	if (m_PipelineDesc)
 	{
-		m_PipelineDesc.reset();
+		delete m_PipelineDesc;
+		m_PipelineDesc = nullptr;
 	}
 }
 
@@ -44,8 +46,10 @@ bool CGraphicsPipeline::RecreateState(CDX12MainDevice* _device)
 	{
 		// この処理を一度パイプラインをセットした後に行うとまずそう
 		// >> 恐らく保持されている参照カウンタが0にならずに未開放のまま再作成しようとしてエラーになる
+		// unique_ptrを使わないようにしておく
+		// >>これをvector配列などで持たないとは限らないため
 		uint32 result = m_PipelineState->Release();
-		m_PipelineState.release();
+		//m_PipelineState.release();
 	}
 	return CreatePipelineState(_device);
 }
@@ -105,7 +109,8 @@ bool CGraphicsPipeline::CreatePipelineDesc()
 
 	desc->pRootSignature = nullptr;
 
-	m_PipelineDesc.reset(desc);
+	//m_PipelineDesc.reset(desc);
+	m_PipelineDesc = desc;
 
 	SetPipelineDescParameter();
 
@@ -131,10 +136,11 @@ bool CGraphicsPipeline::CreatePipelineState(CDX12MainDevice* _device)
 
 	ID3D12PipelineState* pipelineState = nullptr;
 	D3D_ERROR_CHECK(_device->GetDevice()->CreateGraphicsPipelineState(
-		m_PipelineDesc.get(), 
+		m_PipelineDesc, 
 		IID_PPV_ARGS(&pipelineState)));
 
-	m_PipelineState.reset(pipelineState);
+	//m_PipelineState.reset(pipelineState);
+	m_PipelineState = pipelineState;
 
 	return true;
 }

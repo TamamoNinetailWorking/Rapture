@@ -22,7 +22,8 @@ bool CRootSignature::Initialize(const FInitializer& _Initializer)
 
 void CRootSignature::Finalize()
 {
-	ReleaseD3DPtr(m_RootSignature);
+	//ReleaseD3DUniquePtr(m_RootSignature);
+	SafeReleaseD3DPtr(m_RootSignature);
 }
 
 CRootSignature::~CRootSignature()
@@ -65,7 +66,8 @@ bool CRootSignature::CreateRootSignature(const FInitializer& _Initializer)
 	SafeReleaseD3DPtr(signatureBlob);
 	D3D_ERROR_CHECK(result);
 
-	m_RootSignature.reset(rootSignature);
+	//m_RootSignature.reset(rootSignature);
+	m_RootSignature = rootSignature;
 
 	return true;
 }

@@ -43,7 +43,8 @@ protected:
 	bool CompileShaderFromFile(const FInitializerMiddle* _Initializer);
 
 	
-	std::unique_ptr<ID3DBlob> m_ShaderBlob = nullptr;
+	//std::unique_ptr<ID3DBlob> m_ShaderBlob = nullptr;
+	ObjectPtr(ID3DBlob) m_ShaderBlob = nullptr;
 
 	static Hash160& TargetSet(FInitializerMiddle* _Initializer);
 

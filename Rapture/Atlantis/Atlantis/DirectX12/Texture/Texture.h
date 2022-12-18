@@ -29,19 +29,23 @@ public:
 	void Finalize() override;
 
 
-	DirectX::TexMetadata* GetMetaData() const { return m_MetaData.get(); };
+	DirectX::TexMetadata* GetMetaData() const { return m_MetaData; };
 	const DirectX::Image* GetImage() const;
 
 	CTexture() {};
-	CTexture(const CTexture& _resource);
 	~CTexture();
 
 private:
 
 	bool CreateTexture(const FInitializer* _Initializer);
 
-	std::unique_ptr<DirectX::TexMetadata> m_MetaData = nullptr;
-	std::unique_ptr<DirectX::ScratchImage> m_Image = nullptr;
+	//std::unique_ptr<DirectX::TexMetadata> m_MetaData = nullptr;
+	ObjectPtr(DirectX::TexMetadata) m_MetaData = nullptr;
+	//std::unique_ptr<DirectX::ScratchImage> m_Image = nullptr;
+	ObjectPtr(DirectX::ScratchImage) m_Image = nullptr;
+
+	//std::string m_FileExtension = {};
+	Hash160 m_FileExtensionHash = {};
 
 };
 

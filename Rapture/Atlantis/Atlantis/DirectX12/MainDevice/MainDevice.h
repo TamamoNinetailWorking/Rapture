@@ -24,13 +24,13 @@ public:
 	// 終了処理
 	void Finalize();
 
-	// デバッグレイヤーの有効化
-	bool EnableDebugLayer() const;
+	//// デバッグレイヤーの有効化
+	//bool EnableDebugLayer() const;
 
 
 	// ゲッター
-	ID3D12Device* GetDevice() const { return m_Device.get(); };
-	IDXGIFactory6* GetGIFactory() const { return m_GIFactory.get(); };
+	ID3D12Device* GetDevice() const { return m_Device; };
+	IDXGIFactory6* GetGIFactory() const { return m_GIFactory; };
 
 	CDX12MainDevice() {};
 	~CDX12MainDevice();
@@ -48,13 +48,16 @@ private:
 
 
 	// メインになるDirectXデバイス
-	std::unique_ptr<ID3D12Device> m_Device = nullptr;
+	//std::unique_ptr<ID3D12Device> m_Device = nullptr;
+	ObjectPtr(ID3D12Device) m_Device = nullptr;
 
 	// GIFactory
-	std::unique_ptr<IDXGIFactory6> m_GIFactory = nullptr;
+	//std::unique_ptr<IDXGIFactory6> m_GIFactory = nullptr;
+	ObjectPtr(IDXGIFactory6) m_GIFactory = nullptr;
 
 	// グラフィックアダプター
-	std::unique_ptr<IDXGIAdapter> m_Adapter = nullptr;
+	//std::unique_ptr<IDXGIAdapter> m_Adapter = nullptr;
+	ObjectPtr(IDXGIAdapter) m_Adapter = nullptr;
 
 	// フィーチャーレベル
 	D3D_FEATURE_LEVEL m_FeatureLevel = {};

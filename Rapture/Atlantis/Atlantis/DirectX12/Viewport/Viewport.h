@@ -20,7 +20,7 @@ public:
 
 	void Finalize();
 
-	const D3D12_VIEWPORT* GetViewport() const { return m_Viewport.get(); };
+	const D3D12_VIEWPORT* GetViewport() const { return m_Viewport; };
 
 	CViewport() {};
 	~CViewport() {};
@@ -29,7 +29,8 @@ private:
 
 	bool CreateViewport(const FViewportInitializer& _Initializer);
 
-	std::unique_ptr<D3D12_VIEWPORT> m_Viewport = nullptr;
+	//std::unique_ptr<D3D12_VIEWPORT> m_Viewport = nullptr;
+	ObjectPtr(D3D12_VIEWPORT) m_Viewport = nullptr;
 
 };
 

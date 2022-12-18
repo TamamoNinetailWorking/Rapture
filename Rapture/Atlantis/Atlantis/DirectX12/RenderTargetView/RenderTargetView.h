@@ -19,21 +19,17 @@ public:
 	struct FRenderTargetViewInitializer
 	{
 		ID3D12Device* Device = nullptr;
-		IDXGISwapChain4* SwapChain = nullptr;
+		ID3D12Resource* ResPtr = nullptr;
 		D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
-		uint32 BackBufferCount = 0;
 	};
 
 	bool Initialize(const FRenderTargetViewInitializer& _Initializer);
 
 	void Finalize();
 
-
-	typedef std::vector<ID3D12Resource*> BackBuffer;
-
 	// ゲッター
-	ID3D12DescriptorHeap* GetRenderTargetView() const { return m_RenderTargetView.get(); };
-	BackBuffer* GetBackBuffer() const { return m_BackBuffer.get(); };
+	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_DescriptorHeap; };
+	ID3D12Resource* GetResource() const { return m_Resource; };
 
 private:
 
@@ -42,11 +38,15 @@ private:
 
 	bool CreateRenderTargetView(const FRenderTargetViewInitializer& _Initializer);
 
-	// レンダーターゲットビュー
-	std::unique_ptr<ID3D12DescriptorHeap> m_RenderTargetView = nullptr;
+	// ディスクリプタ―ヒープ
+	ObjectPtr(ID3D12DescriptorHeap) m_DescriptorHeap = nullptr;
 
-	// バックバッファ
-	std::unique_ptr<BackBuffer> m_BackBuffer = nullptr;
+	// RTVリソース
+	ObjectPtr(ID3D12Resource) m_Resource = nullptr;
+
+	// RTVリソースが自身のものかどうか
+	// >>解放責任が自分にあるかどうか
+	bool m_IsResouceMine = true;
 };
 
 

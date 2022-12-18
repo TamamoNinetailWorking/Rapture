@@ -16,13 +16,13 @@ bool CDX12MainDevice::Initialize()
 {
 	do{
 
-#ifdef ATLANTIS_DEBUG
-		// デバッグレイヤーの有効化
-		if (!EnableDebugLayer())
-		{
-			break;
-		}
-#endif
+//#ifdef ATLANTIS_DEBUG
+//		// デバッグレイヤーの有効化
+//		if (!EnableDebugLayer())
+//		{
+//			break;
+//		}
+//#endif
 
 		if (!CreateGIFacotry())
 		{
@@ -51,26 +51,28 @@ bool CDX12MainDevice::Initialize()
 
 void CDX12MainDevice::Finalize()
 {
-
-	ReleaseD3DPtr(m_Device);
-	ReleaseD3DPtr(m_Adapter);
-	ReleaseD3DPtr(m_GIFactory);
+	//ReleaseD3DUniquePtr(m_Device);
+	SafeReleaseD3DPtr(m_Device);
+	//ReleaseD3DUniquePtr(m_Adapter);
+	SafeReleaseD3DPtr(m_Adapter);
+	//ReleaseD3DUniquePtr(m_GIFactory);
+	SafeReleaseD3DPtr(m_GIFactory);
 }
 
-bool CDX12MainDevice::EnableDebugLayer() const
-{
-#ifdef ATLANTIS_DEBUG
-	// デバッグレイヤーをONにする
-	ID3D12Debug* debugLayer = nullptr;
-	D3D_ERROR_CHECK(D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer)));
-		debugLayer->EnableDebugLayer();
-
-		// デバッグレイヤーを有効化した後はこのインターフェースは不要らしい
-		debugLayer->Release();
-#endif
-
-	return true;
-}
+//bool CDX12MainDevice::EnableDebugLayer() const
+//{
+//#ifdef ATLANTIS_DEBUG
+//	// デバッグレイヤーをONにする
+//	ID3D12Debug* debugLayer = nullptr;
+//	D3D_ERROR_CHECK(D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer)));
+//		debugLayer->EnableDebugLayer();
+//
+//		// デバッグレイヤーを有効化した後はこのインターフェースは不要らしい
+//		debugLayer->Release();
+//#endif
+//
+//	return true;
+//}
 
 CDX12MainDevice::~CDX12MainDevice()
 {
@@ -88,7 +90,8 @@ bool CDX12MainDevice::CreateGIFacotry()
 #endif
 
 	// ユニークポインタ化
-	m_GIFactory = move(unique_ptr<IDXGIFactory6>(factory));
+	//m_GIFactory = move(unique_ptr<IDXGIFactory6>(factory));
+	m_GIFactory = factory;
 
 	return true;
 }
@@ -107,7 +110,7 @@ bool CDX12MainDevice::CreateDevice()
 	ID3D12Device* device = nullptr;
 	for (auto& elem : featureLevels)
 	{
-		if (D3D_PROCESS_CHECK(D3D12CreateDevice(m_Adapter.get(), elem, IID_PPV_ARGS(&device))))
+		if (D3D_PROCESS_CHECK(D3D12CreateDevice(m_Adapter, elem, IID_PPV_ARGS(&device))))
 		{
 			m_FeatureLevel = elem;
 			break;
@@ -116,7 +119,8 @@ bool CDX12MainDevice::CreateDevice()
 
 	if (device == nullptr) { return false; }
 
-	m_Device = move(unique_ptr<ID3D12Device>(device));
+	//m_Device = move(unique_ptr<ID3D12Device>(device));
+	m_Device = device;
 	return true;
 }
 
@@ -154,6 +158,7 @@ bool CDX12MainDevice::GetAdapter()
 		return false;
 	}
 
-	m_Adapter = move(unique_ptr<IDXGIAdapter>(adapter));
+	//m_Adapter = move(unique_ptr<IDXGIAdapter>(adapter));
+	m_Adapter = adapter;
 	return true;
 }

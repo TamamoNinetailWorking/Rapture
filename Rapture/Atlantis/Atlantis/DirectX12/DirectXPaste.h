@@ -58,6 +58,25 @@ namespace Glue
 
 	const D3D12_ROOT_SIGNATURE_FLAGS GetD3DRootSignatureFlag(ERootSignatureFlag _Flag);
 
+	enum EResourceBarrierType : uint8
+	{
+		BARRIER_TYPE_TRANSITION = 0,
+		BARRIER_TYPE_ALIASING = (BARRIER_TYPE_TRANSITION + 1),
+		BARRIER_TYPE_UAV = (BARRIER_TYPE_ALIASING + 1)
+	};
+
+	const D3D12_RESOURCE_BARRIER_TYPE GetD3DResourceBarrierType(EResourceBarrierType _Type);
+
+	enum EResourceState : uint32
+	{
+		RESOURCE_STATE_COMMON = 0,
+		RESOURCE_STATE_PRESENT = RESOURCE_STATE_COMMON,
+
+		RESOURCE_STATE_RENDER_TARGET = 0x4,
+	};
+
+	const D3D12_RESOURCE_STATES GetD3DResourceState(EResourceState _state);
+
 };
 
 

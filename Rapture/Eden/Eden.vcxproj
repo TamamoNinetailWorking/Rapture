@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="eden\eden_base.h" />
     <ClInclude Include="eden\eden_define.h" />
+    <ClInclude Include="eden\include\common\pointer.h" />
     <ClInclude Include="eden\include\common\print.h" />
     <ClInclude Include="eden\include\common\types.h" />
     <ClInclude Include="eden\include\gadget\serializer\serializer.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="eden\include\template\NonCopyable.h" />
     <ClInclude Include="eden\include\template\singleton.h" />
     <ClInclude Include="eden\include\utility\ender_utility.h" />
+    <ClInclude Include="eden\include\utility\StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\common\print.cpp" />
@@ -188,6 +190,7 @@
     <ClCompile Include="eden\src\system\HashTable\HashTable.cpp" />
     <ClCompile Include="eden\src\system\sha1\sha1.cpp" />
     <ClCompile Include="eden\src\system\window\window.cpp" />
+    <ClCompile Include="eden\src\utility\StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="eden\include\math\math_utility.inl" />

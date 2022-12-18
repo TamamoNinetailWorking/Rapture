@@ -34,8 +34,10 @@ bool CCommandContext::Initialize(const FCommandContextInitializer& _Initializer)
 
 void CCommandContext::Finalize()
 {
-	ReleaseD3DPtr(m_CmdList);
-	ReleaseD3DPtr(m_CmdAllocator);
+	//ReleaseD3DUniquePtr(m_CmdList);
+	SafeReleaseD3DPtr(m_CmdList);
+	//ReleaseD3DUniquePtr(m_CmdAllocator);
+	SafeReleaseD3DPtr(m_CmdAllocator);
 }
 
 void CCommandContext::Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource)
@@ -82,19 +84,20 @@ void CCommandContext::Close()
 void CCommandContext::Reset(ID3D12PipelineState* _PipelineState)
 {
 	m_CmdAllocator->Reset();
-	m_CmdList->Reset(m_CmdAllocator.get(), _PipelineState);
+	//m_CmdList->Reset(m_CmdAllocator.get(), _PipelineState);
+	m_CmdList->Reset(m_CmdAllocator, _PipelineState);
 }
 
 
 bool CCommandContext::CreateCommandAllocator(const FCommandContextInitializer& _Initializer)
 {
-
 	ID3D12CommandAllocator* allocator = nullptr;
 	D3D_ERROR_CHECK(_Initializer.Device->CreateCommandAllocator(
 		GetD3DCommandListType(_Initializer.listType),
 		IID_PPV_ARGS(&allocator)));
 
-	m_CmdAllocator = move(unique_ptr<ID3D12CommandAllocator>(allocator));
+	//m_CmdAllocator = move(unique_ptr<ID3D12CommandAllocator>(allocator));
+	m_CmdAllocator = allocator;
 	return true;
 }
 
@@ -105,10 +108,11 @@ bool CCommandContext::CreateCommandList(const FCommandContextInitializer& _Initi
 	D3D_ERROR_CHECK(_Initializer.Device->CreateCommandList(
 		_Initializer.NodeMask,
 		GetD3DCommandListType(_Initializer.listType),
-		m_CmdAllocator.get(),
+		m_CmdAllocator,
 		_Initializer.PipelineState,
 		IID_PPV_ARGS(&list)));
 
-	m_CmdList = move(unique_ptr<ID3D12GraphicsCommandList>(list));
+	//m_CmdList = move(unique_ptr<ID3D12GraphicsCommandList>(list));
+	m_CmdList = list;
 	return true;
 }

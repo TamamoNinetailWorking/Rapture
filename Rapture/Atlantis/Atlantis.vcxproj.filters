@@ -49,6 +49,12 @@
     <Filter Include="Atlantis\DirectX12\DirectXHelper">
       <UniqueIdentifier>{86c18967-312b-4f88-b690-1d920673d368}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\DirectX12\DirectXDebug">
+      <UniqueIdentifier>{168967c3-7c55-4027-8fe8-e68ca9889802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\Barrier">
+      <UniqueIdentifier>{c041b3c6-d959-4b0c-bd31-c2b6ece50d9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -138,6 +144,12 @@
     <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12_state_object.h">
       <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.h">
+      <Filter>Atlantis\DirectX12\DirectXDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Barrier\Barrier.h">
+      <Filter>Atlantis\DirectX12\Barrier</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -185,10 +197,17 @@
     <ClCompile Include="Atlantis\DirectX12\Utility\DirectXUtility.cpp">
       <Filter>Atlantis\DirectX12\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.cpp">
+      <Filter>Atlantis\DirectX12\DirectXDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Barrier\Barrier.cpp">
+      <Filter>Atlantis\DirectX12\Barrier</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Atlantis\DirectX12\DirectXTex\DirectXTex.inl">
       <Filter>Atlantis\DirectX12\DirectXTex</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
