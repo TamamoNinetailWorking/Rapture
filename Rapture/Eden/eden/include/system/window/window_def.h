@@ -1,20 +1,20 @@
-#pragma once
+ï»¿#pragma once
 
 EDENS_NAMESPACE_BEGIN
 
 /*
-*	GUIƒEƒBƒ“ƒhƒE¶¬‚Ì‚½‚ß‚Ì‰Šú‰»\‘¢‘Ì
+*	GUIã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”Ÿæˆã®ãŸã‚ã®åˆæœŸåŒ–æ§‹é€ ä½“
 */
 struct FWindowInitializer
 {
 
-	HINSTANCE Instance = nullptr;//ƒEƒBƒ“ƒhƒE\‘¢‘Ì
-	const c8* WindowName = nullptr;//ƒEƒBƒ“ƒhƒE–¼
-	const c8* WindowTitle = nullptr;//ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹
-	//s32 WindowMode = SW_HIDE; // ƒEƒBƒ“ƒhƒEƒ‚[ƒh
-	s32 WindowWidth = 0;//ƒEƒBƒ“ƒhƒE‚Ì‰¡•
-	s32 WindowHeight = 0;//ƒEƒBƒ“ƒhƒE‚Ì‚‚³
-	b8 IsFullScreen = false;//ƒtƒ‹ƒXƒNƒŠ[ƒ“Ý’è
+	HINSTANCE Instance = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ§‹é€ ä½“
+	const c8* WindowName = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å
+	const c8* WindowTitle = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«
+	//s32 WindowMode = SW_HIDE; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰
+	s32 WindowWidth = 0;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¨ªå¹…
+	s32 WindowHeight = 0;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é«˜ã•
+	b8 IsFullScreen = false;//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³è¨­å®š
 
 };
 

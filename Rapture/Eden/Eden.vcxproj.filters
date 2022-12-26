@@ -94,6 +94,12 @@
     <Filter Include="eden\src\system\utility">
       <UniqueIdentifier>{10ecd056-ab07-4705-a0c5-a462b5a58efe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\gadget\FileLoader">
+      <UniqueIdentifier>{a8fefa38-d74a-4d11-8527-0dcf80b484ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\gadget\FileLoader">
+      <UniqueIdentifier>{42d86ce9-a79c-4e00-89e4-1c65b419b91a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -159,6 +165,18 @@
     <ClInclude Include="eden\include\utility\StringUtility.h">
       <Filter>eden\include\utility</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\gadget\FileLoader\FileLoader.h">
+      <Filter>eden\include\gadget\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\Resource\ResourceManager.h">
+      <Filter>eden\include\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\Resource\ResourceInitializer.h">
+      <Filter>eden\include\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\Resource\ResourceManagerPreDefine.h">
+      <Filter>eden\include\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -193,6 +211,10 @@
     </ClCompile>
     <ClCompile Include="eden\src\utility\StringUtility.cpp">
       <Filter>eden\src\system\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\include\gadget\FileLoader\FileLoader.cpp" />
+    <ClCompile Include="eden\src\Resource\ResourceManager.cpp">
+      <Filter>eden\src\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

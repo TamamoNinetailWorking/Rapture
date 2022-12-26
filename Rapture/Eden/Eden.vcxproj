@@ -162,11 +162,15 @@
     <ClInclude Include="eden\include\common\pointer.h" />
     <ClInclude Include="eden\include\common\print.h" />
     <ClInclude Include="eden\include\common\types.h" />
+    <ClInclude Include="eden\include\gadget\FileLoader\FileLoader.h" />
     <ClInclude Include="eden\include\gadget\serializer\serializer.h" />
     <ClInclude Include="eden\include\gadget\timer\timer.h" />
     <ClInclude Include="eden\include\math\math_utility.h" />
     <ClInclude Include="eden\include\math\random_utility.h" />
     <ClInclude Include="eden\include\Resource\Resource.h" />
+    <ClInclude Include="eden\include\Resource\ResourceInitializer.h" />
+    <ClInclude Include="eden\include\Resource\ResourceManager.h" />
+    <ClInclude Include="eden\include\Resource\ResourceManagerPreDefine.h" />
     <ClInclude Include="eden\include\system\console\console_window.h" />
     <ClInclude Include="eden\include\system\directory\directory_manager.h" />
     <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h" />
@@ -180,10 +184,12 @@
     <ClInclude Include="eden\include\utility\StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="eden\include\gadget\FileLoader\FileLoader.cpp" />
     <ClCompile Include="eden\src\common\print.cpp" />
     <ClCompile Include="eden\src\gadget\serializer\serializer.cpp" />
     <ClCompile Include="eden\src\gadget\timer\timer.cpp" />
     <ClCompile Include="eden\src\Resource\Resource.cpp" />
+    <ClCompile Include="eden\src\Resource\ResourceManager.cpp" />
     <ClCompile Include="eden\src\system\console\console_window.cpp" />
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp" />
     <ClCompile Include="eden\src\system\frame_rate\frame_rate_manager.cpp" />

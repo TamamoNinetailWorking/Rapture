@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <memory>
 #include <deque>
@@ -43,11 +43,11 @@ private:
 	bool CreateCommandQueue(const FCommandQueueInitializer& _Initializer);
 
 
-	// ƒRƒ}ƒ“ƒhƒLƒ…[
+	// ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼
 	//std::unique_ptr<ID3D12CommandQueue> m_CmdQueue = nullptr;
 	ObjectPtr(ID3D12CommandQueue) m_CmdQueue = nullptr;
 
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒLƒ…[
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚­ãƒ¥ãƒ¼
 	std::deque<CCommandContext*> m_ListQueue = {};
 };
 

@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+﻿/////////////////////////////////////////////////////////////////////////////
 ///@file	types.h
 ///@brief	type define
 ///@data	2020/06/25
@@ -23,6 +23,18 @@ typedef unsigned	long long		u64;
 typedef				char			c8;
 
 typedef				bool			b8;
+
+typedef				char			sint8;
+typedef				short			sint16;
+typedef				int				sint32;
+typedef				long long		sint64;
+typedef				float			float32;
+typedef				double			float64;
+
+typedef unsigned	char			uint8;
+typedef unsigned	short			uint16;
+typedef unsigned	int				uint32;
+typedef unsigned	long long		uint64;
 
 
 #define SCast static_cast

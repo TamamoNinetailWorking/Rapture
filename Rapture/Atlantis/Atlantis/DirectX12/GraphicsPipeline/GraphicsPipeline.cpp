@@ -1,4 +1,4 @@
-#include "GraphicsPipeline.h"
+ï»¿#include "GraphicsPipeline.h"
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -44,10 +44,10 @@ bool CGraphicsPipeline::RecreateState(CDX12MainDevice* _device)
 	CHECK_RESULT_FALSE(_device);
 	if (m_PipelineState)
 	{
-		// ‚±‚Ìˆ—‚ðˆê“xƒpƒCƒvƒ‰ƒCƒ“‚ðƒZƒbƒg‚µ‚½Œã‚És‚¤‚Æ‚Ü‚¸‚»‚¤
-		// >> ‹°‚ç‚­•ÛŽ‚³‚ê‚Ä‚¢‚éŽQÆƒJƒEƒ“ƒ^‚ª0‚É‚È‚ç‚¸‚É–¢ŠJ•ú‚Ì‚Ü‚ÜÄì¬‚µ‚æ‚¤‚Æ‚µ‚ÄƒGƒ‰[‚É‚È‚é
-		// unique_ptr‚ðŽg‚í‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¨‚­
-		// >>‚±‚ê‚ðvector”z—ñ‚È‚Ç‚ÅŽ‚½‚È‚¢‚Æ‚ÍŒÀ‚ç‚È‚¢‚½‚ß
+		// ã“ã®å‡¦ç†ã‚’ä¸€åº¦ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚’ã‚»ãƒƒãƒˆã—ãŸå¾Œã«è¡Œã†ã¨ã¾ãšãã†
+		// >> æã‚‰ãä¿æŒã•ã‚Œã¦ã„ã‚‹å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ãŒ0ã«ãªã‚‰ãšã«æœªé–‹æ”¾ã®ã¾ã¾å†ä½œæˆã—ã‚ˆã†ã¨ã—ã¦ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹
+		// unique_ptrã‚’ä½¿ã‚ãªã„ã‚ˆã†ã«ã—ã¦ãŠã
+		// >>ã“ã‚Œã‚’vectoré…åˆ—ãªã©ã§æŒãŸãªã„ã¨ã¯é™ã‚‰ãªã„ãŸã‚
 		uint32 result = m_PipelineState->Release();
 		//m_PipelineState.release();
 	}

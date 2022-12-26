@@ -1,17 +1,17 @@
-#pragma once
+ï»¿#pragma once
 
-//”h¶ƒNƒ‰ƒX‚ðƒRƒs[‹ÖŽ~‚É‚·‚é‚½‚ß‚É
-//‘ã“ü‰‰ŽZŽq‚ÌƒI[ƒo[ƒ[ƒh‚ðprivate‰»
-//	¨Singleton‚ÌŠî’êƒNƒ‰ƒX‚¾‚Á‚½B
+//æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‚’ã‚³ãƒ”ãƒ¼ç¦æ­¢ã«ã™ã‚‹ãŸã‚ã«
+//ä»£å…¥æ¼”ç®—å­ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã‚’privateåŒ–
+//	â†’Singletonã®åŸºåº•ã‚¯ãƒ©ã‚¹ã ã£ãŸã€‚
 class CNonCopyable
 {
-protected://Œp³‚µ‚Ä‚àˆø‚«‘±‚«Žg—p‰Â”\
+protected://ç¶™æ‰¿ã—ã¦ã‚‚å¼•ãç¶šãä½¿ç”¨å¯èƒ½
 
 	CNonCopyable() {};
 	virtual ~CNonCopyable() {};
 
 private:
-	//‘ã“üˆ—‚É“–‚½‚é‚à‚Ì‚ðprivate‚É‚µ‚ÄŽg—p‹ÖŽ~‰»
+	//ä»£å…¥å‡¦ç†ã«å½“ãŸã‚‹ã‚‚ã®ã‚’privateã«ã—ã¦ä½¿ç”¨ç¦æ­¢åŒ–
 	CNonCopyable(const CNonCopyable&);
 	const CNonCopyable& operator=(const CNonCopyable&);
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 struct D3D12_GRAPHICS_PIPELINE_STATE_DESC;
 struct ID3D12PipelineState;
@@ -21,33 +21,33 @@ public:
 	bool Initialize();
 	void Finalize();
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğÄ¶¬
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å†ç”Ÿæˆ
 	bool RecreateState(CDX12MainDevice* _device);
 
 	
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğİ’è
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’è¨­å®š
 	void SetRootSignature(const CRootSignature* _RootSignature);
 
 
-	// -- ƒVƒF[ƒ_[ -- //
-	// ’¸“_ƒVƒF[ƒ_[‚ğİ’è
+	// -- ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ -- //
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’è¨­å®š
 	void SetVertexShader(const CVertexShader* _Shader);
 
-	// ƒnƒ‹ƒVƒF[ƒ_[‚ğİ’è
+	// ãƒãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’è¨­å®š
 	void SetHullShader(const CHullShader* _Shader);
 
-	// ƒhƒƒCƒ“ƒVƒF[ƒ_[‚ğİ’è
+	// ãƒ‰ãƒ¡ã‚¤ãƒ³ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’è¨­å®š
 	void SetDomainShader(const CDomainShader* _Shader);
 
-	// ƒWƒIƒƒgƒŠƒVƒF[ƒ_[‚ğİ’è
+	// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’è¨­å®š
 	void SetGeometoryShader(const CGeometoryShader* _Shader);
 
-	// ƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚ğİ’è
+	// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’è¨­å®š
 	void SetPixelShader(const CPixelShader* _Shader);
 	// ---------------- //
 
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12PipelineState* GetPipelineState() const { return m_PipelineState; };
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC* GetPipelineDescEdit() const { return m_PipelineDesc; };
 
@@ -62,11 +62,11 @@ private:
 
 	bool CreatePipelineState(CDX12MainDevice* _device);
 
-	// ƒpƒCƒvƒ‰ƒCƒ“‚Ì\¬—v‘f
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®æ§‹æˆè¦ç´ 
 	//std::unique_ptr<D3D12_GRAPHICS_PIPELINE_STATE_DESC> m_PipelineDesc = nullptr;
 	ObjectPtr(D3D12_GRAPHICS_PIPELINE_STATE_DESC) m_PipelineDesc = nullptr;
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 	//std::unique_ptr<ID3D12PipelineState> m_PipelineState = nullptr;
 	ObjectPtr(ID3D12PipelineState) m_PipelineState = nullptr;
  };

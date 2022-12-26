@@ -1,11 +1,14 @@
-#pragma once
+ï»¿#pragma once
 
-#include <memory>
+//#include <memory>
 //#include <d3d12.h>
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
 
 ATLANTIS_NAMESPACE_BEGIN
+
+class CRenderTargetView;
+class CDepthStencilView;
 
 class CCommandContext
 {
@@ -16,27 +19,23 @@ public:
 		ID3D12Device* Device = nullptr;
 		ID3D12PipelineState* PipelineState = nullptr;
 		uint32 NodeMask = 0;
-		Glue::ECommandListType listType;
+		Glue::ECommandListType listType = {};
 	};
 
 	bool Initialize(const FCommandContextInitializer& _Initializer);
 	void Finalize();
 
-	// ƒŠƒ\[ƒXƒoƒŠƒA
-	void Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource);
+	// ãƒªã‚½ãƒ¼ã‚¹ãƒãƒªã‚¢
+	void Barrier(const class CBarrier* _Barrier);
 
 	// OMSetRenderTargets
-	void OMSetRenderTargets(
-		uint32 NumRenderTargetDescriptors,
-		const D3D12_CPU_DESCRIPTOR_HANDLE* pRenderTargetDescriptors,
-		bool RTsSingleHandleToDescriptorRange,
-		const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor);
+	void OMSetRenderTarget(CRenderTargetView* _RenderTarget, CDepthStencilView* _DepthView);
 
 	// RSSetViewport
-	void SetViewport(class CViewport* _viewport);
+	void SetViewport(const class CViewport* _viewport);
 
 	// RSSetScissorRect
-	void SetScissorRect(class CScissorRect* _rect);
+	void SetScissorRect(const class CScissorRect* _rect);
 
 	// SetPipelineState
 	void SetPipelineState(class CGraphicsPipeline* _pipeline);
@@ -44,13 +43,25 @@ public:
 	// SetRootSignature
 	void SetRootSignature(class CRootSignature* _RootSignature);
 
-	// ƒNƒ[ƒY
+	// ClearRenderTargetView
+	void ClearRenderTargetView(CRenderTargetView* _RenderTarget,const float* _ClearColor);
+
+	// ClearDepthStencilView
+	void ClearDepthStencilView(CDepthStencilView* _DepthStencilView,float _ClearDepth);
+
+	// IASetVertexBuffer
+	void SetVertexBuffer(const class CVertexBuffer* _VertexBuffer);
+
+	// IASetIndexBuffer
+	void SetIndexBuffer(const class CIndexBuffer* _IndexBuffer);
+
+	// ã‚¯ãƒ­ãƒ¼ã‚º
 	void Close();
 
-	// ƒŠƒZƒbƒg
-	void Reset(ID3D12PipelineState* _PipelineState = nullptr);
+	// ãƒªã‚»ãƒƒãƒˆ
+	void Reset(class CGraphicsPipeline* _Pipeline);
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12CommandAllocator* GetCommandAllocator() const { return m_CmdAllocator; };
 	ID3D12GraphicsCommandList* GetCommandList() const { return m_CmdList; };
 
@@ -66,11 +77,11 @@ private:
 	bool CreateCommandList(const FCommandContextInitializer& _Initializer);
 
 
-	// ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^[iƒRƒ}ƒ“ƒh‚ÌÀ‘Ì‚ğ•Û—L‚·‚éj
+	// ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ãƒ¼ï¼ˆã‚³ãƒãƒ³ãƒ‰ã®å®Ÿä½“ã‚’ä¿æœ‰ã™ã‚‹ï¼‰
 	//std::unique_ptr<ID3D12CommandAllocator> m_CmdAllocator = nullptr;
 	ObjectPtr(ID3D12CommandAllocator) m_CmdAllocator = nullptr;
 
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒgiƒRƒ}ƒ“ƒh‚Ì‰¼‘zƒŠƒXƒgj
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆï¼ˆã‚³ãƒãƒ³ãƒ‰ã®ä»®æƒ³ãƒªã‚¹ãƒˆï¼‰
 	//std::unique_ptr<ID3D12GraphicsCommandList> m_CmdList = nullptr;
 	ObjectPtr(ID3D12GraphicsCommandList) m_CmdList = nullptr;
 

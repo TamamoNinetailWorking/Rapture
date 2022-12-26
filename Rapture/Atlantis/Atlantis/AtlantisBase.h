@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 
-// Atlantis‚Ìƒx[ƒX’è‹`
+// Atlantisã®ãƒ™ãƒ¼ã‚¹å®šç¾©
 
 typedef				char			int8;
 typedef				short			int16;

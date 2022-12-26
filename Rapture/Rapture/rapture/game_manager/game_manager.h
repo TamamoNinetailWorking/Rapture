@@ -21,6 +21,7 @@ class CSwapChain;
 class CFence;
 class CRenderTargetView;
 class CBarrier;
+class CDepthStencilView;
 
 class CViewport;
 class CScissorRect;
@@ -31,7 +32,17 @@ class CPixelShader;
 class CGraphicsPipeline;
 class CRootSignature;
 
+
 ATLANTIS_NAMESPACE_END
+
+BIFROST_NAMESPACE_BEGIN
+
+class CSubsystemDominator;
+class CResourceManagementSubsystem;
+
+class IResourceSubsystem;
+
+BIFROST_NAMESPACE_END
 
 /*
 *	ゲーム処理を統括するマネージャー
@@ -52,7 +63,10 @@ private:
 
 	void Render();
 
+	ObjectPtr(BIFROST_NAMESPACE::CSubsystemDominator) m_SubsystemDominator = nullptr;
+	ObjectPtr(BIFROST_NAMESPACE::CResourceManagementSubsystem) m_ResourceSubsystem = nullptr;
 
+	ObjectPtr(BIFROST_NAMESPACE::IResourceSubsystem) m_ResSystemInterface = nullptr;
 
 	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
 	ATLANTIS_NAMESPACE::CDirectXDebug* m_Debug = nullptr;
@@ -74,6 +88,8 @@ private:
 	ATLANTIS_NAMESPACE::CRootSignature* m_PmdRootSignature = nullptr;
 
 	std::vector<ATLANTIS_NAMESPACE::CRenderTargetView*> m_RTV = {};
+
+	ATLANTIS_NAMESPACE::CDepthStencilView* m_DepthStencilView = nullptr;
 
 	//// こいつは1つのはず
 	//struct ID3D12Device* m_Device = nullptr;
@@ -117,16 +133,16 @@ private:
 	// -メッシュ単位で持つもの
 
 	// 深度バッファ
-	struct ID3D12Resource* m_DepthStencilBuffer = nullptr;
+	//struct ID3D12Resource* m_DepthStencilBuffer = nullptr;
 
 	// テクスチャ
-	struct ID3D12Resource* m_TextureBuffer = nullptr;
+	//struct ID3D12Resource* m_TextureBuffer = nullptr;
 
 	// ディスクリプタ―ヒープ
 	struct ID3D12DescriptorHeap* m_DescHeap = nullptr;
 
 	// 深度バッファ用ディスクリプタ―ヒープ
-	struct ID3D12DescriptorHeap* m_DepthDescHeap = nullptr;
+	//struct ID3D12DescriptorHeap* m_DepthDescHeap = nullptr;
 
 
 	// GPU送信用行列ポインタ

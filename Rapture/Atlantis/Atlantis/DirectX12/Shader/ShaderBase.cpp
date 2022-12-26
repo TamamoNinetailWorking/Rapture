@@ -1,6 +1,8 @@
-#include "ShaderBase.h"
+﻿#include "ShaderBase.h"
+#include "ShaderBaseInitializer.h"
 
 //#include <locale.h>
+#include <d3d12.h>
 #include <d3dcompiler.h>
 #include <string>
 
@@ -13,13 +15,13 @@ USING_ATLANTIS;
 
 EDENS_NAMESPACE_USING;
 
-bool CShaderBase::Initialize(const FInitializerBase* _Initializer)
+bool CShaderBase::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	do
 	{
 		CHECK_RESULT_BREAK(_Initializer);
-		CHECK_RESULT_BREAK(CompileShaderFromFile(PCast<const FInitializerMiddle*>(_Initializer)));
-		
+		CHECK_RESULT_BREAK(CompileShaderFromFile(PCast<const FShaderBaseInitializer*>(_Initializer)));
+
 		return true;
 	} while (0);
 
@@ -33,12 +35,22 @@ void CShaderBase::Finalize()
 	SafeReleaseD3DPtr(m_ShaderBlob);
 }
 
+CShaderBase::ShaderCode CShaderBase::GetShaderBytecod() const
+{
+	return m_ShaderBlob->GetBufferPointer();
+}
+
+uint64 CShaderBase::GetBufferSize() const
+{
+	return m_ShaderBlob->GetBufferSize();
+}
+
 CShaderBase::~CShaderBase()
 {
 	CResource::~CResource();
 }
 
-bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
+bool CShaderBase::CompileShaderFromFile(const FShaderBaseInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 
@@ -72,7 +84,7 @@ bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
 	{
 		if (result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
 		{
-			PRINT("�t�@�C�������݂��܂���B");
+			PRINT("ファイルが存在しません。");
 		}
 		else
 		{
@@ -93,10 +105,17 @@ bool CShaderBase::CompileShaderFromFile(const FInitializerMiddle* _Initializer)
 	//m_ShaderBlob.reset(shader);
 	m_ShaderBlob = shader;
 
+	// FileNameとFuncNameを結合したものを与えて、
+	// セパレータで中で分離する形にしたい
+	// >> そうすればHashTableに登録するものは1つになる
+	string fn = RHash160(_Initializer->FileNameHash);
+	string fcn = RHash160(_Initializer->FuncNameHash);
+	m_ResourceName = CHash160(fn + fcn);
+
 	return true;
 }
 
-Hash160& CShaderBase::TargetSet(FInitializerMiddle* _Initializer)
+Hash160& CShaderBase::TargetSet(FShaderBaseInitializer* _Initializer)
 {
 	return _Initializer->TargetHash;
 }

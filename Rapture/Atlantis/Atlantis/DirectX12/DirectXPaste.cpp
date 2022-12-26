@@ -1,4 +1,4 @@
-#include "DirectXPaste.h"
+﻿#include "DirectXPaste.h"
 
 
 ATLANTIS_NAMESPACE_BEGIN
@@ -33,6 +33,14 @@ namespace Glue
 	const D3D12_RESOURCE_STATES GetD3DResourceState(EResourceState _state)
 	{
 		return  SCast<D3D12_RESOURCE_STATES>(_state);
+	}
+	const D3D12_RESOURCE_DIMENSION GetD3DResourceDimension(EResourceDimension _dimension)
+	{
+		return SCast<D3D12_RESOURCE_DIMENSION>(_dimension);
+	}
+	const DXGI_FORMAT GetDXGIFormat(EDataFormat _format)
+	{
+		return SCast<DXGI_FORMAT>(_format);
 	}
 };
 

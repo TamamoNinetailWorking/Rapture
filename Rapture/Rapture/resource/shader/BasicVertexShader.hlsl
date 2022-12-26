@@ -3,6 +3,7 @@
 cbuffer cbuff0 : register(b0)
 {
 	matrix wmat;
+	matrix vmat;
 	matrix vpmat;
 	matrix wvpmat;
 };

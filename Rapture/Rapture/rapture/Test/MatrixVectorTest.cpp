@@ -1,4 +1,4 @@
-
+ï»¿
 #include <DirectXMath.h>
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
@@ -71,7 +71,7 @@ namespace Test
 			//CREATE_AND_LOAD_VECTOR3_PARAM(EyeDirection, 0.f, 0.f, 1.f);
 			//CREATE_AND_LOAD_VECTOR3_PARAM(UpDirection, 0.f, 1.f, 0.f);
 
-			// Ž‹“_•ûŒüƒxƒNƒgƒ‹‚Ì³‹K‰»
+			// è¦–ç‚¹æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®æ­£è¦åŒ–
 			//Vector3 R2 = {};
 			//XMVECTOR xmR2 = XMLoadFloat3(&EyeDirection);
 			//xmR2 = XMVector3Normalize(xmR2);
@@ -81,7 +81,7 @@ namespace Test
 			xmR2 = XMVector3Normalize(xmEyeDirection);
 
 
-			// Ž‹“_•ûŒüƒxƒNƒgƒ‹‚Æã•ûŒüƒxƒNƒgƒ‹‚ÌŠOÏ
+			// è¦–ç‚¹æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã¨ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å¤–ç©
 			//Vector3 R0 = {};
 			//CREATE_XMVECTOR_FROM3(R0);
 			CREATE_AND_LOAD_VECTOR3(R0);
@@ -91,7 +91,7 @@ namespace Test
 			//PRINT_VECTOR("R0", R0);
 			STORE_AND_PRINT_VECTOR(R0);
 
-			// R2‚ÆR0‚ÌŠOÏ
+			// R2ã¨R0ã®å¤–ç©
 			CREATE_AND_LOAD_VECTOR3(R1);
 			xmR1 = XMVector3Cross(xmR2, xmR0);
 			STORE_AND_PRINT_VECTOR(R1);
@@ -99,12 +99,12 @@ namespace Test
 			//PRINT_VECTOR("R2", R2);
 			STORE_AND_PRINT_VECTOR(R2);
 
-			// Ž‹“_ˆÊ’uƒxƒNƒgƒ‹‚Ì‹tƒxƒNƒgƒ‹
+			// è¦–ç‚¹ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«ã®é€†ãƒ™ã‚¯ãƒˆãƒ«
 			CREATE_AND_LOAD_VECTOR3(NegEyePosition);
 			xmNegEyePosition = XMVectorNegate(xmEyePos);
 			STORE_AND_PRINT_VECTOR(NegEyePosition);
 
-			// D0,D1,D2‚ÌƒJƒƒ‰‚ÌŽp¨ƒxƒNƒgƒ‹
+			// D0,D1,D2ã®ã‚«ãƒ¡ãƒ©ã®å§¿å‹¢ãƒ™ã‚¯ãƒˆãƒ«
 			CREATE_AND_LOAD_VECTOR3(D0);
 			CREATE_AND_LOAD_VECTOR3(D1);
 			CREATE_AND_LOAD_VECTOR3(D2);
@@ -117,7 +117,7 @@ namespace Test
 			STORE_AND_PRINT_VECTOR(D1);
 			STORE_AND_PRINT_VECTOR(D2);
 
-			// s—ñ‚ÌÅI¬•ª
+			// è¡Œåˆ—ã®æœ€çµ‚æˆåˆ†
 			CREATE_AND_LOAD_VECTOR3(M0);
 			CREATE_AND_LOAD_VECTOR3(M1);
 			CREATE_AND_LOAD_VECTOR3(M2);

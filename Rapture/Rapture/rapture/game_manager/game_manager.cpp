@@ -17,6 +17,18 @@
 //#pragma comment(lib,"dxgi.lib")
 //#pragma comment(lib,"d3dcompiler.lib")
 
+#include <Bifrost/Subsystem/Dominator/SubsystemDominator.h>
+#include <Bifrost/Subsystem/Resource/ResourceManagementSubsystem.h>
+#include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
+
+#include <Atlantis/Resource/TextureResourceManager.h>
+#include <rapture/Subsystem/ResourceSubsystemImpl.h>
+
+
+#include <rapture/Environment/ResourceTypeDefine.h>
+
+#include <Bifrost/Resource/DefaultResourceDefine.h>
+
 #include <Atlantis/DirectX12/DirectXTex/DirectXTex.h>
 #include <Atlantis/DirectX12/DirectXHelper/d3dx12.h>
 
@@ -30,17 +42,30 @@
 #include <Atlantis/DirectX12/Command/CommandQueue.h>
 #include <Atlantis/DirectX12/SwapChain/SwapChain.h>
 #include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
+#include <Atlantis/DirectX12/DepthStencilView/DepthStencilView.h>
 #include <Atlantis/DirectX12/Fence/Fence.h>
 #include <Atlantis/DirectX12/Barrier/Barrier.h>
 
+#include <Atlantis/DirectX12/VertexBuffer/VertexBuffer.h>
+#include <Atlantis/DirectX12/IndexBuffer/IndexBuffer.h>
+
+#include <Bifrost/Model/MeshData/MeshData.h>
+#include <Bifrost/Model/MeshData/MeshDataInitializer.h>
+
 #include <Atlantis/DirectX12/Viewport/Viewport.h>
 #include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
+
 #include <Atlantis/DirectX12/Shader/GraphicsShader.h>
+#include <Atlantis/DirectX12/Shader/GraphicsShaderInitializer.h>
 
 #include <Atlantis/DirectX12/Texture/Texture.h>
+#include <Atlantis/DirectX12/Texture/TextureResource.h>
+#include <Atlantis/DirectX12/Texture/TextureResourceInitializer.h>
 
 #include <Atlantis/DirectX12/GraphicsPipeline/GraphicsPipeline.h>
 #include <Atlantis/DirectX12/RootSignature/RootSignature.h>
+
+#include <eden/include/gadget/FileLoader/FileLoader.h>
 
 #include <rapture/Test/Test.h>
 #include <eden/include/math/random_utility.h>
@@ -50,10 +75,10 @@ using namespace DirectX;
 
 EDENS_NAMESPACE_USING;
 USING_ATLANTIS;
+USING_BIFROST;
 
 using namespace Glue;
 
-//XMMATRIX* m_SceneMatricesData = nullptr;
 
 // ビュー行列
 XMMATRIX ViewMatrix = {};
@@ -78,7 +103,6 @@ struct SceneMatricesData
 	Vector3 LightColor = {};
 	float padding3 = 0.f;
 };
-//uint32 size = sizeof(SceneMatricesData);
 
 // シェーダーに送るマテリアルデータ
 struct MaterialForHlsl
@@ -110,8 +134,6 @@ struct MaterialData
 constexpr uint32 MaterialDataSize = sizeof(MaterialData);
 
 vector<MaterialData> m_MaterialData = {};
-
-//#define ARRAYOF(_Array) sizeof(_Array) / sizeof(_Array[0])
 
 #define D3D_ERROR_CHECK_TEMP(result) if(FAILED(result)) { return false; };
 
@@ -196,6 +218,19 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		}
 
 		{
+			CDepthStencilView::FInitializer initializer = {};
+			initializer.Device = m_MainDevice->GetDevice();
+			initializer.Width = _Initializer->ViewportWidth;
+			initializer.Height = _Initializer->ViewportHeight;
+			initializer.ClearDepth = 1.f;
+
+
+			m_DepthStencilView = new CDepthStencilView();
+			D3D_INIT_PROCESS_CHECK(m_DepthStencilView->Initialize(initializer));
+
+		}
+
+		{
 			m_Barrier = new CBarrier();
 			D3D_INIT_PROCESS_CHECK(m_Barrier);
 			CBarrier::FInitializer initializer = {};
@@ -203,26 +238,30 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			m_Barrier->Initializer(initializer);
 		}
 
-		m_Fence = new CFence();
-		if (!m_Fence) { break; }
-
-		CFence::FFenceInitializer fenceInitializer;
-		fenceInitializer.Device = m_MainDevice->GetDevice();
-
-		if (!m_Fence->Initialize(fenceInitializer))
 		{
-			break;
+			m_Fence = new CFence();
+			if (!m_Fence) { break; }
+
+			CFence::FFenceInitializer fenceInitializer;
+			fenceInitializer.Device = m_MainDevice->GetDevice();
+
+			if (!m_Fence->Initialize(fenceInitializer))
+			{
+				break;
+			}
 		}
 
-		m_Viewport = new CViewport();
-		if (!m_Viewport) { break; };
-
-		CViewport::FViewportInitializer viewportInitializer;
-		viewportInitializer.ViewportWidth = SCast<float>(_Initializer->ViewportWidth);
-		viewportInitializer.VIewportHeight = SCast<float>(_Initializer->ViewportHeight);
-		if (!m_Viewport->Initialize(viewportInitializer))
 		{
-			break;
+			m_Viewport = new CViewport();
+			if (!m_Viewport) { break; };
+
+			CViewport::FViewportInitializer viewportInitializer;
+			viewportInitializer.ViewportWidth = SCast<float>(_Initializer->ViewportWidth);
+			viewportInitializer.VIewportHeight = SCast<float>(_Initializer->ViewportHeight);
+			if (!m_Viewport->Initialize(viewportInitializer))
+			{
+				break;
+			}
 		}
 
 		{
@@ -236,190 +275,49 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_ScissorRect->Initialize(initializer));
 			
 		}
+
+		{
+			m_SubsystemDominator = new CSubsystemDominator();
+			CHECK_RESULT_BREAK(m_SubsystemDominator);
+
+			CHECK_RESULT_BREAK(m_SubsystemDominator->Initialize());
+			CSubsystemServiceLocator::SetSubsystemDominator(m_SubsystemDominator);
+		}
+
+		{
+			m_ResourceSubsystem = new CResourceManagementSubsystem();
+			CHECK_RESULT_BREAK(m_ResourceSubsystem);
+
+			CResourceManagementSubsystem::FInitializer initializer = {};
+			initializer.ResourceTypeNum = EResourceManagementType::RESOURCE_TYPE_NUM;
+
+			CHECK_RESULT_BREAK(m_ResourceSubsystem->Initialize(initializer));
+
+			
+			// Texture
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CTextureResourceManager>(EResourceManagementType::RESOURCE_TYPE_TEXTURE));
+			}
+
+			m_ResSystemInterface = new CResourceSubsystemImpl();
+			CHECK_RESULT_BREAK(m_ResSystemInterface);
+			auto ptr = PCast<CResourceSubsystemImpl*>(m_ResSystemInterface);
+			
+			ptr->SetSubsystem(m_ResourceSubsystem);
+
+
+			m_SubsystemDominator->SetResourceSubsystem(ptr);
+
+			CHECK_RESULT_BREAK(ptr->CreateDefaultTextureResource(m_MainDevice));
+		}
 		
-		
 
-
-#if 0
-#ifdef DEBUG_MODE
-	// デバッグレイヤーをONにする
-	ID3D12Debug* debugLayer = nullptr;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer))))
-	{
-		debugLayer->EnableDebugLayer();
-
-		// デバッグレイヤーを有効化した後はこのインターフェースは不要らしい
-		debugLayer->Release();
-	}
-#endif
-
-
-	// GIFactoryの生成
-	if (FAILED(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&m_GIFactory))))
-	{
-		//if (FAILED(CreateDXGIFactory2(0, IID_PPV_ARGS(&m_GIFactory))))
-		//{
-		//	return false;
-		//}
-		D3D_ERROR_CHECK_TEMP(CreateDXGIFactory2(0, IID_PPV_ARGS(&m_GIFactory)));
-	}
-
-	// GIFactoryからアダプター（グラフィックドライバー）の取得
-	vector<IDXGIAdapter*> adapters;
-	IDXGIAdapter* tempAdapter = nullptr;
-	for (u32 i = 0; ; ++i)
-	{
-		if (m_GIFactory->EnumAdapters(i, &tempAdapter) == DXGI_ERROR_NOT_FOUND)
-		{
-			break;
-		}
-
-		// 刺さっているグラフィックドライバーを配列に入れていく
-		adapters.push_back(tempAdapter);
-	}
-
-	for (auto& elem : adapters)
-	{
-		DXGI_ADAPTER_DESC desc = {};
-		elem->GetDesc(&desc);
-
-		wstring strDesc = desc.Description;
-		if (strDesc.find(L"NVIDIA") != std::string::npos)
-		{
-			tempAdapter = elem;
-			break;
-		}
-	}
-
-	// フィーチャーレベル列挙
-	D3D_FEATURE_LEVEL levels[] =
-	{
-		D3D_FEATURE_LEVEL_12_1,
-		D3D_FEATURE_LEVEL_12_0,
-		D3D_FEATURE_LEVEL_11_1,
-		D3D_FEATURE_LEVEL_11_0,
-	};
-
-	// 取得したアダプター情報からデバイスを初期化
 	HRESULT result = S_OK;
-	D3D_FEATURE_LEVEL featureLevel;
-	for (auto& elem : levels)
-	{
-		result = D3D12CreateDevice(tempAdapter, elem, IID_PPV_ARGS(&m_Device));
-
-		if (result == S_OK)
-		{
-			// 成功したフィーチャーレベルを保持しておく
-			featureLevel = elem;
-			break;
-		}
-	}
-
-	D3D_ERROR_CHECK_TEMP(result);
-	//if (FAILED(result)) { return false; }
-
-#else
-	HRESULT result = S_OK;
-#endif
 
 	ID3D12Device* m_Device = m_MainDevice->GetDevice();
 	IDXGIFactory6* m_GIFactory = m_MainDevice->GetGIFactory();
 	ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
 
-
-#if 0
-	// コマンドアロケーターの生成
-	//result = m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CmdAllocator));
-	//if (FAILED(result)) { return false; }
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CmdAllocator)));
-
-	// コマンドリストの生成
-	//result = m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CmdAllocator, nullptr, IID_PPV_ARGS(&m_CmdList));
-	//if (FAILED(result)) { return false; }
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CmdAllocator, nullptr, IID_PPV_ARGS(&m_CmdList)));
-
-	// コマンドキューの生成
-	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
-	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE; // タイムアウト無し
-	cmdQueueDesc.NodeMask = 0;
-	cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL; // 優先度設定特に無し
-	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT; // コマンドリストと同様のものを指定
-
-	//result = m_Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_CmdQueue));
-	//if (FAILED(result)) { return false; }
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&m_CmdQueue)));
-#endif
-
-#if 0
-	// スワップチェーンの作成
-	DXGI_SWAP_CHAIN_DESC1 swapchainDesc = {};
-	swapchainDesc.Width = _Initializer->ViewportWidth;
-	swapchainDesc.Height = _Initializer->ViewportHeight;
-	swapchainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapchainDesc.Stereo = false;
-	swapchainDesc.SampleDesc.Count = 1;
-	swapchainDesc.SampleDesc.Quality = 0;
-	swapchainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
-	swapchainDesc.BufferCount = 2;
-	swapchainDesc.Scaling = DXGI_SCALING_STRETCH;
-	swapchainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	swapchainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-	swapchainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
-	//result = m_GIFactory->CreateSwapChainForHwnd(
-	//	m_CmdQueue,
-	//	_Initializer->WindowHandle,
-	//	&swapchainDesc,
-	//	nullptr,
-	//	nullptr,
-	//	(IDXGISwapChain1**)&m_SwapChain);
-	//if (FAILED(result)) { return false; }
-
-	D3D_ERROR_CHECK_TEMP(m_GIFactory->CreateSwapChainForHwnd(
-		m_CmdQueue,
-		_Initializer->WindowHandle,
-		&swapchainDesc,
-		nullptr,
-		nullptr,
-		(IDXGISwapChain1**)&m_SwapChain));
-
-	// ディスクリプターヒープ？ DirectX12がやりとりするファイルブロックのようだが・・・
-	// >> どうやらスワップチェーンで実際に切り替えるレンダーターゲットビューを設定しているようだ
-	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットを作成しているようだ
-	heapDesc.NodeMask = 0;
-	heapDesc.NumDescriptors = 2; // 表裏の2つ
-	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; // 特にフラグの指定は無し
-
-	//result = m_Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_RtvHeaps));
-	//if (FAILED(result)) { return false; }
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&m_RtvHeaps)));
-
-	DXGI_SWAP_CHAIN_DESC swcDesc = {};
-	//result = m_SwapChain->GetDesc(&swcDesc);
-	//if(FAILED(result)) { return false; }
-	D3D_ERROR_CHECK_TEMP(m_SwapChain->GetDesc(&swcDesc));
-
-	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_RtvHeaps->GetCPUDescriptorHandleForHeapStart();
-
-	m_BackBuffers.resize(swcDesc.BufferCount);
-	for (u32 i = 0; i < m_BackBuffers.size(); ++i)
-	{
-		//result = m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_BackBuffers[i]));
-		//if (FAILED(result)) { return false; }
-		D3D_ERROR_CHECK_TEMP(m_SwapChain->GetBuffer(i, IID_PPV_ARGS(&m_BackBuffers[i])));
-
-		m_Device->CreateRenderTargetView(m_BackBuffers[i], nullptr, handle);
-		handle.ptr += m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	}
-#endif
-
-#if 0
-	// フェンス？
-	// GPUの処理待ちを行うための仕組みの1つらしい
-	/*result = m_Device->CreateFence(m_FenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence));*/
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateFence(m_FenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence)));
-#endif
 	{
 		// テストメッシュ
 
@@ -586,60 +484,12 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_IndexBufferView->SizeInBytes = indexSize;
 	}
 
-#if 0
-	// シェーダー // 
-	ID3DBlob* errorBlob = nullptr;
-
-	auto CompileFunction = [&](LPCWSTR _FileName, LPCSTR _FuncName, LPCSTR _Target, ID3DBlob*& _Blob)
-	{
-		result = D3DCompileFromFile(
-			_FileName,
-			nullptr,
-			D3D_COMPILE_STANDARD_FILE_INCLUDE,
-			_FuncName,
-			_Target,
-			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
-			0,
-			&_Blob,
-			&errorBlob);
-
-		if (FAILED(result))
-		{
-			if (result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
-			{
-				PRINT("ファイルが存在しません。");
-			}
-			else
-			{
-				string errorString;
-				errorString.resize(errorBlob->GetBufferSize());
-
-				copy_n(PCast<char*>(errorBlob->GetBufferPointer()), errorBlob->GetBufferSize(), errorString.begin());
-				errorString += "\n";
-
-				PRINT(errorString.c_str());
-			}
-			return S_FALSE;
-		}
-
-		return S_OK;
-
-	};
-
-	// VertexShader
-	ID3DBlob* vsBlob = nullptr;
-	D3D_ERROR_CHECK_TEMP(CompileFunction(L"resource/shader/BasicVertexShader.hlsl", "main", "vs_5_0", vsBlob));
-
-	// PixelShader 
-	ID3DBlob* psBlob = nullptr;
-	D3D_ERROR_CHECK_TEMP(CompileFunction(L"resource/shader/BasicPixelShader.hlsl", "main", "ps_5_0",psBlob));
-#endif
-
 	{
 		m_VertexShader = new CVertexShader();
 		CHECK_RESULT_BREAK(m_VertexShader);
 
-		CVertexShader::FInitializer Initializer;
+		//CVertexShader::FInitializer Initializer;
+		FVertexShaderInitializer Initializer = {};
 		Initializer.Device = m_MainDevice->GetDevice();
 		Initializer.FileNameHash = CHash160("resource/shader/BasicVertexShader.hlsl");
 		Initializer.FuncNameHash = CHash160("main");
@@ -652,19 +502,13 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		m_PixelShader = new CPixelShader();
 		CHECK_RESULT_BREAK(m_PixelShader);
 
-		CPixelShader::FInitializer Initializer;
+		//CPixelShader::FInitializer Initializer;
+		FPixelShaderInitializer Initializer = {};
 		Initializer.FileNameHash = CHash160("resource/shader/BasicPixelShader.hlsl");
 		Initializer.FuncNameHash = CHash160("main");
 
 		CHECK_RESULT_BREAK(m_PixelShader->Initialize(&Initializer));
 	}
-
-#if 0
-	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-	{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
-	};
-#endif
 
 	{
 		// ディスクリプタヒープ
@@ -679,66 +523,6 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			&descHeapDesc,
 			IID_PPV_ARGS(&m_DescHeap)
 		));
-	}
-
-	{
-		// 深度バッファ用のディスクリプタヒープ
-		D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-		descHeapDesc.NumDescriptors = 1;
-		descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-
-		D3D_ERROR_CHECK_TEMP(m_Device->CreateDescriptorHeap(
-			&descHeapDesc,
-			IID_PPV_ARGS(&m_DepthDescHeap)
-		));
-
-	}
-
-	{
-		// デプスバッファの作成
-		D3D12_RESOURCE_DESC depthResDesc = {};
-		depthResDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-		depthResDesc.Width = _Initializer->ViewportWidth;
-		depthResDesc.Height = _Initializer->ViewportHeight;
-		depthResDesc.DepthOrArraySize = 1;
-		depthResDesc.Format = DXGI_FORMAT_D32_FLOAT; // 深度用フォーマット
-		depthResDesc.SampleDesc.Count = 1;
-		depthResDesc.SampleDesc.Quality = 0;
-		depthResDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;//デプスステンシルとして使用
-
-		D3D12_HEAP_PROPERTIES depthHeapProp = {};
-		depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-		depthHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-		depthHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-
-		D3D12_CLEAR_VALUE depthClearValue = {};
-		depthClearValue.DepthStencil.Depth = 1.f; // 深度値の最大値（一番奥)でクリアする
-		depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;
-
-
-		D3D_ERROR_CHECK_TEMP(m_Device->CreateCommittedResource(
-			&depthHeapProp,
-			D3D12_HEAP_FLAG_NONE,
-			&depthResDesc,
-			D3D12_RESOURCE_STATE_DEPTH_WRITE, // 深度書き込み用
-			&depthClearValue,
-			IID_PPV_ARGS(&m_DepthStencilBuffer)
-		));
-
-
-		// デプスステンシルバッファ用のビューを作成
-		D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-		dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-		dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-		dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-
-		// ビューを作成してディスクリプタヒープに登録
-		m_Device->CreateDepthStencilView(
-			m_DepthStencilBuffer,
-			&dsvDesc,
-			m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart()
-		);
-
 	}
 
 
@@ -770,11 +554,22 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			data.A = COLOR_RANGE;
 		}
 
+		const char* fileName = "resource/image/IMG_2036.JPG";
+
+		CFileLoader loader = {};
+		loader.FileLoad(fileName);
+
+
 		CTexture imageTexture = {};
 		CTexture::FInitializer textureInitializer = {};
-		textureInitializer.FileNameHash = CHash160("resource/image/IMG_2036.JPG");
-		CHECK_RESULT_BREAK(imageTexture.Initialize(&textureInitializer));
+		textureInitializer.FileNameHash = CHash160(fileName);
+		textureInitializer.Data = loader.GetData();
+		textureInitializer.DataSize = loader.GetSize();
 
+		CHECK_RESULT_BREAK(imageTexture.Initialize(textureInitializer));
+
+#define TEXTURE_RESOURCE_TEST 
+#ifndef TEXTURE_RESOURCE_TEST
 		// テクスチャバッファ
 		D3D12_HEAP_PROPERTIES heapProp = {};
 		heapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
@@ -800,6 +595,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 		resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
+		ID3D12Resource* textureBuffer = nullptr;
 
 		D3D_ERROR_CHECK_TEMP(m_Device->CreateCommittedResource(
 			&heapProp,
@@ -807,9 +603,9 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			&resDesc,
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 			nullptr,
-			IID_PPV_ARGS(&m_TextureBuffer)));
+			IID_PPV_ARGS(&textureBuffer)));
 
-		D3D_ERROR_CHECK_TEMP(m_TextureBuffer->WriteToSubresource(
+		D3D_ERROR_CHECK_TEMP(textureBuffer->WriteToSubresource(
 			0,
 			nullptr,
 			//textureData.data(),
@@ -819,6 +615,27 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			//SCast<uint32>(sizeof(TexRGBA) * textureData.size())
 			SCast<uint32>(imageTexture.GetImage()->slicePitch)
 		));
+#endif
+
+		CTextureResource textureResource = {};
+
+		//CTextureResource::FInitializer texInit = {};
+		FTextureInitializer texInit = {};
+		texInit.Device = m_Device;
+		texInit.Name = CHash160(fileName);
+		texInit.Width = SCast<uint32>(imageTexture.GetMetaData()->width);
+		texInit.Height = SCast<uint32>(imageTexture.GetMetaData()->height);
+		texInit.DepthOrArraySize = SCast<uint32>(imageTexture.GetMetaData()->arraySize);
+		texInit.MipLevels = SCast<uint32>(imageTexture.GetMetaData()->mipLevels);
+		texInit.Format = SCast<Glue::EDataFormat>(imageTexture.GetMetaData()->format);
+		texInit.Dimension = SCast<Glue::EResourceDimension>(imageTexture.GetMetaData()->dimension);
+
+		texInit.SourceData = imageTexture.GetImage()->pixels;
+		texInit.RowPitch = SCast<uint32>(imageTexture.GetImage()->rowPitch);
+		texInit.SlicePitch = SCast<uint32>(imageTexture.GetImage()->slicePitch);
+
+		D3D_ERROR_CHECK_TEMP(textureResource.Initialize(&texInit));
+
 
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -827,11 +644,19 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = 1;
 
+#ifndef TEXTURE_RESOURCE_TEST
 		m_Device->CreateShaderResourceView(
-			m_TextureBuffer,
+			textureBuffer,
 			&srvDesc,
 			m_DescHeap->GetCPUDescriptorHandleForHeapStart()
 		);
+#else
+		m_Device->CreateShaderResourceView(
+			textureResource.GetResource(),
+			&srvDesc,
+			m_DescHeap->GetCPUDescriptorHandleForHeapStart()
+		);
+#endif
 
 		imageTexture.Finalize();
 
@@ -984,6 +809,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		// 頂点数の読み込み
 		fread_s(&vertexNum, sizeof(vertexNum), sizeof(vertexNum), 1, fp);
 
+		PRINT("VertexNum %u\n", vertexNum);
+
 		// 頂点情報バッファの用意
 		//vector<uint8> pmdVertices = {};
 		vector<PMDVertex> pmdVertices = {};
@@ -1004,6 +831,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		// インデックスの数を取得
 		uint32& indexNum = PmdIndexNum;
 		fread_s(&indexNum, sizeof(indexNum), sizeof(indexNum), 1, fp);
+
+		PRINT("IndexNum %u\n", indexNum);
 
 		// インデックス情報バッファの用意
 		vector<uint16> pmdIndicies = {};
@@ -1211,7 +1040,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			m_PmdVertexShader = new CVertexShader();
 			CHECK_RESULT_BREAK(m_PmdVertexShader);
 
-			CVertexShader::FInitializer Initializer;
+			//CVertexShader::FInitializer Initializer;
+			FVertexShaderInitializer Initializer = {};
 			Initializer.Device = m_MainDevice->GetDevice();
 			Initializer.FileNameHash = CHash160("resource/shader/PmdVertexShader.hlsl");
 			Initializer.FuncNameHash = CHash160("main");
@@ -1224,7 +1054,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			m_PmdPixelShader = new CPixelShader();
 			CHECK_RESULT_BREAK(m_PmdPixelShader);
 
-			CPixelShader::FInitializer Initializer;
+			//CPixelShader::FInitializer Initializer;
+			FPixelShaderInitializer Initializer = {};
 			Initializer.FileNameHash = CHash160("resource/shader/PmdPixelShader.hlsl");
 			Initializer.FuncNameHash = CHash160("main");
 
@@ -1469,27 +1300,37 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				function<bool(const CTexture& _texture)> CheckTextureIsNull =
 					[](const CTexture& _texture)
 				{
-					return _texture.GetName() == Hash160() || _texture.GetMetaData() == nullptr || _texture.GetImage() == nullptr;
+					return _texture.GetMetaData() == nullptr || _texture.GetImage() == nullptr;
 				};
 
 				
 				CTexture::FInitializer initializer = {};
+
 
 				// 通常テクスチャ
 				{
 					string texFolderFilePath = GetTexturePathFromModel(modelName, textureName.c_str());
 					initializer.FileNameHash = CHash160(texFolderFilePath);
 
-					CTexture texture = {};
-					texture.Initialize(&initializer);
+					CFileLoader loader = {};
+					loader.FileLoad(texFolderFilePath.c_str());
 
+					initializer.Data = loader.GetData();
+					initializer.DataSize = loader.GetSize();
+
+					CTexture texture = {};
+					texture.Initialize(initializer);
+
+					loader.ResetData();
 
 					ID3D12Resource*& resPtr = materialResource[index];
 
 					//if (texture.GetName() == Hash160() || texture.GetMetaData() == nullptr || texture.GetImage() == nullptr)
 					if (CheckTextureIsNull(texture))
 					{
-						resPtr = whiteResource;
+						const CTextureResource* texPtr = PCast<const CTextureResource*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager()->SearchResource(DefaultResource::WhiteTextureResource));
+						resPtr = texPtr->GetResource();
+						//resPtr = whiteResource;
 					}
 					else
 					{
@@ -1531,14 +1372,23 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				{
 					CTexture sph = {};
 					string sphFolderFilePath = GetTexturePathFromModel(modelName, sphName.c_str());
+
+					CFileLoader loader = {};
+					loader.FileLoad(sphFolderFilePath.c_str());
+
 					initializer.FileNameHash = CHash160(sphFolderFilePath);
-					sph.Initialize(&initializer);
+					initializer.Data = loader.GetData();
+					initializer.DataSize = loader.GetSize();
+					sph.Initialize(initializer);
+
+					loader.ResetData();
 
 					ID3D12Resource*& sphResPtr = sphResource[index];
 
 					if (CheckTextureIsNull(sph))
 					{
-						sphResPtr = whiteResource;
+						const CTextureResource* texPtr = PCast<const CTextureResource*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager()->SearchResource(DefaultResource::WhiteTextureResource));
+						sphResPtr = texPtr->GetResource();
 					}
 					else
 					{
@@ -1580,14 +1430,24 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				{
 					CTexture spa = {};
 					string spaFolderFilePath = GetTexturePathFromModel(modelName, spaName.c_str());
+
+					CFileLoader loader = {};
+					loader.FileLoad(spaFolderFilePath.c_str());
+
 					initializer.FileNameHash = CHash160(spaFolderFilePath);
-					spa.Initialize(&initializer);
+					initializer.Data = loader.GetData();
+					initializer.DataSize = loader.GetSize();
+
+					loader.ResetData();
+
+					spa.Initialize(initializer);
 
 					ID3D12Resource*& spaResPtr = spaResource[index];
 
 					if (CheckTextureIsNull(spa))
 					{
-						spaResPtr = blackResource;
+						const CTextureResource* texPtr = PCast<const CTextureResource*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager()->SearchResource(DefaultResource::BlackTextureResource));
+						spaResPtr = texPtr->GetResource();
 					}
 					else
 					{
@@ -1636,14 +1496,23 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 					string toonFolderFilePath(toonMapDirectory);
 					toonFolderFilePath += toonTexName;
 
+					CFileLoader loader = {};
+					loader.FileLoad(toonFolderFilePath.c_str());
+
 					initializer.FileNameHash = CHash160(toonFolderFilePath);
-					toon.Initialize(&initializer);
+					initializer.Data = loader.GetData();
+					initializer.DataSize = loader.GetSize();
+					toon.Initialize(initializer);
+
+					loader.ResetData();
 
 					ID3D12Resource*& toonResPtr = toonResource[index];
 
 					if (CheckTextureIsNull(toon))
 					{
-						toonResPtr = grayGradationResource;
+						const CTextureResource* texPtr = PCast<const CTextureResource*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager()->SearchResource(DefaultResource::GrayGradationTextureResource));
+						toonResPtr = texPtr->GetResource();
+						//toonResPtr = grayGradationResource;
 					}
 					else
 					{
@@ -2066,112 +1935,6 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		CHECK_RESULT_BREAK(m_PmdPipeline->RecreateState(m_MainDevice));
 	}
 
-	
-
-#if 0
-	// グラフィックパイプライン
-	m_PipeLine = new D3D12_GRAPHICS_PIPELINE_STATE_DESC();
-	if (m_PipeLine == nullptr) { return false; };
-
-	m_PipeLine->pRootSignature = nullptr;
-
-	m_PipeLine->VS.pShaderBytecode = m_VertexShader->GetShaderBytecod();
-	m_PipeLine->VS.BytecodeLength = m_VertexShader->GetBufferSize();
-
-	m_PipeLine->InputLayout.pInputElementDescs = m_VertexShader->GetInputLayout();
-	m_PipeLine->InputLayout.NumElements = m_VertexShader->GetInputNum();
-
-	m_PipeLine->PS.pShaderBytecode = m_PixelShader->GetShaderBytecod();
-	m_PipeLine->PS.BytecodeLength = m_PixelShader->GetBufferSize();
-
-	m_PipeLine->SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-	m_PipeLine->BlendState.AlphaToCoverageEnable = false;
-	m_PipeLine->BlendState.IndependentBlendEnable = false;
-
-
-	D3D12_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc = {};
-	renderTargetBlendDesc.BlendEnable = false;
-	renderTargetBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	renderTargetBlendDesc.LogicOpEnable = false;
-
-	m_PipeLine->BlendState.RenderTarget[0] = renderTargetBlendDesc;
-
-
-	m_PipeLine->RasterizerState.MultisampleEnable = false;
-	m_PipeLine->RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	m_PipeLine->RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-	m_PipeLine->RasterizerState.DepthClipEnable = true;
-
-	m_PipeLine->RasterizerState.FrontCounterClockwise = false;
-	m_PipeLine->RasterizerState.DepthBias = D3D12_DEFAULT_DEPTH_BIAS;
-	m_PipeLine->RasterizerState.DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP;
-	m_PipeLine->RasterizerState.SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS;
-	m_PipeLine->RasterizerState.AntialiasedLineEnable = false;
-	m_PipeLine->RasterizerState.ForcedSampleCount = 0;
-	m_PipeLine->RasterizerState.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
-
-
-	m_PipeLine->DepthStencilState.DepthEnable = false;
-	m_PipeLine->DepthStencilState.StencilEnable = false;
-
-	m_PipeLine->IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
-
-	m_PipeLine->PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	m_PipeLine->NumRenderTargets = 1;
-	m_PipeLine->RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-
-	m_PipeLine->SampleDesc.Count = 1;
-	m_PipeLine->SampleDesc.Quality = 0;
-#endif
-
-#if 0
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
-	ID3DBlob* rootSignatureBlob = nullptr;
-	ID3DBlob* errorBlob = nullptr;
-	D3D_ERROR_CHECK_TEMP(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSignatureBlob, &errorBlob));
-	
-	D3D_ERROR_CHECK_TEMP(m_Device->CreateRootSignature(0, rootSignatureBlob->GetBufferPointer(), rootSignatureBlob->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)));
-
-	rootSignatureBlob->Release();
-
-	m_PipeLine->pRootSignature = m_RootSignature;
-
-
-
-	// パイプラインステート
-	//D3D_ERROR_CHECK_TEMP(m_Device->CreateGraphicsPipelineState(m_PipeLine, IID_PPV_ARGS(&m_PipeLineState)));
-	result = m_Device->CreateGraphicsPipelineState(m_PipeLine, IID_PPV_ARGS(&m_PipeLineState));
-	if (FAILED(result))
-	{
-		break;
-	}
-#endif
-
-
-#if 0
-	// ビューポート
-	m_Viewport = new D3D12_VIEWPORT();
-	if (m_Viewport == nullptr) { return false; }
-	m_Viewport->Width = SCast<f32>(_Initializer->ViewportWidth);
-	m_Viewport->Height = SCast<f32>(_Initializer->ViewportHeight);
-	m_Viewport->TopLeftX = 0;
-	m_Viewport->TopLeftY = 0;
-	m_Viewport->MaxDepth = 1.f;
-	m_Viewport->MinDepth = 0.f;
-#endif
-
-#if 0
-	// 切り抜き矩形
-	m_ScissorRect.top = 0;
-	m_ScissorRect.left = 0;
-	m_ScissorRect.right = m_ScissorRect.left + _Initializer->ViewportWidth;
-	m_ScissorRect.bottom = m_ScissorRect.top + _Initializer->ViewportHeight;
-#endif
-
 	{
 		// ビュー行列の作成
 		float eyeHeight = 17.5f;
@@ -2213,6 +1976,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	//Test::MatrixVectorTestMain();
 
+	Test::FileLoaderTest(m_MainDevice->GetDevice());
+
 	return true;
 
 	}while (0);
@@ -2243,6 +2008,10 @@ void CGameManager::Finalize()
 	FinalizeObject(m_CommandContext);
 	FinalizeObject(m_MainDevice);
 
+	//FinalizeObject(m_ResSystemInterface);
+	Release(m_ResSystemInterface);
+	FinalizeObject(m_ResourceSubsystem);
+	FinalizeObject(m_SubsystemDominator);
 }
 
 void CGameManager::GameMain()
@@ -2292,13 +2061,11 @@ void CGameManager::GameUpdate()
 
 void CGameManager::Render()
 {
-	//ID3D12Device* m_Device = m_MainDevice->GetDevice();
+
 	ID3D12GraphicsCommandList* m_CmdList = m_CommandContext->GetCommandList();
-	//ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
 
 	uint32 bufferIndex = m_SwapChain->GetCurrentBufferIndex();
-	auto rtvHandle = m_RTV[bufferIndex]->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-	auto depthHandle = m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart();
+
 	auto rtvResource = m_RTV[bufferIndex]->GetResource();
 	CBarrier::FTransitionState transitionState = {};
 	transitionState.Resource = rtvResource;
@@ -2306,16 +2073,12 @@ void CGameManager::Render()
 	transitionState.After = Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET;
 	m_Barrier->SetTransitionState(transitionState);
 
-	m_CommandContext->Barrier(1, m_Barrier->GetBarrier());
+	m_CommandContext->Barrier(m_Barrier);
 
-	m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, &depthHandle);
 
-	// パイプラインセット
-	//m_CmdList->SetPipelineState(m_PipeLineState);
+	m_CommandContext->OMSetRenderTarget(m_RTV[bufferIndex], m_DepthStencilView);
 
-	//m_CmdList->RSSetViewports(1, m_Viewport);
 	m_CommandContext->SetViewport(m_Viewport);
-	//m_CmdList->RSSetScissorRects(1, &m_ScissorRect);
 	m_CommandContext->SetScissorRect(m_ScissorRect);
 
 
@@ -2330,15 +2093,10 @@ void CGameManager::Render()
 
 	// レンダーターゲットのクリア
 	float clearColor[] = { 1.f,1.f,1.f,1.f };
-	m_CmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	m_CommandContext->ClearRenderTargetView(m_RTV[bufferIndex], clearColor);
 
 	// デプスバッファのクリア
-	//auto depthHandle = m_DepthDescHeap->GetCPUDescriptorHandleForHeapStart();
-	m_CmdList->ClearDepthStencilView(depthHandle, D3D12_CLEAR_FLAG_DEPTH, 1.f, 0, 0, nullptr);
-
-
-
-	//m_CmdList->SetGraphicsRootSignature(m_RootSignature);
+	m_CommandContext->ClearDepthStencilView(m_DepthStencilView, 1.f);
 
 
 	m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
@@ -2358,8 +2116,11 @@ void CGameManager::Render()
 		m_CommandContext->SetPipelineState(m_PmdPipeline);
 		m_CommandContext->SetRootSignature(m_PmdRootSignature);
 
-		m_CmdList->IASetVertexBuffers(0, 1, m_PmdVertexBufferView);
-		m_CmdList->IASetIndexBuffer(m_PmdIndexBufferView);
+		//m_CmdList->IASetVertexBuffers(0, 1, m_PmdVertexBufferView);
+		//m_CmdList->IASetIndexBuffer(m_PmdIndexBufferView);
+
+		m_CommandContext->SetVertexBuffer(Test::m_MeshData->GetVertexBuffer());
+		m_CommandContext->SetIndexBuffer(Test::m_MeshData->GetIndexBuffer());
 
 		m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
 		m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
@@ -2402,7 +2163,7 @@ void CGameManager::Render()
 	transitionState.Before = Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET;
 	transitionState.After = Glue::EResourceState::RESOURCE_STATE_PRESENT;
 	m_Barrier->SetTransitionState(transitionState);
-	m_CommandContext->Barrier(1, m_Barrier->GetBarrier());
+	m_CommandContext->Barrier(m_Barrier);
 
 	// 命令をクローズ
 	m_CommandContext->Close();
@@ -2418,7 +2179,7 @@ void CGameManager::Render()
 	m_Fence->WaitEvent();
 
 	//m_CommandContext->Reset(m_PmdPipeline->GetPipelineState());
-	m_CommandContext->Reset(m_Pipeline->GetPipelineState());
+	m_CommandContext->Reset(m_Pipeline);
 
 	// フリップ
 	m_SwapChain->Present();

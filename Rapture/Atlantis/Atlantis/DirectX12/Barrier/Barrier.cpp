@@ -1,4 +1,5 @@
-#include "Barrier.h"
+﻿#include "Barrier.h"
+
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 #include <eden/include/utility/ender_utility.h>
 

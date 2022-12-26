@@ -1,4 +1,4 @@
-#include "CommandContext.h"
+﻿#include "CommandContext.h"
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 
@@ -6,6 +6,12 @@
 #include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
 #include <Atlantis/DirectX12/GraphicsPipeline/GraphicsPipeline.h>
 #include <Atlantis/DirectX12/RootSignature/RootSignature.h>
+#include <Atlantis/DirectX12/Barrier/Barrier.h>
+#include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
+#include <Atlantis/DirectX12/DepthStencilView/DepthStencilView.h>
+
+#include <Atlantis/DirectX12/VertexBuffer/VertexBuffer.h>
+#include <Atlantis/DirectX12/IndexBuffer/IndexBuffer.h>
 
 using namespace std;
 
@@ -40,24 +46,36 @@ void CCommandContext::Finalize()
 	SafeReleaseD3DPtr(m_CmdAllocator);
 }
 
-void CCommandContext::Barrier(uint32 _Num, D3D12_RESOURCE_BARRIER* _Resource)
+void CCommandContext::Barrier(const CBarrier* _Barrier)
 {
-	if (!_Resource) { return; }
-	m_CmdList->ResourceBarrier(_Num, _Resource);
+	D3D_CHECK(_Barrier);
+	//m_CmdList->ResourceBarrier(_Num, _Resource);
+	m_CmdList->ResourceBarrier(1, _Barrier->GetBarrier());
 }
 
-void CCommandContext::OMSetRenderTargets(uint32 NumRenderTargetDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor)
+void CCommandContext::OMSetRenderTarget(CRenderTargetView* _RenderTarget, CDepthStencilView* _DepthView)
 {
-	m_CmdList->OMSetRenderTargets(NumRenderTargetDescriptors, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange, pDepthStencilDescriptor);
+	D3D_CHECK(_RenderTarget);
+
+	auto rtvHandle = _RenderTarget->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	
+	D3D12_CPU_DESCRIPTOR_HANDLE* depthHandle = nullptr;
+	if (_DepthView != nullptr)
+	{
+		auto temp = _DepthView->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+		depthHandle = &temp;
+	}
+
+	m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, depthHandle);
 }
 
-void CCommandContext::SetViewport(CViewport* _viewport)
+void CCommandContext::SetViewport(const CViewport* _viewport)
 {
 	D3D_CHECK(_viewport);
 	m_CmdList->RSSetViewports(1, _viewport->GetViewport());
 }
 
-void CCommandContext::SetScissorRect(CScissorRect* _rect)
+void CCommandContext::SetScissorRect(const CScissorRect* _rect)
 {
 	D3D_CHECK(_rect);
 	m_CmdList->RSSetScissorRects(1, _rect->GetScissorRect());
@@ -75,17 +93,43 @@ void CCommandContext::SetRootSignature(CRootSignature* _RootSignature)
 	m_CmdList->SetGraphicsRootSignature(_RootSignature->GetRootSignature());
 }
 
+void ATLANTIS_NAMESPACE::CCommandContext::ClearRenderTargetView(CRenderTargetView* _RenderTarget, const float* _ClearColor)
+{
+	D3D_CHECK(_RenderTarget);
+	auto handle = _RenderTarget->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	m_CmdList->ClearRenderTargetView(handle, _ClearColor, 0, nullptr);
+}
+
+void ATLANTIS_NAMESPACE::CCommandContext::ClearDepthStencilView(CDepthStencilView* _DepthStencilView, float _ClearDepth)
+{
+	D3D_CHECK(_DepthStencilView);
+	auto handle = _DepthStencilView->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	m_CmdList->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, _ClearDepth, 0, 0, nullptr);
+}
+
+void ATLANTIS_NAMESPACE::CCommandContext::SetVertexBuffer(const CVertexBuffer* _VertexBuffer)
+{
+	D3D_CHECK(_VertexBuffer);
+	m_CmdList->IASetVertexBuffers(0, 1, _VertexBuffer->GetVertexBufferView());
+}
+
+void ATLANTIS_NAMESPACE::CCommandContext::SetIndexBuffer(const CIndexBuffer* _IndexBuffer)
+{
+	D3D_CHECK(_IndexBuffer);
+	m_CmdList->IASetIndexBuffer(_IndexBuffer->GetIndexBufferView());
+}
+
 void CCommandContext::Close()
 {
 	m_CmdList->Close();
 }
 
 
-void CCommandContext::Reset(ID3D12PipelineState* _PipelineState)
+void CCommandContext::Reset(CGraphicsPipeline* _Pipeline)
 {
 	m_CmdAllocator->Reset();
 	//m_CmdList->Reset(m_CmdAllocator.get(), _PipelineState);
-	m_CmdList->Reset(m_CmdAllocator, _PipelineState);
+	m_CmdList->Reset(m_CmdAllocator, _Pipeline->GetPipelineState());
 }
 
 

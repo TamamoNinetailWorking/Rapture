@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define ObjectPtr(_type) _type*
 #define UniquePtr(_type) std::unique_ptr<_type>

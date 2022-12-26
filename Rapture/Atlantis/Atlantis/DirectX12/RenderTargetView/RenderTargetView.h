@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
-#include <memory>
-#include <vector>
+//#include <memory>
+//#include <vector>
 
 
 struct ID3D12Device;
@@ -27,9 +27,12 @@ public:
 
 	void Finalize();
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_DescriptorHeap; };
 	ID3D12Resource* GetResource() const { return m_Resource; };
+
+	CRenderTargetView() {};
+	~CRenderTargetView() {};
 
 private:
 
@@ -38,14 +41,14 @@ private:
 
 	bool CreateRenderTargetView(const FRenderTargetViewInitializer& _Initializer);
 
-	// ƒfƒBƒXƒNƒŠƒvƒ^\ƒq[ƒv
+	// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿â€•ãƒ’ãƒ¼ãƒ—
 	ObjectPtr(ID3D12DescriptorHeap) m_DescriptorHeap = nullptr;
 
-	// RTVƒŠƒ\[ƒX
+	// RTVãƒªã‚½ãƒ¼ã‚¹
 	ObjectPtr(ID3D12Resource) m_Resource = nullptr;
 
-	// RTVƒŠƒ\[ƒX‚ª©g‚Ì‚à‚Ì‚©‚Ç‚¤‚©
-	// >>‰ğ•úÓ”C‚ª©•ª‚É‚ ‚é‚©‚Ç‚¤‚©
+	// RTVãƒªã‚½ãƒ¼ã‚¹ãŒè‡ªèº«ã®ã‚‚ã®ã‹ã©ã†ã‹
+	// >>è§£æ”¾è²¬ä»»ãŒè‡ªåˆ†ã«ã‚ã‚‹ã‹ã©ã†ã‹
 	bool m_IsResouceMine = true;
 };
 

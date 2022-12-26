@@ -1,4 +1,4 @@
-#include "Fence.h"
+﻿#include "Fence.h"
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 

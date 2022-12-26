@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////////////////////
 ///@file	window.h
 ///@brief	CWindow define
 ///@data	2020/06/26
@@ -9,7 +9,7 @@
 EDENS_NAMESPACE_BEGIN
 
 /*
-*	GUIƒEƒBƒ“ƒhƒE¶¬ƒNƒ‰ƒX
+*	GUIã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”Ÿæˆã‚¯ãƒ©ã‚¹
 */
 class CWindow
 {
@@ -44,21 +44,21 @@ public:
 
 	s32 GetWindowHeight() const { return m_height; };
 
-	CWindow() {};//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~CWindow() {};//ƒfƒXƒgƒ‰ƒNƒ^
+	CWindow() {};//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~CWindow() {};//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 private:
 
-	const c8* m_window_name = nullptr;//ƒEƒBƒ“ƒhƒE–¼
-	const c8* m_window_title = nullptr;//ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹
-	b8 m_full_screen_flag = false;//ƒtƒ‹ƒXƒNƒŠ[ƒ“İ’è
+	const c8* m_window_name = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å
+	const c8* m_window_title = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«
+	b8 m_full_screen_flag = false;//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³è¨­å®š
 
-	WNDCLASSEX m_ApplicationClass = {}; // ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒNƒ‰ƒX
-	HINSTANCE m_hInstance = nullptr;//ƒEƒBƒ“ƒhƒE\‘¢‘Ì
-	HWND m_hWnd = nullptr;//ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	MSG m_msg = {};//ƒƒbƒZ[ƒW
-	s32 m_width = 0;//ƒEƒBƒ“ƒhƒE‚Ì‰¡•
-	s32 m_height = 0;//ƒEƒBƒ“ƒhƒE‚Ì‚‚³
+	WNDCLASSEX m_ApplicationClass = {}; // ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
+	HINSTANCE m_hInstance = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ§‹é€ ä½“
+	HWND m_hWnd = nullptr;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	MSG m_msg = {};//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	s32 m_width = 0;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¨ªå¹…
+	s32 m_height = 0;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®é«˜ã•
 
 
 	HRESULT WNDC_initialize(const HINSTANCE hInstance,const c8* name);

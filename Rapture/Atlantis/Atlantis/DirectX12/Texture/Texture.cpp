@@ -1,4 +1,4 @@
-#include "Texture.h"
+﻿#include "Texture.h"
 
 #include <string>
 
@@ -7,6 +7,7 @@
 #include <Atlantis/DirectX12/DirectXTex/DirectXTex.h>
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 #include <eden/include/utility/StringUtility.h>
+#include <Atlantis/Utility/FileUtility/FileUtility.h>
 
 USING_ATLANTIS;
 
@@ -15,16 +16,11 @@ EDENS_NAMESPACE_USING;
 using namespace std;
 using namespace DirectX;
 
-bool CTexture::Initialize(const FInitializerBase* _Initializer)
+bool CTexture::Initialize(const FInitializer& _Initializer)
 {
 	do
-	{
-		CHECK_RESULT_BREAK(_Initializer);
-		
-		const FInitializer* init = PCast<const FInitializer*>(_Initializer);
-		m_ResourceName = init->FileNameHash;
-		
-		CHECK_RESULT_BREAK(CreateTexture(init));
+	{		
+		CHECK_RESULT_BREAK(CreateTexture(_Initializer));
 
 		return true;
 	} while (0);
@@ -35,18 +31,8 @@ bool CTexture::Initialize(const FInitializerBase* _Initializer)
 
 void CTexture::Finalize()
 {
-	//ResetPtr(m_Image);
-	if (m_Image)
-	{
-		delete m_Image;
-		m_Image = nullptr;
-	}
-	//ResetPtr(m_MetaData);
-	if (m_MetaData)
-	{
-		delete m_MetaData;
-		m_MetaData = nullptr;
-	}
+	Delete(m_Image);
+	Delete(m_MetaData);
 }
 
 const Image* CTexture::GetImage() const
@@ -54,24 +40,19 @@ const Image* CTexture::GetImage() const
 	return m_Image->GetImage(0,0,0);
 }
 
-CTexture::~CTexture()
+bool CTexture::CreateTexture(const FInitializer& _Initializer)
 {
-	CResource::~CResource();
-}
-
-bool CTexture::CreateTexture(const FInitializer* _Initializer)
-{
-	CHECK_RESULT_FALSE(_Initializer);
-	CHECK_RESULT_FALSE(!(_Initializer->FileNameHash == Hash160()));
+	CHECK_RESULT_FALSE(!(_Initializer.FileNameHash == Hash160()));
+	CHECK_RESULT_FALSE(_Initializer.Data);
 
 	TexMetadata* metaData = new TexMetadata();
 	CHECK_RESULT_FALSE(metaData);
 	ScratchImage* scratchImage = new ScratchImage();
 	CHECK_RESULT_FALSE(scratchImage);
 
-	const string& fileHash = RHash160(_Initializer->FileNameHash);
+	const string& fileHash = RHash160(_Initializer.FileNameHash);
 
-	const uint32 fileNameLength = 512;
+	constexpr uint32 fileNameLength = 512;
 	WCHAR fileName[fileNameLength] = {};
 	{
 		size_t length = 0;
@@ -88,17 +69,36 @@ bool CTexture::CreateTexture(const FInitializer* _Initializer)
 	{
 		HRESULT result = S_OK;
 
-		if ((extension == "tga") || (extension == "TGA"))
+		//if ((extension == "tga") || (extension == "TGA"))
+		if(FileUtility::CompareExtension(extension,FileUtility::EFileExtensionType::FILE_TYPE_TGA))
 		{
-			result = LoadFromTGAFile(fileName, metaData, *scratchImage);
+			//result = LoadFromTGAFile(fileName, metaData, *scratchImage);
+			result = LoadFromTGAMemory(_Initializer.Data,_Initializer.DataSize, metaData, *scratchImage);
 		}
-		else if ((extension == "dds") || (extension == "DDS"))
+		//else if ((extension == "dds") || (extension == "DDS"))
+		else if (FileUtility::CompareExtension(extension,FileUtility::EFileExtensionType::FILE_TYPE_DDS))
 		{
-				result = LoadFromDDSFile(fileName, DDS_FLAGS_NONE, metaData, *scratchImage);
+			//result = LoadFromDDSFile(fileName, DDS_FLAGS_NONE, metaData, *scratchImage);
+			result = LoadFromDDSMemory(_Initializer.Data,_Initializer.DataSize, DDS_FLAGS_NONE, metaData, *scratchImage);
 		}
 		else
 		{
-			result = LoadFromWICFile(fileName, WIC_FLAGS_NONE, metaData, *scratchImage);
+#if 0
+			if (_Initializer.Data == nullptr)
+			{
+				result = LoadFromWICFile(fileName, WIC_FLAGS_NONE, metaData, *scratchImage);
+			}
+			else
+			{
+				result = LoadFromWICMemory(_Initializer.Data, _Initializer.DataSize, WIC_FLAGS_NONE, metaData, *scratchImage);
+				PRINT("WIC Memory Load\n");
+				if (SUCCEEDED(result))
+				{
+					PRINT("On Memory load Success.\n");
+				}
+			}
+#endif
+			result = LoadFromWICMemory(_Initializer.Data, _Initializer.DataSize, WIC_FLAGS_NONE, metaData, *scratchImage);
 		}
 
 		D3D_ERROR_CHECK(result);
@@ -109,7 +109,8 @@ bool CTexture::CreateTexture(const FInitializer* _Initializer)
 	//m_Image.reset(scratchImage);
 	m_Image = scratchImage;
 
-	m_FileExtensionHash = CHash160(extension);
+	m_FileName = _Initializer.FileNameHash;
+	//m_FileExtensionHash = CHash160(extension);
 
 	return true;
 }

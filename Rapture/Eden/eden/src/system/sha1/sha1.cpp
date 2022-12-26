@@ -1,4 +1,4 @@
-#include <eden/include/system/sha1/sha1.h>
+ï»¿#include <eden/include/system/sha1/sha1.h>
 
 #include <eden/include/math/math_utility.h>
 
@@ -9,7 +9,7 @@ EDENS_NAMESPACE_BEGIN
 
 
 
-// g—p’è”‚Ì’è‹`
+// ä½¿ç”¨å®šæ•°ã®å®šç¾©
 constexpr u8 BitPerByte = 8; // Bit
 constexpr u8 MessageBlockSize = 64; // Byte
 constexpr u8 MessageLengthSize = 8; // Byte
@@ -20,42 +20,42 @@ constexpr u8 DigestSize = 20; // Byte
 
 
 
-// ƒnƒbƒVƒ…ŒvZ‚Åg—p‚·‚é’è”’l
+// ãƒãƒƒã‚·ãƒ¥è¨ˆç®—ã§ä½¿ç”¨ã™ã‚‹å®šæ•°å€¤
 const array<u32, CSHA1::SequenceNum> CSHA1::m_HashConstant =
 {
-	0x5A827999,    /*  0`19‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-	0x6ED9EBA1,    /* 20`39‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-	0x8F1BBCDC,    /* 40`59‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-	0xCA62C1D6,	   /* 60`79‰ñ–Ú‚Ì‰‰Z‚Åg—p */
+	0x5A827999,    /*  0ï½19å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+	0x6ED9EBA1,    /* 20ï½39å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+	0x8F1BBCDC,    /* 40ï½59å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+	0xCA62C1D6,	   /* 60ï½79å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
 };
 
-// ƒV[ƒPƒ“ƒX–ˆ‚Ìƒ`ƒFƒbƒN—pŠÖ”
-const array<CSHA1::SequenceCheck, CSHA1::SequenceNum> CSHA1::m_CheckFunction =
-{
-	CSHA1::Check00,
-	CSHA1::Check20,
-	CSHA1::Check40,
-	CSHA1::Check60,
-};
-
-// ƒnƒbƒVƒ…ŒvZ‚Åg—p‚·‚é˜_—ŠÖ”
-const array<CSHA1::Logic, CSHA1::SequenceNum> CSHA1::m_LogicFunction =
-{
-	CSHA1::Logic00,
-	CSHA1::Logic20,
-	CSHA1::Logic40,
-	CSHA1::Logic60,
-};
+//// ã‚·ãƒ¼ã‚±ãƒ³ã‚¹æ¯ã®ãƒã‚§ãƒƒã‚¯ç”¨é–¢æ•°
+//const array<CSHA1::SequenceCheck, CSHA1::SequenceNum> CSHA1::m_CheckFunction =
+//{
+//	CSHA1::Check00,
+//	CSHA1::Check20,
+//	CSHA1::Check40,
+//	CSHA1::Check60,
+//};
+//
+//// ãƒãƒƒã‚·ãƒ¥è¨ˆç®—ã§ä½¿ç”¨ã™ã‚‹è«–ç†é–¢æ•°
+//const array<CSHA1::Logic, CSHA1::SequenceNum> CSHA1::m_LogicFunction =
+//{
+//	CSHA1::Logic00,
+//	CSHA1::Logic20,
+//	CSHA1::Logic40,
+//	CSHA1::Logic60,
+//};
 
 // -------
 
-// ˆ—“à‚Åg—p‚·‚é•Ï”ŒQ
+// å‡¦ç†å†…ã§ä½¿ç”¨ã™ã‚‹å¤‰æ•°ç¾¤
 struct FSHAProxy
 {
-	// ƒƒbƒZ[ƒWƒuƒƒbƒN(64ByteŒÅ’è)
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ–ãƒ­ãƒƒã‚¯(64Byteå›ºå®š)
 	array<u8, MessageBlockSize> BlockArray = {};
 
-	// ˆêƒnƒbƒVƒ…
+	// ä¸€æ™‚ãƒãƒƒã‚·ãƒ¥
 	array<u32,5> TempHash = 
 	{
 		0x67452301,
@@ -65,10 +65,10 @@ struct FSHAProxy
 		0xC3D2E1F0,
 	};
 
-	// ƒƒbƒZ[ƒWƒTƒCƒY
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚µã‚¤ã‚º
 	u64 MessageSize = 0;
 
-	// ˆ—‚µ‚½Byte”
+	// å‡¦ç†ã—ãŸByteæ•°
 	u64 ProcessByteNum = 0;
 };
 
@@ -95,11 +95,11 @@ void CSHA1::SHA1Main(const string& _string)
 		return proxy.ProcessByteNum % MessageBlockSize;
 	};
 
-	// ˆê•Ï”‰»‚µ‚Ä–¼‘O‚ğk‚ß‚é
+	// ä¸€æ™‚å¤‰æ•°åŒ–ã—ã¦åå‰ã‚’ç¸®ã‚ã‚‹
 	auto& blockArray = proxy.BlockArray;
 	auto& processByteNum = proxy.ProcessByteNum;
 
-	// ƒƒbƒZ[ƒWƒuƒƒbƒN’PˆÊ‚ÉƒƒbƒZ[ƒW‚ğ‹æØ‚Á‚Ä‚¢‚­
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ–ãƒ­ãƒƒã‚¯å˜ä½ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’åŒºåˆ‡ã£ã¦ã„ã
 	for (auto& elem : _string)
 	{
 		blockArray[BlockIndex()] = elem;
@@ -111,40 +111,40 @@ void CSHA1::SHA1Main(const string& _string)
 		}
 	}
 
-	// ‚Ü‚¸‚Í0x80‚ğ–„‚ß‚é
+	// ã¾ãšã¯0x80ã‚’åŸ‹ã‚ã‚‹
 	blockArray[BlockIndex()] = 0x80;
 	++processByteNum;
 
 
 	u8 realBlockSize = MessageBlockSize - MessageLengthSize;
 
-	// ˆ—‚µ‚½”‚ğ64‚ÅŠ„‚Á‚½—]‚è‚ªA56‚æ‚è‘½‚¢‚Ì‚Æ‚«
+	// å‡¦ç†ã—ãŸæ•°ã‚’64ã§å‰²ã£ãŸä½™ã‚ŠãŒã€56ã‚ˆã‚Šå¤šã„ã®ã¨ã
 	if (BlockIndex() > realBlockSize)
 	{
 
-		// 64‚Ü‚Å0‚Å–„‚ß‚éB
+		// 64ã¾ã§0ã§åŸ‹ã‚ã‚‹ã€‚
 		for (u64 count = BlockIndex(); count < MessageBlockSize; ++count)
 		{
 			blockArray[count] = 0x00;
 			++processByteNum;
 		}
 
-		// SHA1‚É‰ÁHˆ—
+		// SHA1ã«åŠ å·¥å‡¦ç†
 		SHA1Process(&proxy);
 
 	}
 
-	// 56‚Ü‚Å0‚Å–„‚ß‚éB
+	// 56ã¾ã§0ã§åŸ‹ã‚ã‚‹ã€‚
 	for (u64 count = BlockIndex(); count < realBlockSize; ++count)
 	{
 		blockArray[count] = 0x00;
 		++processByteNum;
 	}
 
-	// ‚¨K‚Ì8Byte‚ÉŠi”[‚·‚é
+	// ãŠå°»ã®8Byteã«æ ¼ç´ã™ã‚‹
 	u64 messageLength = proxy.MessageSize * MessageLengthSize;
 
-	// c‚è‚Ì8‚ğƒTƒCƒY‚Å–„‚ß‚é
+	// æ®‹ã‚Šã®8ã‚’ã‚µã‚¤ã‚ºã§åŸ‹ã‚ã‚‹
 	u8 loopCount = 0;
 	for (u64 count = realBlockSize; count < MessageBlockSize; ++count, ++loopCount)
 	{
@@ -154,7 +154,7 @@ void CSHA1::SHA1Main(const string& _string)
 		++processByteNum;
 	}
 
-	// SHA1‚É‰ÁHˆ—
+	// SHA1ã«åŠ å·¥å‡¦ç†
 	SHA1Process(&proxy);
 
 	SHA1Result(&proxy);
@@ -163,6 +163,64 @@ void CSHA1::SHA1Main(const string& _string)
 void CSHA1::SHA1Process(FSHAProxy* _proxy)
 {
 	if (_proxy == nullptr) { return; }
+
+	auto Check00 = [](u32 _Num)
+	{
+		return CMathUtility::CheckWithinRange(_Num, 0u, 20u);
+	};
+
+	auto Check20 = [](u32 _Num)
+	{
+		return CMathUtility::CheckWithinRange(_Num, 20u, 40u);
+	};
+
+	auto Check40 = [](u32 _Num)
+	{
+		return CMathUtility::CheckWithinRange(_Num, 40u, 60u);
+	};
+
+	auto Check60 = [](u32 _Num)
+	{
+		return CMathUtility::CheckWithinRange(_Num, 60u, 80u);
+	};
+
+	auto Logic00 = [](u32 _B, u32 _C, u32 _D)
+	{
+		return (_B & _C) | ((~_B) & _D);
+	};
+
+	auto Logic20 = [](u32 _B, u32 _C, u32 _D)
+	{
+		return _B ^ _C ^ _D;
+	};
+
+	auto Logic40 = [](u32 _B, u32 _C, u32 _D)
+	{
+		return (_B & _C) | (_B & _D) | (_C & _D);
+	};
+
+	auto Logic60 = [&](u32 _B, u32 _C, u32 _D)
+	{
+		return Logic20(_B, _C, _D);
+	};
+
+	// ã‚·ãƒ¼ã‚±ãƒ³ã‚¹æ¯ã®ãƒã‚§ãƒƒã‚¯ç”¨é–¢æ•°
+	const array<CSHA1::SequenceCheck, CSHA1::SequenceNum> CheckFunction =
+	{
+		Check00,
+		Check20,
+		Check40,
+		Check60,
+	};
+
+	// ãƒãƒƒã‚·ãƒ¥è¨ˆç®—ã§ä½¿ç”¨ã™ã‚‹è«–ç†é–¢æ•°
+	const array<CSHA1::Logic, CSHA1::SequenceNum> LogicFunction =
+	{
+		Logic00,
+		Logic20,
+		Logic40,
+		Logic60,
+	};
 
 	array<u32, TempWordNum> tempWord = {};
 	auto& blockArray = _proxy->BlockArray;
@@ -196,10 +254,10 @@ void CSHA1::SHA1Process(FSHAProxy* _proxy)
 	u32 D = _proxy->TempHash[3];
 	u32 E = _proxy->TempHash[4];
 
-	// 0 -79 ‚Ü‚Åç’·ˆ—
+	// 0 -79 ã¾ã§å†—é•·å‡¦ç†
 	for (u8 count = 0; count < TempWordNum; ++count)
 	{
-		if (!m_CheckFunction[sequence](count))
+		if (!CheckFunction[sequence](count))
 		{
 			if (sequence + 1 < SequenceNum)
 			{
@@ -208,7 +266,7 @@ void CSHA1::SHA1Process(FSHAProxy* _proxy)
 		}
 
 		u32 K = m_HashConstant[sequence];
-		Logic logic = m_LogicFunction[sequence];
+		Logic logic = LogicFunction[sequence];
 
 		u32 temp = CMathUtility::CircularShift(5, A) + logic(B,C,D) + E + tempWord[count]+ K;
 
@@ -231,7 +289,7 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 	if (!_proxy) { return; }
 #if 0
 
-	// ˆê“I‚É•Û‘¶‚µ‚½ƒnƒbƒVƒ…’l‚ğãˆÊ32bit‚¸‚Â”²‚«o‚µ‚ÄŒ‹‡(20Byte)
+	// ä¸€æ™‚çš„ã«ä¿å­˜ã—ãŸãƒãƒƒã‚·ãƒ¥å€¤ã‚’ä¸Šä½32bitãšã¤æŠœãå‡ºã—ã¦çµåˆ(20Byte)
 	array<u8, DigestSize> digest = {};
 
 	u8 needByte = DigestSize / SCast<u8>(_proxy->TempHash.size());
@@ -253,7 +311,7 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 
 	}
 
-	// FSHA1\‘¢‘Ì‚É‹l‚ß‚ñ‚Å‚¢‚­
+	// FSHA1æ§‹é€ ä½“ã«è©°ã‚è¾¼ã‚“ã§ã„ã
 	u8 count = 0;
 	u32 size = sizeof(m_Hash.UpperByte);
 	for (u8 i = 0; count < size; ++i)
@@ -261,7 +319,7 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 		u8 wordByte = BitPerByte * sizeof(m_Hash.UpperByte);
 		u8 shiftBit = wordByte - BitPerByte * (i + 1);
 		u64 mask = ~0;
-		u64 bit = digest[count++]; // ˆê’U64‚É•ú‚è‚Ü‚È‚¢‚ÆA‚±‚Ì‚Ü‚ÜƒrƒbƒgƒVƒtƒg‚µ‚½Û‚É32‚Å“ª‘Å‚¿‚É‚È‚é
+		u64 bit = digest[count++]; // ä¸€æ—¦64ã«æ”¾ã‚Šè¾¼ã¾ãªã„ã¨ã€ã“ã®ã¾ã¾ãƒ“ãƒƒãƒˆã‚·ãƒ•ãƒˆã—ãŸéš›ã«32ã§é ­æ‰“ã¡ã«ãªã‚‹
 		m_Hash.UpperByte |= (bit << shiftBit) & mask;
 	}
 
@@ -312,44 +370,44 @@ void CSHA1::SHA1Result(FSHAProxy* _proxy)
 	//PRINT("%x ", m_Hash.UnderByte);
 }
 
-bool CSHA1::Check00(u32 _Num)
-{
-	return CMathUtility::CheckWithinRange(_Num, 0u, 20u);
-}
-
-bool CSHA1::Check20(u32 _Num)
-{
-	return CMathUtility::CheckWithinRange(_Num, 20u, 40u);
-}
-
-bool CSHA1::Check40(u32 _Num)
-{
-	return CMathUtility::CheckWithinRange(_Num, 40u, 60u);
-}
-
-bool CSHA1::Check60(u32 _Num)
-{
-	return CMathUtility::CheckWithinRange(_Num, 60u, 80u);
-}
-
-u32 CSHA1::Logic00(u32 _B, u32 _C, u32 _D)
-{
-	return (_B & _C) | ((~_B) & _D);
-}
-
-u32 CSHA1::Logic20(u32 _B, u32 _C, u32 _D)
-{
-	return _B ^ _C ^ _D;
-}
-
-u32 CSHA1::Logic40(u32 _B, u32 _C, u32 _D)
-{
-	return (_B & _C) | (_B & _D) | (_C & _D);
-}
-
-u32 CSHA1::Logic60(u32 _B, u32 _C, u32 _D)
-{
-	return Logic20(_B, _C, _D);
-}
+//bool CSHA1::Check00(u32 _Num)
+//{
+//	return CMathUtility::CheckWithinRange(_Num, 0u, 20u);
+//}
+//
+//bool CSHA1::Check20(u32 _Num)
+//{
+//	return CMathUtility::CheckWithinRange(_Num, 20u, 40u);
+//}
+//
+//bool CSHA1::Check40(u32 _Num)
+//{
+//	return CMathUtility::CheckWithinRange(_Num, 40u, 60u);
+//}
+//
+//bool CSHA1::Check60(u32 _Num)
+//{
+//	return CMathUtility::CheckWithinRange(_Num, 60u, 80u);
+//}
+//
+//u32 CSHA1::Logic00(u32 _B, u32 _C, u32 _D)
+//{
+//	return (_B & _C) | ((~_B) & _D);
+//}
+//
+//u32 CSHA1::Logic20(u32 _B, u32 _C, u32 _D)
+//{
+//	return _B ^ _C ^ _D;
+//}
+//
+//u32 CSHA1::Logic40(u32 _B, u32 _C, u32 _D)
+//{
+//	return (_B & _C) | (_B & _D) | (_C & _D);
+//}
+//
+//u32 CSHA1::Logic60(u32 _B, u32 _C, u32 _D)
+//{
+//	return Logic20(_B, _C, _D);
+//}
 
 EDENS_NAMESPACE_END

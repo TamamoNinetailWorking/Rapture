@@ -19,6 +19,12 @@
     <Filter Include="rapture\Test">
       <UniqueIdentifier>{5ad1671a-fcb3-4b69-829c-2aa6582798a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapture\Environment">
+      <UniqueIdentifier>{95d9e3db-28ae-4571-8a83-9a136ca8e5a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture\Subsystem">
+      <UniqueIdentifier>{b3fc1e5e-a0b0-4afa-9359-4a2bcb1da1d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rapture\main.cpp">
@@ -36,6 +42,12 @@
     <ClCompile Include="rapture\Test\MatrixVectorTest.cpp">
       <Filter>rapture\Test</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\Test\FileLoaderTest.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\Subsystem\ResourceSubsystemImpl.cpp">
+      <Filter>rapture\Subsystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -49,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="rapture\Test\Test.h">
       <Filter>rapture\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\Environment\ResourceTypeDefine.h">
+      <Filter>rapture\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\Subsystem\ResourceSubsystemImpl.h">
+      <Filter>rapture\Subsystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

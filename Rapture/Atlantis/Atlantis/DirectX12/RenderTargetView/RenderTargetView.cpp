@@ -1,4 +1,4 @@
-#include "RenderTargetView.h"
+ï»¿#include "RenderTargetView.h"
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -36,10 +36,10 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 	if (!_Initializer.Device) { return false; }
 
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
-	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ðì¬‚µ‚Ä‚¢‚é‚æ‚¤‚¾
+	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆã—ã¦ã„ã‚‹ã‚ˆã†ã 
 	heapDesc.NodeMask = 0;
 	heapDesc.NumDescriptors = 1;
-	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; // “Á‚Éƒtƒ‰ƒO‚ÌŽw’è‚Í–³‚µ
+	heapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; // ç‰¹ã«ãƒ•ãƒ©ã‚°ã®æŒ‡å®šã¯ç„¡ã—
 
 	ID3D12DescriptorHeap* renderTargetView = nullptr;
 	D3D_ERROR_CHECK(_Initializer.Device->CreateDescriptorHeap(

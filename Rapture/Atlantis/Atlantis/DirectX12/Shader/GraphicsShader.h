@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ShaderBase.h"
 
@@ -7,7 +7,7 @@
 
 ATLANTIS_NAMESPACE_BEGIN
 
-#define OVERRIDE_INITIALIZER struct FInitializer : public FInitializerMiddle
+struct FVertexShaderInitializer;
 
 class CGraphicsShader : public CShaderBase
 {
@@ -20,13 +20,7 @@ class CVertexShader : public CGraphicsShader
 {
 public:
 
-	OVERRIDE_INITIALIZER 
-	{
-	public:
-		ID3D12Device* Device = nullptr;
-	};
-
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 	void Finalize() override;
 
 	~CVertexShader() override;
@@ -39,8 +33,8 @@ private:
 
 	typedef std::vector<D3D12_INPUT_ELEMENT_DESC> InputLayout;
 
-	bool CreateReflection(const FInitializer* _Initializer);
-	bool CreateInputLayout(const FInitializer* _Initializer);
+	bool CreateReflection(const FVertexShaderInitializer* _Initializer);
+	bool CreateInputLayout(const FVertexShaderInitializer* _Initializer);
 
 	//std::unique_ptr<InputLayout> m_InputLayout = nullptr;
 	ObjectPtr(InputLayout) m_InputLayout = nullptr;
@@ -52,9 +46,7 @@ class CHullShader : public CGraphicsShader
 {
 public:
 
-	OVERRIDE_INITIALIZER {};
-
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 
 };
 
@@ -62,9 +54,7 @@ class CDomainShader : public CGraphicsShader
 {
 public:
 
-	OVERRIDE_INITIALIZER{};
-
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 
 };
 
@@ -72,9 +62,7 @@ class CGeometoryShader : public CGraphicsShader
 {
 public:
 
-	OVERRIDE_INITIALIZER{};
-
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 
 };
 
@@ -82,13 +70,9 @@ class CPixelShader : public CGraphicsShader
 {
 public:
 
-	OVERRIDE_INITIALIZER {};
-
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 
 
 };
-
-#undef OVERRIDE_INITIALIZER
 
 ATLANTIS_NAMESPACE_END

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <array>
 #include <string>
@@ -169,53 +169,53 @@ public:
 
 private:
 
-	// ƒNƒ‰ƒX“à‚Åg—p‚·‚éŠÖ”’è‹`
+	// ã‚¯ãƒ©ã‚¹å†…ã§ä½¿ç”¨ã™ã‚‹é–¢æ•°å®šç¾©
 	typedef std::function<bool(u32)> SequenceCheck;
 	typedef std::function<u32(u32, u32, u32)> Logic;
 
-	// ƒnƒbƒVƒ…–{‘Ì
+	// ãƒãƒƒã‚·ãƒ¥æœ¬ä½“
 	FSHA1 m_Hash = {};
 
 
-	// ƒnƒbƒVƒ…‰»‚ÌƒƒCƒ“ˆ—
+	// ãƒãƒƒã‚·ãƒ¥åŒ–ã®ãƒ¡ã‚¤ãƒ³å‡¦ç†
 	void SHA1Main(const std::string& _string);
 
-	// SHA1‚ÌƒnƒbƒVƒ…‰ÁHˆ—
+	// SHA1ã®ãƒãƒƒã‚·ãƒ¥åŠ å·¥å‡¦ç†
 	void SHA1Process(struct FSHAProxy* _proxy);
 
-	// SHA1‚ÌƒnƒbƒVƒ…o—Í
+	// SHA1ã®ãƒãƒƒã‚·ãƒ¥å‡ºåŠ›
 	void SHA1Result(struct FSHAProxy* _proxy);
 
 
-	// 0 - 19‚Åg—p
-	static bool Check00(u32 _Num);
-	// 20 -39
-	static bool Check20(u32 _Num);
-	// 40 - 59
-	static bool Check40(u32 _Num);
-	// 60 -79
-	static bool Check60(u32 _Num);
+	//// 0 - 19ã§ä½¿ç”¨
+	//static bool Check00(u32 _Num);
+	//// 20 -39
+	//static bool Check20(u32 _Num);
+	//// 40 - 59
+	//static bool Check40(u32 _Num);
+	//// 60 -79
+	//static bool Check60(u32 _Num);
 
-	// 0 -19‚Åg—p
-	static u32 Logic00(u32 _B, u32 _C, u32 _D);;
-	// 20 -39	Logic
-	static u32 Logic20(u32 _B, u32 _C, u32 _D);
-	// 40 - 59	Logic
-	static u32 Logic40(u32 _B, u32 _C, u32 _D);
-	// 60 -79	Logic
-	static u32 Logic60(u32 _B, u32 _C, u32 _D);
+	//// 0 -19ã§ä½¿ç”¨
+	//static u32 Logic00(u32 _B, u32 _C, u32 _D);
+	//// 20 -39	Logic
+	//static u32 Logic20(u32 _B, u32 _C, u32 _D);
+	//// 40 - 59	Logic
+	//static u32 Logic40(u32 _B, u32 _C, u32 _D);
+	//// 60 -79	Logic
+	//static u32 Logic60(u32 _B, u32 _C, u32 _D);
 
-	// SHA1•ÏŠ·ƒV[ƒPƒ“ƒX”
+	// SHA1å¤‰æ›ã‚·ãƒ¼ã‚±ãƒ³ã‚¹æ•°
 	static const u8 SequenceNum = 4;
 
-	// ƒ`ƒFƒbƒNŠÖ”ŒQ
-	static const std::array<SequenceCheck, SequenceNum> m_CheckFunction;
+	// ãƒã‚§ãƒƒã‚¯é–¢æ•°ç¾¤
+	//static const std::array<SequenceCheck, SequenceNum> m_CheckFunction;
 
-	// ƒnƒbƒVƒ…ŒvZ‚Åg—p‚·‚é’è”’l
+	// ãƒãƒƒã‚·ãƒ¥è¨ˆç®—ã§ä½¿ç”¨ã™ã‚‹å®šæ•°å€¤
 	static const std::array<u32, SequenceNum> m_HashConstant;
 
-	// ƒnƒbƒVƒ…ŒvZ‚Åg—p‚·‚é˜_—ŠÖ”
-	static const std::array<Logic, SequenceNum> m_LogicFunction;
+	// ãƒãƒƒã‚·ãƒ¥è¨ˆç®—ã§ä½¿ç”¨ã™ã‚‹è«–ç†é–¢æ•°
+	//static const std::array<Logic, SequenceNum> m_LogicFunction;
 
 };
 

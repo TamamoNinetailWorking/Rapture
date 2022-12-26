@@ -1,4 +1,5 @@
-#include "GraphicsShader.h"
+Ôªø#include "GraphicsShader.h"
+#include "GraphicsShaderInitializer.h"
 
 #include <functional>
 #include <d3dcompiler.h>
@@ -7,6 +8,7 @@
 
 using namespace std;
 USING_ATLANTIS;
+EDENS_NAMESPACE_USING;
 
 CGraphicsShader::~CGraphicsShader()
 {
@@ -14,14 +16,14 @@ CGraphicsShader::~CGraphicsShader()
 }
 
 
-bool CVertexShader::Initialize(const FInitializerBase* _Initializer)
+bool CVertexShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
-	FInitializerBase* notConstant = CCast<FInitializerBase*>(_Initializer);
-	TargetSet(PCast<FInitializerMiddle*>(notConstant)) = CHash160("vs_5_0");
+	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);
+	TargetSet(PCast<FShaderBaseInitializer*>(notConstant)) = CHash160("vs_5_0");
 	CHECK_RESULT_FALSE(CShaderBase::Initialize(_Initializer));
-	CHECK_RESULT_FALSE(CreateReflection(PCast<const FInitializer*>(_Initializer)));
-	CHECK_RESULT_FALSE(CreateInputLayout(PCast<const FInitializer*>(_Initializer)));
+	CHECK_RESULT_FALSE(CreateReflection(PCast<const FVertexShaderInitializer*>(_Initializer)));
+	CHECK_RESULT_FALSE(CreateInputLayout(PCast<const FVertexShaderInitializer*>(_Initializer)));
 
 	return true;
 }
@@ -38,7 +40,7 @@ CVertexShader::~CVertexShader()
 	CGraphicsShader::~CGraphicsShader();
 }
 
-bool CVertexShader::CreateReflection(const FInitializer* _Initializer)
+bool CVertexShader::CreateReflection(const FVertexShaderInitializer* _Initializer)
 {
 	HRESULT result = S_OK;
 
@@ -54,7 +56,7 @@ bool CVertexShader::CreateReflection(const FInitializer* _Initializer)
 	return true;
 }
 
-bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
+bool CVertexShader::CreateInputLayout(const FVertexShaderInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(m_Reflection);
 	CHECK_RESULT_FALSE(_Initializer->Device);
@@ -167,7 +169,7 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 			case D3D_REGISTER_COMPONENT_UINT32:
 				if (precision == D3D_MIN_PRECISION_UINT_16)
 				{
-					//return DXGI_FORMAT_R8_UINT; // í∏ì_ÉfÅ[É^ÇÃéwíËÇ≈uint8ÇéwíËÇ≥ÇÍÇΩÇ‡ÇÃÇÃÅAGPUì‡Ç≈8bitïœêîíËã`Ç™Ç≈Ç´Ç»Ç¢ÅIÅIÅI
+					//return DXGI_FORMAT_R8_UINT; // È†ÇÁÇπ„Éá„Éº„Çø„ÅÆÊåáÂÆö„Åßuint8„ÇíÊåáÂÆö„Åï„Çå„Åü„ÇÇ„ÅÆ„ÅÆ„ÄÅGPUÂÜÖ„Åß8bitÂ§âÊï∞ÂÆöÁæ©„Åå„Åß„Åç„Å™„ÅÑÔºÅÔºÅÔºÅ
 					return DXGI_FORMAT_R16_UINT;
 				}
 				else
@@ -208,7 +210,7 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 		D3D12_SIGNATURE_PARAMETER_DESC desc;
 		D3D_ERROR_CHECK(m_Reflection->GetInputParameterDesc(i, &desc));
 
-		// ÉZÉ}ÉìÉeÉBÉNÉXÇÃï∂éöóÒÇÃéQè∆ÇìrêÿÇÍÇ≥ÇπÇ»Ç¢ÇΩÇﬂÇ…àÍé≈ãè
+		// „Çª„Éû„É≥„ÉÜ„Ç£„ÇØ„Çπ„ÅÆÊñáÂ≠óÂàó„ÅÆÂèÇÁÖß„ÇíÈÄîÂàá„Çå„Åï„Åõ„Å™„ÅÑ„Åü„ÇÅ„Å´‰∏ÄËäùÂ±Ö
 		Hash160 hash = CHash160(desc.SemanticName);
 		D3D12_INPUT_ELEMENT_DESC elementDesc =
 		{
@@ -238,34 +240,34 @@ bool CVertexShader::CreateInputLayout(const FInitializer* _Initializer)
 	return true;
 }
 
-bool CPixelShader::Initialize(const FInitializerBase* _Initializer)
+bool CPixelShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
-	FInitializerBase* notConstant = CCast<FInitializerBase*>(_Initializer);
-	TargetSet(PCast<FInitializerMiddle*>(notConstant)) = CHash160("ps_5_0");
+	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);
+	TargetSet(PCast<FShaderBaseInitializer*>(notConstant)) = CHash160("ps_5_0");
 	return CShaderBase::Initialize(_Initializer);
 }
 
-bool CHullShader::Initialize(const FInitializerBase* _Initializer)
+bool CHullShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
-	FInitializerBase* notConstant = CCast<FInitializerBase*>(_Initializer);
-	TargetSet(PCast<FInitializerMiddle*>(notConstant)) = CHash160("hs_5_0");
+	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);
+	TargetSet(PCast<FShaderBaseInitializer*>(notConstant)) = CHash160("hs_5_0");
 	return CShaderBase::Initialize(_Initializer);
 }
 
-bool CDomainShader::Initialize(const FInitializerBase* _Initializer)
+bool CDomainShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
-	FInitializerBase* notConstant = CCast<FInitializerBase*>(_Initializer);
-	TargetSet(PCast<FInitializerMiddle*>(notConstant)) = CHash160("ds_5_0");
+	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);
+	TargetSet(PCast<FShaderBaseInitializer*>(notConstant)) = CHash160("ds_5_0");
 	return CShaderBase::Initialize(_Initializer);
 }
 
-bool CGeometoryShader::Initialize(const FInitializerBase* _Initializer)
+bool CGeometoryShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
-	FInitializerBase* notConstant = CCast<FInitializerBase*>(_Initializer);
-	TargetSet(PCast<FInitializerMiddle*>(notConstant)) = CHash160("gs_5_0");
+	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);
+	TargetSet(PCast<FShaderBaseInitializer*>(notConstant)) = CHash160("gs_5_0");
 	return CShaderBase::Initialize(_Initializer);
 }

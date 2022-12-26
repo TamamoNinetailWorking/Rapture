@@ -1,38 +1,36 @@
-#pragma once
+﻿#pragma once
 
-#include <memory>
-
+//#include <memory>
 #include <d3d12.h>
 
 #include <eden/include/Resource/Resource.h>
+//#include <eden/include/Resource/ResourceInitializer.h>
+
+//struct ID3DBlob;
+
+EDENS_NAMESPACE_BEGIN
+
+struct FResourceInitializerBase;
+
+EDENS_NAMESPACE_END
 
 ATLANTIS_NAMESPACE_BEGIN
 
+struct FShaderBaseInitializer;
+
 class CShaderBase : public EDENS_NAMESPACE::CResource
 {
-protected:
-
-	struct FInitializerMiddle : public CResource::FInitializerBase
-	{
-		Hash160 FileNameHash = {};
-		Hash160 FuncNameHash = {};
-	protected:
-		Hash160 TargetHash = {};
-
-		friend class CShaderBase;
-	};
-
 public:
 
 	typedef void* ShaderCode;
 
 
-	virtual bool Initialize(const FInitializerBase* _Initializer);
+	virtual bool Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer);
 
-	virtual void Finalize();
+	virtual void Finalize() override;
 
-	ShaderCode GetShaderBytecod() const { return m_ShaderBlob->GetBufferPointer(); }
-	uint64 GetBufferSize() const { return m_ShaderBlob->GetBufferSize(); };
+	ShaderCode GetShaderBytecod() const;
+	uint64 GetBufferSize() const;
 
 
 	CShaderBase() {};
@@ -40,13 +38,13 @@ public:
 
 protected:
 
-	bool CompileShaderFromFile(const FInitializerMiddle* _Initializer);
+	bool CompileShaderFromFile(const FShaderBaseInitializer* _Initializer);
 
 	
 	//std::unique_ptr<ID3DBlob> m_ShaderBlob = nullptr;
 	ObjectPtr(ID3DBlob) m_ShaderBlob = nullptr;
 
-	static Hash160& TargetSet(FInitializerMiddle* _Initializer);
+	static Hash160& TargetSet(FShaderBaseInitializer* _Initializer);
 
 };
 

@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////////////////////
 ///@file	app_manager.h
 ///@brief	CAppManager		define
 ///@data	2020/06/26
@@ -19,7 +19,7 @@ EDENS_NAMESPACE_END
 class CGameManager;
 
 /*
-*	ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒ}ƒl[ƒWƒƒ[
+*	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 */
 class CAppManager : public EDENS_NAMESPACE::CSingleton<CAppManager>
 {

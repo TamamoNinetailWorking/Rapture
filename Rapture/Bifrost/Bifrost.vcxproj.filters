@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Bifrost">
+      <UniqueIdentifier>{b530f880-33ca-4af4-9606-5d404c946e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Model">
+      <UniqueIdentifier>{13d644a3-f835-4746-9150-3e496b6afdf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem">
+      <UniqueIdentifier>{652cda6a-9ba7-4ebe-bce8-d72751b6a8fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Utility">
+      <UniqueIdentifier>{dbbe28d8-36c0-47ce-88e2-6e7db425dd7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Model\MeshData">
+      <UniqueIdentifier>{3aae4206-c3fc-464e-8473-c7fce4b20a45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Model\Pmd">
+      <UniqueIdentifier>{c07e1ecb-3f00-4504-bd11-2dd73ea87570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Dominator">
+      <UniqueIdentifier>{d6e0dbe7-7d43-462d-9d50-ff38fade0119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Resource">
+      <UniqueIdentifier>{3b58b748-5b37-48d6-bd5a-167662c1ee12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\ServiceLocator">
+      <UniqueIdentifier>{34f0e0a9-20eb-4b9f-bf6b-69dd5f48f0f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Resource">
+      <UniqueIdentifier>{f90b13b6-0128-4456-a854-bb720db30f47}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bifrost\BifrostBase.h">
+      <Filter>Bifrost</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\BifrostDefine.h">
+      <Filter>Bifrost</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\MeshData\MeshData.h">
+      <Filter>Bifrost\Model\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\MeshData\MeshDataInitializer.h">
+      <Filter>Bifrost\Model\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialData.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdParser.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Dominator\SubsystemDominator.h">
+      <Filter>Bifrost\Subsystem\Dominator</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.h">
+      <Filter>Bifrost\Subsystem\ServiceLocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.h">
+      <Filter>Bifrost\Subsystem\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.h">
+      <Filter>Bifrost\Subsystem\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdPreDefine.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\DefaultResourceDefine.h">
+      <Filter>Bifrost\Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
+      <Filter>Bifrost\Model\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialData.cpp">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Pmd\PmdParser.cpp">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Dominator\SubsystemDominator.cpp">
+      <Filter>Bifrost\Subsystem\Dominator</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.cpp">
+      <Filter>Bifrost\Subsystem\ServiceLocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.cpp">
+      <Filter>Bifrost\Subsystem\Resource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.inl">
+      <Filter>Bifrost\Subsystem\Resource</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,16 +1,17 @@
-#pragma once
+ï»¿#pragma once
 
-#include <memory>
+//#include <memory>
+#include <vector>
 
-#include <d3d12.h>
-#include <dxgi1_6.h>
+//#include <d3d12.h>
+//#include <dxgi1_6.h>
 
-#include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
 
 struct ID3D12Device;
 struct ID3D12CommandQueue;
 struct IDXGIFactory6;
 struct IDXGISwapChain4;
+struct ID3D12Resource;
 
 ATLANTIS_NAMESPACE_BEGIN
 
@@ -23,7 +24,7 @@ public:
 
 	typedef std::vector<ID3D12Resource*> BackBuffer;
 
-	// –Ê“|‚È‚Ì‚Åˆê’U‚±‚±‚¾‚¯B‘¼‚Í•K—v‚É‚È‚Á‚½‚ç•Ï”‰»‚µ‚Ä‚¢‚±‚¤
+	// é¢å€’ãªã®ã§ä¸€æ—¦ã“ã“ã ã‘ã€‚ä»–ã¯å¿…è¦ã«ãªã£ãŸã‚‰å¤‰æ•°åŒ–ã—ã¦ã„ã“ã†
 	struct FSwapChainInitializer
 	{
 		ID3D12Device* Device = nullptr;
@@ -35,22 +36,22 @@ public:
 		uint32 BufferCount = 2;
 	};
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	bool Initialize(const FSwapChainInitializer& _Initializer);
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	void Finalize();
 
-	// ƒtƒŠƒbƒv
+	// ãƒ•ãƒªãƒƒãƒ—
 	void Present();
 
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	IDXGISwapChain4* GetSwapChain() const { return m_SwapChain; };
 
 	BackBuffer* GetBackBuffer() const { return m_BackBuffer; };
 
-	uint32 GetCurrentBufferIndex() const { return m_SwapChain->GetCurrentBackBufferIndex(); };
+	uint32 GetCurrentBufferIndex() const;
 
 
 	CSwapChain() {};
@@ -62,11 +63,11 @@ private:
 
 	bool CreateBackBuffer(const FSwapChainInitializer& _Initializer);
 
-	// ƒXƒƒbƒvƒ`ƒF[ƒ“
+	// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³
 	//std::unique_ptr<IDXGISwapChain4> m_SwapChain = nullptr;
 	ObjectPtr(IDXGISwapChain4) m_SwapChain = nullptr;
 
-	// ƒoƒbƒNƒoƒbƒtƒ@
+	// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 	ObjectPtr(BackBuffer) m_BackBuffer = nullptr;
 
 };

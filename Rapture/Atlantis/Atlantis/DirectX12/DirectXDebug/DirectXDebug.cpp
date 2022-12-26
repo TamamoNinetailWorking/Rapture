@@ -1,4 +1,4 @@
-#include "DirectXDebug.h"
+ï»¿#include "DirectXDebug.h"
 #include <d3d12.h>
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 
@@ -7,12 +7,12 @@ using namespace ATLANTIS_NAMESPACE;
 bool CDirectXDebug::EnableDebugLayer() const
 {
 #ifdef ATLANTIS_DEBUG
-	// ƒfƒoƒbƒOƒŒƒCƒ„[‚ðON‚É‚·‚é
+	// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ONã«ã™ã‚‹
 	ID3D12Debug* debugLayer = nullptr;
 	D3D_ERROR_CHECK(D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer)));
 	debugLayer->EnableDebugLayer();
 
-	// ƒfƒoƒbƒOƒŒƒCƒ„[‚ð—LŒø‰»‚µ‚½Œã‚Í‚±‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Í•s—v‚ç‚µ‚¢
+	// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æœ‰åŠ¹åŒ–ã—ãŸå¾Œã¯ã“ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã¯ä¸è¦ã‚‰ã—ã„
 	debugLayer->Release();
 #endif
     return true;

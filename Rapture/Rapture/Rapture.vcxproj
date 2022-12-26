@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -75,16 +75,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,13 +105,13 @@
       <PreprocessorDefinitions>DEBUG_MODE;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Eden.lib;Atlantis.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;Atlantis.lib;Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,7 +139,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -147,20 +147,24 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Eden.lib;Atlantis.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;Atlantis.lib;Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />
     <ClCompile Include="rapture\game_manager\game_manager.cpp" />
     <ClCompile Include="rapture\main.cpp" />
+    <ClCompile Include="rapture\Subsystem\ResourceSubsystemImpl.cpp" />
+    <ClCompile Include="rapture\Test\FileLoaderTest.cpp" />
     <ClCompile Include="rapture\Test\MatrixVectorTest.cpp" />
     <ClCompile Include="rapture\Test\SHA1Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h" />
+    <ClInclude Include="rapture\Environment\ResourceTypeDefine.h" />
     <ClInclude Include="rapture\game_manager\game_manager.h" />
     <ClInclude Include="rapture\game_manager\game_manager_def.h" />
+    <ClInclude Include="rapture\Subsystem\ResourceSubsystemImpl.h" />
     <ClInclude Include="rapture\Test\Test.h" />
   </ItemGroup>
   <ItemGroup>

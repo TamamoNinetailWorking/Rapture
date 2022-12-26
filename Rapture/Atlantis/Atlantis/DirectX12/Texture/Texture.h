@@ -1,7 +1,6 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
-#include <eden/include/Resource/Resource.h>
 
 namespace DirectX
 {
@@ -12,40 +11,42 @@ namespace DirectX
 
 ATLANTIS_NAMESPACE_BEGIN
 
-class CTexture : public EDENS_NAMESPACE::CResource
+class CTexture
 {
 public:
 
-	struct FInitializer : public CResource::FInitializerBase
+	struct FInitializer
 	{
 	public:
 
 		Hash160 FileNameHash = {};
+		const void* Data = nullptr;
+		uint32 DataSize = 0;
 
 	};
 
-	bool Initialize(const FInitializerBase* _Initializer) override;
+	bool Initialize(const FInitializer& _Initializer);
 
-	void Finalize() override;
+	void Finalize();
 
 
 	DirectX::TexMetadata* GetMetaData() const { return m_MetaData; };
 	const DirectX::Image* GetImage() const;
 
 	CTexture() {};
-	~CTexture();
+	~CTexture() {};
 
 private:
 
-	bool CreateTexture(const FInitializer* _Initializer);
+	bool CreateTexture(const FInitializer& _Initializer);
 
 	//std::unique_ptr<DirectX::TexMetadata> m_MetaData = nullptr;
 	ObjectPtr(DirectX::TexMetadata) m_MetaData = nullptr;
 	//std::unique_ptr<DirectX::ScratchImage> m_Image = nullptr;
 	ObjectPtr(DirectX::ScratchImage) m_Image = nullptr;
 
-	//std::string m_FileExtension = {};
-	Hash160 m_FileExtensionHash = {};
+	Hash160 m_FileName = {};
+	//Hash160 m_FileExtensionHash = {};
 
 };
 

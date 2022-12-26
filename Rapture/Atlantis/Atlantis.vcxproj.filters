@@ -43,9 +43,6 @@
     <Filter Include="Atlantis\DirectX12\Texture">
       <UniqueIdentifier>{cd6986f1-d384-49b8-8b7a-0374441b3487}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Atlantis\DirectX12\Utility">
-      <UniqueIdentifier>{17fbf6e5-3f76-46c8-91a0-e20846f14bb4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Atlantis\DirectX12\DirectXHelper">
       <UniqueIdentifier>{86c18967-312b-4f88-b690-1d920673d368}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,27 @@
     </Filter>
     <Filter Include="Atlantis\DirectX12\Barrier">
       <UniqueIdentifier>{c041b3c6-d959-4b0c-bd31-c2b6ece50d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\DepthStencilView">
+      <UniqueIdentifier>{9d0cf133-ebbf-4298-853e-52f88a57a0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\Utility">
+      <UniqueIdentifier>{33ab01fa-92db-414d-a924-eaa3ad384574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\Utility\PrintUtility">
+      <UniqueIdentifier>{3fada9b8-0721-48b4-ba80-10da8ac59090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\VertexBuffer">
+      <UniqueIdentifier>{95015e1b-d7a6-4613-bf57-c5e101e5457c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\IndexBuffer">
+      <UniqueIdentifier>{05486537-ed2c-4c5c-8038-557228f9776a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\Utility\FileUtility">
+      <UniqueIdentifier>{82e1fef7-1bb3-46ac-9dbc-15f07c8a5aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\Resource">
+      <UniqueIdentifier>{2ed73c98-c62a-4c33-9cc3-7d875e29781d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +129,6 @@
     <ClInclude Include="Atlantis\DirectX12\Texture\Texture.h">
       <Filter>Atlantis\DirectX12\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Atlantis\DirectX12\Utility\DirectXUtility.h">
-      <Filter>Atlantis\DirectX12\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Atlantis\DirectX12\DirectXHelper\d3dx12.h">
       <Filter>Atlantis\DirectX12\DirectXHelper</Filter>
     </ClInclude>
@@ -149,6 +164,39 @@
     </ClInclude>
     <ClInclude Include="Atlantis\DirectX12\Barrier\Barrier.h">
       <Filter>Atlantis\DirectX12\Barrier</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\DepthStencilView\DepthStencilView.h">
+      <Filter>Atlantis\DirectX12\DepthStencilView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Utility\PrintUtility\PrintUtility.h">
+      <Filter>Atlantis\Utility\PrintUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.h">
+      <Filter>Atlantis\DirectX12\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.h">
+      <Filter>Atlantis\DirectX12\IndexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Texture\TextureResource.h">
+      <Filter>Atlantis\DirectX12\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBaseInitializer.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\GraphicsShaderInitializer.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Texture\TextureResourceInitializer.h">
+      <Filter>Atlantis\DirectX12\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Utility\FileUtility\FileTypeDefine.h">
+      <Filter>Atlantis\Utility\FileUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Utility\FileUtility\FileUtility.h">
+      <Filter>Atlantis\Utility\FileUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Resource\TextureResourceManager.h">
+      <Filter>Atlantis\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,14 +242,32 @@
     <ClCompile Include="Atlantis\DirectX12\Texture\Texture.cpp">
       <Filter>Atlantis\DirectX12\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Atlantis\DirectX12\Utility\DirectXUtility.cpp">
-      <Filter>Atlantis\DirectX12\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.cpp">
       <Filter>Atlantis\DirectX12\DirectXDebug</Filter>
     </ClCompile>
     <ClCompile Include="Atlantis\DirectX12\Barrier\Barrier.cpp">
       <Filter>Atlantis\DirectX12\Barrier</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\DepthStencilView\DepthStencilView.cpp">
+      <Filter>Atlantis\DirectX12\DepthStencilView</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Utility\PrintUtility\PrintUtility.cpp">
+      <Filter>Atlantis\Utility\PrintUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.cpp">
+      <Filter>Atlantis\DirectX12\VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.cpp">
+      <Filter>Atlantis\DirectX12\IndexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Texture\TextureResource.cpp">
+      <Filter>Atlantis\DirectX12\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Utility\FileUtility\FileUtility.cpp">
+      <Filter>Atlantis\Utility\FileUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp">
+      <Filter>Atlantis\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

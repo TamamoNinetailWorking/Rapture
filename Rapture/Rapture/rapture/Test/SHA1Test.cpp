@@ -1,4 +1,4 @@
-
+ï»¿
 #include <string>
 #include <vector>
 #include <functional>
@@ -406,10 +406,10 @@ using namespace std;
 
 namespace Test
 {
-	// Ql
+	// å‚è€ƒ
 	// http://bkclass.web.fc2.com/doc_sha1.html#step4
 
-	// zŠÂƒVƒtƒgŠÖ”
+	// å¾ªç’°ã‚·ãƒ•ãƒˆé–¢æ•°
 	uint32 SHA1CircularShift(uint8 _Bit, uint32 _Word)
 	{
 		return (_Word << _Bit) | (_Word >> (32 - _Bit));
@@ -443,18 +443,18 @@ namespace Test
 
 	vector<LogicalFunction> logicalFunction = 
 	{ 
-		SHA1_f00,	/*  0`19‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		SHA1_f20,	/* 20`39‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		SHA1_f40,	/* 40`59‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		SHA1_f60, 	/* 60`79‰ñ–Ú‚Ì‰‰Z‚Åg—p */
+		SHA1_f00,	/*  0ï½19å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		SHA1_f20,	/* 20ï½39å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		SHA1_f40,	/* 40ï½59å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		SHA1_f60, 	/* 60ï½79å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
 	};
 
 	vector <uint32> constantWord =
 	{
-		0x5A827999,    /*  0`19‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		0x6ED9EBA1,    /* 20`39‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		0x8F1BBCDC,    /* 40`59‰ñ–Ú‚Ì‰‰Z‚Åg—p */
-		0xCA62C1D6,	   /* 60`79‰ñ–Ú‚Ì‰‰Z‚Åg—p */
+		0x5A827999,    /*  0ï½19å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		0x6ED9EBA1,    /* 20ï½39å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		0x8F1BBCDC,    /* 40ï½59å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
+		0xCA62C1D6,	   /* 60ï½79å›ç›®ã®æ¼”ç®—ã§ä½¿ç”¨ */
 	};
 
 	bool SHA1_CheckSequenceCondition(uint32 _Num,uint32 _A, uint32 _B)
@@ -495,18 +495,18 @@ namespace Test
 
 	void SHA1TestMain()
 	{
-		// ƒƒbƒZ[ƒW‚ğ—pˆÓ‚·‚é
+		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç”¨æ„ã™ã‚‹
 		//const char* testMessage = "The quick brown fox jumps over the lazy dog";
 		const char* testMessage = "Paste plain-text data into the below textarea or upload a file up to 10MB. Choose the mode and/or version and click the Calculate button. The resulting hashes will be shown in both hexadecimal and Base64 encoded format.If you encounter any errors with this tool please drop me a line attaching the file that causes problems.";
 
 #if 0
-		// ƒƒbƒZ[ƒW‚ÌƒoƒCƒg’·‚ğØ‚è‚Ì‚¢‚¢’·‚³‚Ü‚ÅŠg’£‚·‚é
-		// >> 64‚Ì”{”‚É‚È‚é‚æ‚¤‚ÉŠg’£‚·‚é•K—v‚ª‚ ‚é
+		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒã‚¤ãƒˆé•·ã‚’åˆ‡ã‚Šã®ã„ã„é•·ã•ã¾ã§æ‹¡å¼µã™ã‚‹
+		// >> 64ã®å€æ•°ã«ãªã‚‹ã‚ˆã†ã«æ‹¡å¼µã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 		string message(testMessage);
 		vector<uint8> messageVector;
 		
 
-		// ‚Ü‚¸‚Í¡‚Ì’·‚³‚ğŒv‚é
+		// ã¾ãšã¯ä»Šã®é•·ã•ã‚’è¨ˆã‚‹
 		uint32 messageSize = SCast<uint32>(message.size() + 1);
 		PRINT("MessageSize is %d.", messageSize);
 
@@ -521,13 +521,13 @@ namespace Test
 		messageVector[index] = '\n';
 		PRINT("\n");
 
-		// Šg’£‚µ‚½ƒƒbƒZ[ƒW‚ÌÅŒã‚É8Byte‚Ì®”’l‚ğ’Ç‰Á‚·‚é
-		// uint32Œ^‚ÌÅ‘å’l‚ğ’´‚¦‚é‚æ‚¤‚È‚±‚Æ‚ª‚ ‚é‚Æ³‚µ‚­ƒƒbƒZ[ƒW‚ª
-		// •ÏŠ·‚Å‚«‚È‚¢‚í‚¯‚¾‚ªA‚»‚ê‚Í42‰­‚Æ‚©‚È‚Ì‚Å¡‚Íl‚¦‚È‚­‚Ä—Ç‚³‚»‚¤
+		// æ‹¡å¼µã—ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æœ€å¾Œã«8Byteã®æ•´æ•°å€¤ã‚’è¿½åŠ ã™ã‚‹
+		// uint32å‹ã®æœ€å¤§å€¤ã‚’è¶…ãˆã‚‹ã‚ˆã†ãªã“ã¨ãŒã‚ã‚‹ã¨æ­£ã—ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒ
+		// å¤‰æ›ã§ããªã„ã‚ã‘ã ãŒã€ãã‚Œã¯42å„„ã¨ã‹ãªã®ã§ä»Šã¯è€ƒãˆãªãã¦è‰¯ã•ãã†
 
-		// 64‚Ì”{”‚É‚È‚é‚æ‚¤‚ÉƒƒbƒZ[ƒW‚ğŠg’£‚·‚é
-		// 64‚Ì”{”‚É‚È‚é== 64‚ÅŠ„‚Á‚Ä—]‚è‚ª0‚É‚È‚é
-		// 64‚ÅŠ„‚Á‚½—]‚è‚ğ64‚©‚çˆø‚¢‚½’l‚ª‰ÁZ‚·‚éƒƒbƒZ[ƒW”
+		// 64ã®å€æ•°ã«ãªã‚‹ã‚ˆã†ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æ‹¡å¼µã™ã‚‹
+		// 64ã®å€æ•°ã«ãªã‚‹== 64ã§å‰²ã£ã¦ä½™ã‚ŠãŒ0ã«ãªã‚‹
+		// 64ã§å‰²ã£ãŸä½™ã‚Šã‚’64ã‹ã‚‰å¼•ã„ãŸå€¤ãŒåŠ ç®—ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ•°
 		constexpr uint32 majorRate = 64;
 		constexpr uint32 messageSizeByte = 8;
 		uint32 addSize = majorRate - ((messageSize + messageSizeByte) % majorRate);
@@ -538,17 +538,17 @@ namespace Test
 			uint32 count = messageSize + i;
 			if (i == 0)
 			{
-				/// Œ³‚ÌƒƒbƒZ[ƒW‚Ì––”ö‚É‚Í‚Ü‚¸0x80‚ğ’Ç‰Á‚·‚é
+				/// å…ƒã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æœ«å°¾ã«ã¯ã¾ãš0x80ã‚’è¿½åŠ ã™ã‚‹
 				messageVector[count] = SCast<uint8>(0x80);
 			}
 			else
 			{
-				// ‚»‚êˆÈ~‚Í0x00‚ğ“ü‚ê‚é
+				// ãã‚Œä»¥é™ã¯0x00ã‚’å…¥ã‚Œã‚‹
 				messageVector[count] = SCast<uint8>(0x00);
 			}
 		}
 
-		//messageSizeByte‚Æ‚µ‚Ä—\–ñ‚µ‚Ä‚¨‚¢‚½•ª‚ğ“ü‚ê‚é
+		//messageSizeByteã¨ã—ã¦äºˆç´„ã—ã¦ãŠã„ãŸåˆ†ã‚’å…¥ã‚Œã‚‹
 		constexpr uint32 PerByteBit = 8;
 		uint64 messageBit = PerByteBit * messageSize;
 		for (uint32 i = 0; i < messageSizeByte; ++i)
@@ -568,12 +568,12 @@ namespace Test
 		PRINT("\n");
 #endif
 
-		// ƒƒbƒZ[ƒW‚ğ‚Ü‚¸Šg’£‚·‚é‚Ì‚Å‚Í‚È‚­A64Byte‚É‹æØ‚Á‚Ä‚¢‚­‚±‚Æ‚ªæ
+		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ã¾ãšæ‹¡å¼µã™ã‚‹ã®ã§ã¯ãªãã€64Byteã«åŒºåˆ‡ã£ã¦ã„ãã“ã¨ãŒå…ˆ
 		string message(testMessage);
 		//uint64 messageSize = message.size() + 1;
 		uint64 messageSize = message.size();
 
-		// ƒƒbƒZ[ƒW‚ğˆ—‚·‚é‚½‚ß‚Ì”z—ñ
+		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã®é…åˆ—
 		vector<char> messageArray;
 		messageArray.resize(messageSize);
 		uint64 index = 0;
@@ -581,21 +581,21 @@ namespace Test
 		{
 			messageArray[index++] = elem;
 		}
-		//messageArray[index] = '\n'; // ‚±‚¢‚Â‚ÍŠÜ‚Ü‚È‚¢‚ç‚µ‚¢
+		//messageArray[index] = '\n'; // ã“ã„ã¤ã¯å«ã¾ãªã„ã‚‰ã—ã„
 
 
-		//ˆ—‚µ‚½Byte”
+		//å‡¦ç†ã—ãŸByteæ•°
 		uint64 processByteNum = 0;
 
-		// MessageArray‚Ì”‚É‚æ‚Á‚Äˆ—‚ª•Ï‚í‚éB
+		// MessageArrayã®æ•°ã«ã‚ˆã£ã¦å‡¦ç†ãŒå¤‰ã‚ã‚‹ã€‚
 		constexpr uint8 BitPerByte = 8;
 		constexpr uint8 MessageBlockSize = 64; // Byte
 		constexpr uint8 MessageLengthSize = 8; // Byte
 
-		// ‚¨K‚Ì8Byte‚ÉŠi”[‚·‚é
+		// ãŠå°»ã®8Byteã«æ ¼ç´ã™ã‚‹
 		uint64 messageLength = messageSize * MessageLengthSize;
 
-		// 64Byte‚É‹æØ‚é‚½‚ß‚Ì”z—ñ
+		// 64Byteã«åŒºåˆ‡ã‚‹ãŸã‚ã®é…åˆ—
 		vector<uint8> blockArray;
 		blockArray.resize(MessageBlockSize);
 
@@ -604,7 +604,7 @@ namespace Test
 			return processByteNum % MessageBlockSize;
 		};
 
-		// ƒnƒbƒVƒ…‰ÁH—p•Ï”‚Ì€”õ
+		// ãƒãƒƒã‚·ãƒ¥åŠ å·¥ç”¨å¤‰æ•°ã®æº–å‚™
 		vector<uint32> tempHash =
 		{
 			0x67452301,
@@ -614,7 +614,7 @@ namespace Test
 			0xC3D2E1F0,
 		};
 
-		// ‰ÁHˆ—
+		// åŠ å·¥å‡¦ç†
 		auto SHA1Process = [&]()
 		{
 			constexpr uint8 WordNum = 80;
@@ -624,7 +624,7 @@ namespace Test
 			vector<uint32> word;
 			word.resize(WordNum);
 
-			// 0 - 15‚Ü‚Å
+			// 0 - 15ã¾ã§
 			for (uint8 count = 0; count < FirstWord; ++count)
 			{
 				auto& elem = word[count];
@@ -640,7 +640,7 @@ namespace Test
 
 			PRINT("\n");
 
-			// 16 - 79‚Ü‚Å
+			// 16 - 79ã¾ã§
 			for (uint8 count = FirstWord; count < WordNum; ++count)
 			{
 				uint32 shiftWord = word[count - 3] ^ word[count - 8] ^ word[count - 14] ^ word[count - 16];
@@ -664,7 +664,7 @@ namespace Test
 			uint32 d = tempHash[3];
 			uint32 e = tempHash[4];
 
-			// 0 - 79‚Ü‚Åç’·ˆ—
+			// 0 - 79ã¾ã§å†—é•·å‡¦ç†
 			for (uint8 count = 0; count < WordNum; ++count)
 			{
 				if (!sequenceFunction[sequence](count))
@@ -711,47 +711,47 @@ namespace Test
 
 			++processByteNum;
 
-			// 64‚Ì”{”‚Ì‚Æ‚«
+			// 64ã®å€æ•°ã®ã¨ã
 			if ((BlockIndex()) == 0)
 			{
-				// SHA1‚É‰ÁHˆ—
+				// SHA1ã«åŠ å·¥å‡¦ç†
 				SHA1Process();
 				PRINT("\n");
 			}
 		}
 
-		// ŠO‚Éo‚Ä‚«‚½‚Æ‚«‚Ìˆ—”‚ªŠÌS
+		// å¤–ã«å‡ºã¦ããŸã¨ãã®å‡¦ç†æ•°ãŒè‚å¿ƒ
 
-		// ‚Ü‚¸0x80‚ğ–„‚ß‚ÄAˆ—”‚ğ‰ÁZ
+		// ã¾ãš0x80ã‚’åŸ‹ã‚ã¦ã€å‡¦ç†æ•°ã‚’åŠ ç®—
 		blockArray[BlockIndex()] = 0x80;
 		++processByteNum;
 
 		uint8 realBlockSize = MessageBlockSize - MessageLengthSize;
 
-		// ˆ—‚µ‚½”‚ğ64‚ÅŠ„‚Á‚½—]‚è‚ªA56‚æ‚è‘½‚¢‚Ì‚Æ‚«
+		// å‡¦ç†ã—ãŸæ•°ã‚’64ã§å‰²ã£ãŸä½™ã‚ŠãŒã€56ã‚ˆã‚Šå¤šã„ã®ã¨ã
 		if (BlockIndex() > realBlockSize)
 		{
 
-			// 64‚Ü‚Å0‚Å–„‚ß‚éB
+			// 64ã¾ã§0ã§åŸ‹ã‚ã‚‹ã€‚
 			for (uint64 count = BlockIndex(); count < MessageBlockSize; ++count)
 			{
 				blockArray[count] = 0x00;
 				++processByteNum;
 			}
 
-			// SHA1‚É‰ÁHˆ—
+			// SHA1ã«åŠ å·¥å‡¦ç†
 			SHA1Process();
 
 		}
 
-		// 56‚Ü‚Å0‚Å–„‚ß‚éB
+		// 56ã¾ã§0ã§åŸ‹ã‚ã‚‹ã€‚
 		for (uint64 count = BlockIndex(); count < realBlockSize; ++count)
 		{
 			blockArray[count] = 0x00;
 			++processByteNum;
 		}
 
-		// c‚è‚Ì8‚ğƒTƒCƒY‚Å–„‚ß‚é
+		// æ®‹ã‚Šã®8ã‚’ã‚µã‚¤ã‚ºã§åŸ‹ã‚ã‚‹
 		uint8 loopCount = 0;
 		for(uint64 count = realBlockSize ; count < MessageBlockSize; ++count,++loopCount)
 		{
@@ -761,10 +761,10 @@ namespace Test
 			++processByteNum;
 		}
 
-		// SHA1‚É‰ÁHˆ—
+		// SHA1ã«åŠ å·¥å‡¦ç†
 		SHA1Process();
 
-		// ˆê“I‚É•Û‘¶‚µ‚½ƒnƒbƒVƒ…’l‚ğãˆÊ32bit‚¸‚Â”²‚«o‚µ‚ÄŒ‹‡(20Byte)
+		// ä¸€æ™‚çš„ã«ä¿å­˜ã—ãŸãƒãƒƒã‚·ãƒ¥å€¤ã‚’ä¸Šä½32bitãšã¤æŠœãå‡ºã—ã¦çµåˆ(20Byte)
 		vector<uint8> digest;
 		const uint8 MessageDigestNum = 20;
 		digest.resize(MessageDigestNum);

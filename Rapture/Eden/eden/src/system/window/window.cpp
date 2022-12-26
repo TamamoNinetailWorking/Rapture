@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////////////////////
 ///@file	window.cpp
 ///@brief	CWindow implementation
 ///@data	2020/06/26
@@ -59,18 +59,18 @@ void CWindow::ChangeWindowTitle(const c8* _title)
 HRESULT CWindow::WNDC_initialize(const HINSTANCE hInstance,const c8* name) 
 {
 	WNDCLASSEX wcex;
-	wcex.hInstance = hInstance;//ƒCƒ“ƒXƒ^ƒ“ƒX’l‚ÌƒZƒbƒg
-	wcex.lpszClassName = name;//ƒNƒ‰ƒX–¼
-	wcex.lpfnWndProc = (WNDPROC)WndProc;//ƒEƒBƒ“ƒhƒEƒƒbƒZ[ƒW
-	wcex.style = 0;//ƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
+	wcex.hInstance = hInstance;//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å€¤ã®ã‚»ãƒƒãƒˆ
+	wcex.lpszClassName = name;//ã‚¯ãƒ©ã‚¹å
+	wcex.lpfnWndProc = (WNDPROC)WndProc;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	wcex.style = 0;//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
 	wcex.cbSize = sizeof(WNDCLASSEX);
-	wcex.hIcon = LoadIcon((HINSTANCE)NULL, IDI_APPLICATION);//ƒ‰[ƒWƒAƒCƒRƒ“
-	wcex.hIconSm = LoadIcon((HINSTANCE)NULL, IDI_WINLOGO);//ƒXƒ‚[ƒ‹ƒAƒCƒRƒ“
-	wcex.hCursor = LoadCursor((HINSTANCE)NULL, IDC_ARROW);//ƒJ[ƒ\ƒ‹ƒXƒ^ƒCƒ‹
-	wcex.lpszMenuName = 0;//ƒƒjƒ…[‚È‚µ
-	wcex.cbClsExtra = 0;//ƒGƒLƒXƒgƒ‰‚È‚µ
+	wcex.hIcon = LoadIcon((HINSTANCE)NULL, IDI_APPLICATION);//ãƒ©ãƒ¼ã‚¸ã‚¢ã‚¤ã‚³ãƒ³
+	wcex.hIconSm = LoadIcon((HINSTANCE)NULL, IDI_WINLOGO);//ã‚¹ãƒ¢ãƒ¼ãƒ«ã‚¢ã‚¤ã‚³ãƒ³
+	wcex.hCursor = LoadCursor((HINSTANCE)NULL, IDC_ARROW);//ã‚«ãƒ¼ã‚½ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«
+	wcex.lpszMenuName = 0;//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãªã—
+	wcex.cbClsExtra = 0;//ã‚¨ã‚­ã‚¹ãƒˆãƒ©ãªã—
 	wcex.cbWndExtra = 0;
-	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);//”wŒiF”’
+	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);//èƒŒæ™¯è‰²ç™½
 
 	if (!RegisterClassEx(&wcex)) 
 	{
@@ -86,37 +86,37 @@ HRESULT CWindow::WNDC_initialize(const HINSTANCE hInstance,const c8* name)
 
 HRESULT CWindow::HWND_initialize(const HINSTANCE hInstance, const c8* name, const c8* title,b8 full_screen)
 {
-	if (full_screen){//ƒtƒ‹ƒXƒNƒŠ[ƒ“
+	if (full_screen){//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³
 		m_hWnd = CreateWindow(
-			name,//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì–¼‘O
-			title,//ƒ^ƒCƒgƒ‹
-			WS_VISIBLE | WS_POPUP,//ƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
-			0, 0,//ƒEƒBƒ“ƒhƒEˆÊ’u cA‰¡
-			m_width, m_height,//ƒEƒBƒ“ƒhƒEƒTƒCƒY
-			NULL,//eƒEƒBƒ“ƒhƒE‚È‚µ
-			(HMENU)NULL,//ƒƒjƒ…[‚È‚µ
-			hInstance,//ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-			(LPVOID)NULL//’Ç‰Áˆø”‚È‚µ
+			name,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®åå‰
+			title,//ã‚¿ã‚¤ãƒˆãƒ«
+			WS_VISIBLE | WS_POPUP,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
+			0, 0,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½® ç¸¦ã€æ¨ª
+			m_width, m_height,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+			NULL,//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãªã—
+			(HMENU)NULL,//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãªã—
+			hInstance,//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+			(LPVOID)NULL//è¿½åŠ å¼•æ•°ãªã—
 		);
-	}//ƒtƒ‹ƒXƒNƒŠ[ƒ“End
+	}//ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³End
 	else 
-	{//ƒEƒBƒ“ƒhƒEƒ‚[ƒh
+	{//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰
 		RECT rWindow, rClient;
 		int width = m_width, height = m_height;
 
 		m_hWnd = CreateWindow(
-			name,//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì–¼‘O
-			title,//ƒ^ƒCƒgƒ‹
-			WS_CAPTION | WS_SYSMENU,//ƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
-			0, 0,//ƒEƒBƒ“ƒhƒEˆÊ’u cA‰¡i‚ ‚Æ‚Å’†‰›‚ÉˆÚ“®‚³‚¹‚é
-			m_width, m_height,//ƒEƒBƒ“ƒhƒEƒTƒCƒY
-			HWND_DESKTOP,//eƒEƒBƒ“ƒhƒE‚È‚µ
-			(HMENU)NULL,//ƒƒjƒ…[‚È‚µ
-			hInstance,//ƒCƒ“ƒXƒ^ƒ“‚Ã‚Í‚ñ‚Ç‚é
-			(LPVOID)NULL//’Ç‰Áˆø”‚È‚µ
+			name,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®åå‰
+			title,//ã‚¿ã‚¤ãƒˆãƒ«
+			WS_CAPTION | WS_SYSMENU,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
+			0, 0,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½® ç¸¦ã€æ¨ªï¼ˆã‚ã¨ã§ä¸­å¤®ã«ç§»å‹•ã•ã›ã‚‹
+			m_width, m_height,//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+			HWND_DESKTOP,//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãªã—
+			(HMENU)NULL,//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãªã—
+			hInstance,//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã¥ã¯ã‚“ã©ã‚‹
+			(LPVOID)NULL//è¿½åŠ å¼•æ•°ãªã—
 		);
 
-		//ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ðÄŒvŽZ(Metrics‚¾‚¯‚Å‚ÍƒtƒŒ[ƒ€ƒfƒUƒCƒ“‚ÆƒNƒ‰ƒCƒAƒ“ƒg—ÌˆæƒTƒCƒY‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤j
+		//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‚’å†è¨ˆç®—(Metricsã ã‘ã§ã¯ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ‡ã‚¶ã‚¤ãƒ³ã¨ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã‚µã‚¤ã‚ºãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ï¼‰
 		GetWindowRect(m_hWnd, &rWindow);
 		GetClientRect(m_hWnd, &rClient);
 		width = (rWindow.right - rWindow.left) - (rClient.right - rClient.left) + m_width;
@@ -130,7 +130,7 @@ HRESULT CWindow::HWND_initialize(const HINSTANCE hInstance, const c8* name, cons
 			height-1,
 			SWP_NOZORDER
 		);
-	}//ƒEƒBƒ“ƒhƒEƒ‚[ƒhEnd
+	}//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰End
 
 	if (!m_hWnd) {
 		return FALSE;
@@ -143,14 +143,14 @@ b8 CWindow::EdenCreateWindow(const HINSTANCE hInstance/*, const s32 nWindMode*/)
 {
 	m_hInstance = hInstance;
 
-	//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 	if (FAILED(WNDC_initialize(hInstance, m_window_name)))
 	{
 		MessageBox(m_hWnd, "ERROR!", "WNDC Error", MB_OK);
 		return false;
 	}
 
-	//ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹‚Ì“o˜^
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã®ç™»éŒ²
 	if (FAILED(HWND_initialize(hInstance, m_window_name, m_window_title,m_full_screen_flag)))
 	{
 		MessageBox(m_hWnd, "ERROR!", "HWND Error", MB_OK);

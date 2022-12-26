@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 ATLANTIS_NAMESPACE_BEGIN
 
-// HRESULTŒ^‚ğboolŒ^‚É•ÏŠ·‚·‚é‚¾‚¯
+// HRESULTå‹ã‚’boolå‹ã«å¤‰æ›ã™ã‚‹ã ã‘
 inline bool CheckD3DProcessResult(HRESULT _result)
 {
 	if (FAILED(_result))
@@ -20,20 +20,20 @@ inline bool CheckD3DProcessResult(HRESULT _result)
 #define D3D_PROCESS_CHECK(result) \
 	CheckD3DProcessResult(result)	\
 
-// ƒGƒ‰[ƒ`ƒFƒbƒN‚ğs‚¢A¸”s‚µ‚Ä‚¢‚éê‡‚Íbreak‚·‚éi‰Šú‰»‘z’èj
+// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã„ã€å¤±æ•—ã—ã¦ã„ã‚‹å ´åˆã¯breakã™ã‚‹ï¼ˆåˆæœŸåŒ–æ™‚æƒ³å®šï¼‰
 #define D3D_INIT_PROCESS_CHECK(result) \
 	if(!result) { break; } \
 
-// ƒGƒ‰[ƒ`ƒFƒbƒN‚ğs‚¢A¸”s‚µ‚Ä‚¢‚éê‡‚ÍƒŠƒ^[ƒ“‚Ü‚Ås‚¤
+// ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã„ã€å¤±æ•—ã—ã¦ã„ã‚‹å ´åˆã¯ãƒªã‚¿ãƒ¼ãƒ³ã¾ã§è¡Œã†
 #define D3D_ERROR_CHECK(result) \
 	CHECK_RESULT_FALSE(D3D_PROCESS_CHECK(result))\
 
-// ƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN‚µA’Êíreturn‚·‚é
+// ãƒã‚¤ãƒ³ã‚¿ãƒã‚§ãƒƒã‚¯ã—ã€é€šå¸¸returnã™ã‚‹
 #define D3D_CHECK(ptr) CHECK(ptr)
-// ƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN‚µAnullptr‚È‚çfalse‚ğ•Ô‚·
+// ãƒã‚¤ãƒ³ã‚¿ãƒã‚§ãƒƒã‚¯ã—ã€nullptrãªã‚‰falseã‚’è¿”ã™
 #define D3D_CHECK_NULL(_ptr) if(_ptr == nullptr) { return false; };
 
-// D3DŠÖ˜A‚Ì‚à‚Ì‚ğunique_ptr‚©‚çRelease‚·‚é‚Æ‚«
+// D3Dé–¢é€£ã®ã‚‚ã®ã‚’unique_ptrã‹ã‚‰Releaseã™ã‚‹ã¨ã
 template <class T>
 inline void ReleaseD3DUniquePtr(T& _Ptr)
 {
@@ -44,7 +44,7 @@ inline void ReleaseD3DUniquePtr(T& _Ptr)
 	}
 }
 
-// D3DŠÖ˜A‚Ì‚à‚Ì‚ğ’ÊíƒŠƒŠ[ƒX‚·‚éÛ
+// D3Dé–¢é€£ã®ã‚‚ã®ã‚’é€šå¸¸ãƒªãƒªãƒ¼ã‚¹ã™ã‚‹éš›
 template <class T>
 inline void SafeReleaseD3DPtr(T& _Ptr)
 {

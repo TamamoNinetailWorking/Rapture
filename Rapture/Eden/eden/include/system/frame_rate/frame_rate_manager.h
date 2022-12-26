@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////
+ï»¿/////////////////////////////////////////////////////////////////////////////
 ///@file	frame_rate_manager.h
 ///@brief	CFrameRateManager	define
 ///@data	2020/06/26
@@ -14,7 +14,7 @@ EDENS_NAMESPACE_BEGIN
 
 
 /*
-*	ƒtƒŒ[ƒ€ƒŒ[ƒgŠÇ—
+*	ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆç®¡ç†
 */
 class CFrameRateManager : public CSingleton<CFrameRateManager>
 {

@@ -1,4 +1,4 @@
-#include "ScissorRect.h"
+﻿#include "ScissorRect.h"
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 

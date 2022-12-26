@@ -1,4 +1,4 @@
-#include "SwapChain.h"
+﻿#include "SwapChain.h"
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -36,6 +36,11 @@ void CSwapChain::Finalize()
 void CSwapChain::Present()
 {
 	m_SwapChain->Present(1, 0);
+}
+
+uint32 ATLANTIS_NAMESPACE::CSwapChain::GetCurrentBufferIndex() const
+{
+	return m_SwapChain->GetCurrentBackBufferIndex();
 }
 
 bool CSwapChain::CreateSwapChain(const FSwapChainInitializer& _Initializer)

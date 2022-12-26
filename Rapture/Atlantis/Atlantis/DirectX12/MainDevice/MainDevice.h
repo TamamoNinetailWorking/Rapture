@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <memory>
 #include <eden/include/template/NonCopyable.h>
@@ -12,23 +12,23 @@ struct IDXGIAdapter;
 ATLANTIS_NAMESPACE_BEGIN
 
 /*
-* DirectX12‚ÌŠîŠ²ƒNƒ‰ƒX
+* DirectX12ã®åŸºå¹¹ã‚¯ãƒ©ã‚¹
 */
 class CDX12MainDevice : public CNonCopyable
 {
 public:
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	bool Initialize();
 
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	void Finalize();
 
-	//// ƒfƒoƒbƒOƒŒƒCƒ„[‚Ì—LŒø‰»
+	//// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ‰åŠ¹åŒ–
 	//bool EnableDebugLayer() const;
 
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12Device* GetDevice() const { return m_Device; };
 	IDXGIFactory6* GetGIFactory() const { return m_GIFactory; };
 
@@ -37,17 +37,17 @@ public:
 
 private:
 
-	// GIFactory‚Ì¶¬
+	// GIFactoryã®ç”Ÿæˆ
 	bool CreateGIFacotry();
 
-	// DirectXƒfƒoƒCƒX‚Ì¶¬
+	// DirectXãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	bool CreateDevice();
 
-	// ƒOƒ‰ƒtƒBƒbƒNƒAƒ_ƒvƒ^[‚Ìæ“¾
+	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼ã®å–å¾—
 	bool GetAdapter();
 
 
-	// ƒƒCƒ“‚É‚È‚éDirectXƒfƒoƒCƒX
+	// ãƒ¡ã‚¤ãƒ³ã«ãªã‚‹DirectXãƒ‡ãƒã‚¤ã‚¹
 	//std::unique_ptr<ID3D12Device> m_Device = nullptr;
 	ObjectPtr(ID3D12Device) m_Device = nullptr;
 
@@ -55,11 +55,11 @@ private:
 	//std::unique_ptr<IDXGIFactory6> m_GIFactory = nullptr;
 	ObjectPtr(IDXGIFactory6) m_GIFactory = nullptr;
 
-	// ƒOƒ‰ƒtƒBƒbƒNƒAƒ_ƒvƒ^[
+	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼
 	//std::unique_ptr<IDXGIAdapter> m_Adapter = nullptr;
 	ObjectPtr(IDXGIAdapter) m_Adapter = nullptr;
 
-	// ƒtƒB[ƒ`ƒƒ[ƒŒƒxƒ‹
+	// ãƒ•ã‚£ãƒ¼ãƒãƒ£ãƒ¼ãƒ¬ãƒ™ãƒ«
 	D3D_FEATURE_LEVEL m_FeatureLevel = {};
 
 };

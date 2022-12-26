@@ -1,4 +1,4 @@
-#include "MainDevice.h"
+ï»¿#include "MainDevice.h"
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 
@@ -17,7 +17,7 @@ bool CDX12MainDevice::Initialize()
 	do{
 
 //#ifdef ATLANTIS_DEBUG
-//		// ƒfƒoƒbƒOƒŒƒCƒ„[‚Ì—LŒø‰»
+//		// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ‰åŠ¹åŒ–
 //		if (!EnableDebugLayer())
 //		{
 //			break;
@@ -29,7 +29,7 @@ bool CDX12MainDevice::Initialize()
 			break;
 		}
 
-		// ƒAƒ_ƒvƒ^[‚Ìæ“¾
+		// ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼ã®å–å¾—
 		if (!GetAdapter()) { break; };
 
 		if (!CreateDevice())
@@ -37,13 +37,13 @@ bool CDX12MainDevice::Initialize()
 			break;
 		}
 
-		// ‰Šú‰»¬Œ÷
+		// åˆæœŸåŒ–æˆåŠŸ
 		return true;
 
 	} while (0);
 
 
-	// ‰Šú‰»¸”s
+	// åˆæœŸåŒ–å¤±æ•—
 	Finalize();
 
 	return false;
@@ -62,12 +62,12 @@ void CDX12MainDevice::Finalize()
 //bool CDX12MainDevice::EnableDebugLayer() const
 //{
 //#ifdef ATLANTIS_DEBUG
-//	// ƒfƒoƒbƒOƒŒƒCƒ„[‚ğON‚É‚·‚é
+//	// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ONã«ã™ã‚‹
 //	ID3D12Debug* debugLayer = nullptr;
 //	D3D_ERROR_CHECK(D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer)));
 //		debugLayer->EnableDebugLayer();
 //
-//		// ƒfƒoƒbƒOƒŒƒCƒ„[‚ğ—LŒø‰»‚µ‚½Œã‚Í‚±‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Í•s—v‚ç‚µ‚¢
+//		// ãƒ‡ãƒãƒƒã‚°ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æœ‰åŠ¹åŒ–ã—ãŸå¾Œã¯ã“ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã¯ä¸è¦ã‚‰ã—ã„
 //		debugLayer->Release();
 //#endif
 //
@@ -81,7 +81,7 @@ CDX12MainDevice::~CDX12MainDevice()
 
 bool CDX12MainDevice::CreateGIFacotry()
 {
-	// GIFactory‚Ì¶¬
+	// GIFactoryã®ç”Ÿæˆ
 	IDXGIFactory6* factory = nullptr;
 #ifdef ATLANTIS_DEBUG
 	D3D_ERROR_CHECK(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&factory)));
@@ -89,7 +89,7 @@ bool CDX12MainDevice::CreateGIFacotry()
 	D3D_ERROR_CHECK(CreateDXGIFactory2(0, IID_PPV_ARGS(&factory)));
 #endif
 
-	// ƒ†ƒj[ƒNƒ|ƒCƒ“ƒ^‰»
+	// ãƒ¦ãƒ‹ãƒ¼ã‚¯ãƒã‚¤ãƒ³ã‚¿åŒ–
 	//m_GIFactory = move(unique_ptr<IDXGIFactory6>(factory));
 	m_GIFactory = factory;
 
@@ -98,7 +98,7 @@ bool CDX12MainDevice::CreateGIFacotry()
 
 bool CDX12MainDevice::CreateDevice()
 {
-	// ƒtƒB[ƒ`ƒƒ[ƒŒƒxƒ‹—ñ‹“
+	// ãƒ•ã‚£ãƒ¼ãƒãƒ£ãƒ¼ãƒ¬ãƒ™ãƒ«åˆ—æŒ™
 	D3D_FEATURE_LEVEL featureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_12_1,

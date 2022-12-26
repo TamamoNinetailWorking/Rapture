@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define ATLANTIS_NAMESPACE Atlantis
 

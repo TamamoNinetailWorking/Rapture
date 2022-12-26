@@ -1,16 +1,17 @@
-#pragma once
+﻿#pragma once
 
+//#include "ResourceInitializer.h"
 
 EDENS_NAMESPACE_BEGIN
+
+struct FResourceInitializerBase;
 
 class CResource
 {
 public:
 
-	struct FInitializerBase {};
-
-	virtual bool Initialize(const FInitializerBase* _Initializer) = 0;
-	virtual void Finalize() = 0;
+	virtual bool Initialize(const FResourceInitializerBase* _Initializer) { return false; };
+	virtual void Finalize() {};
 
 
 	const Hash160& GetName() const { return m_ResourceName; };

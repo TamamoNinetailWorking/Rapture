@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <memory>
 #include <d3d12.h>
@@ -17,7 +17,7 @@ public:
 	bool Initialize(const FFenceInitializer& _Initializer);
 	void Finalize();
 
-	// Š®—¹‘Ò‚¿‚ÌƒCƒxƒ“ƒg”­s
+	// å®Œäº†å¾…ã¡ã®ã‚¤ãƒ™ãƒ³ãƒˆç™ºè¡Œ
 	void WaitEvent();
 
 
@@ -33,11 +33,11 @@ private:
 
 	bool CreateFence(const FFenceInitializer& _Initializer);
 
-	// ƒtƒFƒ“ƒX
+	// ãƒ•ã‚§ãƒ³ã‚¹
 	//std::unique_ptr<ID3D12Fence> m_Fence = nullptr;
 	ObjectPtr(ID3D12Fence) m_Fence = nullptr;
 
-	// ƒtƒFƒ“ƒXƒoƒŠƒ…[
+	// ãƒ•ã‚§ãƒ³ã‚¹ãƒãƒªãƒ¥ãƒ¼
 	uint64 m_FenceValue = 0;
 };
 
