@@ -171,6 +171,7 @@
     <ClInclude Include="eden\include\Resource\ResourceInitializer.h" />
     <ClInclude Include="eden\include\Resource\ResourceManager.h" />
     <ClInclude Include="eden\include\Resource\ResourceManagerPreDefine.h" />
+    <ClInclude Include="eden\include\Resource\ResourceManager.inl" />
     <ClInclude Include="eden\include\system\console\console_window.h" />
     <ClInclude Include="eden\include\system\directory\directory_manager.h" />
     <ClInclude Include="eden\include\system\frame_rate\frame_rate_manager.h" />
@@ -184,8 +185,8 @@
     <ClInclude Include="eden\include\utility\StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="eden\include\gadget\FileLoader\FileLoader.cpp" />
     <ClCompile Include="eden\src\common\print.cpp" />
+    <ClCompile Include="eden\src\gadget\FileLoader\FileLoader.cpp" />
     <ClCompile Include="eden\src\gadget\serializer\serializer.cpp" />
     <ClCompile Include="eden\src\gadget\timer\timer.cpp" />
     <ClCompile Include="eden\src\Resource\Resource.cpp" />

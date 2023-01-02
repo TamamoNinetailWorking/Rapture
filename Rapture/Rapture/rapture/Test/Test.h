@@ -11,6 +11,7 @@ ATLANTIS_NAMESPACE_END
 BIFROST_NAMESPACE_BEGIN
 
 class CMeshData;
+class CPmdMaterialData;
 
 BIFROST_NAMESPACE_END
 
@@ -25,4 +26,5 @@ namespace Test
 	//extern ATLANTIS_NAMESPACE::CVertexBuffer* m_VertexBuffer;
 	//extern ATLANTIS_NAMESPACE::CIndexBuffer* m_IndexBuffer;
 	extern BIFROST_NAMESPACE::CMeshData* m_MeshData;
+	extern BIFROST_NAMESPACE::CPmdMaterialData* m_MaterialData;
 };

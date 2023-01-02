@@ -13,6 +13,10 @@ namespace FileUtility
 		"sph",
 		"spa",
 
+		"hlsl",
+		"cso",
+
+
 	};
 
 	static const char* FileExtensionUpper[] =
@@ -21,6 +25,11 @@ namespace FileUtility
 		"DDS",
 		"SPH",
 		"SPA",
+
+		"HLSL",
+		"CSO",
+
+
 	};
 
 };

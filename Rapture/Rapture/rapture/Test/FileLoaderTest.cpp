@@ -6,6 +6,9 @@
 #include <Bifrost/Model/MeshData/MeshData.h>
 #include <Bifrost/Model/MeshData/MeshDataInitializer.h>
 
+#include <Bifrost/Model/Pmd/PmdMaterialData.h>
+#include <Bifrost/Model/Pmd/PmdMaterialDataInitializer.h>
+
 #include <d3d12.h>
 
 EDENS_NAMESPACE_USING;
@@ -18,6 +21,7 @@ namespace Test
 	//CIndexBuffer* m_IndexBuffer = nullptr;
 
 	CMeshData* m_MeshData = nullptr;
+	CPmdMaterialData* m_MaterialData = nullptr;
 
 	void FileLoaderTest(ID3D12Device* _Device)
 	{
@@ -80,6 +84,21 @@ namespace Test
 			initializer.IndicesSize = SCast<uint32>(sizeof(uint16)) * pmdParser.GetIndexNum();
 
 			m_MeshData->Initialize(&initializer);
+		}
+
+		m_MaterialData = new CPmdMaterialData();
+		{
+			FPmdMaterialInitializer initializer = {};
+			initializer.Device = _Device;
+			initializer.Name = CHash160(fileName);
+			initializer.ToonMapDirectory = CHash160("resource/mmd/Data/");
+			initializer.Materials = pmdParser.GetMaterials();
+			initializer.MaterialNum = pmdParser.GetMaterialNum();
+
+			if (!m_MaterialData->Initialize(&initializer))
+			{
+				PRINT("Test::MaterialData Create Failed.\n");
+			}
 		}
 
 		pmdParser.Reset();

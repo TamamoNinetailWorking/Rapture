@@ -17,7 +17,8 @@ public:
 	
 	void SetResourceSubsystem(IResourceSubsystem* _ResSubsystem);
 
-	IResourceSubsystem* GetResourceSubsystem() const { return m_ResourceSubsystem; };
+	const IResourceSubsystem* GetResourceSubsystem() const { return m_ResourceSubsystem; };
+	IResourceSubsystem* GetResourceSubsystemEdit() const { return m_ResourceSubsystem; };
 
 	CSubsystemDominator() {};
 	~CSubsystemDominator() {};

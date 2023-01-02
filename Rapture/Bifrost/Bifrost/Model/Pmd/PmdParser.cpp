@@ -13,6 +13,76 @@ USING_BIFROST;
 
 using namespace std;
 
+class CPmdParser::Impl
+{
+public:
+	struct FDeserializeMaterialData
+	{
+		struct First
+		{
+			ATLANTIS_NAMESPACE::Glue::Vector3 Diffuse = {};
+			float Alpha = 0.f;
+			float Specularity = 0.f;
+			ATLANTIS_NAMESPACE::Glue::Vector3 SpecularColor = {};
+			ATLANTIS_NAMESPACE::Glue::Vector3 AmbientColor = {};
+		};
+
+		struct Second
+		{
+			uint32 IndiciesNum = 0;
+			char TexFilePath[TexFilePathLength] = {};
+		};
+
+		First first = {};
+
+		uint8 ToonIndex = {};
+		uint8 EdgeFlag = {};
+		uint16 padding = {};
+
+		Second second = {};
+	};
+
+	union FPmdMaterialUnion
+	{
+		FPmdMaterialData Data = {};
+		FDeserializeMaterialData desData;
+	};
+
+	typedef std::vector<FPmdVertex> FPmdVertices;
+	typedef std::vector<uint16> FPmdIndicies;
+	typedef std::vector<FPmdMaterialUnion> FPmdMaterials;
+
+	bool DeserializeHeader();
+	bool DeserializeVertices();
+	bool DeserializerIndicies();
+	bool DeserializerMaterials();
+
+private:
+
+	friend class CPmdParser;
+
+	ObjectPtr(EDENS_NAMESPACE::CSerializer) m_Serializer = nullptr;
+
+	ObjectPtr(FPmdVertices) m_Vertices = nullptr;
+	ObjectPtr(FPmdIndicies) m_Indices = nullptr;
+	ObjectPtr(FPmdMaterials) m_Materials = nullptr;
+
+};
+
+CPmdParser::CPmdParser()
+{
+	m_Impl = new Impl();
+}
+
+CPmdParser::~CPmdParser()
+{
+	if (m_Impl)
+	{
+		delete m_Impl;
+	}
+	m_Impl = nullptr;
+}
+
 bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 {
 	if (_Data == nullptr) { return false; };
@@ -21,19 +91,19 @@ bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 
 
 	// Serializerを作るか
-	m_Serializer = new CSerializer();
-	if (m_Serializer == nullptr) { return false; };
+	m_Impl->m_Serializer = new CSerializer();
+	if (m_Impl->m_Serializer == nullptr) { return false; };
 
-	m_Serializer->Initialize(_Data, _Size);
+	m_Impl->m_Serializer->Initialize(_Data, _Size);
 	
 	do
 	{
-		CHECK_RESULT_BREAK(DeserializeHeader());
-		CHECK_RESULT_BREAK(DeserializeVertices());
-		CHECK_RESULT_BREAK(DeserializerIndicies());
-		CHECK_RESULT_BREAK(DeserializerMaterials());
+		CHECK_RESULT_BREAK(m_Impl->DeserializeHeader());
+		CHECK_RESULT_BREAK(m_Impl->DeserializeVertices());
+		CHECK_RESULT_BREAK(m_Impl->DeserializerIndicies());
+		CHECK_RESULT_BREAK(m_Impl->DeserializerMaterials());
 
-		m_Serializer->Finalize();
+		m_Impl->m_Serializer->Finalize();
 		return true;
 	} while (0);
 
@@ -47,27 +117,62 @@ bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 
 void CPmdParser::Reset()
 {
-	if (m_Indices != nullptr)
+	if (m_Impl->m_Indices != nullptr)
 	{
-		delete m_Indices;
-		m_Indices = nullptr;
+		delete m_Impl->m_Indices;
+		m_Impl->m_Indices = nullptr;
 	}
 
-	if (m_Vertices != nullptr)
+	if (m_Impl->m_Vertices != nullptr)
 	{
-		delete m_Vertices;
-		m_Vertices = nullptr;
+		delete m_Impl->m_Vertices;
+		m_Impl->m_Vertices = nullptr;
 	}
 
-	if (m_Serializer != nullptr)
+	if (m_Impl->m_Serializer != nullptr)
 	{
-		m_Serializer->Finalize();
-		delete m_Serializer;
-		m_Serializer = nullptr;
+		m_Impl->m_Serializer->Finalize();
+		delete m_Impl->m_Serializer;
+		m_Impl->m_Serializer = nullptr;
 	}
 }
 
-bool CPmdParser::DeserializeHeader()
+const FPmdVertex* CPmdParser::GetVertices() const
+{
+	return m_Impl->m_Vertices->data();
+}
+
+uint32 CPmdParser::GetVertexNum() const
+{
+	return SCast<uint32>(m_Impl->m_Vertices->size());
+}
+
+uint32 CPmdParser::GetVertexSize() const
+{
+	return SCast<uint32>(sizeof(FPmdVertex));
+}
+
+const uint16* CPmdParser::GetIndicies() const
+{
+	return m_Impl->m_Indices->data();
+}
+
+uint32 CPmdParser::GetIndexNum() const
+{
+	return SCast<uint32>(m_Impl->m_Indices->size());
+}
+
+const FPmdMaterialData* CPmdParser::GetMaterials() const
+{
+	return RCast<FPmdMaterialData*>(m_Impl->m_Materials->data());
+}
+
+uint32 CPmdParser::GetMaterialNum() const
+{
+	return SCast<uint32>(m_Impl->m_Materials->size());
+}
+
+bool CPmdParser::Impl::DeserializeHeader()
 {
 	if (m_Serializer == nullptr) { return false; }
 
@@ -124,7 +229,7 @@ bool CPmdParser::DeserializeHeader()
 	return true;
 }
 
-bool CPmdParser::DeserializeVertices()
+bool CPmdParser::Impl::DeserializeVertices()
 {
 	if (m_Serializer == nullptr) { return false; }
 
@@ -167,7 +272,7 @@ bool CPmdParser::DeserializeVertices()
 	return true;
 }
 
-bool CPmdParser::DeserializerIndicies()
+bool CPmdParser::Impl::DeserializerIndicies()
 {
 	CHECK_RESULT_FALSE(m_Serializer);
 
@@ -193,7 +298,7 @@ bool CPmdParser::DeserializerIndicies()
 	return true;
 }
 
-bool CPmdParser::DeserializerMaterials()
+bool CPmdParser::Impl::DeserializerMaterials()
 {
 	CHECK_RESULT_FALSE(m_Serializer);
 

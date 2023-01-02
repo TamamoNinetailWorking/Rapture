@@ -31,6 +31,9 @@
     <Filter Include="Bifrost\Resource">
       <UniqueIdentifier>{f90b13b6-0128-4456-a854-bb720db30f47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Resource\Texture">
+      <UniqueIdentifier>{85231bc1-8008-435d-a157-72deb5ef1c0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -69,6 +72,12 @@
     <ClInclude Include="Bifrost\Resource\DefaultResourceDefine.h">
       <Filter>Bifrost\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialDataInitializer.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h">
+      <Filter>Bifrost\Resource\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -91,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.cpp">
       <Filter>Bifrost\Subsystem\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp">
+      <Filter>Bifrost\Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

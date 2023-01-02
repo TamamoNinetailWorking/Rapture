@@ -113,6 +113,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Eden.lib;Atlantis.lib;Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(ProjectDir)\resource\cso\%(Filename).cso</ObjectFileOutput>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -149,6 +154,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Eden.lib;Atlantis.lib;Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(ProjectDir)\resource\cso\%(Filename).cso</ObjectFileOutput>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />

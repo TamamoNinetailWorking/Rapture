@@ -16,7 +16,12 @@ CSubsystemDominator* CSubsystemServiceLocator::GetSubsystemDominator()
 	return s_Dominator;
 }
 
-IResourceSubsystem* CSubsystemServiceLocator::GetResourceSubsystem()
+const IResourceSubsystem* CSubsystemServiceLocator::GetResourceSubsystem()
 {
 	return s_Dominator->GetResourceSubsystem();
+}
+
+IResourceSubsystem* CSubsystemServiceLocator::GetResourceSubsystemEdit()
+{
+	return s_Dominator->GetResourceSubsystemEdit();
 }

@@ -73,6 +73,12 @@
     <Filter Include="Atlantis\Resource">
       <UniqueIdentifier>{2ed73c98-c62a-4c33-9cc3-7d875e29781d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\DirectX12\ShaderCompiler">
+      <UniqueIdentifier>{5eace486-01c0-466c-9e1b-b6b9048aee54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\DirectX12\ConstantBuffer">
+      <UniqueIdentifier>{507e66c6-a73a-45e0-8526-bafcfd1ecdca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -198,6 +204,21 @@
     <ClInclude Include="Atlantis\Resource\TextureResourceManager.h">
       <Filter>Atlantis\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\Resource\ShaderManager.h">
+      <Filter>Atlantis\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.h">
+      <Filter>Atlantis\DirectX12\ShaderCompiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderData.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderPreDefine.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\ConstantBuffer\ConstantBufferPreDefine.h">
+      <Filter>Atlantis\DirectX12\ConstantBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -268,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp">
       <Filter>Atlantis\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Resource\ShaderManager.cpp">
+      <Filter>Atlantis\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.cpp">
+      <Filter>Atlantis\DirectX12\ShaderCompiler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

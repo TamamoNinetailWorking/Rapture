@@ -11,7 +11,7 @@ class CGraphicsShader;
 class CVertexShader;
 class CHullShader;
 class CDomainShader;
-class CGeometoryShader;
+class CGeometryShader;
 class CPixelShader;
 
 class CGraphicsPipeline
@@ -40,7 +40,7 @@ public:
 	void SetDomainShader(const CDomainShader* _Shader);
 
 	// ジオメトリシェーダーを設定
-	void SetGeometoryShader(const CGeometoryShader* _Shader);
+	void SetGeometoryShader(const CGeometryShader* _Shader);
 
 	// ピクセルシェーダーを設定
 	void SetPixelShader(const CPixelShader* _Shader);

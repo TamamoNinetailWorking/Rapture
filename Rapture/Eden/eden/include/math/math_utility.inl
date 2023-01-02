@@ -1,4 +1,5 @@
-﻿/////////////////////////////////////////////////////////////////////////////
+﻿#include "math_utility.h"
+/////////////////////////////////////////////////////////////////////////////
 ///@file	math_utility.inl
 ///@brief	CMathUtility implementation
 ///@data	2020/06/25
@@ -42,6 +43,12 @@ template <typename Number>
 static bool CMathUtility::CheckWithinRange(Number _Target, Number _A, Number _B)
 {
 	return _A <= _Target && _Target < _B;
+}
+
+template<typename Integer>
+inline Integer CMathUtility::AlignNum(Integer _Target, Integer _Align)
+{
+	return (_Target + _Align) & ~_Align;
 }
 
 EDENS_NAMESPACE_END

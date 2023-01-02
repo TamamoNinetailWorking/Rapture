@@ -1,4 +1,4 @@
-﻿#include "FileLoader.h"
+﻿#include <eden/include/gadget/FileLoader/FileLoader.h>
 
 //#include <stdio.h>
 #include <fstream>
@@ -7,6 +7,16 @@
 EDENS_NAMESPACE_USING;
 
 using namespace std;
+
+CFileLoader::CFileLoader()
+{
+
+}
+
+CFileLoader::~CFileLoader()
+{
+    ResetData();
+}
 
 bool CFileLoader::FileLoad(const char* _FileName)
 {

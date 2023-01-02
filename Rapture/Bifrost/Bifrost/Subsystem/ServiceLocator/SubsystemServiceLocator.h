@@ -15,7 +15,8 @@ public:
 
 	static CSubsystemDominator* GetSubsystemDominator();
 
-	static IResourceSubsystem* GetResourceSubsystem();
+	static const IResourceSubsystem* GetResourceSubsystem();
+	static IResourceSubsystem* GetResourceSubsystemEdit();
 
 private:
 

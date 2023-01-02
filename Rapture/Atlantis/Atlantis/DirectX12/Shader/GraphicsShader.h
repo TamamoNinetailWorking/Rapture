@@ -2,6 +2,7 @@
 
 #include "ShaderBase.h"
 
+#include <d3d12.h>
 #include <vector>
 #include <d3dcompiler.h>
 
@@ -25,6 +26,8 @@ public:
 
 	~CVertexShader() override;
 
+
+	// こここそImplかな
 	const D3D12_INPUT_ELEMENT_DESC* GetInputLayout() const { return m_InputLayout->data(); };
 	uint32 GetInputNum() const { return SCast<uint32>(m_InputLayout->size()); };
 
@@ -58,7 +61,7 @@ public:
 
 };
 
-class CGeometoryShader : public CGraphicsShader
+class CGeometryShader : public CGraphicsShader
 {
 public:
 

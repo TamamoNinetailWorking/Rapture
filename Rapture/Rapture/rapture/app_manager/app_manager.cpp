@@ -16,10 +16,15 @@
 #include <rapture/game_manager/game_manager.h>
 #include <rapture/game_manager/game_manager_def.h>
 
+// Edens System
+#include <eden/include/system/directory/directory_manager.h>
+
 EDENS_NAMESPACE_USING;
 
 b8 CAppManager::Initialize(HINSTANCE _hInstance)
 {
+	CDirectoryManager::GetInstance().Init();
+
 	if (!InitializeConsole())
 	{
 		return false;
@@ -35,6 +40,8 @@ b8 CAppManager::Initialize(HINSTANCE _hInstance)
 		return false;
 	}
 
+
+
 	m_pWindow->EdenShowWindow(SW_SHOW);
 
 	return true;
@@ -46,6 +53,8 @@ void CAppManager::Finalize()
 	FinalizeGameManager();
 	FinalizeWindow();
 	FinalizeConsole();
+
+	CDirectoryManager::GetInstance().Exit();
 }
 
 

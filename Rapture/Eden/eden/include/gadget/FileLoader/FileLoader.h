@@ -17,8 +17,8 @@ public:
 	const uint8* GetData() const { return m_Data.data(); };
 	uint32 GetSize() const { return m_DataSize; };
 
-	CFileLoader() {};
-	~CFileLoader() {};
+	CFileLoader();
+	~CFileLoader();
 
 private:
 

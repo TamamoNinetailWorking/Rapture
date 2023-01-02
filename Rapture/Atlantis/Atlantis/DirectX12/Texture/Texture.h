@@ -33,8 +33,8 @@ public:
 	DirectX::TexMetadata* GetMetaData() const { return m_MetaData; };
 	const DirectX::Image* GetImage() const;
 
-	CTexture() {};
-	~CTexture() {};
+	CTexture();
+	~CTexture();
 
 private:
 

@@ -26,20 +26,23 @@ public:
 	void Reset();
 
 	// Getter
-	const FPmdVertex* GetVertices() const { return m_Vertices->data(); };
-	uint32 GetVertexNum() const { return SCast<uint32>(m_Vertices->size()); };
-	uint32 GetVertexSize() const { return SCast<uint32>(sizeof(FPmdVertex)); };
-	const uint16* GetIndicies() const { return m_Indices->data(); };
-	uint32 GetIndexNum() const { return SCast<uint32>(m_Indices->size()); };
-	const FPmdMaterialData* GetMaterials() const { return RCast<FPmdMaterialData*>(m_Materials->data()); };
-	uint32 GetMaterialNum() const { return SCast<uint32>(m_Materials->size()); };
+	const FPmdVertex* GetVertices() const;
+	uint32 GetVertexNum() const ;
+	uint32 GetVertexSize() const ;
+	const uint16* GetIndicies() const;
+	uint32 GetIndexNum() const;
+	const FPmdMaterialData* GetMaterials() const;
+	uint32 GetMaterialNum() const;
 
-	CPmdParser() {};
-	~CPmdParser() {};
+	CPmdParser();
+	~CPmdParser();
 
 private:
 
-	struct FDeserializeMaterialData
+	class Impl;
+	ObjectPtr(Impl) m_Impl = nullptr;
+
+	/*struct FDeserializeMaterialData
 	{
 		struct First
 		{
@@ -84,7 +87,7 @@ private:
 
 	ObjectPtr(FPmdVertices) m_Vertices = nullptr;
 	ObjectPtr(FPmdIndicies) m_Indices = nullptr;
-	ObjectPtr(FPmdMaterials) m_Materials = nullptr;
+	ObjectPtr(FPmdMaterials) m_Materials = nullptr;*/
 	
 
 };

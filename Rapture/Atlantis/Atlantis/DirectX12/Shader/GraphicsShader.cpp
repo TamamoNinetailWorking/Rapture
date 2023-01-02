@@ -46,8 +46,8 @@ bool CVertexShader::CreateReflection(const FVertexShaderInitializer* _Initialize
 
 	ID3D12ShaderReflection* reflection = nullptr;
 	D3D_ERROR_CHECK(D3DReflect(
-		m_ShaderBlob->GetBufferPointer(),
-		m_ShaderBlob->GetBufferSize(),
+		GetShaderByteCode(),
+		GetBufferSize(),
 		IID_PPV_ARGS(&reflection)));
 
 	//m_Reflection.reset(reflection);
@@ -264,7 +264,7 @@ bool CDomainShader::Initialize(const FResourceInitializerBase* _Initializer)
 	return CShaderBase::Initialize(_Initializer);
 }
 
-bool CGeometoryShader::Initialize(const FResourceInitializerBase* _Initializer)
+bool CGeometryShader::Initialize(const FResourceInitializerBase* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	FResourceInitializerBase* notConstant = CCast<FResourceInitializerBase*>(_Initializer);

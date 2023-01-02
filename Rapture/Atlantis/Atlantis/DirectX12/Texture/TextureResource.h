@@ -1,5 +1,14 @@
 #pragma once
 
+/*
+*    TextureやシェーダーのFileLoad周りを分離して、
+    Memoryからデータ作成するAPIに差し替えてもいいかも。
+    　>>今は特に困らないが、
+    　　プラットフォームが変わったときにファイルシステムが差し替えられる。
+    GraphicsShaderも
+        >> 分離しないといけないのはShaderBase側に記述が多そう
+*/
+
 #include <eden/include/Resource/Resource.h>
 
 struct ID3D12Device;

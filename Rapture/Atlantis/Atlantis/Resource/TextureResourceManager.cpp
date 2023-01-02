@@ -6,8 +6,9 @@
 USING_ATLANTIS;
 EDENS_NAMESPACE_USING;
 
-CResource* CTextureResourceManager::CreateResourceObject()
+FResourceHandle CTextureResourceManager::CreateResourceImpl(const FResourceInitializerBase* _Initializer)
 {
-	CTextureResource* ptr = new CTextureResource();
-	return ptr;
+	if (_Initializer == nullptr) { return GetInvalidHandle(); }
+
+	return CreateResource<CTextureResource>(_Initializer);
 }

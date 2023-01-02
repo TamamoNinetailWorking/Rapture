@@ -18,24 +18,44 @@ using namespace std;
 #define SUBSYTEM_IS_NULL() \
 	if(m_Subsystem == nullptr) { return nullptr; } \
 
-IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManager()
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManager() const
 {
 	return GetManagerFromIndex(RESOURCE_TYPE_TEXTURE);
 }
 
-IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMeshResourceManager()
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(RESOURCE_TYPE_TEXTURE);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMeshResourceManager() const
 {
 	return GetManagerFromIndex(RESOURCE_TYPE_MESH);
 }
 
-IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManager()
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMeshResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(RESOURCE_TYPE_MESH);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManager() const
 {
 	return GetManagerFromIndex(RESOURCE_TYPE_SHADER);
 }
 
-IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManager()
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(RESOURCE_TYPE_SHADER);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManager() const
 {
 	return GetManagerFromIndex(RESOURCE_TYPE_MATERIAL);
+}
+
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(RESOURCE_TYPE_MATERIAL);
 }
 
 void CResourceSubsystemImpl::Release()
@@ -53,7 +73,7 @@ bool CResourceSubsystemImpl::CreateDefaultTextureResource(const CDX12MainDevice*
 	ManagerPtr manager = GetTextureResourceManager();
 	if (manager == nullptr) { return false; }
 
-	FResourceHandle handle = {};
+	FResourceHandle handle = manager->GetInvalidHandle();
 
 	FTextureInitializer initializer = {};
 	{
@@ -138,7 +158,14 @@ void CResourceSubsystemImpl::DeleteDefaultTextureResource()
 	manager->DeleteResource(DefaultResource::WhiteTextureResource);
 }
 
-IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetManagerFromIndex(EResourceManagementType _Type)
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetManagerFromIndexEdit(EResourceManagementType _Type)
+{
+	SUBSYTEM_IS_NULL();
+	uint32 index = _Type;
+	return GetManager(index);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetManagerFromIndex(EResourceManagementType _Type) const
 {
 	SUBSYTEM_IS_NULL();
 	uint32 index = _Type;

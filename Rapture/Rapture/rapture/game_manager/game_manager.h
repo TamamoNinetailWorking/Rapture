@@ -79,8 +79,8 @@ private:
 
 	ATLANTIS_NAMESPACE::CViewport* m_Viewport = nullptr;
 	ATLANTIS_NAMESPACE::CScissorRect* m_ScissorRect = nullptr;
-	ATLANTIS_NAMESPACE::CVertexShader* m_VertexShader = nullptr;
-	ATLANTIS_NAMESPACE::CPixelShader* m_PixelShader = nullptr;
+	const ATLANTIS_NAMESPACE::CVertexShader* m_VertexShader = nullptr;
+	const ATLANTIS_NAMESPACE::CPixelShader* m_PixelShader = nullptr;
 
 	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_Pipeline = nullptr;
 	ATLANTIS_NAMESPACE::CGraphicsPipeline* m_PmdPipeline = nullptr;

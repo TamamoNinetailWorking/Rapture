@@ -24,6 +24,7 @@
     <ClInclude Include="Atlantis\DirectX12\Barrier\Barrier.h" />
     <ClInclude Include="Atlantis\DirectX12\Command\CommandContext.h" />
     <ClInclude Include="Atlantis\DirectX12\Command\CommandQueue.h" />
+    <ClInclude Include="Atlantis\DirectX12\ConstantBuffer\ConstantBufferPreDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\DepthStencilView\DepthStencilView.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectX12BaseDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.h" />
@@ -46,16 +47,20 @@
     <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.h" />
     <ClInclude Include="Atlantis\DirectX12\RootSignature\RootSignature.h" />
     <ClInclude Include="Atlantis\DirectX12\ScissorRect\ScissorRect.h" />
+    <ClInclude Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\GraphicsShader.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\GraphicsShaderInitializer.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBase.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBaseInitializer.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderData.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderPreDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\SwapChain\SwapChain.h" />
     <ClInclude Include="Atlantis\DirectX12\Texture\Texture.h" />
     <ClInclude Include="Atlantis\DirectX12\Texture\TextureResource.h" />
     <ClInclude Include="Atlantis\DirectX12\Texture\TextureResourceInitializer.h" />
     <ClInclude Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.h" />
     <ClInclude Include="Atlantis\DirectX12\Viewport\Viewport.h" />
+    <ClInclude Include="Atlantis\Resource\ShaderManager.h" />
     <ClInclude Include="Atlantis\Resource\TextureResourceManager.h" />
     <ClInclude Include="Atlantis\Utility\FileUtility\FileTypeDefine.h" />
     <ClInclude Include="Atlantis\Utility\FileUtility\FileUtility.h" />
@@ -75,6 +80,7 @@
     <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.cpp" />
     <ClCompile Include="Atlantis\DirectX12\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Atlantis\DirectX12\ScissorRect\ScissorRect.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Shader\GraphicsShader.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Shader\ShaderBase.cpp" />
     <ClCompile Include="Atlantis\DirectX12\SwapChain\SwapChain.cpp" />
@@ -82,6 +88,7 @@
     <ClCompile Include="Atlantis\DirectX12\Texture\TextureResource.cpp" />
     <ClCompile Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp" />
+    <ClCompile Include="Atlantis\Resource\ShaderManager.cpp" />
     <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp" />
     <ClCompile Include="Atlantis\Utility\FileUtility\FileUtility.cpp" />
     <ClCompile Include="Atlantis\Utility\PrintUtility\PrintUtility.cpp" />

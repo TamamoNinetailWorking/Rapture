@@ -27,6 +27,9 @@ public:
 	template <typename Number>
 	static bool CheckWithinRange(Number _Target, Number _A, Number _B);
 
+	template <typename Integer>
+	static Integer AlignNum(Integer _Target, Integer _Align);
+
 };
 
 

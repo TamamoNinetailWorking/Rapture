@@ -7,7 +7,7 @@ inline bool CheckD3DProcessResult(HRESULT _result)
 {
 	if (FAILED(_result))
 	{
-		PRINT("Error Num %u\n", _result);
+		PRINT("Error Num 0x%x\n", _result);
 		return false;
 	}
 	else

@@ -177,6 +177,9 @@
     <ClInclude Include="eden\include\Resource\ResourceManagerPreDefine.h">
       <Filter>eden\include\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\Resource\ResourceManager.inl">
+      <Filter>eden\include\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -212,9 +215,11 @@
     <ClCompile Include="eden\src\utility\StringUtility.cpp">
       <Filter>eden\src\system\utility</Filter>
     </ClCompile>
-    <ClCompile Include="eden\include\gadget\FileLoader\FileLoader.cpp" />
     <ClCompile Include="eden\src\Resource\ResourceManager.cpp">
       <Filter>eden\src\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\gadget\FileLoader\FileLoader.cpp">
+      <Filter>eden\src\gadget\FileLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

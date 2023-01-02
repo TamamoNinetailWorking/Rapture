@@ -22,6 +22,7 @@
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 
 #include <Atlantis/Resource/TextureResourceManager.h>
+#include <Atlantis/Resource/ShaderManager.h>
 #include <rapture/Subsystem/ResourceSubsystemImpl.h>
 
 
@@ -69,6 +70,10 @@
 
 #include <rapture/Test/Test.h>
 #include <eden/include/math/random_utility.h>
+
+#include <eden/include/utility/StringUtility.h>
+
+#include <Bifrost/Model/Pmd/PmdMaterialData.h>
 
 using namespace std;
 using namespace DirectX;
@@ -299,6 +304,11 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CTextureResourceManager>(EResourceManagementType::RESOURCE_TYPE_TEXTURE));
 			}
 
+			// Shader
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CShaderManager>(EResourceManagementType::RESOURCE_TYPE_SHADER));
+			}
+
 			m_ResSystemInterface = new CResourceSubsystemImpl();
 			CHECK_RESULT_BREAK(m_ResSystemInterface);
 			auto ptr = PCast<CResourceSubsystemImpl*>(m_ResSystemInterface);
@@ -425,7 +435,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		MESH_PTR vertexMap = nullptr;
 		result = m_VertexBuffer->Map(0, nullptr, (void**)(&vertexMap));
 
-		copy(begin(testMesh), end(testMesh), vertexMap);
+		std::copy(begin(testMesh), end(testMesh), vertexMap);
 
 		m_VertexBuffer->Unmap(0, nullptr);
 
@@ -472,7 +482,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 		m_IndexBuffer->Map(0, nullptr, (void**)&indexMap);
 
-		copy(begin(testIndicies), end(testIndicies), indexMap);
+		std::copy(begin(testIndicies), end(testIndicies), indexMap);
 
 		m_IndexBuffer->Unmap(0, nullptr);
 
@@ -491,10 +501,30 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		//CVertexShader::FInitializer Initializer;
 		FVertexShaderInitializer Initializer = {};
 		Initializer.Device = m_MainDevice->GetDevice();
-		Initializer.FileNameHash = CHash160("resource/shader/BasicVertexShader.hlsl");
-		Initializer.FuncNameHash = CHash160("main");
 
-		CHECK_RESULT_BREAK(m_VertexShader->Initialize(&Initializer));
+		{
+			CFileLoader loader = {};
+			loader.FileLoad("resource/cso/BasicVertexShader.cso");
+			Initializer.Data = loader.GetData();
+			Initializer.Size = loader.GetSize();
+
+			string fileAndFuncName = StringUtility::CombineText("resource/cso/BasicVertexShader.cso", "main",'*');
+			Initializer.Name = CHash160(fileAndFuncName);
+			Initializer.Type = EShaderType::SHADER_TYPE_VERTEX;
+#if 0
+			{
+				CHECK_RESULT_BREAK(m_VertexShader->Initialize(&Initializer));
+			}
+#else
+			{
+				FResourceHandle handle = {};
+				handle = CSubsystemServiceLocator::GetResourceSubsystem()->GetShaderResourceManager()->SearchCreateResource(&Initializer);
+
+				m_VertexShader = PCast<const CVertexShader*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetShaderResourceManager()->SearchResource(handle));
+			}
+#endif
+			loader.ResetData();
+		}
 
 	}
 
@@ -504,10 +534,33 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 		//CPixelShader::FInitializer Initializer;
 		FPixelShaderInitializer Initializer = {};
-		Initializer.FileNameHash = CHash160("resource/shader/BasicPixelShader.hlsl");
-		Initializer.FuncNameHash = CHash160("main");
 
-		CHECK_RESULT_BREAK(m_PixelShader->Initialize(&Initializer));
+		{
+			CFileLoader loader = {};
+			loader.FileLoad("resource/cso/BasicPixelShader.cso");
+			Initializer.Data = loader.GetData();
+			Initializer.Size = loader.GetSize();
+
+			string fileAndFuncName = StringUtility::CombineText("resource/cso/BasicPixelShader.cso", "main", '*');
+			Initializer.Name = CHash160(fileAndFuncName);
+
+			Initializer.Type = EShaderType::SHADER_TYPE_PIXEL;
+
+#if 0
+			CHECK_RESULT_BREAK(m_PixelShader->Initialize(&Initializer));
+#else
+
+			{
+				FResourceHandle handle = {};
+				handle = CSubsystemServiceLocator::GetResourceSubsystem()->GetShaderResourceManager()->SearchCreateResource(&Initializer);
+
+				m_PixelShader = PCast<const CPixelShader*>(CSubsystemServiceLocator::GetResourceSubsystem()->GetShaderResourceManager()->SearchResource(handle));
+			}
+#endif
+
+			loader.ResetData();
+		}
+
 	}
 
 	{
@@ -988,7 +1041,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		//uint8* pmdVertexMap = nullptr;
 		PMDVertex* pmdVertexMap = nullptr;
 		HRESULT hResult = m_PmdVertexBuffer->Map(0, nullptr, (void**)(&pmdVertexMap));
-		copy(begin(pmdVertices), end(pmdVertices), pmdVertexMap);
+		std::copy(begin(pmdVertices), end(pmdVertices), pmdVertexMap);
 		m_PmdVertexBuffer->Unmap(0, nullptr);
 
 		m_PmdVertexBufferView = new D3D12_VERTEX_BUFFER_VIEW();
@@ -1025,7 +1078,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 		m_PmdIndexBuffer->Map(0, nullptr, (void**)&indexMap);
 
-		copy(begin(pmdIndicies), end(pmdIndicies), indexMap);
+		std::copy(begin(pmdIndicies), end(pmdIndicies), indexMap);
 
 		m_PmdIndexBuffer->Unmap(0, nullptr);
 
@@ -1043,10 +1096,20 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			//CVertexShader::FInitializer Initializer;
 			FVertexShaderInitializer Initializer = {};
 			Initializer.Device = m_MainDevice->GetDevice();
-			Initializer.FileNameHash = CHash160("resource/shader/PmdVertexShader.hlsl");
-			Initializer.FuncNameHash = CHash160("main");
 
-			CHECK_RESULT_BREAK(m_PmdVertexShader->Initialize(&Initializer));
+			{
+				CFileLoader loader = {};
+				loader.FileLoad("resource/shader/PmdVertexShader.hlsl");
+				Initializer.Data = loader.GetData();
+				Initializer.Size = loader.GetSize();
+
+				string fileAndFuncName = StringUtility::CombineText("resource/shader/PmdVertexShader.hlsl", "main", '*');
+				Initializer.Name = CHash160(fileAndFuncName);
+
+				CHECK_RESULT_BREAK(m_PmdVertexShader->Initialize(&Initializer));
+
+				loader.ResetData();
+			}
 
 		}
 
@@ -1056,10 +1119,20 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 			//CPixelShader::FInitializer Initializer;
 			FPixelShaderInitializer Initializer = {};
-			Initializer.FileNameHash = CHash160("resource/shader/PmdPixelShader.hlsl");
-			Initializer.FuncNameHash = CHash160("main");
 
-			CHECK_RESULT_BREAK(m_PmdPixelShader->Initialize(&Initializer));
+			{
+				CFileLoader loader = {};
+				loader.FileLoad("resource/shader/PmdPixelShader.hlsl");
+				Initializer.Data = loader.GetData();
+				Initializer.Size = loader.GetSize();
+
+				string fileAndFuncName = StringUtility::CombineText("resource/shader/PmdPixelShader.hlsl", "main", '*');
+				Initializer.Name = CHash160(fileAndFuncName);
+
+				CHECK_RESULT_BREAK(m_PmdPixelShader->Initialize(&Initializer));
+
+				loader.ResetData();
+			}
 		}
 
 		{
@@ -1150,7 +1223,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 					));
 
 					vector<uint8> whiteData(4 * 4 * 4);
-					fill(whiteData.begin(), whiteData.end(), 0xff);
+					std::fill(whiteData.begin(), whiteData.end(), 0xff);
 
 					D3D_ERROR_CHECK_TEMP(whiteResource->WriteToSubresource(
 						0,
@@ -1174,7 +1247,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 					));
 
 					vector <uint8> blackData(4 * 4 * 4);
-					fill(blackData.begin(), blackData.end(), 0x00);
+					std::fill(blackData.begin(), blackData.end(), 0x00);
 
 					D3D_ERROR_CHECK_TEMP(blackResource->WriteToSubresource(
 						0,
@@ -1218,7 +1291,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 					for (auto itr = grayGradationData.begin(); itr != grayGradationData.end(); itr += 4)
 					{
 						auto col = (0xff << 24) | RGB(color, color, color);
-						fill(itr, itr + 4, col);
+						std::fill(itr, itr + 4, col);
 						--color;
 					}
 
@@ -1998,8 +2071,8 @@ void CGameManager::Finalize()
 	FinalizeObject(m_PmdPipeline);
 	FinalizeObject(m_Pipeline);
 	FinalizeObject(m_RootSignature);
-	FinalizeObject(m_PixelShader);
-	FinalizeObject(m_VertexShader);
+	//FinalizeObject(m_PixelShader);
+	//FinalizeObject(m_VertexShader);
 	FinalizeObject(m_ScissorRect);
 	FinalizeObject(m_Viewport);
 	FinalizeObject(m_Fence);
@@ -2126,7 +2199,7 @@ void CGameManager::Render()
 		m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
 
 
-
+#if 0
 		m_CmdList->SetDescriptorHeaps(1, &m_MaterialDescHeap);
 		auto matDescHandle = m_MaterialDescHeap->GetGPUDescriptorHandleForHeapStart();
 		//m_CmdList->SetGraphicsRootDescriptorTable(1, matDescHandle);
@@ -2148,6 +2221,24 @@ void CGameManager::Render()
 			indexOffset += element.IndiciesNum;
 			//++i;
 		}
+#else
+
+		m_CmdList->SetDescriptorHeaps(1, Test::m_MaterialData->GetDescriptorHeapPtr());
+		auto matDescHandle = Test::m_MaterialData->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+		
+		uint32 indexOffset = 0;
+		
+		for (uint32 index = 0; index < Test::m_MaterialData->GetMaterialNum(); ++index)
+		{
+			m_CmdList->SetGraphicsRootDescriptorTable(1, matDescHandle);
+			m_CmdList->DrawIndexedInstanced(Test::m_MaterialData->GetDrawIndex(index), 1, indexOffset, 0, 0);
+
+			indexOffset += Test::m_MaterialData->GetDrawIndex(index);
+			matDescHandle.ptr += Test::m_MaterialData->GetHeapStride();
+		}
+
+
+#endif
 
 		//m_CmdList->DrawInstanced(PmdVertexNum, 1, 0, 0);
 		//m_CmdList->DrawIndexedInstanced(PmdIndexNum, 1, 0, 0, 0);

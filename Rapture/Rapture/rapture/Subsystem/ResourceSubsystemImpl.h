@@ -13,10 +13,17 @@ class CResourceSubsystemImpl : public BIFROST_NAMESPACE::IResourceSubsystem
 {
 public:
 
-	ManagerPtr GetTextureResourceManager() override;
-	ManagerPtr GetMeshResourceManager() override;
-	ManagerPtr GetShaderResourceManager() override;
-	ManagerPtr GetMaterialResourceManager() override;
+	const ManagerPtr GetTextureResourceManager() const override;
+	ManagerPtr GetTextureResourceManagerEdit() override;
+	
+	const ManagerPtr GetMeshResourceManager() const override;
+	ManagerPtr GetMeshResourceManagerEdit() override;
+	
+	const ManagerPtr GetShaderResourceManager() const override;
+	ManagerPtr GetShaderResourceManagerEdit() override;
+	
+	const ManagerPtr GetMaterialResourceManager() const override;
+	ManagerPtr GetMaterialResourceManagerEdit() override;
 
 	void Release() override;
 
@@ -28,5 +35,7 @@ private:
 
 	void DeleteDefaultTextureResource();
 
-	ManagerPtr GetManagerFromIndex(EResourceManagementType _Type);
+	const ManagerPtr GetManagerFromIndex(EResourceManagementType _Type) const;
+	ManagerPtr GetManagerFromIndexEdit(EResourceManagementType _Type);
+
 };

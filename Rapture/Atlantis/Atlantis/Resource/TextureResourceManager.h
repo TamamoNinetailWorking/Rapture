@@ -4,7 +4,8 @@
 
 EDENS_NAMESPACE_BEGIN
 
-class CResource;
+//class CResource;
+struct FResourceInitializerBase;
 
 EDENS_NAMESPACE_END
 
@@ -14,7 +15,7 @@ class CTextureResourceManager : public EDENS_NAMESPACE::CResourceManager
 {
 protected:
 
-	EDENS_NAMESPACE::CResource* CreateResourceObject() override;
+	EDENS_NAMESPACE::FResourceHandle CreateResourceImpl(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
 
 };
 

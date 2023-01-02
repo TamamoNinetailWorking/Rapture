@@ -63,7 +63,7 @@ void CGraphicsPipeline::SetRootSignature(const CRootSignature* _RootSignature)
 void CGraphicsPipeline::SetVertexShader(const CVertexShader* _Shader)
 {
 	D3D_CHECK(_Shader);
-	m_PipelineDesc->VS.pShaderBytecode = _Shader->GetShaderBytecod();
+	m_PipelineDesc->VS.pShaderBytecode = _Shader->GetShaderByteCode();
 	m_PipelineDesc->VS.BytecodeLength = _Shader->GetBufferSize();
 
 	m_PipelineDesc->InputLayout.pInputElementDescs = _Shader->GetInputLayout();
@@ -73,28 +73,28 @@ void CGraphicsPipeline::SetVertexShader(const CVertexShader* _Shader)
 void CGraphicsPipeline::SetHullShader(const CHullShader* _Shader)
 {
 	D3D_CHECK(_Shader);
-	m_PipelineDesc->HS.pShaderBytecode = _Shader->GetShaderBytecod();
+	m_PipelineDesc->HS.pShaderBytecode = _Shader->GetShaderByteCode();
 	m_PipelineDesc->HS.BytecodeLength = _Shader->GetBufferSize();
 }
 
 void CGraphicsPipeline::SetDomainShader(const CDomainShader* _Shader)
 {
 	D3D_CHECK(_Shader);
-	m_PipelineDesc->DS.pShaderBytecode = _Shader->GetShaderBytecod();
+	m_PipelineDesc->DS.pShaderBytecode = _Shader->GetShaderByteCode();
 	m_PipelineDesc->DS.BytecodeLength = _Shader->GetBufferSize();
 }
 
-void CGraphicsPipeline::SetGeometoryShader(const CGeometoryShader* _Shader)
+void CGraphicsPipeline::SetGeometoryShader(const CGeometryShader* _Shader)
 {
 	D3D_CHECK(_Shader);
-	m_PipelineDesc->GS.pShaderBytecode = _Shader->GetShaderBytecod();
+	m_PipelineDesc->GS.pShaderBytecode = _Shader->GetShaderByteCode();
 	m_PipelineDesc->GS.BytecodeLength = _Shader->GetBufferSize();
 }
 
 void CGraphicsPipeline::SetPixelShader(const CPixelShader* _Shader)
 {
 	D3D_CHECK(_Shader);
-	m_PipelineDesc->PS.pShaderBytecode = _Shader->GetShaderBytecod();
+	m_PipelineDesc->PS.pShaderBytecode = _Shader->GetShaderByteCode();
 	m_PipelineDesc->PS.BytecodeLength = _Shader->GetBufferSize();
 }
 

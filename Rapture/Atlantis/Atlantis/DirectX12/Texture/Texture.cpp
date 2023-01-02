@@ -16,6 +16,16 @@ EDENS_NAMESPACE_USING;
 using namespace std;
 using namespace DirectX;
 
+CTexture::CTexture()
+{
+
+}
+
+CTexture::~CTexture()
+{
+	Finalize();
+}
+
 bool CTexture::Initialize(const FInitializer& _Initializer)
 {
 	do

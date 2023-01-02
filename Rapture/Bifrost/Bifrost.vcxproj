@@ -24,9 +24,11 @@
     <ClInclude Include="Bifrost\Model\MeshData\MeshData.h" />
     <ClInclude Include="Bifrost\Model\MeshData\MeshDataInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialData.h" />
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialDataInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdParser.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdPreDefine.h" />
     <ClInclude Include="Bifrost\Resource\DefaultResourceDefine.h" />
+    <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h" />
     <ClInclude Include="Bifrost\Subsystem\Dominator\SubsystemDominator.h" />
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.h" />
@@ -36,6 +38,7 @@
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdParser.cpp" />
+    <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Dominator\SubsystemDominator.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.cpp" />

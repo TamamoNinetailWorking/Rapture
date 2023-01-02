@@ -10,11 +10,11 @@ class CResource
 {
 public:
 
-	virtual bool Initialize(const FResourceInitializerBase* _Initializer) { return false; };
-	virtual void Finalize() {};
+	virtual bool Initialize(const FResourceInitializerBase* _Initializer) = 0;
+	virtual void Finalize() = 0;
 
 
-	const Hash160& GetName() const { return m_ResourceName; };
+	const Hash160& GetName() { return m_ResourceName; };
 
 	CResource() {};
 	virtual ~CResource();

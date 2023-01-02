@@ -18,10 +18,17 @@ public:
 
 	typedef EDENS_NAMESPACE::CResourceManager* ManagerPtr;
 
-	virtual ManagerPtr GetTextureResourceManager() = 0;
-	virtual ManagerPtr GetMeshResourceManager() = 0;
-	virtual ManagerPtr GetShaderResourceManager() = 0;
-	virtual ManagerPtr GetMaterialResourceManager() = 0;
+	virtual const ManagerPtr GetTextureResourceManager() const = 0;
+	virtual ManagerPtr GetTextureResourceManagerEdit() = 0;
+
+	virtual const ManagerPtr GetMeshResourceManager() const = 0;
+	virtual ManagerPtr GetMeshResourceManagerEdit() = 0;
+
+	virtual const ManagerPtr GetShaderResourceManager() const = 0;
+	virtual ManagerPtr GetShaderResourceManagerEdit() = 0;
+	
+	virtual const ManagerPtr GetMaterialResourceManager() const = 0;
+	virtual ManagerPtr GetMaterialResourceManagerEdit() = 0;
 
 	virtual void Release() = 0;
 
@@ -29,7 +36,9 @@ protected:
 
 	friend class CSubsystemDominator;
 
-	ManagerPtr GetManager(uint32 _Index);
+	const ManagerPtr GetManager(uint32 _Index) const;
+
+	ManagerPtr GetManagerEdit(uint32 _Index);
 
 	ObjectPtr(CResourceManagementSubsystem) m_Subsystem = nullptr;
 
