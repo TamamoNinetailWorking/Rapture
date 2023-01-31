@@ -25,3 +25,23 @@ IResourceSubsystem* CSubsystemServiceLocator::GetResourceSubsystemEdit()
 {
 	return s_Dominator->GetResourceSubsystemEdit();
 }
+
+const CUpdateProcessorSubsystem* CSubsystemServiceLocator::GetUpdaterSubsystem()
+{
+	return s_Dominator->GetUpdaterSubsystem();
+}
+
+CUpdateProcessorSubsystem* CSubsystemServiceLocator::GetUpdaterSubsystemEdit()
+{
+	return s_Dominator->GetUpdaterSubsystemEdit();
+}
+
+const CRenderingSubsystem* CSubsystemServiceLocator::GetRenderingSubsystem()
+{
+	return s_Dominator->GetRenderingSubsystem();
+}
+
+CRenderingSubsystem* CSubsystemServiceLocator::GetRenderingSubsystemEdit()
+{
+	return s_Dominator->GetRenderingSubsystemEdit();
+}

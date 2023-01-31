@@ -13,33 +13,38 @@
                 >> 作るためのクラスオブジェクトはAtlantis側で定義しておくといいだろう
 */
 
-#include <eden/include/Resource/Resource.h>
 
-struct ID3D12DescriptorHeap;
+#include <Atlantis/Material/MaterialInterface.h>
 
+ATLANTIS_NAMESPACE_BEGIN
 
-EDENS_NAMESPACE_BEGIN
+struct FMaterialInterfaceInitializerBase;
+class CGraphicsPipeline;
+class CRootSignature;
 
-struct FResourceInitializerBase;
+struct FMaterialGeometryBufferBase;
 
-EDENS_NAMESPACE_END
-
-//#include "PmdPreDefine.h"
+ATLANTIS_NAMESPACE_END
 
 BIFROST_NAMESPACE_BEGIN
 
-class CPmdMaterialData : public EDENS_NAMESPACE::CResource
+class CPmdMaterialData : public ATLANTIS_NAMESPACE::IMaterialInterface
 {
 public:
 
-	bool Initialize(const  EDENS_NAMESPACE::FResourceInitializerBase* _Initializer) override;
+	bool Initialize(const ATLANTIS_NAMESPACE::FMaterialInterfaceInitializerBase* _Initializer) override;
 	void Finalize() override;
 
-	ID3D12DescriptorHeap* GetDescriptorHeap() const;
-	ID3D12DescriptorHeap* const* GetDescriptorHeapPtr() const;
-	uint32 GetHeapStride() const;
-	uint32 GetDrawIndex(uint32 _Index) const;
-	uint32 GetMaterialNum() const;
+    void SetGeometryBuffer(ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* _Buffer) override;
+
+	uint32 GetDrawIndex(uint32 _Index) const override;
+	uint32 GetMaterialNum() const override;
+
+    ATLANTIS_NAMESPACE::CGraphicsPipeline* GetGraphicsPipeline() const override;
+    ATLANTIS_NAMESPACE::CRootSignature* GetRootSignature() const override;
+
+    const ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* GetGeometryBuffer() const override;
+    ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* GetGeometryBufferEdit() const override;
 
 	CPmdMaterialData();
 	~CPmdMaterialData();

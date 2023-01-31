@@ -24,7 +24,7 @@ public:
 
 	void Finalize();
 
-	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_DescriptorHeap; };
+	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_MaterialDescriptorHeap; };
 	ID3D12Resource* GetResource() const { return m_Resource; };
 
 
@@ -39,7 +39,7 @@ private:
 
 	bool CreateDepthStencilView(const FInitializer& _Initializer);
 
-	ObjectPtr(ID3D12DescriptorHeap) m_DescriptorHeap = nullptr;
+	ObjectPtr(ID3D12DescriptorHeap) m_MaterialDescriptorHeap = nullptr;
 
 	ObjectPtr(ID3D12Resource) m_Resource = nullptr;
 

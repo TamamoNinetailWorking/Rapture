@@ -24,12 +24,20 @@ void CBarrier::Finalize()
 	EDENS_NAMESPACE::Delete(m_Barrier);
 }
 
-void ATLANTIS_NAMESPACE::CBarrier::SetTransitionState(const FTransitionState& _state)
+void CBarrier::SetTransitionState(const FTransitionState& _state)
 {
 	m_Barrier->Transition.pResource = _state.Resource;
 	m_Barrier->Transition.StateBefore = GetD3DResourceState(_state.Before);
 	m_Barrier->Transition.StateAfter = GetD3DResourceState(_state.After);
 
+}
+
+void CBarrier::SwapTransitionState()
+{
+	D3D12_RESOURCE_STATES tempState = {};
+	tempState = m_Barrier->Transition.StateBefore;
+	m_Barrier->Transition.StateBefore = m_Barrier->Transition.StateAfter;
+	m_Barrier->Transition.StateAfter = tempState;
 }
 
 bool CBarrier::CreateResourceBarrier(const FInitializer& _Initializer)

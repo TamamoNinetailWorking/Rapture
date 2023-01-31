@@ -162,15 +162,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />
+    <ClCompile Include="rapture\Environment\PsoNameDefine.cpp" />
     <ClCompile Include="rapture\game_manager\game_manager.cpp" />
     <ClCompile Include="rapture\main.cpp" />
     <ClCompile Include="rapture\Subsystem\ResourceSubsystemImpl.cpp" />
+    <ClCompile Include="rapture\Test\BindFunction.cpp" />
     <ClCompile Include="rapture\Test\FileLoaderTest.cpp" />
+    <ClCompile Include="rapture\Test\GraphicsPipelineTest.cpp" />
     <ClCompile Include="rapture\Test\MatrixVectorTest.cpp" />
+    <ClCompile Include="rapture\Test\RenderSubsystemTest.cpp" />
     <ClCompile Include="rapture\Test\SHA1Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h" />
+    <ClInclude Include="rapture\Environment\PsoNameDefine.h" />
     <ClInclude Include="rapture\Environment\ResourceTypeDefine.h" />
     <ClInclude Include="rapture\game_manager\game_manager.h" />
     <ClInclude Include="rapture\game_manager\game_manager_def.h" />

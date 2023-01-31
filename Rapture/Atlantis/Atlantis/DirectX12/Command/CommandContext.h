@@ -59,7 +59,7 @@ public:
 	void Close();
 
 	// リセット
-	void Reset(class CGraphicsPipeline* _Pipeline);
+	void Reset(class CGraphicsPipeline* _Pipeline = nullptr);
 
 	// ゲッター
 	ID3D12CommandAllocator* GetCommandAllocator() const { return m_CmdAllocator; };

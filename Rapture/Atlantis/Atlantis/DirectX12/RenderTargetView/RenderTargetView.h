@@ -3,6 +3,7 @@
 //#include <memory>
 //#include <vector>
 
+#include <Atlantis/DirectX12/DirectXPaste.h>
 
 struct ID3D12Device;
 struct ID3D12DescriptorHeap;
@@ -20,7 +21,11 @@ public:
 	{
 		ID3D12Device* Device = nullptr;
 		ID3D12Resource* ResPtr = nullptr;
-		D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
+		
+		//D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
+		Glue::EDataFormat Format = {};
+		Glue::ERTVDimension RTVDimension = {};
+
 	};
 
 	bool Initialize(const FRenderTargetViewInitializer& _Initializer);
@@ -28,7 +33,7 @@ public:
 	void Finalize();
 
 	// ゲッター
-	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_DescriptorHeap; };
+	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_MaterialDescriptorHeap; };
 	ID3D12Resource* GetResource() const { return m_Resource; };
 
 	CRenderTargetView() {};
@@ -42,7 +47,7 @@ private:
 	bool CreateRenderTargetView(const FRenderTargetViewInitializer& _Initializer);
 
 	// ディスクリプタ―ヒープ
-	ObjectPtr(ID3D12DescriptorHeap) m_DescriptorHeap = nullptr;
+	ObjectPtr(ID3D12DescriptorHeap) m_MaterialDescriptorHeap = nullptr;
 
 	// RTVリソース
 	ObjectPtr(ID3D12Resource) m_Resource = nullptr;

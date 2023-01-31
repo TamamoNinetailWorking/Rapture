@@ -51,7 +51,10 @@ void CShaderBase::Finalize()
 {
 	//ReleaseD3DUniquePtr(m_ShaderBlob);
 	//SafeReleaseD3DPtr(m_Impl->m_ShaderBlob);
-	DeleteArray(m_ShaderData->m_ShaderCode);
+	if (m_ShaderData)
+	{
+		DeleteArray(m_ShaderData->m_ShaderCode);
+	}
 	Delete(m_ShaderData);
 }
 

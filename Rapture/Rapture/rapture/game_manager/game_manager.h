@@ -42,6 +42,9 @@ class CResourceManagementSubsystem;
 
 class IResourceSubsystem;
 
+class CUpdateProcessorSubsystem;
+class CRenderingSubsystem;
+
 BIFROST_NAMESPACE_END
 
 /*
@@ -68,6 +71,11 @@ private:
 
 	ObjectPtr(BIFROST_NAMESPACE::IResourceSubsystem) m_ResSystemInterface = nullptr;
 
+	ObjectPtr(BIFROST_NAMESPACE::CUpdateProcessorSubsystem) m_UpdaterSubsystem = nullptr;
+	ObjectPtr(BIFROST_NAMESPACE::CRenderingSubsystem) m_RenderingSubsystem = nullptr;
+
+#define RENDER_TEST
+#ifdef RENDER_TEST
 	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
 	ATLANTIS_NAMESPACE::CDirectXDebug* m_Debug = nullptr;
 	ATLANTIS_NAMESPACE::CCommandContext* m_CommandContext = nullptr;
@@ -79,6 +87,7 @@ private:
 
 	ATLANTIS_NAMESPACE::CViewport* m_Viewport = nullptr;
 	ATLANTIS_NAMESPACE::CScissorRect* m_ScissorRect = nullptr;
+#endif
 	const ATLANTIS_NAMESPACE::CVertexShader* m_VertexShader = nullptr;
 	const ATLANTIS_NAMESPACE::CPixelShader* m_PixelShader = nullptr;
 

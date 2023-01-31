@@ -129,6 +129,12 @@ void CCommandContext::Reset(CGraphicsPipeline* _Pipeline)
 {
 	m_CmdAllocator->Reset();
 	//m_CmdList->Reset(m_CmdAllocator.get(), _PipelineState);
+	if (_Pipeline == nullptr)
+	{
+		m_CmdList->Reset(m_CmdAllocator, nullptr);
+		return;
+	}
+
 	m_CmdList->Reset(m_CmdAllocator, _Pipeline->GetPipelineState());
 }
 

@@ -23,6 +23,8 @@ public:
 
 	FResourceHandle SearchResourceHandle(const Hash160& _Hash);
 
+	const CResource* SearchResourceRef(const FResourceHandle& _Handle) const;
+
 	void AddRef(const FResourceHandle& _Handle) const;
 
 	void DeleteResource(const FResourceHandle& _Handle);

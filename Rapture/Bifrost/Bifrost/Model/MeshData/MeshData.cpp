@@ -6,6 +6,8 @@
 #include <Atlantis/DirectX12/VertexBuffer/VertexBuffer.h>
 #include <Atlantis/DirectX12/IndexBuffer/IndexBuffer.h>
 
+#include <Atlantis/DirectX12/MainDevice/MainDevice.h>
+
 USING_BIFROST;
 USING_ATLANTIS;
 EDENS_NAMESPACE_USING;
@@ -42,7 +44,7 @@ bool CMeshData::CreateVertexBuffer(const FMeshResourceInitializer* _Initializer)
 	m_ResourceName = _Initializer->Name;
 
 	CVertexBuffer::FInitializer initializer = {};
-	initializer.Device = _Initializer->Device;
+	initializer.Device = _Initializer->Device->GetDevice();
 	initializer.Vertices = _Initializer->Vertices;
 	initializer.StrideBytes = _Initializer->StrideBytes;
 	initializer.VerticesSize = _Initializer->VerticesSize;
@@ -66,7 +68,7 @@ bool CMeshData::CreateIndexBuffer(const FMeshResourceInitializer* _Initializer)
 	CHECK_RESULT_FALSE(m_IndexBuffer);
 
 	CIndexBuffer::FInitializer initializer = {};
-	initializer.Device = _Initializer->Device;
+	initializer.Device = _Initializer->Device->GetDevice();
 	initializer.Indices = _Initializer->Indices;
 	initializer.IndicesSize = _Initializer->IndicesSize;
 

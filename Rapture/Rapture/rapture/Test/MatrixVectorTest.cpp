@@ -1,7 +1,8 @@
 ﻿
 #include <DirectXMath.h>
 
-#include <Atlantis/DirectX12/DirectXPaste.h>
+//#include <Atlantis/DirectX12/DirectXPaste.h>
+#include <Atlantis/DirectX12/GlueMath.h>
 
 
 using namespace DirectX;

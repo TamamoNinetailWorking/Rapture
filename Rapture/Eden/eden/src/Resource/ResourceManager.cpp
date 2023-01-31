@@ -134,6 +134,10 @@ FResourceHandle CResourceManager::GetInvalidHandle() const
 
 const CResource* CResourceManager::SearchResource(const FResourceHandle& _Handle) const
 {
+	if (IsInvalidHandle(_Handle))
+	{
+		return nullptr;
+	}
 	++_Handle.iterator->RefCount;
 	return _Handle.iterator->ResPtr;
 }
@@ -177,3 +181,7 @@ FResourceHandle CResourceManager::SearchResourceHandle(const FResourceInitialize
 	return SearchResourceHandle(_Initializer->Name);
 }
 
+const CResource* CResourceManager::SearchResourceRef(const FResourceHandle& _Handle) const
+{
+	return _Handle.iterator->ResPtr;
+}

@@ -100,6 +100,12 @@
     <Filter Include="eden\src\gadget\FileLoader">
       <UniqueIdentifier>{42d86ce9-a79c-4e00-89e4-1c65b419b91a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="eden\include\Object">
+      <UniqueIdentifier>{cdc56473-9bfc-45af-9f58-f69029ed6842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eden\src\Object">
+      <UniqueIdentifier>{9011d59a-9b36-41a8-971e-e9df513e3d98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eden\include\template\singleton.h">
@@ -180,6 +186,12 @@
     <ClInclude Include="eden\include\Resource\ResourceManager.inl">
       <Filter>eden\include\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="eden\include\Object\Object.h">
+      <Filter>eden\include\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="eden\include\Object\ObjectDefine.h">
+      <Filter>eden\include\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eden\src\system\directory\directory_manager.cpp">
@@ -220,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="eden\src\gadget\FileLoader\FileLoader.cpp">
       <Filter>eden\src\gadget\FileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="eden\src\Object\Object.cpp">
+      <Filter>eden\src\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

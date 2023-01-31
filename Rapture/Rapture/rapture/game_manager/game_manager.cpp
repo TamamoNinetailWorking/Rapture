@@ -19,12 +19,20 @@
 
 #include <Bifrost/Subsystem/Dominator/SubsystemDominator.h>
 #include <Bifrost/Subsystem/Resource/ResourceManagementSubsystem.h>
+#include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>
+#include <Bifrost/Subsystem/Rendering/RenderingSubsystemInitializer.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
+
+#include <Atlantis/RHIProccessor/RHIProcessor.h>
 
 #include <Atlantis/Resource/TextureResourceManager.h>
 #include <Atlantis/Resource/ShaderManager.h>
+#include <Bifrost/Resource/Manager/MeshDataManager.h>
+#include <Bifrost/Resource/Manager/MaterialManager.h>
+#include <Bifrost/Resource/Manager/PipelineStateObjectManager.h>
 #include <rapture/Subsystem/ResourceSubsystemImpl.h>
 
+#include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
 
 #include <rapture/Environment/ResourceTypeDefine.h>
 
@@ -36,6 +44,7 @@
 #include <eden/include/utility/ender_utility.h>
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
+#include <Atlantis/DirectX12/GlueMath.h>
 
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 #include <Atlantis/DirectX12/DirectXDebug/DirectXDebug.h>
@@ -74,6 +83,11 @@
 #include <eden/include/utility/StringUtility.h>
 
 #include <Bifrost/Model/Pmd/PmdMaterialData.h>
+#include <Bifrost/Resource/PSO/PipelineStateObject.h>
+
+#include <Bifrost/Model/Component/PmdModelComponent.h>
+#include <Bifrost/Model/Pmd/PmdMaterialDefine.h>
+#include <Atlantis/SceneView/SceneView.h>
 
 using namespace std;
 using namespace DirectX;
@@ -140,17 +154,27 @@ constexpr uint32 MaterialDataSize = sizeof(MaterialData);
 
 vector<MaterialData> m_MaterialData = {};
 
+FSceneData SceneData = {};
+
 #define D3D_ERROR_CHECK_TEMP(result) if(FAILED(result)) { return false; };
 
 b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 {
+	/// <summary>
+	///  SHA1 Test
+	/// </summary>
+	/// <param name="_Initializer"></param>
+	/// <returns></returns>
+	//Test::SHA1TestMain();
+
 	// DirectX12を初期化 //
 
 	do 
 	{
-		m_Debug = new CDirectXDebug();
-		if (!m_Debug) { break; }
-		m_Debug->EnableDebugLayer();
+#ifdef RENDER_TEST
+		//m_Debug = new CDirectXDebug();
+		//if (!m_Debug) { break; }
+		//m_Debug->EnableDebugLayer();
 
 		m_MainDevice = new CDX12MainDevice();
 		if (!m_MainDevice) { break; };
@@ -212,7 +236,9 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			
 			CRenderTargetView::FRenderTargetViewInitializer initializer;
 			initializer.Device = m_MainDevice->GetDevice();
-			initializer.RtvDesc = &rtvDesc;
+			//initializer.RtvDesc = &rtvDesc;
+			initializer.Format = EDataFormat::FORMAT_R8G8B8A8_UNORM;
+			initializer.RTVDimension = ERTVDimension::RTV_DIMENSION_TEXTURE2D;
 
 			for (uint32 i = 0; i < m_RTV.size(); ++i)
 			{
@@ -280,6 +306,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_ScissorRect->Initialize(initializer));
 			
 		}
+#endif
 
 		{
 			m_SubsystemDominator = new CSubsystemDominator();
@@ -288,6 +315,35 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_SubsystemDominator->Initialize());
 			CSubsystemServiceLocator::SetSubsystemDominator(m_SubsystemDominator);
 		}
+
+#ifndef RENDER_TEST
+		{
+			m_RenderingSubsystem = new CRenderingSubsystem();
+			CHECK_RESULT_BREAK(m_RenderingSubsystem);
+
+			FRenderingSubsystemInitializer initializer = {};
+			initializer.BarrierType = Glue::EResourceBarrierType::BARRIER_TYPE_TRANSITION;
+			initializer.CommandListType = COMMAND_LIST_TYPE_DIRECT;
+			initializer.CommandQueueFlag = COMMAND_QUEUE_FLAG_NONE;
+			initializer.CommandQueuePriority = COMMAND_QUEUE_PRIORITY_NORMAL;
+			initializer.ViewWidth = _Initializer->ViewportWidth;
+			initializer.ViewHeight = _Initializer->ViewportHeight;
+			initializer.WindowHandle = _Initializer->WindowHandle;
+			initializer.QueueReserveNum = 200;
+			initializer.RTVFormat = FORMAT_R8G8B8A8_UNORM;
+			initializer.RTVDimension = RTV_DIMENSION_TEXTURE2D;
+			initializer.NearZ = 0.01f;
+			initializer.FarZ = 10000.0f;
+			initializer.FovAngle = DirectX::XM_PIDIV2;
+
+
+			CHECK_RESULT_BREAK(m_RenderingSubsystem->Initialize(&initializer));
+
+			m_SubsystemDominator->SetRenderingSubsystem(m_RenderingSubsystem);
+		}
+
+		auto m_MainDevice = m_RenderingSubsystem->GetProcessorEdit()->GetDeviceEdit();
+#endif
 
 		{
 			m_ResourceSubsystem = new CResourceManagementSubsystem();
@@ -304,9 +360,24 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CTextureResourceManager>(EResourceManagementType::RESOURCE_TYPE_TEXTURE));
 			}
 
+			// Mesh
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMeshDataManager>(EResourceManagementType::RESOURCE_TYPE_MESH));
+			}
+
 			// Shader
 			{
 				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CShaderManager>(EResourceManagementType::RESOURCE_TYPE_SHADER));
+			}
+
+			// Material
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMaterialManager>(EResourceManagementType::RESOURCE_TYPE_MATERIAL));
+			}
+
+			// PSO
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CPipelineStateObjectManager>(EResourceManagementType::RESOURCE_TYPE_PSO));
 			}
 
 			m_ResSystemInterface = new CResourceSubsystemImpl();
@@ -319,6 +390,29 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			m_SubsystemDominator->SetResourceSubsystem(ptr);
 
 			CHECK_RESULT_BREAK(ptr->CreateDefaultTextureResource(m_MainDevice));
+
+			// DefaultPSO Create
+			{
+				// Pmd
+				{
+					FShaderNameBlock nameBlock = {};
+					nameBlock.VS.File = "resource/cso/PmdVertexShader.cso";
+					nameBlock.VS.Function = "main";
+					nameBlock.PS.File = "resource/cso/PmdPixelShader.cso";
+					nameBlock.PS.Function = "main";
+
+					CHECK_RESULT_BREAK(ptr->CreatePmdPipelineStateObject(m_MainDevice, nameBlock));
+				}
+			}
+		}
+
+		{
+			m_UpdaterSubsystem = new CUpdateProcessorSubsystem();
+			CHECK_RESULT_BREAK(m_UpdaterSubsystem);
+			
+			CHECK_RESULT_BREAK(m_UpdaterSubsystem->Initialize());
+
+			m_SubsystemDominator->SetUpdaterSubsystem(m_UpdaterSubsystem);
 		}
 		
 
@@ -326,7 +420,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	ID3D12Device* m_Device = m_MainDevice->GetDevice();
 	IDXGIFactory6* m_GIFactory = m_MainDevice->GetGIFactory();
-	ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
+	//ID3D12CommandQueue* m_CmdQueue = m_CommandQueue->GetCommandQueue();
 
 	{
 		// テストメッシュ
@@ -2010,8 +2104,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	{
 		// ビュー行列の作成
-		float eyeHeight = 17.5f;
-		Vector3 eyePos(0.f, eyeHeight, -6.f);
+		float eyeHeight = 16.5f;
+		Vector3 eyePos(0.f, eyeHeight, -8.f);
 		Vector3 focusPos(0.f,eyeHeight,0.f);
 		Vector3 upDir(0.f, 1.f, 0.f);
 
@@ -2039,17 +2133,15 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	}
 
-
-	/// <summary>
-	///  SHA1 Test
-	/// </summary>
-	/// <param name="_Initializer"></param>
-	/// <returns></returns>
-	//Test::SHA1TestMain();
-
 	//Test::MatrixVectorTestMain();
 
-	Test::FileLoaderTest(m_MainDevice->GetDevice());
+	Test::FileLoaderTest(m_MainDevice);
+	Test::GraphicsPipelineTest(m_MainDevice);
+	Test::BindFunctionTest();
+
+#ifndef RENDER_TEST
+	Test::RenderSubsystemTest();
+#endif
 
 	return true;
 
@@ -2073,14 +2165,16 @@ void CGameManager::Finalize()
 	FinalizeObject(m_RootSignature);
 	//FinalizeObject(m_PixelShader);
 	//FinalizeObject(m_VertexShader);
-	FinalizeObject(m_ScissorRect);
-	FinalizeObject(m_Viewport);
-	FinalizeObject(m_Fence);
-	FinalizeObject(m_SwapChain);
-	FinalizeObject(m_CommandQueue);
-	FinalizeObject(m_CommandContext);
-	FinalizeObject(m_MainDevice);
+	//FinalizeObject(m_ScissorRect);
+	//FinalizeObject(m_Viewport);
+	//FinalizeObject(m_Fence);
+	//FinalizeObject(m_SwapChain);
+	//FinalizeObject(m_CommandQueue);
+	//FinalizeObject(m_CommandContext);
+	//FinalizeObject(m_MainDevice);
 
+	FinalizeObject(m_UpdaterSubsystem);
+	FinalizeObject(m_RenderingSubsystem);
 	//FinalizeObject(m_ResSystemInterface);
 	Release(m_ResSystemInterface);
 	FinalizeObject(m_ResourceSubsystem);
@@ -2095,8 +2189,10 @@ void CGameManager::GameMain()
 
 void CGameManager::GameUpdate()
 {
-
+#ifndef RENDER_TEST
 	/* Render Update */
+	m_RenderingSubsystem->ClearRenderGroup();
+#endif
 
 	static float rotSpeed = 0.f;
 
@@ -2115,11 +2211,11 @@ void CGameManager::GameUpdate()
 	//	m_ConstantBuffer->Unmap(0, nullptr);
 	//}
 	//*m_SceneMatricesData = scale * pose * trans * ViewMatrix * ProjectionMatrix;
-	
+
 	//*m_SceneMatricesData = scale * pose * trans * ViewMatrix * ProjectionMatrix;
 	m_SceneMatricesData->World = scale * pose * trans;
 	m_SceneMatricesData->View = ViewMatrix;
-	m_SceneMatricesData->ViewProjection = ViewMatrix* ProjectionMatrix;
+	m_SceneMatricesData->ViewProjection = ViewMatrix * ProjectionMatrix;
 	m_SceneMatricesData->WorldViewProjection = m_SceneMatricesData->World * m_SceneMatricesData->ViewProjection;
 
 
@@ -2128,13 +2224,54 @@ void CGameManager::GameUpdate()
 	if (rotSpeed > 360.f)
 	{
 		rotSpeed = 0.f;
-	}                                                                       
+	}
+
+
+
+	// ビュー行列の作成
+	float eyeHeight = 16.5f;
+	Vector3 eyePos(0.f, eyeHeight, -8.f);
+	Vector3 focusPos(0.f, eyeHeight, 0.f);
+	Vector3 upDir(0.f, 1.f, 0.f);
+
+	FVector eyePosVec = XMLoadFloat3(&eyePos);
+	FVector focusPosVec = XMLoadFloat3(&focusPos);
+	FVector upDirVec = XMLoadFloat3(&upDir);
+
+	ViewMatrix = XMMatrixLookAtLH(eyePosVec, focusPosVec, upDirVec);
+
+
+	// プロジェクション行列の作成
+#ifndef RENDER_TEST
+	ProjectionMatrix = m_RenderingSubsystem->GetSceneView()->GetProjectionMatrix();;
+#endif
+
+
+	SceneData.World = scale * pose * trans;
+	SceneData.View = ViewMatrix;
+	SceneData.ViewProjection = ViewMatrix * ProjectionMatrix;
+	SceneData.WorldViewProjection = SceneData.World * SceneData.ViewProjection;
+	SceneData.EyePosition = eyePos;
+	SceneData.LightPosition = Vector3(5.f, 20.f, -8.f);
+	SceneData.LightColor = Vector3(1.f, 1.f, 1.f);
+	
+	Test::m_MaterialData->SetGeometryBuffer(&SceneData);
+#ifndef RENDER_TEST
+	Test::m_PmdModelComponent->SetSceneData(&SceneData);
+#endif
+	// 処理時間の制限を行う場所を、AppManagerからここに移動させてもいいかもしれない
+	// >> そもそも処理時間を今制限していない問題
+	m_UpdaterSubsystem->ProcessorUpdate(0.f);// DeltaTimeを持ってくる
 
 }
 
 void CGameManager::Render()
 {
+#ifndef RENDER_TEST
+	m_RenderingSubsystem->Rendering();
+#endif
 
+#ifdef RENDER_TEST
 	ID3D12GraphicsCommandList* m_CmdList = m_CommandContext->GetCommandList();
 
 	uint32 bufferIndex = m_SwapChain->GetCurrentBufferIndex();
@@ -2186,8 +2323,10 @@ void CGameManager::Render()
 	m_CmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 	{
-		m_CommandContext->SetPipelineState(m_PmdPipeline);
-		m_CommandContext->SetRootSignature(m_PmdRootSignature);
+		//m_CommandContext->SetPipelineState(m_PmdPipeline);
+		//m_CommandContext->SetRootSignature(m_PmdRootSignature);
+		m_CommandContext->SetPipelineState(Test::m_MaterialData->GetGraphicsPipeline());
+		m_CommandContext->SetRootSignature(Test::m_MaterialData->GetRootSignature());
 
 		//m_CmdList->IASetVertexBuffers(0, 1, m_PmdVertexBufferView);
 		//m_CmdList->IASetIndexBuffer(m_PmdIndexBufferView);
@@ -2195,8 +2334,8 @@ void CGameManager::Render()
 		m_CommandContext->SetVertexBuffer(Test::m_MeshData->GetVertexBuffer());
 		m_CommandContext->SetIndexBuffer(Test::m_MeshData->GetIndexBuffer());
 
-		m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
-		m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
+		//m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
+		//m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
 
 
 #if 0
@@ -2223,15 +2362,53 @@ void CGameManager::Render()
 		}
 #else
 
+		//ID3D12DescriptorHeap* descHeapArray[] = { Test::m_MaterialData->GetBufferDescriptorHeap(),Test::m_MaterialData->GetDescriptorHeap() };
+
+
+		// DescriptorTableとRootSignature、
+		// そしてDescriptorHeapの関連性の理解が間違っている可能性が大きい
+		// >> 原点は最初のポリゴンを出力したのと同じ要領のはず
+		// >> 魔導書のSampleも見ながら修復するしかない
+#if 0
+		m_CmdList->SetDescriptorHeaps(1, Test::m_MaterialData->GetBufferDescriptorHeapPtr());
+		//m_CmdList->SetDescriptorHeaps(2, descHeapArray);
+
+		auto bufDescHandle = Test::m_MaterialData->GetBufferDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+		m_CmdList->SetGraphicsRootDescriptorTable(0, bufDescHandle);
+#endif
+
 		m_CmdList->SetDescriptorHeaps(1, Test::m_MaterialData->GetDescriptorHeapPtr());
+
+		//m_CmdList->SetGraphicsRootDescriptorTable(0, matDescHandle);
+
+		//matDescHandle.ptr += m_MainDevice->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
 		auto matDescHandle = Test::m_MaterialData->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 		
 		uint32 indexOffset = 0;
+
+		//vector<uint32> indexVec;
+		vector<uint32> indexVec{  };
+
+		auto CheckIgnoreIndex = [&](uint32 _Index)
+		{
+			for (auto& elem : indexVec)
+			{
+				if (_Index != elem) { continue; }
+				return true;
+			}
+			return false;
+		};
 		
 		for (uint32 index = 0; index < Test::m_MaterialData->GetMaterialNum(); ++index)
 		{
-			m_CmdList->SetGraphicsRootDescriptorTable(1, matDescHandle);
-			m_CmdList->DrawIndexedInstanced(Test::m_MaterialData->GetDrawIndex(index), 1, indexOffset, 0, 0);
+
+			if (!CheckIgnoreIndex(index))
+			{
+
+				m_CmdList->SetGraphicsRootDescriptorTable(1, matDescHandle);
+				m_CmdList->DrawIndexedInstanced(Test::m_MaterialData->GetDrawIndex(index), 1, indexOffset, 0, 0);
+			}
 
 			indexOffset += Test::m_MaterialData->GetDrawIndex(index);
 			matDescHandle.ptr += Test::m_MaterialData->GetHeapStride();
@@ -2270,10 +2447,11 @@ void CGameManager::Render()
 	m_Fence->WaitEvent();
 
 	//m_CommandContext->Reset(m_PmdPipeline->GetPipelineState());
-	m_CommandContext->Reset(m_Pipeline);
+	//m_CommandContext->Reset(m_Pipeline);
+	m_CommandContext->Reset();
 
 	// フリップ
 	m_SwapChain->Present();
-
+#endif
 
 }

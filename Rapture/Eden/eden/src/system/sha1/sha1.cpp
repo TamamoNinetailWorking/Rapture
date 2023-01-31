@@ -73,21 +73,40 @@ struct FSHAProxy
 };
 
 
-CSHA1::CSHA1(const char* _string)
+
+CSHA1::CSHA1(const uint8* _Data,uint64 _Size)
 {
-	string message(_string);
+	//string message(_string);
+	DataBlob message = {};
+	message.resize(_Size);
+	
+	copy(_Data, _Data + _Size, &message[0]);
+
 	SHA1Main(message);
 }
 
 CSHA1::CSHA1(const string& _string)
 {
-	SHA1Main(_string);
+	DataBlob message(_string.begin(), _string.end());
+	SHA1Main(message);
 }
 
-void CSHA1::SHA1Main(const string& _string)
+CSHA1::CSHA1(const char* _string)
+{
+	string message(_string);
+	DataBlob data(message.begin(), message.end());
+	SHA1Main(data);
+}
+
+CSHA1::CSHA1(const CSHA1::DataBlob& _Data)
+{
+	SHA1Main(_Data);
+}
+
+void CSHA1::SHA1Main(const CSHA1::DataBlob& _Data)
 {
 	FSHAProxy proxy = {};
-	proxy.MessageSize = _string.size();
+	proxy.MessageSize = _Data.size();
 	if (proxy.MessageSize <= 0) { return; }
 
 	auto BlockIndex = [&]()
@@ -100,7 +119,7 @@ void CSHA1::SHA1Main(const string& _string)
 	auto& processByteNum = proxy.ProcessByteNum;
 
 	// メッセージブロック単位にメッセージを区切っていく
-	for (auto& elem : _string)
+	for (auto& elem : _Data)
 	{
 		blockArray[BlockIndex()] = elem;
 		++processByteNum;

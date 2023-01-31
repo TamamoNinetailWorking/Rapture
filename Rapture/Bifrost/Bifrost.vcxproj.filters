@@ -34,6 +34,33 @@
     <Filter Include="Bifrost\Resource\Texture">
       <UniqueIdentifier>{85231bc1-8008-435d-a157-72deb5ef1c0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Resource\Manager">
+      <UniqueIdentifier>{fce8f0ca-b4be-4ddc-bfa0-6cdc6f7434ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Resource\Material">
+      <UniqueIdentifier>{d2a557df-b3a3-441b-8299-89826288773c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Resource\PSO">
+      <UniqueIdentifier>{27a4e46f-18b1-4c72-8200-55087b0c3076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Model\Component">
+      <UniqueIdentifier>{5dc81673-ec8a-48d5-9f9e-31ff0f7ddc57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Actor">
+      <UniqueIdentifier>{d44b28bd-f32c-4229-a17e-97aeed4be7ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Component">
+      <UniqueIdentifier>{6f655bd2-36a2-4e1e-9982-9c92ac24c2f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Updater">
+      <UniqueIdentifier>{7d028577-5e9e-4937-b743-fd0cfbb6ac26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Rendering">
+      <UniqueIdentifier>{e39c3ab0-8787-47c9-8031-fca93dbff4b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Rendering\RenderingQueue">
+      <UniqueIdentifier>{6de7acf1-a574-42bd-be15-0dca8a0dc83d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -78,6 +105,81 @@
     <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h">
       <Filter>Bifrost\Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Manager\MeshDataManager.h">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialResource.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialDefine.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialResourceInitializer.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Material\MaterialInitializerBase.h">
+      <Filter>Bifrost\Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Manager\MaterialManager.h">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Manager\PipelineStateObjectManager.h">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObject.h">
+      <Filter>Bifrost\Resource\PSO</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObjectInitializer.h">
+      <Filter>Bifrost\Resource\PSO</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Component\PmdModelComponent.h">
+      <Filter>Bifrost\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\Actor.h">
+      <Filter>Bifrost\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\ActorManager.h">
+      <Filter>Bifrost\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Component.h">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\ComponentInitializer.h">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessor.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessData.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateGroupDefine.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Component\PmdModelComponentInitializer.h">
+      <Filter>Bifrost\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\RenderingComponent.h">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.h">
+      <Filter>Bifrost\Subsystem\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.h">
+      <Filter>Bifrost\Subsystem\Rendering\RenderingQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueueInitializer.h">
+      <Filter>Bifrost\Subsystem\Rendering\RenderingQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Rendering\RenderGroupDefine.h">
+      <Filter>Bifrost\Subsystem\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystemInitializer.h">
+      <Filter>Bifrost\Subsystem\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -103,6 +205,48 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp">
       <Filter>Bifrost\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Manager\MeshDataManager.cpp">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialResource.cpp">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Manager\MaterialManager.cpp">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Manager\PipelineStateObjectManager.cpp">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\PSO\PipelineStateObject.cpp">
+      <Filter>Bifrost\Resource\PSO</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Component\PmdModelComponent.cpp">
+      <Filter>Bifrost\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Actor\Actor.cpp">
+      <Filter>Bifrost\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Actor\ActorManager.cpp">
+      <Filter>Bifrost\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Component.cpp">
+      <Filter>Bifrost\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessor.cpp">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\RenderingComponent.cpp">
+      <Filter>Bifrost\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.cpp">
+      <Filter>Bifrost\Subsystem\Rendering\RenderingQueue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,8 @@ BIFROST_NAMESPACE_BEGIN
 
 class CSubsystemDominator;
 class IResourceSubsystem;
+class CUpdateProcessorSubsystem;
+class CRenderingSubsystem;
 
 class CSubsystemServiceLocator
 {
@@ -17,6 +19,12 @@ public:
 
 	static const IResourceSubsystem* GetResourceSubsystem();
 	static IResourceSubsystem* GetResourceSubsystemEdit();
+
+	static const CUpdateProcessorSubsystem* GetUpdaterSubsystem();
+	static CUpdateProcessorSubsystem* GetUpdaterSubsystemEdit();
+
+	static const CRenderingSubsystem* GetRenderingSubsystem();
+	static CRenderingSubsystem* GetRenderingSubsystemEdit();
 
 private:
 

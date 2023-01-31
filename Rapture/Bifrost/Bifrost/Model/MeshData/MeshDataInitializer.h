@@ -2,12 +2,18 @@
 
 #include <eden/include/Resource/ResourceInitializer.h>
 
+ATLANTIS_NAMESPACE_BEGIN
+
+class CDX12MainDevice;
+
+ATLANTIS_NAMESPACE_END
+
 //ATLANTIS_NAMESPACE_BEGIN
 BIFROST_NAMESPACE_BEGIN
 
 struct FMeshResourceInitializer : public EDENS_NAMESPACE::FResourceInitializerBase
 {
-	struct ID3D12Device* Device = nullptr;
+	ATLANTIS_NAMESPACE::CDX12MainDevice* Device = nullptr;
 
 	const void* Vertices = nullptr;
 	uint32 VerticesSize = 0;

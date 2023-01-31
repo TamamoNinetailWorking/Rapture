@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include <array>
-#include <string>
+//#include <string>
+#include <vector>
 #include <functional>
 
 EDENS_NAMESPACE_BEGIN
@@ -117,24 +118,32 @@ class CSHA1
 {
 public:
 
+	using DataBlob = std::vector<uint8>;
+
 	CSHA1() {};
-	explicit CSHA1(const char* _string);
+	explicit CSHA1(const uint8* _Data, uint64 _Size);
 	explicit CSHA1(const std::string& _string);
+	explicit CSHA1(const char* _string);
+	explicit CSHA1(const DataBlob& _string);
 	CSHA1(const CSHA1& _sha1) { m_Hash = _sha1.m_Hash; };
 	CSHA1(const FSHA1& _sha1) { m_Hash = _sha1; };
 
 	~CSHA1() {};
 
 	FSHA1 operator=(const CSHA1& _right)
+	//CSHA1 operator=(const CSHA1& _right)
 	{
 		m_Hash = _right.m_Hash;
 		return m_Hash;
+		//return *this;
 	}
 
 	FSHA1 operator=(const FSHA1& _right)
+	//CSHA1 operator=(const FSHA1& _right)
 	{
 		m_Hash = _right;
 		return m_Hash;
+		//return *this;
 	}
 
 	bool operator==(const CSHA1& _right) const
@@ -178,7 +187,8 @@ private:
 
 
 	// ハッシュ化のメイン処理
-	void SHA1Main(const std::string& _string);
+	//void SHA1Main(const std::string& _string);
+	void SHA1Main(const DataBlob& _Data);
 
 	// SHA1のハッシュ加工処理
 	void SHA1Process(struct FSHAProxy* _proxy);

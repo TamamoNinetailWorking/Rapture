@@ -48,6 +48,18 @@
     <ClCompile Include="rapture\Subsystem\ResourceSubsystemImpl.cpp">
       <Filter>rapture\Subsystem</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\Test\GraphicsPipelineTest.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\Environment\PsoNameDefine.cpp">
+      <Filter>rapture\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\Test\BindFunction.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\Test\RenderSubsystemTest.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -67,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="rapture\Subsystem\ResourceSubsystemImpl.h">
       <Filter>rapture\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\Environment\PsoNameDefine.h">
+      <Filter>rapture\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

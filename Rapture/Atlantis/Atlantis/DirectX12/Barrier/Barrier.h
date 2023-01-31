@@ -28,6 +28,8 @@ public:
 
 	void SetTransitionState(const FTransitionState& _state);
 
+	void SwapTransitionState();
+
 	D3D12_RESOURCE_BARRIER* GetBarrier() const { return m_Barrier; };
 
 	CBarrier() {};

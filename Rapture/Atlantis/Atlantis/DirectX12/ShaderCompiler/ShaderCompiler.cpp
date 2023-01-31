@@ -32,6 +32,9 @@ public:
 
 bool CShaderCompiler::ShaderCompile(FShaderData* _DestData, const CShaderCompiler::FInitializer& _Initializer)
 {
+	bool check = _Initializer.FileAndFuncHash != INVALID_HASH;
+	CHECK_RESULT_FALSE(check);
+
 	const string& name = RHash160(_Initializer.FileAndFuncHash);
 	pair<string, string> ret = StringUtility::SeparateText(name, '*');
 	m_Impl->m_FileName = ret.first;
@@ -90,6 +93,8 @@ bool CShaderCompiler::Impl::CompileShaderFromMemory(FShaderData* _DestData, cons
 
 	ID3DBlob* shader = nullptr;
 	ID3DBlob* errorBlob = nullptr;
+
+	string tagetHash = RHash160(_Initializer.TargetHash);
 
 	result = D3DCompile(
 		_Initializer.Data,
@@ -165,10 +170,15 @@ bool CShaderCompiler::Impl::CompileShaderFromFile(FShaderData* _DestData, const 
 	{
 		if (result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
 		{
-			PRINT("ファイルが存在しません。");
+			PRINT("ファイルが存在しません。\n");
 		}
 		else
 		{
+			if (errorBlob == nullptr)
+			{
+				PRINT("ファイル形式で弾かれている？ %s\n",m_FileName.c_str());
+				return false;
+			}
 			string errorString;
 			errorString.resize(errorBlob->GetBufferSize());
 

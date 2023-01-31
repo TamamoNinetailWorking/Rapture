@@ -26,7 +26,7 @@ bool ATLANTIS_NAMESPACE::CDepthStencilView::Initialize(const FInitializer& _Init
 void ATLANTIS_NAMESPACE::CDepthStencilView::Finalize()
 {
 	SafeReleaseD3DPtr(m_Resource);
-	SafeReleaseD3DPtr(m_DescriptorHeap);
+	SafeReleaseD3DPtr(m_MaterialDescriptorHeap);
 }
 
 bool ATLANTIS_NAMESPACE::CDepthStencilView::CreateDescriptorHeap(const FInitializer& _Initializer)
@@ -39,7 +39,7 @@ bool ATLANTIS_NAMESPACE::CDepthStencilView::CreateDescriptorHeap(const FInitiali
 
 	D3D_ERROR_CHECK(_Initializer.Device->CreateDescriptorHeap(
 		&desc,
-		IID_PPV_ARGS(&m_DescriptorHeap)
+		IID_PPV_ARGS(&m_MaterialDescriptorHeap)
 	));
 
 	return true;
@@ -92,7 +92,7 @@ bool ATLANTIS_NAMESPACE::CDepthStencilView::CreateDepthStencilView(const FInitia
 	_Initializer.Device->CreateDepthStencilView(
 		m_Resource,
 		&desc,
-		m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart()
+		m_MaterialDescriptorHeap->GetCPUDescriptorHandleForHeapStart()
 	);
 
 	return true;

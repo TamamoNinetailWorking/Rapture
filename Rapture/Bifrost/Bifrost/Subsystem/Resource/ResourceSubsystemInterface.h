@@ -30,6 +30,9 @@ public:
 	virtual const ManagerPtr GetMaterialResourceManager() const = 0;
 	virtual ManagerPtr GetMaterialResourceManagerEdit() = 0;
 
+	virtual const ManagerPtr GetPipelineStateObjectManager() const = 0;
+	virtual ManagerPtr GetPipelineStateObjectManagerEdit() = 0;
+
 	virtual void Release() = 0;
 
 protected:

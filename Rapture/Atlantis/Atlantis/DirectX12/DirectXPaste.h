@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <d3d12.h>
-#include <DirectXmath.h>
 
 #define USING_GLUE using namespace ATLANTIS_NAMESPACE::Glue;
 
@@ -93,6 +92,21 @@ namespace Glue
 	};
 
 	const D3D12_RESOURCE_DIMENSION GetD3DResourceDimension(EResourceDimension _dimension);
+
+    enum ERTVDimension : uint8
+    {
+        RTV_DIMENSION_UNKNOWN = 0,
+        RTV_DIMENSION_BUFFER = 1,
+        RTV_DIMENSION_TEXTURE1D = 2,
+        RTV_DIMENSION_TEXTURE1DARRAY = 3,
+        RTV_DIMENSION_TEXTURE2D = 4,
+        RTV_DIMENSION_TEXTURE2DARRAY = 5,
+        RTV_DIMENSION_TEXTURE2DMS = 6,
+        RTV_DIMENSION_TEXTURE2DMSARRAY = 7,
+        RTV_DIMENSION_TEXTURE3D = 8
+    };
+
+    const D3D12_RTV_DIMENSION GetD3DRTVDimension(ERTVDimension _Dimension);
 
 	enum EDataFormat : uint8
 	{
@@ -228,24 +242,31 @@ namespace Glue
 
     const DXGI_FORMAT GetDXGIFormat(EDataFormat _format);
 
-};
 
-// 算術演算系
-namespace Glue
-{
+    enum EDescriptorHeapRangeType
+    {
+        RANGE_TYPE_SRV = 0,
+        RANGE_TYPE_UAV,
+        RANGE_TYPE_CBV,
+        RANGE_TYPE_SAMPLER
+    };
 
-	typedef DirectX::XMFLOAT2 Vector2;
-	typedef DirectX::XMFLOAT3 Vector3;
-	typedef DirectX::XMFLOAT4 Vector4;
+    const D3D12_DESCRIPTOR_RANGE_TYPE GetRangeType(EDescriptorHeapRangeType _Type);
 
 
-	typedef DirectX::XMFLOAT3X4 Matrix34;
-	typedef DirectX::XMFLOAT4X3 Matrix43;
-	typedef DirectX::XMFLOAT4X4 Matrix44;
+    enum EShaderVisibility
+    {
+        SHADER_VISIBILITY_ALL = 0,
+        SHADER_VISIBILITY_VERTEX = 1,
+        SHADER_VISIBILITY_HULL = 2,
+        SHADER_VISIBILITY_DOMAIN = 3,
+        SHADER_VISIBILITY_GEOMETRY = 4,
+        SHADER_VISIBILITY_PIXEL = 5,
+        SHADER_VISIBILITY_AMPLIFICATION = 6,
+        SHADER_VISIBILITY_MESH = 7
+    };
 
-	typedef DirectX::XMVECTOR FVector;
-	typedef DirectX::XMMATRIX FMatrix;
-
+    const D3D12_SHADER_VISIBILITY GetShaderVisibility(EShaderVisibility _Visibility);
 };
 
 

@@ -79,6 +79,15 @@
     <Filter Include="Atlantis\DirectX12\ConstantBuffer">
       <UniqueIdentifier>{507e66c6-a73a-45e0-8526-bafcfd1ecdca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\Material">
+      <UniqueIdentifier>{3902ed98-7661-44a6-b9f5-4378d0f05c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\RHIProcessor">
+      <UniqueIdentifier>{eeb444d3-52ec-4f53-8d66-3a59f879b00f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Atlantis\SceneView">
+      <UniqueIdentifier>{469d8437-704e-4ac8-afc5-98daec992d58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -219,6 +228,45 @@
     <ClInclude Include="Atlantis\DirectX12\ConstantBuffer\ConstantBufferPreDefine.h">
       <Filter>Atlantis\DirectX12\ConstantBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\Material\MaterialInterface.h">
+      <Filter>Atlantis\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Material\MaterialInterfaceInitializer.h">
+      <Filter>Atlantis\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\GlueMath.h">
+      <Filter>Atlantis\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderName.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderNameBlock.h">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\RHIProccessor\RHIProcessor.h">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\RHIProccessor\RHIProcessorInitialize.h">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetView.h">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetDefine.h">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetViewInitializer.h">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\SceneView\SceneView.h">
+      <Filter>Atlantis\SceneView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\SceneView\SceneViewInitializer.h">
+      <Filter>Atlantis\SceneView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Material\MaterialInterfaceDefine.h">
+      <Filter>Atlantis\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -295,6 +343,24 @@
     </ClCompile>
     <ClCompile Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.cpp">
       <Filter>Atlantis\DirectX12\ShaderCompiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Material\MaterialInterface.cpp">
+      <Filter>Atlantis\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\ConstantBuffer\ConstantBufferPreDefine.cpp">
+      <Filter>Atlantis\DirectX12\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\Shader\ShaderName.cpp">
+      <Filter>Atlantis\DirectX12\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\RHIProccessor\RHIProcessor.cpp">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\RHIProccessor\RHIRenderTargetVIew.cpp">
+      <Filter>Atlantis\RHIProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\SceneView\SceneView.cpp">
+      <Filter>Atlantis\SceneView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

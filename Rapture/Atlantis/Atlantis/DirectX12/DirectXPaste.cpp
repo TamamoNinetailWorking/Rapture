@@ -38,9 +38,21 @@ namespace Glue
 	{
 		return SCast<D3D12_RESOURCE_DIMENSION>(_dimension);
 	}
+	const D3D12_RTV_DIMENSION GetD3DRTVDimension(ERTVDimension _Dimension)
+	{
+		return SCast<D3D12_RTV_DIMENSION>(_Dimension);
+	}
 	const DXGI_FORMAT GetDXGIFormat(EDataFormat _format)
 	{
 		return SCast<DXGI_FORMAT>(_format);
+	}
+	const D3D12_DESCRIPTOR_RANGE_TYPE GetRangeType(EDescriptorHeapRangeType _Type)
+	{
+		return SCast<D3D12_DESCRIPTOR_RANGE_TYPE>(_Type);
+	}
+	const D3D12_SHADER_VISIBILITY GetShaderVisibility(EShaderVisibility _Visibility)
+	{
+		return SCast<D3D12_SHADER_VISIBILITY>(_Visibility);
 	}
 };
 

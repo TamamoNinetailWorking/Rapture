@@ -1,17 +1,15 @@
 #include "PmdMaterialData.h"
 #include "PmdPreDefine.h"
 #include "PmdMaterialDataInitializer.h"
+#include "PmdMaterialDefine.h"
 
 #include <vector>
 
 #include <Atlantis/DirectX12/DirectXHelper/d3dx12.h>
+#include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
-#include <Atlantis/DirectX12/DirectXPaste.h>
 #include <eden/include/utility/ender_utility.h>
-#include <Atlantis/Utility/FileUtility/FileUtility.h>
-#include <Atlantis/Utility/FileUtility/FileTypeDefine.h>
-#include <eden/include/utility/StringUtility.h>
 
 #include <Atlantis/DirectX12/ConstantBuffer/ConstantBufferPreDefine.h>
 
@@ -21,7 +19,15 @@
 #include <Bifrost/Resource/DefaultResourceDefine.h>
 #include <Atlantis/DirectX12/Texture/TextureResource.h>
 
-#include <Bifrost/Resource/Texture/FileLoadTexture.h>
+
+#include <Bifrost/Model/Pmd/PmdMaterialResource.h>
+#include <Bifrost/Model/Pmd/PmdMaterialResourceInitializer.h>
+#include <Bifrost/Resource/Manager/MaterialManager.h>
+
+#include <Bifrost/Resource/PSO/PipelineStateObject.h>
+#include <Bifrost/Resource/PSO/PipelineStateObjectInitializer.h>
+#include <Bifrost/Resource/Manager/PipelineStateObjectManager.h>
+
 
 USING_BIFROST;
 USING_ATLANTIS;
@@ -29,58 +35,49 @@ EDENS_NAMESPACE_USING;
 
 using String = std::string;
 
-struct FMaterialConstantData
-{
-	Glue::Vector3 Diffuse = {};
-	float Alpha = 0.f;
-	Glue::Vector3 SpecularColor = {};
-	float Specularity = 0.f;
-	Glue::Vector3 AmbientColor = {};
-	float AmbientAlpha = 0.f;
-};
 
-struct FMaterialResourceData
-{
-	FResourceHandle ColorTexture = {};
-	FResourceHandle SphereTexture = {};
-	FResourceHandle SphereAddTexture = {};
-	FResourceHandle ToonResource = {};
-};
 
 struct FMaterialData
 {
 	uint32 DrawIndex = 0;
-	FMaterialResourceData Data = {};
+	FResourceHandle m_MaterialHandle = {};
 };
 
 class CPmdMaterialData::Impl
 {
 public:
 
-	bool CreateMaterials(const FPmdMaterialInitializer* _Initializer);
+	bool CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
+
+	bool CreatePipelineStateObject(const FPmdMaterialInitializer* _Initializer);
 
 	void Release();
 
+	const CPipelineStateObject* GetStateObject() const;
+
 private:
 
-	bool CreateConstantData(const FPmdMaterialInitializer* _Initializer);
-	bool CreateMaterialData(const FPmdMaterialInitializer* _Initializer);
-	bool CreateDescriptorHeap(const FPmdMaterialInitializer* _Initializer);
-	bool CreateShaderResourceView(const FPmdMaterialInitializer* _Initializer);
+	bool CreateMaterials(const FPmdMaterialInitializer* _Initializer);
+
+	bool CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, const FPmdMaterialInitializer* _Initializer);
+	bool CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
 
 	void ReleaseMaterialResource();
 
+	void ReleasePipelineStateObject();
+
+	bool CreatePipelineStateObjectImpl(const FPmdMaterialInitializer* _Initializer);
+
 public:
 
-	ObjectPtr(ID3D12DescriptorHeap) m_DescriptorHeap = nullptr;
-
-	uint32 m_HeapStride = 0;
+	ObjectPtr(ID3D12Resource) m_VertexConstantBuffer = nullptr;
+	ObjectPtr(FSceneData) m_SceneData = nullptr;
 
 	std::vector<FMaterialData> m_MaterialData = {};
 
-private:
+	FResourceHandle m_PsoHandle = {};
 
-	ObjectPtr(ID3D12Resource) m_ConstantBuffer = nullptr;
+private:
 
 };
 
@@ -92,19 +89,21 @@ CPmdMaterialData::CPmdMaterialData()
 CPmdMaterialData::~CPmdMaterialData()
 {
 	Delete(m_Impl);
-	CResource::~CResource();
+	//CResource::~CResource();
 }
 
-bool CPmdMaterialData::Initialize(const EDENS_NAMESPACE::FResourceInitializerBase* _Initializer)
+bool CPmdMaterialData::Initialize(const ATLANTIS_NAMESPACE::FMaterialInterfaceInitializerBase* _Initializer)
 {
 	do 
 	{
 		const FPmdMaterialInitializer* initializer = PCast<const FPmdMaterialInitializer*>(_Initializer);
 		CHECK_RESULT_BREAK(_Initializer);
 
-		CHECK_RESULT_BREAK(m_Impl->CreateMaterials(initializer));
+		uint32 stride = 0;
+		CHECK_RESULT_BREAK(m_Impl->CreateMaterials(m_MaterialDescriptorHeap,m_BufferDescriptorHeap, stride,initializer));
+		SetHeapStride(stride);
 
-		m_ResourceName = _Initializer->Name;
+		CHECK_RESULT_BREAK(m_Impl->CreatePipelineStateObject(initializer));
 
 		return true;
 	} while (0);
@@ -115,23 +114,13 @@ bool CPmdMaterialData::Initialize(const EDENS_NAMESPACE::FResourceInitializerBas
 
 void CPmdMaterialData::Finalize()
 {
-	SafeReleaseD3DPtr(m_Impl->m_DescriptorHeap);
+	IMaterialInterface::Finalize();
 	m_Impl->Release();
 }
 
-ID3D12DescriptorHeap* CPmdMaterialData::GetDescriptorHeap() const
+void CPmdMaterialData::SetGeometryBuffer(FMaterialGeometryBufferBase* _Buffer)
 {
-	return m_Impl->m_DescriptorHeap;
-}
-
-ID3D12DescriptorHeap*const* CPmdMaterialData::GetDescriptorHeapPtr() const
-{
-	return &m_Impl->m_DescriptorHeap;
-}
-
-uint32 CPmdMaterialData::GetHeapStride() const
-{
-	return m_Impl->m_HeapStride;
+	m_Impl->m_SceneData = DCast<FSceneData*>(_Buffer);
 }
 
 uint32 CPmdMaterialData::GetDrawIndex(uint32 _Index) const
@@ -144,281 +133,151 @@ uint32 CPmdMaterialData::GetMaterialNum() const
 	return SCast<uint32>(m_Impl->m_MaterialData.size());
 }
 
-bool CPmdMaterialData::Impl::CreateMaterials(const FPmdMaterialInitializer* _Initializer)
+CGraphicsPipeline* CPmdMaterialData::GetGraphicsPipeline() const
+{
+	return m_Impl->GetStateObject()->GetPipeline();
+}
+
+CRootSignature* CPmdMaterialData::GetRootSignature() const
+{
+	return m_Impl->GetStateObject()->GetRootSignature();
+}
+
+const ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* CPmdMaterialData::GetGeometryBuffer() const
+{
+	return m_Impl->m_SceneData;
+}
+
+ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* CPmdMaterialData::GetGeometryBufferEdit() const
+{
+	return m_Impl->m_SceneData;
+}
+
+bool CPmdMaterialData::Impl::CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride,const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 
 	m_MaterialData.resize(_Initializer->MaterialNum);
-	
-	CHECK_RESULT_FALSE(CreateConstantData(_Initializer));
 
-	CHECK_RESULT_FALSE(CreateMaterialData(_Initializer));
+	CHECK_RESULT_FALSE(CreateMaterials(_Initializer));
 
-	CHECK_RESULT_FALSE(CreateDescriptorHeap(_Initializer));
+	CHECK_RESULT_FALSE(CreateDescriptorHeap(_MatHeap,_BufHeap, _Initializer));
 
-	CHECK_RESULT_FALSE(CreateShaderResourceView(_Initializer));
+	CHECK_RESULT_FALSE(CreateShaderResourceView(_MatHeap,_BufHeap,_Stride,_Initializer));
+
+	return true;
+}
+
+bool CPmdMaterialData::Impl::CreatePipelineStateObject(const FPmdMaterialInitializer* _Initializer)
+{
+	CHECK_RESULT_FALSE(_Initializer);
+
+	CHECK_RESULT_FALSE(CreatePipelineStateObjectImpl(_Initializer));
 
 	return true;
 }
 
 void CPmdMaterialData::Impl::Release()
 {
-	SafeReleaseD3DPtr(m_DescriptorHeap);
-	SafeReleaseD3DPtr(m_ConstantBuffer);
+	ReleasePipelineStateObject();
 	ReleaseMaterialResource();
 }
 
-bool CPmdMaterialData::Impl::CreateConstantData(const FPmdMaterialInitializer* _Initializer)
+const CPipelineStateObject* CPmdMaterialData::Impl::GetStateObject() const
+{
+	const CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetPipelineStateObjectManager();
+	return PCast<const CPipelineStateObject*>(manager->SearchResourceRef(m_PsoHandle));
+}
+
+bool CPmdMaterialData::Impl::CreateMaterials(const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	CHECK_RESULT_FALSE(_Initializer->Device);
 
-	uint32 bufferSize = sizeof(FMaterialConstantData);
-	bufferSize = AlignBufferSize(bufferSize);
+	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystemEdit()->GetMaterialResourceManagerEdit();
+	CHECK_RESULT_FALSE(manager);
 
-	CD3DX12_HEAP_PROPERTIES heapProp = {};
-	heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	FPmdMaterialResourceInitializer initializer = {};
+	initializer.Device = _Initializer->Device;
+	initializer.ModelName = _Initializer->Name;
+	initializer.ToonMapDirectory = _Initializer->ToonMapDirectory;
+	initializer.Type = EMaterialType::MATERIAL_TYPE_PMD;
 
-	D3D12_RESOURCE_DESC resDesc = {};
-	resDesc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize * _Initializer->MaterialNum);//256バイトアラインなので、イメージはしやすいがアライメントのパディングですんごいメモリが余る
+	constexpr uint32 size = SCast<uint32>(sizeof(FPmdMaterialData));
+	CSHA1::DataBlob matData = {};
+	matData.resize(size);
 
-	D3D_ERROR_CHECK(_Initializer->Device->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&m_ConstantBuffer)
-	));
-
-	return true;
-}
-
-bool CPmdMaterialData::Impl::CreateMaterialData(const FPmdMaterialInitializer* _Initializer)
-{
-	CHECK_RESULT_FALSE(_Initializer);
-
-	uint8* mapMaterial = nullptr;
-	if (FAILED(m_ConstantBuffer->Map(0, nullptr, (void**)&mapMaterial)))
+	for (uint32 index = 0; index < m_MaterialData.size(); ++index)
 	{
-		return false;
-	}
-
-	const String& modelName = RHash160(_Initializer->Name);
-	const String& toonMapDirectory = RHash160(_Initializer->ToonMapDirectory);
-
-	uint32 bufferSize = sizeof(FMaterialConstantData);
-	bufferSize = AlignBufferSize(bufferSize);
-
-	for (uint32 index = 0; index < _Initializer->MaterialNum; ++index)
-	{
-		FMaterialData& matData = m_MaterialData[index];
 		const FPmdMaterialData& srcData = _Initializer->Materials[index];
+		FResourceHandle& data = m_MaterialData[index].m_MaterialHandle;
+		
+		initializer.Material = &srcData;
 
-		CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystemEdit()->GetTextureResourceManagerEdit();
+		//String matData = {};
+		
 
-		// インデックスデータ
-		matData.DrawIndex = srcData.IndiciesNum;
+		memcpy_s(&matData[0], size, &srcData, size);
+		//matData.assign(RCast<const char*>(&srcData), sizeof(srcData));
 
-		// 定数データ
+		initializer.Name = CHash160(matData);
+		//char name[256] = {};
+		//sprintf_s(name, "%s%d", RHash160(initializer.ModelName), index);
+		//initializer.Name = CHash160(name);
+
+		data = manager->SearchCreateResource(&initializer);
+
+		if (manager->IsInvalidHandle(data))
 		{
-			FMaterialConstantData* data = RCast<FMaterialConstantData*>(mapMaterial);
-
-			data->Diffuse = srcData.Diffuse;
-			data->Alpha = srcData.Alpha;
-			data->SpecularColor = srcData.SpecularColor;
-			data->Specularity = srcData.Specularity;
-			data->AmbientColor = srcData.AmbientColor;
-			data->AmbientAlpha = 1.0f;
-
-			mapMaterial += bufferSize;
+			PRINT("CreateMaterials Invalid Handle.\n");
 		}
-
-		// テクスチャデータ
-		{
-			const String& texPath = srcData.TexFilePath;
-
-			String textureName = {};
-			String sphName = {};
-			String spaName = {};
-
-			// テクスチャ名を分離
-			{
-				constexpr char splitter = '*';
-				if (StringUtility::ExitChara(texPath, splitter))
-				{
-					auto namepair = FileUtility::SeparateFileName(texPath, '*');
-					auto extensionFirst = FileUtility::GetExtension(namepair.first);
-
-					if (FileUtility::CompareExtension(extensionFirst, FileUtility::EFileExtensionType::FILE_TYPE_SPH))
-					{
-						textureName = namepair.second;
-						sphName = namepair.first;
-					}
-					else if (FileUtility::CompareExtension(extensionFirst, FileUtility::EFileExtensionType::FILE_TYPE_SPA))
-					{
-						textureName = namepair.second;
-						spaName = namepair.first;
-					}
-					else
-					{
-						textureName = namepair.first;
-
-						auto extensionSecond = FileUtility::GetExtension(namepair.second);
-
-						if (FileUtility::CompareExtension(extensionSecond, FileUtility::EFileExtensionType::FILE_TYPE_SPH))
-						{
-							sphName = namepair.second;
-						}
-						else if (FileUtility::CompareExtension(extensionSecond, FileUtility::EFileExtensionType::FILE_TYPE_SPA))
-						{
-							spaName = namepair.second;
-						}
-					}
-
-				}
-				else
-				{
-					auto extension = FileUtility::GetExtension(texPath);
-					if (FileUtility::CompareExtension(extension, FileUtility::EFileExtensionType::FILE_TYPE_SPH))
-					{
-						sphName = texPath;
-					}
-					else if (FileUtility::CompareExtension(extension, FileUtility::EFileExtensionType::FILE_TYPE_SPA))
-					{
-						spaName = texPath;
-					}
-					else
-					{
-						textureName = texPath;
-					}
-				}
-
-			}
-
-
-			CFileLoadTexture loader = {};
-			CFileLoadTexture::FInitializer initializer = {};
-			initializer.Device = _Initializer->Device;
-
-
-			// カラーテクスチャ
-			{
-				const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, textureName);
-
-				initializer.FileName = CHash160(texFolderFilePath);
-
-				if (loader.Initialize(initializer))
-				{
-					matData.Data.ColorTexture = loader.GetResourceHandle();
-				}
-				else
-				{
-					matData.Data.ColorTexture = manager->SearchResourceHandle(DefaultResource::WhiteTextureResource);
-				}
-
-				loader.Finalize();
-			}
-
-			// スフィアテクスチャ
-			{
-				const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, sphName);
-
-				initializer.FileName = CHash160(texFolderFilePath);
-
-				if (loader.Initialize(initializer))
-				{
-					matData.Data.SphereTexture = loader.GetResourceHandle();
-				}
-				else
-				{
-					matData.Data.SphereTexture = manager->SearchResourceHandle(DefaultResource::WhiteTextureResource);
-				}
-
-				loader.Finalize();
-			}
-
-			// 加算スフィアテクスチャ
-			{
-				const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, spaName);
-
-				initializer.FileName = CHash160(texFolderFilePath);
-
-				if (loader.Initialize(initializer))
-				{
-					matData.Data.SphereAddTexture = loader.GetResourceHandle();
-				}
-				else
-				{
-					matData.Data.SphereAddTexture = manager->SearchResourceHandle(DefaultResource::BlackTextureResource);
-				}
-
-				loader.Finalize();
-			}
-
-			// トゥーンテクスチャ
-			{
-				constexpr uint8 toonTexNameLength = 16;
-				char toonTexName[toonTexNameLength] = {};
-
-				sprintf_s(toonTexName, "toon%02d.bmp", SCast<uint8>(srcData.ToonIndex + 1));
-
-				String toonFolderFilePath(toonMapDirectory);
-				toonFolderFilePath += toonTexName;
-
-				initializer.FileName = CHash160(toonFolderFilePath);
-
-				if (loader.Initialize(initializer))
-				{
-					matData.Data.ToonResource = loader.GetResourceHandle();
-				}
-				else
-				{
-					matData.Data.ToonResource = manager->SearchResourceHandle(DefaultResource::GrayGradationTextureResource);
-				}
-
-				loader.Finalize();
-			}
-
-		}
-
 	}
 
-	m_ConstantBuffer->Unmap(0, nullptr);
 
 	return true;
 }
 
-bool CPmdMaterialData::Impl::CreateDescriptorHeap(const FPmdMaterialInitializer* _Initializer)
+bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	CHECK_RESULT_FALSE(_Initializer->Device);
+	CHECK_RESULT_FALSE(_Initializer->Device->GetDevice());
 
+	// マテリアルのヒープ
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.NodeMask = 0;
-	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5);//1 + 4 = 定数バッファとテクスチャの枚数
+	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5);//(1 + 4) * MaterialNum = VertexShaderの定数バッファとPixelShaderの定数バッファとテクスチャの枚数
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
-	D3D_ERROR_CHECK(_Initializer->Device->CreateDescriptorHeap(
+	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
 		&desc,
-		IID_PPV_ARGS(&m_DescriptorHeap)
+		IID_PPV_ARGS(&_MatHeap)
 	));
+
+	// コンスタントバッファのヒープ
+	desc.NumDescriptors = 1;
+
+	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
+		&desc,
+		IID_PPV_ARGS(&_BufHeap)
+	));
+
 	return true;
 }
 
-bool CPmdMaterialData::Impl::CreateShaderResourceView(const FPmdMaterialInitializer* _Initializer)
+bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	
-	ID3D12Device* device = _Initializer->Device;
+	ID3D12Device* device = _Initializer->Device->GetDevice();
 	CHECK_RESULT_FALSE(device);
 
 	// ビューの作成
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 	uint32 bufferSize = AlignBufferSize(sizeof(FMaterialConstantData));
 	cbvDesc.SizeInBytes = bufferSize;
-	cbvDesc.BufferLocation = m_ConstantBuffer->GetGPUVirtualAddress();
+	//cbvDesc.BufferLocation = m_ConstantBuffer->GetGPUVirtualAddress();
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -426,11 +285,48 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(const FPmdMaterialInitiali
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 	
-	D3D12_CPU_DESCRIPTOR_HANDLE descHandle = m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
 	uint32 handleIncrement = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
+	
+	// 頂点シェーダーで使用するバッファ
+	{
+		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _BufHeap->GetCPUDescriptorHandleForHeapStart();
 
+		D3D12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(AlignBufferSize(sizeof(FSceneData)));
+
+		D3D_ERROR_CHECK(device->CreateCommittedResource(
+			&prop,
+			D3D12_HEAP_FLAG_NONE,
+			&resDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&m_VertexConstantBuffer)));
+
+		m_SceneData = new FSceneData();
+		CHECK_RESULT_FALSE(m_SceneData);
+
+		m_SceneData->World = DirectX::XMMatrixIdentity();
+		m_SceneData->View = DirectX::XMMatrixIdentity();
+		m_SceneData->ViewProjection = DirectX::XMMatrixIdentity();
+		m_SceneData->WorldViewProjection = DirectX::XMMatrixIdentity();
+
+		D3D_ERROR_CHECK(m_VertexConstantBuffer->Map(0, nullptr, (void**)(&m_SceneData)));
+
+		D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
+		desc.BufferLocation = m_VertexConstantBuffer->GetGPUVirtualAddress();
+		desc.SizeInBytes = SCast<uint32>(m_VertexConstantBuffer->GetDesc().Width);
+
+		device->CreateConstantBufferView(
+			&desc,
+			bufHeap);
+	}
+
+	D3D12_CPU_DESCRIPTOR_HANDLE descHandle = _MatHeap->GetCPUDescriptorHandleForHeapStart();
+
+	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
+	CHECK_RESULT_FALSE(manager);
 
 	// テクスチャのシェーダーリソースビューを作成するための手順
 	auto CreateSRV = [&](const FResourceHandle& _Handle)
@@ -447,17 +343,33 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(const FPmdMaterialInitiali
 			&srvDesc,
 			descHandle
 		);
-
+		
 		descHandle.ptr += handleIncrement;
+
+		return;
 	};
+
+	CResourceManager* matManager = CSubsystemServiceLocator::GetResourceSubsystem()->GetMaterialResourceManager();
+	CHECK_RESULT_FALSE(matManager);
 
 	for (uint32 index = 0; index < m_MaterialData.size(); ++index)
 	{
+		const FPmdMaterialData& srcData = _Initializer->Materials[index];
+		FMaterialData& data = m_MaterialData.at(index);
 
-		const auto& data = m_MaterialData.at(index).Data;
+		const FResourceHandle& handle = data.m_MaterialHandle;
+
+		const CPmdMaterialResource* material = PCast<const CPmdMaterialResource*>(matManager->SearchResource(handle));
+
+		//const auto& data = m_MaterialData.at(index).Data;
+
+		// インデックスを入れる
+		data.DrawIndex = srcData.IndiciesNum;
 
 		// コンスタントバッファ
 		{
+			cbvDesc.BufferLocation = material->GetConstantResource()->GetGPUVirtualAddress();
+
 			device->CreateConstantBufferView(
 				&cbvDesc,
 				descHandle
@@ -468,43 +380,66 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(const FPmdMaterialInitiali
 
 		// カラーテクスチャ
 		{
-			CreateSRV(data.ColorTexture);
+			//CreateSRV(data.ColorTexture);
+			CreateSRV(material->GetDecalTextureHandle());
 		}
 
 		// スフィアテクスチャ
 		{
-			CreateSRV(data.SphereTexture);
+			//CreateSRV(data.SphereTexture);
+			CreateSRV(material->GetSphereTextureHandle());
 		}
 
 		// 加算スフィアテクスチャ
 		{
-			CreateSRV(data.SphereAddTexture);
+			//CreateSRV(data.SphereAddTexture);
+			CreateSRV(material->GetSphereAddTextureHandle());
 		}
 
 		// トゥーンテクスチャ
 		{
-			CreateSRV(data.ToonResource);
+			//CreateSRV(data.ToonResource);
+			CreateSRV(material->GetToonTextureHandle());
 		}
-
-		cbvDesc.BufferLocation += bufferSize;
 	}
 
-	m_HeapStride = handleIncrement * 5; // 定数 + テクスチャ4枚
+	_Stride = handleIncrement * 5; // 定数 + テクスチャ4枚
 
 	return true;
 }
 
 void CPmdMaterialData::Impl::ReleaseMaterialResource()
 {
-	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
+	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetMaterialResourceManager();
 	for (auto& element : m_MaterialData)
 	{
-		auto& data = element.Data;
-		manager->DeleteResource(data.ColorTexture);
-		manager->DeleteResource(data.SphereTexture);
-		manager->DeleteResource(data.SphereAddTexture);
-		manager->DeleteResource(data.ToonResource);
+		auto& data = element.m_MaterialHandle;
+		manager->DeleteResource(data);
+		//manager->DeleteResource(data.ColorTexture);
+		//manager->DeleteResource(data.SphereTexture);
+		//manager->DeleteResource(data.SphereAddTexture);
+		//manager->DeleteResource(data.ToonResource);
 	}
 
 	m_MaterialData.resize(0);
+}
+
+void CPmdMaterialData::Impl::ReleasePipelineStateObject()
+{
+	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetPipelineStateObjectManager();
+
+	manager->DeleteResource(m_PsoHandle);
+}
+
+bool CPmdMaterialData::Impl::CreatePipelineStateObjectImpl(const FPmdMaterialInitializer* _Initializer)
+{
+	CHECK_RESULT_FALSE(_Initializer);
+	CHECK_RESULT_FALSE(_Initializer->PsoInit);
+
+	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetPipelineStateObjectManager();
+
+	m_PsoHandle = manager->SearchCreateResource(_Initializer->PsoInit);
+	CHECK_RESULT_FALSE(manager->IsValidHandle(m_PsoHandle));
+
+	return true;
 }

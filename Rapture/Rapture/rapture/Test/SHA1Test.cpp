@@ -833,6 +833,7 @@ namespace Test
 			EDENS_NAMESPACE_USING;
 			CSHA1 sha1(testMessage);
 			CSHA1 test2("abc");
+			//CSHA1 test2(testMessage);
 			if (sha1 == test2)
 			{
 				PRINT("Test OK;");

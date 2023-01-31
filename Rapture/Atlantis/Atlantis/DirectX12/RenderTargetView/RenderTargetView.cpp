@@ -28,7 +28,7 @@ void CRenderTargetView::Finalize()
 	{
 		SafeReleaseD3DPtr(m_Resource);
 	}
-	SafeReleaseD3DPtr(m_DescriptorHeap);
+	SafeReleaseD3DPtr(m_MaterialDescriptorHeap);
 }
 
 bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer& _Initializer)
@@ -46,7 +46,7 @@ bool CRenderTargetView::CreateDescriptorHeap(const FRenderTargetViewInitializer&
 		&heapDesc, 
 		IID_PPV_ARGS(&renderTargetView)));
 
-	m_DescriptorHeap = renderTargetView;
+	m_MaterialDescriptorHeap = renderTargetView;
 
 	return true;
 }
@@ -61,9 +61,13 @@ bool CRenderTargetView::CreateRenderTargetView(const FRenderTargetViewInitialize
 		m_Resource = _Initializer.ResPtr;
 	}
 
-	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = {};
+	rtvDesc.Format = Glue::GetDXGIFormat(_Initializer.Format);
+	rtvDesc.ViewDimension = Glue::GetD3DRTVDimension(_Initializer.RTVDimension);
 
-	_Initializer.Device->CreateRenderTargetView(m_Resource, _Initializer.RtvDesc, handle);
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_MaterialDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
+	_Initializer.Device->CreateRenderTargetView(m_Resource, &rtvDesc, handle);
 
 	return true;
 }

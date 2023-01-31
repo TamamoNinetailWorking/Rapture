@@ -41,6 +41,7 @@
     <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXTex\DirectXTex.h" />
     <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h" />
+    <ClInclude Include="Atlantis\DirectX12\GlueMath.h" />
     <ClInclude Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.h" />
     <ClInclude Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.h" />
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h" />
@@ -53,6 +54,8 @@
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBase.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderBaseInitializer.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderData.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderName.h" />
+    <ClInclude Include="Atlantis\DirectX12\Shader\ShaderNameBlock.h" />
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderPreDefine.h" />
     <ClInclude Include="Atlantis\DirectX12\SwapChain\SwapChain.h" />
     <ClInclude Include="Atlantis\DirectX12\Texture\Texture.h" />
@@ -60,8 +63,18 @@
     <ClInclude Include="Atlantis\DirectX12\Texture\TextureResourceInitializer.h" />
     <ClInclude Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.h" />
     <ClInclude Include="Atlantis\DirectX12\Viewport\Viewport.h" />
+    <ClInclude Include="Atlantis\Material\MaterialInterface.h" />
+    <ClInclude Include="Atlantis\Material\MaterialInterfaceDefine.h" />
+    <ClInclude Include="Atlantis\Material\MaterialInterfaceInitializer.h" />
     <ClInclude Include="Atlantis\Resource\ShaderManager.h" />
     <ClInclude Include="Atlantis\Resource\TextureResourceManager.h" />
+    <ClInclude Include="Atlantis\RHIProccessor\RHIProcessor.h" />
+    <ClInclude Include="Atlantis\RHIProccessor\RHIProcessorInitialize.h" />
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetDefine.h" />
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetView.h" />
+    <ClInclude Include="Atlantis\RHIProccessor\RHIRenderTargetViewInitializer.h" />
+    <ClInclude Include="Atlantis\SceneView\SceneView.h" />
+    <ClInclude Include="Atlantis\SceneView\SceneViewInitializer.h" />
     <ClInclude Include="Atlantis\Utility\FileUtility\FileTypeDefine.h" />
     <ClInclude Include="Atlantis\Utility\FileUtility\FileUtility.h" />
     <ClInclude Include="Atlantis\Utility\PrintUtility\PrintUtility.h" />
@@ -70,6 +83,7 @@
     <ClCompile Include="Atlantis\DirectX12\Barrier\Barrier.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandContext.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Command\CommandQueue.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\ConstantBuffer\ConstantBufferPreDefine.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DepthStencilView\DepthStencilView.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DirectXDebug\DirectXDebug.cpp" />
     <ClCompile Include="Atlantis\DirectX12\DirectXPaste.cpp" />
@@ -83,13 +97,18 @@
     <ClCompile Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Shader\GraphicsShader.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Shader\ShaderBase.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\Shader\ShaderName.cpp" />
     <ClCompile Include="Atlantis\DirectX12\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Texture\Texture.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Texture\TextureResource.cpp" />
     <ClCompile Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp" />
+    <ClCompile Include="Atlantis\Material\MaterialInterface.cpp" />
     <ClCompile Include="Atlantis\Resource\ShaderManager.cpp" />
     <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp" />
+    <ClCompile Include="Atlantis\RHIProccessor\RHIProcessor.cpp" />
+    <ClCompile Include="Atlantis\RHIProccessor\RHIRenderTargetVIew.cpp" />
+    <ClCompile Include="Atlantis\SceneView\SceneView.cpp" />
     <ClCompile Include="Atlantis\Utility\FileUtility\FileUtility.cpp" />
     <ClCompile Include="Atlantis\Utility\PrintUtility\PrintUtility.cpp" />
   </ItemGroup>

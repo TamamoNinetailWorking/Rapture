@@ -9,6 +9,10 @@
 #include <Bifrost/Model/Pmd/PmdMaterialData.h>
 #include <Bifrost/Model/Pmd/PmdMaterialDataInitializer.h>
 
+#include <Bifrost/Resource/PSO/PipelineStateObjectInitializer.h>
+
+#include <rapture/Environment/PsoNameDefine.h>
+
 #include <d3d12.h>
 
 EDENS_NAMESPACE_USING;
@@ -23,7 +27,7 @@ namespace Test
 	CMeshData* m_MeshData = nullptr;
 	CPmdMaterialData* m_MaterialData = nullptr;
 
-	void FileLoaderTest(ID3D12Device* _Device)
+	void FileLoaderTest(CDX12MainDevice* _Device)
 	{
 		//const char* fileName = "resource/mmd/UserFile/Model/初音ミク.pmd";
 		//const char* fileName = "resource/mmd/UserFile/Model/初音ミクVer2.pmd";
@@ -94,6 +98,10 @@ namespace Test
 			initializer.ToonMapDirectory = CHash160("resource/mmd/Data/");
 			initializer.Materials = pmdParser.GetMaterials();
 			initializer.MaterialNum = pmdParser.GetMaterialNum();
+
+			FPipelineStateObjectInitializer psoInit = {};
+			psoInit.Name = PsoName::PmdRenderingPso;
+			initializer.PsoInit = &psoInit;
 
 			if (!m_MaterialData->Initialize(&initializer))
 			{

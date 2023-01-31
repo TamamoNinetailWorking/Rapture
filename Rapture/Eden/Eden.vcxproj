@@ -167,6 +167,8 @@
     <ClInclude Include="eden\include\gadget\timer\timer.h" />
     <ClInclude Include="eden\include\math\math_utility.h" />
     <ClInclude Include="eden\include\math\random_utility.h" />
+    <ClInclude Include="eden\include\Object\Object.h" />
+    <ClInclude Include="eden\include\Object\ObjectDefine.h" />
     <ClInclude Include="eden\include\Resource\Resource.h" />
     <ClInclude Include="eden\include\Resource\ResourceInitializer.h" />
     <ClInclude Include="eden\include\Resource\ResourceManager.h" />
@@ -189,6 +191,7 @@
     <ClCompile Include="eden\src\gadget\FileLoader\FileLoader.cpp" />
     <ClCompile Include="eden\src\gadget\serializer\serializer.cpp" />
     <ClCompile Include="eden\src\gadget\timer\timer.cpp" />
+    <ClCompile Include="eden\src\Object\Object.cpp" />
     <ClCompile Include="eden\src\Resource\Resource.cpp" />
     <ClCompile Include="eden\src\Resource\ResourceManager.cpp" />
     <ClCompile Include="eden\src\system\console\console_window.cpp" />
