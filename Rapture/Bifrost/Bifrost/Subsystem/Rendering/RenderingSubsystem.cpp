@@ -272,3 +272,13 @@ bool CRenderingSubsystem::CreateScreenView(const FRenderingSubsystemInitializer*
 
 	return m_SceneView->Initialize(&initializer);
 }
+
+void CRenderingSubsystem::RenderBegin()
+{
+	CHECK(m_Processor->RenderBegin(m_RTV, m_SceneView));
+}
+
+void CRenderingSubsystem::RenderEnd()
+{
+	m_Processor->RenderEnd(m_RTV);
+}

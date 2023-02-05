@@ -294,7 +294,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _BufHeap->GetCPUDescriptorHandleForHeapStart();
 
 		D3D12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(AlignBufferSize(sizeof(FSceneData)));
+		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(AlignBufferSize(sizeof(FSceneData::MainData)));
 
 		D3D_ERROR_CHECK(device->CreateCommittedResource(
 			&prop,
@@ -307,12 +307,18 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 		m_SceneData = new FSceneData();
 		CHECK_RESULT_FALSE(m_SceneData);
 
-		m_SceneData->World = DirectX::XMMatrixIdentity();
-		m_SceneData->View = DirectX::XMMatrixIdentity();
-		m_SceneData->ViewProjection = DirectX::XMMatrixIdentity();
-		m_SceneData->WorldViewProjection = DirectX::XMMatrixIdentity();
+		m_SceneData->pData = new FSceneData::MainData();
+		CHECK_RESULT_FALSE(m_SceneData);
 
-		D3D_ERROR_CHECK(m_VertexConstantBuffer->Map(0, nullptr, (void**)(&m_SceneData)));
+		auto& data = *(m_SceneData->pData);
+
+		data.World = DirectX::XMMatrixIdentity();
+		data.View = DirectX::XMMatrixIdentity();
+		data.ViewProjection = DirectX::XMMatrixIdentity();
+		data.WorldViewProjection = DirectX::XMMatrixIdentity();
+
+		auto temp = &m_SceneData->pData;
+		D3D_ERROR_CHECK(m_VertexConstantBuffer->Map(0, nullptr, (void**)temp));
 
 		D3D12_CONSTANT_BUFFER_VIEW_DESC desc = {};
 		desc.BufferLocation = m_VertexConstantBuffer->GetGPUVirtualAddress();

@@ -88,6 +88,10 @@
 #include <Bifrost/Model/Component/PmdModelComponent.h>
 #include <Bifrost/Model/Pmd/PmdMaterialDefine.h>
 #include <Atlantis/SceneView/SceneView.h>
+#include <Atlantis/DirectX12/MainDevice/MainDevice.h>
+#include <Atlantis/RHIProccessor/RHIRenderTargetView.h>
+
+#include <Atlantis/DirectX12/ConstantBuffer/ConstantBufferPreDefine.h>
 
 using namespace std;
 using namespace DirectX;
@@ -99,6 +103,8 @@ USING_BIFROST;
 using namespace Glue;
 
 
+//#define RENDER_TEST
+
 // ビュー行列
 XMMATRIX ViewMatrix = {};
 // プロジェクション行列
@@ -109,6 +115,7 @@ uint32 PmdVertexNum = 0;
 uint32 PmdIndexNum = 0;
 
 // コンスタントバッファ
+#if 1
 struct SceneMatricesData
 {
 	FMatrix World = {};
@@ -122,6 +129,7 @@ struct SceneMatricesData
 	Vector3 LightColor = {};
 	float padding3 = 0.f;
 };
+#endif
 
 // シェーダーに送るマテリアルデータ
 struct MaterialForHlsl
@@ -154,7 +162,10 @@ constexpr uint32 MaterialDataSize = sizeof(MaterialData);
 
 vector<MaterialData> m_MaterialData = {};
 
-FSceneData SceneData = {};
+FSceneData* SceneData = nullptr;
+//SceneMatricesData* m_SceneMatricesData = nullptr;
+FSceneData::MainData* m_SceneMatricesData = nullptr;
+//SceneMatricesData SceneData = {};
 
 #define D3D_ERROR_CHECK_TEMP(result) if(FAILED(result)) { return false; };
 
@@ -171,7 +182,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	do 
 	{
-#ifdef RENDER_TEST
+//#ifdef RENDER_TEST
+#if 0
 		//m_Debug = new CDirectXDebug();
 		//if (!m_Debug) { break; }
 		//m_Debug->EnableDebugLayer();
@@ -316,7 +328,8 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CSubsystemServiceLocator::SetSubsystemDominator(m_SubsystemDominator);
 		}
 
-#ifndef RENDER_TEST
+//#ifndef RENDER_TEST
+#if 1
 		{
 			m_RenderingSubsystem = new CRenderingSubsystem();
 			CHECK_RESULT_BREAK(m_RenderingSubsystem);
@@ -843,12 +856,15 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			IID_PPV_ARGS(&m_ConstantBuffer)));
 
 		//m_SceneMatricesData = new XMMATRIX();
-		m_SceneMatricesData = new SceneMatricesData();
+		m_SceneMatricesData = new FSceneData::MainData();
 		CHECK_RESULT_BREAK(m_SceneMatricesData);
-		m_SceneMatricesData->World = XMMatrixIdentity();
-		m_SceneMatricesData->ViewProjection = XMMatrixIdentity();
+		//m_SceneMatricesData->Data.World = XMMatrixIdentity();
+		//m_SceneMatricesData->Data.ViewProjection = XMMatrixIdentity();
 		//XMMATRIX* mapMatrix;
-		result = m_ConstantBuffer->Map(0, nullptr, (void**)&m_SceneMatricesData);
+
+		auto tempAddress = &(m_SceneMatricesData);
+
+		result = m_ConstantBuffer->Map(0, nullptr, (void**)tempAddress);
 		//*mapMatrix = matrix;
 		//m_ConstantBuffer->Unmap(0,nullptr);
 
@@ -2124,12 +2140,14 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 		ProjectionMatrix = XMMatrixPerspectiveFovLH(fovAngle, aspectRatio, nearZ, farZ);
 
-		m_SceneMatricesData->EyePosition = eyePos;
+		auto& sceneData = *m_SceneMatricesData;
+
+		sceneData.EyePosition = eyePos;
 		//m_SceneMatricesData->EyePosition = Vector3(0.0f,1.f,1.f);
 
-		m_SceneMatricesData->LightPosition = Vector3(5.f, 20.f, -8.f);
+		sceneData.LightPosition = Vector3(5.f, 20.f, -8.f);
 		//m_SceneMatricesData->LightPosition = Vector3(1.f, 0.f, 0.f);
-		m_SceneMatricesData->LightColor = Vector3(1.f, 1.f, 1.f);
+		sceneData.LightColor = Vector3(1.f, 1.f, 1.f);
 
 	}
 
@@ -2187,12 +2205,93 @@ void CGameManager::GameMain()
 	Render();
 }
 
+
+
+ID3D12DescriptorHeap* TestHeap = nullptr;			
+ID3D12Resource* pConstantBuffer = nullptr;
+
+
 void CGameManager::GameUpdate()
 {
 #ifndef RENDER_TEST
 	/* Render Update */
 	m_RenderingSubsystem->ClearRenderGroup();
 #endif
+
+#ifdef RENDER_TEST
+
+	auto m_MainDevice = m_RenderingSubsystem->GetProcessorEdit()->GetDeviceEdit();
+
+#endif
+
+
+	{
+		static bool testFlag = false;
+
+		if (!testFlag)
+		{
+			SceneData = new FSceneData();
+			SceneData->pData = new FSceneData::MainData();
+		}
+#ifdef RENDER_TEST
+		//
+		// ソースコードの比較検証の結果、作成工程に問題がありそうだ
+		//
+		if (!testFlag)
+		{
+			D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
+			descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+			descHeapDesc.NodeMask = 0;
+			//descHeapDesc.NumDescriptors = 1;
+			descHeapDesc.NumDescriptors = 1;
+			descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+
+			HRESULT result = m_MainDevice->GetDevice()->CreateDescriptorHeap(
+				&descHeapDesc,
+				IID_PPV_ARGS(&TestHeap));
+
+			if (FAILED(result)) { return; }
+
+			D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+
+			uint32 bufSize = AlignBufferSize(sizeof(FSceneData::MainData));
+			//uint32 bufSize = AlignBufferSize(sizeof(SceneMatricesData));
+
+
+			D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(bufSize);
+
+
+
+			result = m_MainDevice->GetDevice()->CreateCommittedResource(
+				&heapProp,
+				D3D12_HEAP_FLAG_NONE,
+				&resDesc,
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				nullptr,
+				IID_PPV_ARGS(&pConstantBuffer));
+
+			//auto* temp = &SceneData.Data;
+			auto temp = &SceneData->pData;
+			result = pConstantBuffer->Map(0, nullptr, (void**)temp);
+
+
+			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
+			cbvDesc.BufferLocation = pConstantBuffer->GetGPUVirtualAddress();
+			cbvDesc.SizeInBytes = SCast<uint32>(pConstantBuffer->GetDesc().Width);
+
+
+			D3D12_CPU_DESCRIPTOR_HANDLE heapHandle = TestHeap->GetCPUDescriptorHandleForHeapStart();
+
+			m_MainDevice->GetDevice()->CreateConstantBufferView(
+				&cbvDesc,
+				heapHandle);
+		}
+#endif
+
+		testFlag = true;
+	}
+
+
 
 	static float rotSpeed = 0.f;
 
@@ -2213,10 +2312,14 @@ void CGameManager::GameUpdate()
 	//*m_SceneMatricesData = scale * pose * trans * ViewMatrix * ProjectionMatrix;
 
 	//*m_SceneMatricesData = scale * pose * trans * ViewMatrix * ProjectionMatrix;
-	m_SceneMatricesData->World = scale * pose * trans;
-	m_SceneMatricesData->View = ViewMatrix;
-	m_SceneMatricesData->ViewProjection = ViewMatrix * ProjectionMatrix;
-	m_SceneMatricesData->WorldViewProjection = m_SceneMatricesData->World * m_SceneMatricesData->ViewProjection;
+
+	auto& sData = *m_SceneMatricesData;
+
+	sData.World = scale * pose * trans;
+	//m_SceneMatricesData->World = scale * trans;
+	sData.View = ViewMatrix;
+	sData.ViewProjection = ViewMatrix * ProjectionMatrix;
+	sData.WorldViewProjection = sData.World * sData.ViewProjection;
 
 
 
@@ -2247,17 +2350,30 @@ void CGameManager::GameUpdate()
 #endif
 
 
-	SceneData.World = scale * pose * trans;
-	SceneData.View = ViewMatrix;
-	SceneData.ViewProjection = ViewMatrix * ProjectionMatrix;
-	SceneData.WorldViewProjection = SceneData.World * SceneData.ViewProjection;
-	SceneData.EyePosition = eyePos;
-	SceneData.LightPosition = Vector3(5.f, 20.f, -8.f);
-	SceneData.LightColor = Vector3(1.f, 1.f, 1.f);
-	
-	Test::m_MaterialData->SetGeometryBuffer(&SceneData);
+	//auto& data = *(SceneData->pData);
+#ifdef RENDER_TEST
+	auto sceneData = Test::m_MaterialData->GetGeometryBufferEdit();
+	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
+#else
+
+	auto sceneData = Test::m_PmdModelComponent->GetMaterialInterface()->GetGeometryBufferEdit();
+	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
+
+#endif
+
+	data.World = scale * pose * trans;
+	data.View = ViewMatrix;
+	data.ViewProjection = ViewMatrix * ProjectionMatrix;
+	data.WorldViewProjection = data.World * data.ViewProjection;
+	data.EyePosition = eyePos;
+	data.LightPosition = Vector3(5.f, 20.f, -8.f);
+	data.LightColor = Vector3(1.f, 1.f, 1.f);
+
+#ifdef RENDER_TEST
+	//Test::m_MaterialData->SetGeometryBuffer(SceneData);
+#endif
 #ifndef RENDER_TEST
-	Test::m_PmdModelComponent->SetSceneData(&SceneData);
+	//Test::m_PmdModelComponent->SetSceneData(SceneData);
 #endif
 	// 処理時間の制限を行う場所を、AppManagerからここに移動させてもいいかもしれない
 	// >> そもそも処理時間を今制限していない問題
@@ -2272,7 +2388,19 @@ void CGameManager::Render()
 #endif
 
 #ifdef RENDER_TEST
+
+	auto m_MainDevice = m_RenderingSubsystem->GetProcessorEdit()->GetDeviceEdit();
+	auto m_CommandContext = m_RenderingSubsystem->GetProcessorEdit()->GetContextEdit();
+	//auto m_SwapChain = m_RenderingSubsystem->GetRTVEdit()->GetSwapChain();
+	//auto m_Barrier = m_RenderingSubsystem->GetProcessorEdit()->
+
 	ID3D12GraphicsCommandList* m_CmdList = m_CommandContext->GetCommandList();
+
+	m_RenderingSubsystem->RenderBegin();
+
+#endif
+
+#if 0
 
 	uint32 bufferIndex = m_SwapChain->GetCurrentBufferIndex();
 
@@ -2291,36 +2419,41 @@ void CGameManager::Render()
 	m_CommandContext->SetViewport(m_Viewport);
 	m_CommandContext->SetScissorRect(m_ScissorRect);
 
-
-	m_CommandContext->SetPipelineState(m_Pipeline);
-	m_CommandContext->SetRootSignature(m_RootSignature);
-
-
 	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = m_RtvHeaps->GetCPUDescriptorHandleForHeapStart();
-	//rtvHandle.ptr += SCast<ULONG_PTR>(backBufferIndex * m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-	//
-	//m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
+//rtvHandle.ptr += SCast<ULONG_PTR>(backBufferIndex * m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+//
+//m_CmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
-	// レンダーターゲットのクリア
+// レンダーターゲットのクリア
 	float clearColor[] = { 1.f,1.f,1.f,1.f };
 	m_CommandContext->ClearRenderTargetView(m_RTV[bufferIndex], clearColor);
 
 	// デプスバッファのクリア
 	m_CommandContext->ClearDepthStencilView(m_DepthStencilView, 1.f);
 
+#endif
 
-	m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
-	auto descHandle = m_DescHeap->GetGPUDescriptorHandleForHeapStart();
-	m_CmdList->SetGraphicsRootDescriptorTable(0,descHandle);
-	descHandle.ptr += m_MainDevice->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	m_CmdList->SetGraphicsRootDescriptorTable(1, descHandle);
+#ifdef RENDER_TEST
+
+#if 0
+	{
+		m_CommandContext->SetPipelineState(m_Pipeline);
+		m_CommandContext->SetRootSignature(m_RootSignature);
+
+		m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
+		auto descHandle = m_DescHeap->GetGPUDescriptorHandleForHeapStart();
+		m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
+		descHandle.ptr += m_MainDevice->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		m_CmdList->SetGraphicsRootDescriptorTable(1, descHandle);
 
 
-	m_CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	m_CmdList->IASetVertexBuffers(0,1,m_VertexBufferView);
-	m_CmdList->IASetIndexBuffer(m_IndexBufferView);
-	m_CmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
+		m_CmdList->IASetVertexBuffers(0, 1, m_VertexBufferView);
+		m_CmdList->IASetIndexBuffer(m_IndexBufferView);
+		m_CmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
+	}
+#endif
 
 	{
 		//m_CommandContext->SetPipelineState(m_PmdPipeline);
@@ -2333,9 +2466,6 @@ void CGameManager::Render()
 
 		m_CommandContext->SetVertexBuffer(Test::m_MeshData->GetVertexBuffer());
 		m_CommandContext->SetIndexBuffer(Test::m_MeshData->GetIndexBuffer());
-
-		//m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
-		//m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
 
 
 #if 0
@@ -2369,12 +2499,20 @@ void CGameManager::Render()
 		// そしてDescriptorHeapの関連性の理解が間違っている可能性が大きい
 		// >> 原点は最初のポリゴンを出力したのと同じ要領のはず
 		// >> 魔導書のSampleも見ながら修復するしかない
-#if 0
+#if 1
 		m_CmdList->SetDescriptorHeaps(1, Test::m_MaterialData->GetBufferDescriptorHeapPtr());
-		//m_CmdList->SetDescriptorHeaps(2, descHeapArray);
-
 		auto bufDescHandle = Test::m_MaterialData->GetBufferDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 		m_CmdList->SetGraphicsRootDescriptorTable(0, bufDescHandle);
+
+		//m_CmdList->SetDescriptorHeaps(1, &TestHeap);
+		//auto bufHandle = TestHeap->GetGPUDescriptorHandleForHeapStart();
+		//m_CmdList->SetGraphicsRootDescriptorTable(0, bufHandle);
+
+#else
+		m_CmdList->SetDescriptorHeaps(1, &m_DescHeap);
+		auto descHandle = m_DescHeap->GetGPUDescriptorHandleForHeapStart();
+		descHandle.ptr += m_MainDevice->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		m_CmdList->SetGraphicsRootDescriptorTable(0, descHandle);
 #endif
 
 		m_CmdList->SetDescriptorHeaps(1, Test::m_MaterialData->GetDescriptorHeapPtr());
@@ -2421,7 +2559,7 @@ void CGameManager::Render()
 		//m_CmdList->DrawIndexedInstanced(PmdIndexNum, 1, 0, 0, 0);
 	}
 
-
+#if 0
 
 	//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
@@ -2452,6 +2590,12 @@ void CGameManager::Render()
 
 	// フリップ
 	m_SwapChain->Present();
+#endif
+
+#ifdef RENDER_TEST
+	m_RenderingSubsystem->RenderEnd();
+#endif
+
 #endif
 
 }

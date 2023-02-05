@@ -15,17 +15,27 @@ struct FSceneData : public ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase
 	using Matrix = ATLANTIS_NAMESPACE::Glue::FMatrix;
 	using Vec3 = ATLANTIS_NAMESPACE::Glue::Vector3;
 
-	Matrix World = {};
-	Matrix View = {};
-	Matrix ViewProjection = {};
-	Matrix WorldViewProjection = {};
-	Vec3 EyePosition = {};
-	float padding1 = 0.f;
-	Vec3 LightPosition = {};
-	float padding2 = 0.f;
-	Vec3 LightColor = {};
-	float padding3 = 0.f;
+	struct MainData
+	{
+		Matrix World = {};
+		Matrix View = {};
+		Matrix ViewProjection = {};
+		Matrix WorldViewProjection = {};
+		Vec3 EyePosition = {};
+		float padding1 = 0.f;
+		Vec3 LightPosition = {};
+		float padding2 = 0.f;
+		Vec3 LightColor = {};
+		float padding3 = 0.f;
+	};
 
+	// Mapのリソースの引数が&&（ダブルポインタ）
+	// >>ということはつまり、MainDataのポインタをMapに渡したんでは、
+	//   データの解釈の仕方が変わってしまうということなのでは？
+	// >>だから正確に動作していない？
+	// Mapのために定数バッファを最終的に握るやつはポインターか
+	//MainData Data = {};
+	ObjectPtr(MainData) pData = nullptr;
 };
 
 struct FMaterialConstantData

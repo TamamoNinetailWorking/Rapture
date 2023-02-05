@@ -94,6 +94,7 @@ void CPmdModelComponent::FinalizeMesh()
 
 void CPmdModelComponent::FinalizeMaterial()
 {
+	FinalizeObject(m_MaterialInterface);
 }
 
 bool CPmdModelComponent::ReadyPmdData(const FPmdModelComponentInitializer* _Initializer)

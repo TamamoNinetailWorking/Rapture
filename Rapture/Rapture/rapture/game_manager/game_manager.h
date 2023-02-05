@@ -74,8 +74,9 @@ private:
 	ObjectPtr(BIFROST_NAMESPACE::CUpdateProcessorSubsystem) m_UpdaterSubsystem = nullptr;
 	ObjectPtr(BIFROST_NAMESPACE::CRenderingSubsystem) m_RenderingSubsystem = nullptr;
 
-#define RENDER_TEST
-#ifdef RENDER_TEST
+
+//#ifdef RENDER_TEST
+#if 0
 	ATLANTIS_NAMESPACE::CDX12MainDevice* m_MainDevice = nullptr;
 	ATLANTIS_NAMESPACE::CDirectXDebug* m_Debug = nullptr;
 	ATLANTIS_NAMESPACE::CCommandContext* m_CommandContext = nullptr;
@@ -156,7 +157,7 @@ private:
 
 	// GPU送信用行列ポインタ
 	//DirectX::XMMATRIX* m_SceneMatricesData = nullptr;
-	struct SceneMatricesData* m_SceneMatricesData = nullptr;
+	//struct SceneMatricesData* m_SceneMatricesData = nullptr;
 
 	// マテリアルバッファ
 	struct ID3D12Resource* m_MaterialBuffer = nullptr;

@@ -73,6 +73,13 @@ private:
 	bool CreateRTV(const FRenderingSubsystemInitializer* _Initializer);
 	bool CreateScreenView(const FRenderingSubsystemInitializer* _Initializer);
 
+// Test--------
+public:
+
+	void RenderBegin();
+	void RenderEnd();
+
+// Test--------
 };
 
 BIFROST_NAMESPACE_END
