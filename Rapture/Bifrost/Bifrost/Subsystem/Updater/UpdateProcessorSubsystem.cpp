@@ -1,7 +1,9 @@
 #include "UpdateProcessorSubsystem.h"
 #include "UpdateProcessor.h"
+#include <Bifrost/Subsystem/Updater/OnceExecuter/OnceExecuteProcessor.h>
 
 #include <eden/include/utility/ender_utility.h>
+
 
 USING_BIFROST;
 
@@ -25,6 +27,14 @@ bool CUpdateProcessorSubsystem::Initialize()
 			CHECK_RESULT_BREAK(data->Initialize());
 		}
 
+		for (uint32 index = 0; index < EOnceExecuteGroup::ONCE_EXECUTE_GROUP_NUM; ++index)
+		{
+			auto& data = m_OnceExecuter[index];
+			data = new COnceExecuteProcessor();
+			CHECK_RESULT_BREAK(data);
+			CHECK_RESULT_BREAK(data->Initialize());
+		}
+
 		return true;
 	} while (0);
 
@@ -34,10 +44,25 @@ bool CUpdateProcessorSubsystem::Initialize()
 
 void CUpdateProcessorSubsystem::Finalize()
 {
+	for (auto& elem : m_OnceExecuter)
+	{
+		EDENS_NAMESPACE::FinalizeObject(elem);
+	}
+
 	for (auto& elem : m_Updater)
 	{
 		EDENS_NAMESPACE::FinalizeObject(elem);
 	}
+}
+
+void CUpdateProcessorSubsystem::BeginPlayExecute()
+{
+	Execute(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_BEGIN_PLAY);
+}
+
+void CUpdateProcessorSubsystem::EndPlayExecute()
+{
+	Execute(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_END_PLAY);
 }
 
 void CUpdateProcessorSubsystem::ProcessorUpdate(float _DeltaTime)
@@ -62,6 +87,22 @@ const FUpdateProcessorHandle CUpdateProcessorSubsystem::SetProcessComponent(EUpd
 	if (!processor) { return FUpdateProcessorHandle(); };
 
 	return processor->SetProcessComponent(_Component,_Function);
+}
+
+bool CUpdateProcessorSubsystem::SetExecutedActor(EOnceExecuteGroup _ExecuteGroup, CActor* _Actor, const FOnceExecuteFunction& _Function)
+{
+	COnceExecuteProcessor* executer = GetOnceExecuter(_ExecuteGroup);
+	CHECK_RESULT_FALSE(executer);
+
+	return executer->SetExecutedActor(_Actor,_Function);
+}
+
+bool CUpdateProcessorSubsystem::SetExecutedComponent(EOnceExecuteGroup _ExecuteGroup, CComponent* _Component, const FOnceExecuteFunction& _Function)
+{
+	COnceExecuteProcessor* executer = GetOnceExecuter(_ExecuteGroup);
+	CHECK_RESULT_FALSE(executer);
+
+	return executer->SetExecutedComponent(_Component, _Function);
 }
 
 void CUpdateProcessorSubsystem::DeleteData(EUpdateGroup _UpdateGroup, const FUpdateProcessorHandle& _Handle)
@@ -90,4 +131,17 @@ CUpdateProcessor* CUpdateProcessorSubsystem::GetPostPhysicsProcessor() const
 CUpdateProcessor* CUpdateProcessorSubsystem::GetProcessor(EUpdateGroup _Type) const
 {
 	return m_Updater.at(_Type);
+}
+
+COnceExecuteProcessor* CUpdateProcessorSubsystem::GetOnceExecuter(EOnceExecuteGroup _Type) const
+{
+	return m_OnceExecuter.at(_Type);
+}
+
+void CUpdateProcessorSubsystem::Execute(EOnceExecuteGroup _Type)
+{
+	COnceExecuteProcessor* executer = GetOnceExecuter(_Type);
+	CHECK(executer);
+
+	executer->Execute();
 }

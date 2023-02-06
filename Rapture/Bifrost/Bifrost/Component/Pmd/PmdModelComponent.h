@@ -29,10 +29,6 @@ public:
 
 	bool Update(float _DeltaTime) override;
 
-	//-------Test------------
-	void SetSceneData(FSceneData* _Data);
-	//-----------------------
-
 	CPmdModelComponent();
 	~CPmdModelComponent();
 
@@ -58,6 +54,10 @@ private:
 	//bool SearchMaterial(const FPmdModelComponentInitializer* _Initializer);
 	bool CreateMaterial(const FPmdModelComponentInitializer* _Initializer);
 	void CloseFile();
+
+private:
+
+	bool SetTransform();
 
 };
 

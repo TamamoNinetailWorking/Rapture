@@ -43,9 +43,6 @@
     <Filter Include="Bifrost\Resource\PSO">
       <UniqueIdentifier>{27a4e46f-18b1-4c72-8200-55087b0c3076}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Bifrost\Model\Component">
-      <UniqueIdentifier>{5dc81673-ec8a-48d5-9f9e-31ff0f7ddc57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Bifrost\Actor">
       <UniqueIdentifier>{d44b28bd-f32c-4229-a17e-97aeed4be7ea}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,18 @@
     </Filter>
     <Filter Include="Bifrost\Subsystem\Rendering\RenderingQueue">
       <UniqueIdentifier>{6de7acf1-a574-42bd-be15-0dca8a0dc83d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Updater\OnceExecuter">
+      <UniqueIdentifier>{ce949bcd-05b4-4e65-9ced-169b089e47a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Component\Pmd">
+      <UniqueIdentifier>{81af2654-11ce-4c77-8949-969f8171cca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Component\Transform">
+      <UniqueIdentifier>{448d9bc5-6d34-457b-9ec1-29e6e6a28f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Actor">
+      <UniqueIdentifier>{5b382294-276f-4bb5-a67e-981c0e450a90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +141,6 @@
     <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObjectInitializer.h">
       <Filter>Bifrost\Resource\PSO</Filter>
     </ClInclude>
-    <ClInclude Include="Bifrost\Model\Component\PmdModelComponent.h">
-      <Filter>Bifrost\Model\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Bifrost\Actor\Actor.h">
       <Filter>Bifrost\Actor</Filter>
     </ClInclude>
@@ -159,9 +165,6 @@
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateGroupDefine.h">
       <Filter>Bifrost\Subsystem\Updater</Filter>
     </ClInclude>
-    <ClInclude Include="Bifrost\Model\Component\PmdModelComponentInitializer.h">
-      <Filter>Bifrost\Model\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Bifrost\Component\RenderingComponent.h">
       <Filter>Bifrost\Component</Filter>
     </ClInclude>
@@ -179,6 +182,45 @@
     </ClInclude>
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystemInitializer.h">
       <Filter>Bifrost\Subsystem\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.h">
+      <Filter>Bifrost\Subsystem\Updater\OnceExecuter</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessorDefine.h">
+      <Filter>Bifrost\Subsystem\Updater\OnceExecuter</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateObjectType.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuteGroup.h">
+      <Filter>Bifrost\Subsystem\Updater</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponent.h">
+      <Filter>Bifrost\Component\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponentInitializer.h">
+      <Filter>Bifrost\Component\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Transform\TransformComponent.h">
+      <Filter>Bifrost\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Transform\TransformDefine.h">
+      <Filter>Bifrost\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\ActorInitializerBase.h">
+      <Filter>Bifrost\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\ActorManager.inl">
+      <Filter>Bifrost\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystem.h">
+      <Filter>Bifrost\Subsystem\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystemI.inl">
+      <Filter>Bifrost\Subsystem\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\Actor.inl">
+      <Filter>Bifrost\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +263,6 @@
     <ClCompile Include="Bifrost\Resource\PSO\PipelineStateObject.cpp">
       <Filter>Bifrost\Resource\PSO</Filter>
     </ClCompile>
-    <ClCompile Include="Bifrost\Model\Component\PmdModelComponent.cpp">
-      <Filter>Bifrost\Model\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Bifrost\Actor\Actor.cpp">
       <Filter>Bifrost\Actor</Filter>
     </ClCompile>
@@ -247,6 +286,18 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.cpp">
       <Filter>Bifrost\Subsystem\Rendering\RenderingQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.cpp">
+      <Filter>Bifrost\Subsystem\Updater\OnceExecuter</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Pmd\PmdModelComponent.cpp">
+      <Filter>Bifrost\Component\Pmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Transform\TransformComponent.cpp">
+      <Filter>Bifrost\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Actor\ActorSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

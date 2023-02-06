@@ -21,12 +21,16 @@
 
 #include <Bifrost/Model/Pmd/PmdMaterialDefine.h>
 
+#include <Bifrost/Actor/Actor.h>
+#include <Bifrost/Component/Transform/TransformComponent.h>
+
 USING_BIFROST;
 EDENS_NAMESPACE_USING;
 
 CPmdModelComponent::CPmdModelComponent() : Super()
 {
 	m_RenderGroup = ERenderGroup::RENDER_GROUP_DEFAULT;
+	m_CanEverUpdate = true;
 }
 
 CPmdModelComponent::~CPmdModelComponent()
@@ -62,6 +66,7 @@ void CPmdModelComponent::Finalize()
 void CPmdModelComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	PRINT("Called BeginPlay PmdModelComponent\n");
 }
 
 void CPmdModelComponent::EndPlay()
@@ -73,12 +78,9 @@ bool CPmdModelComponent::Update(float _DeltaTime)
 {
 	bool result = Super::Update(_DeltaTime);
 
-	return result;
-}
+	result &= SetTransform();
 
-void CPmdModelComponent::SetSceneData(FSceneData* _Data)
-{
-	m_MaterialInterface->SetGeometryBuffer(_Data);
+	return result;
 }
 
 void CPmdModelComponent::FinalizeMesh()
@@ -250,4 +252,19 @@ void CPmdModelComponent::CloseFile()
 		m_FileLoader->ResetData();
 		Delete(m_FileLoader);
 	}
+}
+
+bool CPmdModelComponent::SetTransform()
+{
+	CHECK_RESULT_FALSE(m_Parent);
+
+	CTransformComponent* trans = m_Parent->SearchComponent<CTransformComponent>();
+	CHECK_RESULT_FALSE(m_Parent);
+
+	auto sceneData = GetMaterialInterface()->GetGeometryBufferEdit();
+	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
+
+	data.World = trans->GetTransformMatrix();
+
+	return true;
 }

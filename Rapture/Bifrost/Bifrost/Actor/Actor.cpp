@@ -4,6 +4,10 @@
 
 #include <Bifrost/Component/Component.h>
 
+#include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
+#include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
+#include <Bifrost/Subsystem/Updater/OnceExecuter/OnceExecuteProcessor.h>
+
 USING_BIFROST;
 
 CActor::CActor()
@@ -17,6 +21,20 @@ CActor::~CActor()
 	EDENS_NAMESPACE::Delete(m_ComponentList);
 }
 
+bool CActor::Initialize(const FActorInitializerBase* _Initializer)
+{
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK_RESULT_FALSE(subsystem);
+
+	FOnceExecuteFunction function = std::bind(&CActor::BeginPlay, this);
+
+	CHECK_RESULT_FALSE(subsystem->SetExecutedActor(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_BEGIN_PLAY, this, function));
+
+	PRINT("Create Actor\n");
+
+	return true;
+}
+
 void CActor::Finalize()
 {
 	for (auto& elem : *m_ComponentList)
@@ -26,6 +44,11 @@ void CActor::Finalize()
 	}
 
 	m_ComponentList->clear();
+}
+
+void CActor::SetHash(const Hash160& _Hash)
+{
+	m_ActorHash = _Hash;
 }
 
 const Hash160& CActor::GetHash() const
@@ -39,6 +62,7 @@ bool CActor::AttachComponent(CComponent* _Component)
 	CHECK_RESULT_FALSE(m_ComponentList);
 
 	m_ComponentList->push_back(_Component);
+	_Component->SetParentActor(this);
 	return true;
 }
 
@@ -56,11 +80,48 @@ bool CActor::DetachComponent(CComponent* _Component)
 			continue;
 		}
 
+		(*itr)->SetParentActor(nullptr);
 		itr = m_ComponentList->erase(itr);
 		return result;
 	}
 	
 	return result;
+}
+
+void CActor::BeginPlay()
+{
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK(subsystem);
+
+	FUpdateFunction function = std::bind(&CActor::Update, this, std::placeholders::_1);
+	m_ProcessorHandle = subsystem->SetProcessActor(m_UpdateGroup, this, function);
+
+	PRINT("Called BeginPlay CActor.\n");
+}
+
+void CActor::EndPlay()
+{
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK(subsystem);
+
+	subsystem->DeleteData(m_UpdateGroup, m_ProcessorHandle);
+
+	Finalize();
+}
+
+void CActor::ReserveKill()
+{
+	for (auto& elem : *m_ComponentList)
+	{
+		elem->ReserveKill();
+	}
+
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK(subsystem);
+
+	FOnceExecuteFunction function = std::bind(&CActor::EndPlay, this);
+
+	subsystem->SetExecutedActor(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_END_PLAY, this, function);
 }
 
 bool CActor::IsActive() const

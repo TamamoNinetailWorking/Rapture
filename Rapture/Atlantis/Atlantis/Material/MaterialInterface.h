@@ -33,6 +33,8 @@ public:
 	virtual void SetGeometryBuffer(FMaterialGeometryBufferBase* _Buffer) = 0;
 
 	// ここはまとめるか、別のクラスにしたい
+	// 描画テストでは一応通ったので、まとめて問題ないと思われる
+	// 結局問題になるのはGPU処理時間とCPU処理時間との兼ね合いなので、両方の処理時間を測りたい
 	ID3D12DescriptorHeap* GetBufferDescriptorHeap() const;
 	ID3D12DescriptorHeap* const* GetBufferDescriptorHeapPtr() const;
 

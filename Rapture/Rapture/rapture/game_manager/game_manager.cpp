@@ -33,6 +33,7 @@
 #include <rapture/Subsystem/ResourceSubsystemImpl.h>
 
 #include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
+#include <Bifrost/Subsystem/Actor/ActorSubsystem.h>
 
 #include <rapture/Environment/ResourceTypeDefine.h>
 
@@ -85,13 +86,15 @@
 #include <Bifrost/Model/Pmd/PmdMaterialData.h>
 #include <Bifrost/Resource/PSO/PipelineStateObject.h>
 
-#include <Bifrost/Model/Component/PmdModelComponent.h>
+#include <Bifrost/Component/Pmd/PmdModelComponent.h>
 #include <Bifrost/Model/Pmd/PmdMaterialDefine.h>
 #include <Atlantis/SceneView/SceneView.h>
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 #include <Atlantis/RHIProccessor/RHIRenderTargetView.h>
 
 #include <Atlantis/DirectX12/ConstantBuffer/ConstantBufferPreDefine.h>
+
+#include <Bifrost/Component/Transform/TransformComponent.h>
 
 using namespace std;
 using namespace DirectX;
@@ -426,6 +429,15 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_UpdaterSubsystem->Initialize());
 
 			m_SubsystemDominator->SetUpdaterSubsystem(m_UpdaterSubsystem);
+		}
+
+		{
+			m_ActorSubsytem = new CActorSubsystem();
+			CHECK_RESULT_BREAK(m_ActorSubsytem);
+
+			CHECK_RESULT_BREAK(m_ActorSubsytem->Initialize());
+
+			m_SubsystemDominator->SetActorSubsystem(m_ActorSubsytem);
 		}
 		
 
@@ -2191,6 +2203,7 @@ void CGameManager::Finalize()
 	//FinalizeObject(m_CommandContext);
 	//FinalizeObject(m_MainDevice);
 
+	FinalizeObject(m_ActorSubsytem);
 	FinalizeObject(m_UpdaterSubsystem);
 	FinalizeObject(m_RenderingSubsystem);
 	//FinalizeObject(m_ResSystemInterface);
@@ -2207,7 +2220,7 @@ void CGameManager::GameMain()
 
 
 
-ID3D12DescriptorHeap* TestHeap = nullptr;			
+ID3D12DescriptorHeap* TestHeap = nullptr;
 ID3D12Resource* pConstantBuffer = nullptr;
 
 
@@ -2223,6 +2236,11 @@ void CGameManager::GameUpdate()
 	auto m_MainDevice = m_RenderingSubsystem->GetProcessorEdit()->GetDeviceEdit();
 
 #endif
+
+	// 描画処理が終わったあととかに破壊しておきたい
+	m_ActorSubsytem->DestroyActors();
+
+	m_UpdaterSubsystem->BeginPlayExecute();
 
 
 	{
@@ -2295,10 +2313,12 @@ void CGameManager::GameUpdate()
 
 	static float rotSpeed = 0.f;
 
+	float yaw = (XM_PI / 180.f) * rotSpeed;
+
 	XMMATRIX pose = XMMatrixIdentity();
 	XMMATRIX trans = XMMatrixIdentity();
 	XMMATRIX scale = XMMatrixIdentity();
-	pose = XMMatrixRotationY((XM_PI / 180.f) * rotSpeed);
+	pose = XMMatrixRotationY(yaw);
 	//scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
 	//trans = XMMatrixTranslation(-8.f, -5.f, -5.f);
 	//pose = XMMatrixScaling(rotSpeed, rotSpeed, rotSpeed);
@@ -2321,7 +2341,10 @@ void CGameManager::GameUpdate()
 	sData.ViewProjection = ViewMatrix * ProjectionMatrix;
 	sData.WorldViewProjection = sData.World * sData.ViewProjection;
 
-
+	//-----------
+	// ActorManagerに生成処理を入れて、Actor処理が走るようになれば概ね形になるはず
+	//-----------
+	Test::m_TransformComponent->SetRotate(Vector3(0.f, yaw, 0.f));
 
 	rotSpeed += 1.0f;
 	if (rotSpeed > 360.f)
@@ -2361,7 +2384,8 @@ void CGameManager::GameUpdate()
 
 #endif
 
-	data.World = scale * pose * trans;
+	//data.World = scale * pose * trans;
+	//data.World = Test::m_TransformComponent->GetTransformMatrix();
 	data.View = ViewMatrix;
 	data.ViewProjection = ViewMatrix * ProjectionMatrix;
 	data.WorldViewProjection = data.World * data.ViewProjection;
@@ -2372,13 +2396,12 @@ void CGameManager::GameUpdate()
 #ifdef RENDER_TEST
 	//Test::m_MaterialData->SetGeometryBuffer(SceneData);
 #endif
-#ifndef RENDER_TEST
-	//Test::m_PmdModelComponent->SetSceneData(SceneData);
-#endif
 	// 処理時間の制限を行う場所を、AppManagerからここに移動させてもいいかもしれない
 	// >> そもそも処理時間を今制限していない問題
 	m_UpdaterSubsystem->ProcessorUpdate(0.f);// DeltaTimeを持ってくる
 
+
+	m_UpdaterSubsystem->EndPlayExecute();
 }
 
 void CGameManager::Render()

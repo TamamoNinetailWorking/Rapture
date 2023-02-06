@@ -14,11 +14,13 @@ class CComponent : public EDENS_NAMESPACE::CObject
 {
 public:
 
-	virtual bool Initialize(const FComponentInitializerBase* _Initializer) { return true; };
+	virtual bool Initialize(const FComponentInitializerBase* _Initializer);
 	virtual void Finalize() {};
 
 	virtual void BeginPlay();
 	virtual void EndPlay();
+
+	void ReserveKill();
 
 	virtual bool Update(float _DeltaTime) { return false; };
 
@@ -40,15 +42,13 @@ protected:
 	EUpdateGroup m_UpdateGroup = EUpdateGroup::UPDATE_GROUP_INVALID;
 	FUpdateProcessorHandle m_ProcessorHandle = {};
 
-private:
-
 	ObjectPtr(CActor) m_Parent = nullptr;
 
-	bool m_IsActive = true;
-
-protected:
-
 	bool m_CanEverUpdate = false;
+
+private:
+
+	bool m_IsActive = true;
 
 };
 

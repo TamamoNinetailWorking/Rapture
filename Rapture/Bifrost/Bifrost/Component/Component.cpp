@@ -4,8 +4,19 @@
 
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
+#include <Bifrost/Subsystem/Updater/OnceExecuter/OnceExecuteProcessor.h>
 
 USING_BIFROST;
+
+bool CComponent::Initialize(const FComponentInitializerBase* _Initializer)
+{
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK_RESULT_FALSE(subsystem);
+
+	FOnceExecuteFunction function = std::bind(&CComponent::BeginPlay, this);
+
+	return subsystem->SetExecutedComponent(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_BEGIN_PLAY,this,function);
+}
 
 void CComponent::BeginPlay()
 {
@@ -29,6 +40,18 @@ void CComponent::EndPlay()
 	CHECK(subsystem);
 
 	subsystem->DeleteData(m_UpdateGroup, m_ProcessorHandle);
+
+	Finalize();
+}
+
+void CComponent::ReserveKill()
+{
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CHECK(subsystem);
+
+	FOnceExecuteFunction function = std::bind(&CComponent::EndPlay, this);
+
+	subsystem->SetExecutedComponent(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_END_PLAY, this, function);
 }
 
 void CComponent::SetParentActor(CActor* _Parent)

@@ -44,6 +44,7 @@ class IResourceSubsystem;
 
 class CUpdateProcessorSubsystem;
 class CRenderingSubsystem;
+class CActorSubsystem;
 
 BIFROST_NAMESPACE_END
 
@@ -74,6 +75,7 @@ private:
 	ObjectPtr(BIFROST_NAMESPACE::CUpdateProcessorSubsystem) m_UpdaterSubsystem = nullptr;
 	ObjectPtr(BIFROST_NAMESPACE::CRenderingSubsystem) m_RenderingSubsystem = nullptr;
 
+	ObjectPtr(BIFROST_NAMESPACE::CActorSubsystem) m_ActorSubsytem = nullptr;
 
 //#ifdef RENDER_TEST
 #if 0

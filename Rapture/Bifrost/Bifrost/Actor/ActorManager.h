@@ -44,6 +44,8 @@ BIFROST_NAMESPACE_BEGIN
 
 class CActor;
 
+struct FActorInitializerBase;
+
 class CActorManager
 {
 public:
@@ -54,6 +56,13 @@ public:
 	
 	//void Update(float _DeltaTime);
 
+	template <class Actor>
+	CActor* CreateActor(const FActorInitializerBase* _Initializer);
+
+	void DeleteActor(const Hash160& _Name);
+	void DeleteActor(const CActor* _Actor);
+
+	void DestroyActors();
 
 	CActorManager();
 	~CActorManager();
@@ -70,3 +79,5 @@ private:
 };
 
 BIFROST_NAMESPACE_END
+
+#include "ActorManager.inl"

@@ -17,6 +17,7 @@ class CPmdMaterialData;
 class CPipelineStateObject;
 
 class CPmdModelComponent;
+class CTransformComponent;
 
 BIFROST_NAMESPACE_END
 
@@ -41,4 +42,5 @@ namespace Test
 	extern BIFROST_NAMESPACE::CPmdMaterialData* m_MaterialData;
 
 	extern BIFROST_NAMESPACE::CPmdModelComponent* m_PmdModelComponent;
+	extern BIFROST_NAMESPACE::CTransformComponent* m_TransformComponent;
 };

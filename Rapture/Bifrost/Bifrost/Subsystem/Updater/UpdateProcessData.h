@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include "UpdateObjectType.h"
 
 EDENS_NAMESPACE_BEGIN
 
@@ -12,14 +13,6 @@ EDENS_NAMESPACE_END
 BIFROST_NAMESPACE_BEGIN
 
 typedef std::function<bool(float)> FUpdateFunction;
-
-enum EObjectType
-{
-	OBJECT_TYPE_ACTOR,
-	OBJECT_TYPE_COMPONENT,
-
-	OBJECT_TYPE_NUM,
-};
 
 struct FUpdateProcessData
 {

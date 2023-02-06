@@ -8,6 +8,7 @@ class CSubsystemDominator;
 class IResourceSubsystem;
 class CUpdateProcessorSubsystem;
 class CRenderingSubsystem;
+class CActorSubsystem;
 
 class CSubsystemServiceLocator
 {
@@ -25,6 +26,9 @@ public:
 
 	static const CRenderingSubsystem* GetRenderingSubsystem();
 	static CRenderingSubsystem* GetRenderingSubsystemEdit();
+
+	static const CActorSubsystem* GetActorSubsystem();
+	static CActorSubsystem* GetActorSubsystemEdit();
 
 private:
 

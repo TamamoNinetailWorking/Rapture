@@ -45,3 +45,13 @@ CRenderingSubsystem* CSubsystemServiceLocator::GetRenderingSubsystemEdit()
 {
 	return s_Dominator->GetRenderingSubsystemEdit();
 }
+
+const CActorSubsystem* CSubsystemServiceLocator::GetActorSubsystem()
+{
+	return s_Dominator->GetActorSubsystem();;
+}
+
+CActorSubsystem* CSubsystemServiceLocator::GetActorSubsystemEdit()
+{
+	return s_Dominator->GetActorSubsystemEdit();
+}

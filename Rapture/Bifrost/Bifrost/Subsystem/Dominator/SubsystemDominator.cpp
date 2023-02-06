@@ -27,3 +27,8 @@ void CSubsystemDominator::SetRenderingSubsystem(CRenderingSubsystem* _RenderingS
 {
 	m_RenderingSubsystem = _RenderingSubsystem;
 }
+
+void CSubsystemDominator::SetActorSubsystem(CActorSubsystem* _ActorSubsystem)
+{
+	m_ActorSubsystem = _ActorSubsystem;
+}

@@ -20,14 +20,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\Actor\Actor.h" />
+    <ClInclude Include="Bifrost\Actor\ActorInitializerBase.h" />
+    <ClInclude Include="Bifrost\Actor\Actor.inl" />
     <ClInclude Include="Bifrost\Actor\ActorManager.h" />
+    <ClInclude Include="Bifrost\Actor\ActorManager.inl" />
     <ClInclude Include="Bifrost\BifrostBase.h" />
     <ClInclude Include="Bifrost\BifrostDefine.h" />
     <ClInclude Include="Bifrost\Component\Component.h" />
     <ClInclude Include="Bifrost\Component\ComponentInitializer.h" />
+    <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponent.h" />
+    <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponentInitializer.h" />
     <ClInclude Include="Bifrost\Component\RenderingComponent.h" />
-    <ClInclude Include="Bifrost\Model\Component\PmdModelComponent.h" />
-    <ClInclude Include="Bifrost\Model\Component\PmdModelComponentInitializer.h" />
+    <ClInclude Include="Bifrost\Component\Transform\TransformComponent.h" />
+    <ClInclude Include="Bifrost\Component\Transform\TransformDefine.h" />
     <ClInclude Include="Bifrost\Model\MeshData\MeshData.h" />
     <ClInclude Include="Bifrost\Model\MeshData\MeshDataInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialData.h" />
@@ -45,6 +50,8 @@
     <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObject.h" />
     <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObjectInitializer.h" />
     <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h" />
+    <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystem.h" />
+    <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystemI.inl" />
     <ClInclude Include="Bifrost\Subsystem\Dominator\SubsystemDominator.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderGroupDefine.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.h" />
@@ -54,7 +61,11 @@
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.h" />
     <ClInclude Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.h" />
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuteGroup.h" />
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.h" />
+    <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessorDefine.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateGroupDefine.h" />
+    <ClInclude Include="Bifrost\Subsystem\Updater\UpdateObjectType.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessData.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessor.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.h" />
@@ -63,8 +74,9 @@
     <ClCompile Include="Bifrost\Actor\Actor.cpp" />
     <ClCompile Include="Bifrost\Actor\ActorManager.cpp" />
     <ClCompile Include="Bifrost\Component\Component.cpp" />
+    <ClCompile Include="Bifrost\Component\Pmd\PmdModelComponent.cpp" />
     <ClCompile Include="Bifrost\Component\RenderingComponent.cpp" />
-    <ClCompile Include="Bifrost\Model\Component\PmdModelComponent.cpp" />
+    <ClCompile Include="Bifrost\Component\Transform\TransformComponent.cpp" />
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialResource.cpp" />
@@ -74,12 +86,14 @@
     <ClCompile Include="Bifrost\Resource\Manager\PipelineStateObjectManager.cpp" />
     <ClCompile Include="Bifrost\Resource\PSO\PipelineStateObject.cpp" />
     <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp" />
+    <ClCompile Include="Bifrost\Subsystem\Actor\ActorSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Dominator\SubsystemDominator.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.cpp" />
     <ClCompile Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.cpp" />
+    <ClCompile Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessor.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.cpp" />
   </ItemGroup>

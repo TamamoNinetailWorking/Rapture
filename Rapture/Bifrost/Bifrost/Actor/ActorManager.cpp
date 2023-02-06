@@ -38,18 +38,37 @@ void CActorManager::Finalize()
     Delete(m_ActorList);
 }
 
-//void CActorManager::Update(float _DeltaTime)
-//{
-//    CHECK(m_ActorList);
-//
-//    for (auto& elem : *m_ActorList)
-//    {
-//        if (elem == nullptr) { continue; }
-//        elem->Update(_DeltaTime);
-//    }
-//
-//    return;
-//}
+void CActorManager::DeleteActor(const Hash160& _Name)
+{
+    for (auto itr = m_ActorList->begin(); itr != m_ActorList->end(); ++itr)
+    {
+        auto elem = *itr;
+        if (!elem) { continue; }
+        if (elem->GetHash() != _Name) { continue; }
+
+        elem->SetPendingKill(true);
+        elem->ReserveKill();
+        //itr = m_ActorList->erase(itr);
+        return;
+    }
+}
+
+void CActorManager::DeleteActor(const CActor* _Actor)
+{
+    DeleteActor(_Actor->GetHash());
+}
+
+void CActorManager::DestroyActors()
+{
+    for (auto itr = m_ActorList->begin(); itr != m_ActorList->end(); ++itr)
+    {
+        auto elem = *itr;
+        if (!elem) { continue; }
+        if (!elem->IsPendingKill()) { continue; }
+
+        itr = m_ActorList->erase(itr);
+    }
+}
 
 void CActorManager::ListFinalize()
 {

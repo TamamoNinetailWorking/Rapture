@@ -33,7 +33,17 @@ bool CUpdateProcessor::Initialize()
 
 void CUpdateProcessor::Finalize()
 {
-	EDENS_NAMESPACE::Delete(m_ProcessList);
+	if (m_ProcessList)
+	{
+		for (auto& elem : *m_ProcessList)
+		{
+			EDENS_NAMESPACE::Delete(elem);
+		}
+
+		m_ProcessList->clear();
+
+		EDENS_NAMESPACE::Delete(m_ProcessList);
+	}
 }
 
 const FUpdateProcessorHandle CUpdateProcessor::SetProcessActor(CActor* _Actor, const FUpdateFunction& _Function)
