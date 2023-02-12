@@ -14,7 +14,7 @@ class CComponent : public EDENS_NAMESPACE::CObject
 {
 public:
 
-	virtual bool Initialize(const FComponentInitializerBase* _Initializer);
+	virtual bool Initialize(const FComponentInitializerBase* _Initializer = nullptr);
 	virtual void Finalize() {};
 
 	virtual void BeginPlay();
@@ -29,7 +29,8 @@ public:
 
 
 	void SetParentActor(CActor* _Parent);
-	const CActor* GetActor() const { return m_Parent; };
+	const CActor* GetParentActor() const { return m_Parent; };
+	CActor* GetParentActorEdit() const { return m_Parent; };
 
 
 	bool IsActive() const;

@@ -20,7 +20,7 @@ class CActor : public EDENS_NAMESPACE::CObject
 {
 public:
 
-	virtual bool Initialize(const FActorInitializerBase* _Initializer);
+	virtual bool Initialize(const FActorInitializerBase* _Initializer = nullptr);
 	virtual void Finalize();
 
 	bool AttachComponent(CComponent* _Component);

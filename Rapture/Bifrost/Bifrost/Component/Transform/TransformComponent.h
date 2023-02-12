@@ -15,7 +15,7 @@ private:
 
 public:
 
-	bool Initialize(const FComponentInitializerBase* _Initializer) override;
+	bool Initialize(const FComponentInitializerBase* _Initializer = nullptr) override;
 	void Finalize() override;
 
 	void BeginPlay() override;

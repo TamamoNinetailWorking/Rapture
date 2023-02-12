@@ -24,6 +24,13 @@
 #include <Bifrost/Actor/Actor.h>
 #include <Bifrost/Component/Transform/TransformComponent.h>
 
+#include <Bifrost/Component/Camera/CameraComponent.h>
+#include <Bifrost/Component/Light/LightComponent.h>
+
+#include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
+#include <Bifrost/Subsystem/Light/LightSubsystem.h>
+#include <Atlantis/SceneView/SceneView.h>
+
 USING_BIFROST;
 EDENS_NAMESPACE_USING;
 
@@ -259,12 +266,36 @@ bool CPmdModelComponent::SetTransform()
 	CHECK_RESULT_FALSE(m_Parent);
 
 	CTransformComponent* trans = m_Parent->SearchComponent<CTransformComponent>();
-	CHECK_RESULT_FALSE(m_Parent);
+	CHECK_RESULT_FALSE(trans);
+
+	const CRenderingSubsystem* rhiSubsystem = CSubsystemServiceLocator::GetRenderingSubsystem();
+	CHECK_RESULT_FALSE(rhiSubsystem);
+	CHECK_RESULT_FALSE(rhiSubsystem->GetSceneView());
+	auto& projection = rhiSubsystem->GetSceneView()->GetProjectionMatrix();
+
+	const CCameraSubsystem* cameraSubsystem = CSubsystemServiceLocator::GetCameraSubsystem();
+	CHECK_RESULT_FALSE(cameraSubsystem);
+
+	const CLightSubsystem* lightSubsystem = CSubsystemServiceLocator::GetLightSubsystem();
+	CHECK_RESULT_FALSE(lightSubsystem);
+
+	const auto* camera = cameraSubsystem->GetMainCameraComponent();
+	CHECK_RESULT_FALSE(camera);
+
+	const auto* light = lightSubsystem->GetMainLightComponent();
+	CHECK_RESULT_FALSE(light);
 
 	auto sceneData = GetMaterialInterface()->GetGeometryBufferEdit();
 	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
 
 	data.World = trans->GetTransformMatrix();
+	data.View = camera->GetViewMatrix();
+	data.ViewProjection = data.View * projection;
+	data.WorldViewProjection = data.World * data.ViewProjection;
+
+	data.EyePosition = camera->GetPosition();
+	data.LightPosition = light->GetPosition();
+	data.LightColor = light->GetColor();
 
 	return true;
 }

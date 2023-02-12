@@ -1,31 +1,60 @@
 #pragma once
 
 #include <list>
+#include "ComponentManagerHandleBase.h"
 
 BIFROST_NAMESPACE_BEGIN
 
-class CComponent;
+//class CComponent;
 
-class CComponentManager
+template <class TComponent>
+class TComponentManager
 {
+private:
+
+	using ComponentList = typename std::list<TComponent*>;
+
 public:
+
+	//template <class TComponent>
+	//struct FComponentManagerHandle
+	//{
+	//private:
+
+	//	friend class TComponentManager<TComponent>;
+
+	//	//using Handle = typename ComponentList::iterator;
+
+	//	typename ComponentList::iterator Handle = {};
+	//	bool IsActive = false;
+	//};
 
 	bool Initialize();
 	void Finalize();
 
-	void Update(float _DeltaTime);
+	typename FComponentManagerHandle<TComponent> RegistComponent(TComponent* _Component);
+	void DeleteComponent(typename FComponentManagerHandle<TComponent>& _Handle);
 
-	CComponentManager();
-	~CComponentManager();
+	const TComponent* SearchComponent(const typename FComponentManagerHandle<TComponent>& _Handle);
+	TComponent* SearchComponentEdit(const typename FComponentManagerHandle<TComponent>& _Handle);
+
+	TComponentManager() {};
+	~TComponentManager() {};
 
 private:
 
-	using ComponentList = std::list<CComponent*>;
+	using TCMHandle = typename FComponentManagerHandle<TComponent>;
+
+private:
 
 	ObjectPtr(ComponentList) m_ComponentList = nullptr;
 
 	void ListFinalize();
 
+	bool IsHandleInvalid(const typename FComponentManagerHandle<TComponent>& _Handle);
+
 };
 
 BIFROST_NAMESPACE_END
+
+#include "ComponentManager.inl"

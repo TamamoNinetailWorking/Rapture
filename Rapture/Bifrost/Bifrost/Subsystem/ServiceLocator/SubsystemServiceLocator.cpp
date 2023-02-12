@@ -55,3 +55,23 @@ CActorSubsystem* CSubsystemServiceLocator::GetActorSubsystemEdit()
 {
 	return s_Dominator->GetActorSubsystemEdit();
 }
+
+const CCameraSubsystem* CSubsystemServiceLocator::GetCameraSubsystem()
+{
+	return s_Dominator->GetCameraSubsystem();
+}
+
+CCameraSubsystem* CSubsystemServiceLocator::GetCameraSubsystemEdit()
+{
+	return s_Dominator->GetCameraSubsystemEdit();;
+}
+
+const CLightSubsystem* CSubsystemServiceLocator::GetLightSubsystem()
+{
+	return s_Dominator->GetLightSubsystem();
+}
+
+CLightSubsystem* CSubsystemServiceLocator::GetLightSubsystemEdit()
+{
+	return s_Dominator->GetLightSubsystemEdit();
+}

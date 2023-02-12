@@ -19,6 +19,9 @@ class CPipelineStateObject;
 class CPmdModelComponent;
 class CTransformComponent;
 
+class CLightActor;
+class CCameraActor;
+
 BIFROST_NAMESPACE_END
 
 namespace Test 
@@ -41,6 +44,9 @@ namespace Test
 	extern BIFROST_NAMESPACE::CMeshData* m_MeshData;
 	extern BIFROST_NAMESPACE::CPmdMaterialData* m_MaterialData;
 
-	extern BIFROST_NAMESPACE::CPmdModelComponent* m_PmdModelComponent;
+	//extern BIFROST_NAMESPACE::CPmdModelComponent* m_PmdModelComponent;
 	extern BIFROST_NAMESPACE::CTransformComponent* m_TransformComponent;
+
+	extern BIFROST_NAMESPACE::CLightActor* m_LightActor;
+	extern BIFROST_NAMESPACE::CCameraActor* m_CameraActor;
 };

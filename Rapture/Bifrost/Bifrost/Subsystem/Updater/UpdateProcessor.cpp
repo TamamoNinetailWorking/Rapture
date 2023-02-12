@@ -118,7 +118,7 @@ bool CUpdateProcessor::UpdateProcess(float _DeltaTime, const FUpdateProcessData*
 			const CActor* actor = PCast<const CActor*>(_Data->ObjectPtr);
 			CHECK_RESULT_FALSE(actor);
 			CHECK_RESULT_FALSE(!actor->IsPendingKill());
-			CHECK_RESULT_FALSE(!actor->CanEverUpdate());
+			CHECK_RESULT_FALSE(actor->CanEverUpdate());
 			CHECK_RESULT_FALSE(actor->IsActive());
 		}
 

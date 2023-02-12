@@ -24,10 +24,21 @@
     <ClInclude Include="Bifrost\Actor\Actor.inl" />
     <ClInclude Include="Bifrost\Actor\ActorManager.h" />
     <ClInclude Include="Bifrost\Actor\ActorManager.inl" />
+    <ClInclude Include="Bifrost\Actor\CameraActor\CameraActor.h" />
+    <ClInclude Include="Bifrost\Actor\LightActor\LightActor.h" />
     <ClInclude Include="Bifrost\BifrostBase.h" />
     <ClInclude Include="Bifrost\BifrostDefine.h" />
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponent.h" />
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponentHandle.h" />
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponentManager.h" />
     <ClInclude Include="Bifrost\Component\Component.h" />
     <ClInclude Include="Bifrost\Component\ComponentInitializer.h" />
+    <ClInclude Include="Bifrost\Component\ComponentManager.h" />
+    <ClInclude Include="Bifrost\Component\ComponentManager.inl" />
+    <ClInclude Include="Bifrost\Component\ComponentManagerHandleBase.h" />
+    <ClInclude Include="Bifrost\Component\Light\LightComponent.h" />
+    <ClInclude Include="Bifrost\Component\Light\LightComponentHandle.h" />
+    <ClInclude Include="Bifrost\Component\Light\LightComponentManager.h" />
     <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponent.h" />
     <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponentInitializer.h" />
     <ClInclude Include="Bifrost\Component\RenderingComponent.h" />
@@ -52,7 +63,9 @@
     <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h" />
     <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Actor\ActorSubsystemI.inl" />
+    <ClInclude Include="Bifrost\Subsystem\Camera\CameraSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Dominator\SubsystemDominator.h" />
+    <ClInclude Include="Bifrost\Subsystem\Light\LightSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderGroupDefine.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueueInitializer.h" />
@@ -73,7 +86,11 @@
   <ItemGroup>
     <ClCompile Include="Bifrost\Actor\Actor.cpp" />
     <ClCompile Include="Bifrost\Actor\ActorManager.cpp" />
+    <ClCompile Include="Bifrost\Actor\CameraActor\CameraActor.cpp" />
+    <ClCompile Include="Bifrost\Actor\LightActor\LightActor.cpp" />
+    <ClCompile Include="Bifrost\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Component.cpp" />
+    <ClCompile Include="Bifrost\Component\Light\LightComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Pmd\PmdModelComponent.cpp" />
     <ClCompile Include="Bifrost\Component\RenderingComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Transform\TransformComponent.cpp" />
@@ -87,7 +104,9 @@
     <ClCompile Include="Bifrost\Resource\PSO\PipelineStateObject.cpp" />
     <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Actor\ActorSubsystem.cpp" />
+    <ClCompile Include="Bifrost\Subsystem\Camera\CameraSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Dominator\SubsystemDominator.cpp" />
+    <ClCompile Include="Bifrost\Subsystem\Light\LightSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingQueue\RenderingQueue.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.cpp" />

@@ -32,3 +32,13 @@ void CSubsystemDominator::SetActorSubsystem(CActorSubsystem* _ActorSubsystem)
 {
 	m_ActorSubsystem = _ActorSubsystem;
 }
+
+void CSubsystemDominator::SetCameraSubsystem(CCameraSubsystem* _CameraSubsystem)
+{
+	m_CameraSubsystem = _CameraSubsystem;
+}
+
+void CSubsystemDominator::SetLightSubsystem(CLightSubsystem* _LightSubsystem)
+{
+	m_LightSubsystem = _LightSubsystem;
+}

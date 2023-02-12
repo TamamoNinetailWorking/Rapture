@@ -5,9 +5,9 @@
 BIFROST_NAMESPACE_BEGIN
 
 template<class Actor>
-inline CActor* CActorSubsystem::CreateActor(const FActorInitializerBase* _Initializer)
+inline Actor* CActorSubsystem::CreateActor(const FActorInitializerBase* _Initializer)
 {
-	return m_ActorManager->CreateActor<Actor>(_Initializer);
+	return PCast<Actor*>(m_ActorManager->CreateActor<Actor>(_Initializer));
 }
 
 

@@ -34,6 +34,8 @@
 
 #include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
 #include <Bifrost/Subsystem/Actor/ActorSubsystem.h>
+#include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
+#include <Bifrost/Subsystem/Light/LightSubsystem.h>
 
 #include <rapture/Environment/ResourceTypeDefine.h>
 
@@ -438,6 +440,24 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_ActorSubsytem->Initialize());
 
 			m_SubsystemDominator->SetActorSubsystem(m_ActorSubsytem);
+		}
+
+		{
+			m_CameraSubsystem = new CCameraSubsystem();
+			CHECK_RESULT_BREAK(m_CameraSubsystem);
+
+			CHECK_RESULT_BREAK(m_CameraSubsystem->Initialize());
+
+			m_SubsystemDominator->SetCameraSubsystem(m_CameraSubsystem);
+		}
+
+		{
+			m_LightSubsystem = new CLightSubsystem();
+			CHECK_RESULT_BREAK(m_LightSubsystem);
+
+			CHECK_RESULT_BREAK(m_LightSubsystem->Initialize());
+
+			m_SubsystemDominator->SetLightSubsystem(m_LightSubsystem);
 		}
 		
 
@@ -2163,7 +2183,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 	}
 
-	//Test::MatrixVectorTestMain();
+	  Test::MatrixVectorTestMain();
 
 	Test::FileLoaderTest(m_MainDevice);
 	Test::GraphicsPipelineTest(m_MainDevice);
@@ -2203,6 +2223,8 @@ void CGameManager::Finalize()
 	//FinalizeObject(m_CommandContext);
 	//FinalizeObject(m_MainDevice);
 
+	FinalizeObject(m_CameraSubsystem);
+	FinalizeObject(m_LightSubsystem);
 	FinalizeObject(m_ActorSubsytem);
 	FinalizeObject(m_UpdaterSubsystem);
 	FinalizeObject(m_RenderingSubsystem);
@@ -2379,19 +2401,19 @@ void CGameManager::GameUpdate()
 	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
 #else
 
-	auto sceneData = Test::m_PmdModelComponent->GetMaterialInterface()->GetGeometryBufferEdit();
-	auto& data = *(PCast<FSceneData*>(sceneData)->pData);
+	//auto sceneData = Test::m_PmdModelComponent->GetMaterialInterface()->GetGeometryBufferEdit();
+	//auto& data = *(PCast<FSceneData*>(sceneData)->pData);
 
 #endif
 
 	//data.World = scale * pose * trans;
 	//data.World = Test::m_TransformComponent->GetTransformMatrix();
-	data.View = ViewMatrix;
-	data.ViewProjection = ViewMatrix * ProjectionMatrix;
-	data.WorldViewProjection = data.World * data.ViewProjection;
-	data.EyePosition = eyePos;
-	data.LightPosition = Vector3(5.f, 20.f, -8.f);
-	data.LightColor = Vector3(1.f, 1.f, 1.f);
+	//data.View = ViewMatrix;
+	//data.ViewProjection = ViewMatrix * ProjectionMatrix;
+	//data.WorldViewProjection = data.World * data.ViewProjection;
+	//data.EyePosition = eyePos;
+	//data.LightPosition = Vector3(5.f, 20.f, -8.f);
+	//data.LightColor = Vector3(1.f, 1.f, 1.f);
 
 #ifdef RENDER_TEST
 	//Test::m_MaterialData->SetGeometryBuffer(SceneData);

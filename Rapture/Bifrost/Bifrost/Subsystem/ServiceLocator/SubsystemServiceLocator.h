@@ -9,6 +9,8 @@ class IResourceSubsystem;
 class CUpdateProcessorSubsystem;
 class CRenderingSubsystem;
 class CActorSubsystem;
+class CCameraSubsystem;
+class CLightSubsystem;
 
 class CSubsystemServiceLocator
 {
@@ -29,6 +31,12 @@ public:
 
 	static const CActorSubsystem* GetActorSubsystem();
 	static CActorSubsystem* GetActorSubsystemEdit();
+
+	static const CCameraSubsystem* GetCameraSubsystem();
+	static CCameraSubsystem* GetCameraSubsystemEdit();
+
+	static const CLightSubsystem* GetLightSubsystem();
+	static CLightSubsystem* GetLightSubsystemEdit();
 
 private:
 

@@ -23,8 +23,6 @@ bool CActorManager::Initialize()
         m_ActorList = new ActorList();
         CHECK_RESULT_BREAK(m_ActorList);
 
-
-
         return true;
     } while (0);
 

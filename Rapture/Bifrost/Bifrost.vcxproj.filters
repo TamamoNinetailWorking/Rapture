@@ -70,6 +70,24 @@
     <Filter Include="Bifrost\Subsystem\Actor">
       <UniqueIdentifier>{5b382294-276f-4bb5-a67e-981c0e450a90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Component\LightComponent">
+      <UniqueIdentifier>{7cab709c-ca5c-4b4a-b50c-58c5d46df989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Actor\CameraActor">
+      <UniqueIdentifier>{e31dc667-5e54-4172-a824-e303487b5484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Component\CameraComponent">
+      <UniqueIdentifier>{ef3b6a42-9d1f-4de9-89cd-cdb1e9fb79d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Camera">
+      <UniqueIdentifier>{bf72e782-461d-431d-b5ed-32c305bfd7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Subsystem\Light">
+      <UniqueIdentifier>{0a515d75-2c1a-42d5-b210-165ea946a5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Actor\LightActor">
+      <UniqueIdentifier>{bf8f7684-0104-4542-960c-44967584e093}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -222,6 +240,45 @@
     <ClInclude Include="Bifrost\Actor\Actor.inl">
       <Filter>Bifrost\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Component\Light\LightComponent.h">
+      <Filter>Bifrost\Component\LightComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\CameraActor\CameraActor.h">
+      <Filter>Bifrost\Actor\CameraActor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponent.h">
+      <Filter>Bifrost\Component\CameraComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Camera\CameraSubsystem.h">
+      <Filter>Bifrost\Subsystem\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\ComponentManager.h">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\ComponentManager.inl">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponentManager.h">
+      <Filter>Bifrost\Component\CameraComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\ComponentManagerHandleBase.h">
+      <Filter>Bifrost\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Camera\CameraComponentHandle.h">
+      <Filter>Bifrost\Component\CameraComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Light\LightComponentManager.h">
+      <Filter>Bifrost\Component\LightComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Light\LightComponentHandle.h">
+      <Filter>Bifrost\Component\LightComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Subsystem\Light\LightSubsystem.h">
+      <Filter>Bifrost\Subsystem\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\LightActor\LightActor.h">
+      <Filter>Bifrost\Actor\LightActor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -298,6 +355,24 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Subsystem\Actor\ActorSubsystem.cpp">
       <Filter>Bifrost\Subsystem\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Actor\CameraActor\CameraActor.cpp">
+      <Filter>Bifrost\Actor\CameraActor</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Camera\CameraComponent.cpp">
+      <Filter>Bifrost\Component\CameraComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Camera\CameraSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Light\LightComponent.cpp">
+      <Filter>Bifrost\Component\LightComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Subsystem\Light\LightSubsystem.cpp">
+      <Filter>Bifrost\Subsystem\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Actor\LightActor\LightActor.cpp">
+      <Filter>Bifrost\Actor\LightActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

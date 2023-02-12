@@ -16,7 +16,7 @@ public:
 	void Finalize();
 
 	template <class Actor>
-	CActor* CreateActor(const FActorInitializerBase* _Initializer);
+	Actor* CreateActor(const FActorInitializerBase* _Initializer = nullptr);
 
 	void DeleteActor(const Hash160& _Name);
 	void DeleteActor(const CActor* _Actor);
