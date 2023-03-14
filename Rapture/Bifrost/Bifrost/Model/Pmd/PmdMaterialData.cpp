@@ -35,7 +35,7 @@ EDENS_NAMESPACE_USING;
 
 using String = std::string;
 
-
+#define DESC_COMBINE
 
 struct FMaterialData
 {
@@ -247,7 +247,11 @@ bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHea
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.NodeMask = 0;
+#ifndef DESC_COMBINE
 	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5);//(1 + 4) * MaterialNum = VertexShaderの定数バッファとPixelShaderの定数バッファとテクスチャの枚数
+#else
+	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5) + 1;
+#endif
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
 	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
@@ -297,7 +301,12 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	
 	// 頂点シェーダーで使用するバッファ
 	{
+
+#ifndef DESC_COMBINE
 		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _BufHeap->GetCPUDescriptorHandleForHeapStart();
+#else
+		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _MatHeap->GetCPUDescriptorHandleForHeapStart();
+#endif
 
 		D3D12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(AlignBufferSize(sizeof(FSceneData::MainData)));
@@ -336,6 +345,12 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	}
 
 	D3D12_CPU_DESCRIPTOR_HANDLE descHandle = _MatHeap->GetCPUDescriptorHandleForHeapStart();
+
+#ifdef DESC_COMBINE
+	descHandle.ptr += handleIncrement;
+#endif
+
+#undef DESC_COMBINE
 
 	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
 	CHECK_RESULT_FALSE(manager);
