@@ -35,7 +35,6 @@ EDENS_NAMESPACE_USING;
 
 using String = std::string;
 
-#define DESC_COMBINE
 
 struct FMaterialData
 {
@@ -47,7 +46,7 @@ class CPmdMaterialData::Impl
 {
 public:
 
-	bool CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
+	bool CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
 
 	bool CreatePipelineStateObject(const FPmdMaterialInitializer* _Initializer);
 
@@ -59,8 +58,8 @@ private:
 
 	bool CreateMaterials(const FPmdMaterialInitializer* _Initializer);
 
-	bool CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, const FPmdMaterialInitializer* _Initializer);
-	bool CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
+	bool CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap,const FPmdMaterialInitializer* _Initializer);
+	bool CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer);
 
 	void ReleaseMaterialResource();
 
@@ -100,7 +99,7 @@ bool CPmdMaterialData::Initialize(const ATLANTIS_NAMESPACE::FMaterialInterfaceIn
 		CHECK_RESULT_BREAK(_Initializer);
 
 		uint32 stride = 0;
-		CHECK_RESULT_BREAK(m_Impl->CreateMaterials(m_MaterialDescriptorHeap,m_BufferDescriptorHeap, stride,initializer));
+		CHECK_RESULT_BREAK(m_Impl->CreateMaterials(m_MaterialDescriptorHeap,stride,initializer));
 		SetHeapStride(stride);
 
 		CHECK_RESULT_BREAK(m_Impl->CreatePipelineStateObject(initializer));
@@ -153,7 +152,7 @@ ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase* CPmdMaterialData::GetGeometryBu
 	return m_Impl->m_SceneData;
 }
 
-bool CPmdMaterialData::Impl::CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride,const FPmdMaterialInitializer* _Initializer)
+bool CPmdMaterialData::Impl::CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, uint32& _Stride,const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 
@@ -161,9 +160,9 @@ bool CPmdMaterialData::Impl::CreateMaterials(ID3D12DescriptorHeap*& _MatHeap, ID
 
 	CHECK_RESULT_FALSE(CreateMaterials(_Initializer));
 
-	CHECK_RESULT_FALSE(CreateDescriptorHeap(_MatHeap,_BufHeap, _Initializer));
+	CHECK_RESULT_FALSE(CreateDescriptorHeap(_MatHeap, _Initializer));
 
-	CHECK_RESULT_FALSE(CreateShaderResourceView(_MatHeap,_BufHeap,_Stride,_Initializer));
+	CHECK_RESULT_FALSE(CreateShaderResourceView(_MatHeap,_Stride,_Initializer));
 
 	return true;
 }
@@ -237,7 +236,7 @@ bool CPmdMaterialData::Impl::CreateMaterials(const FPmdMaterialInitializer* _Ini
 	return true;
 }
 
-bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, const FPmdMaterialInitializer* _Initializer)
+bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHeap, const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	CHECK_RESULT_FALSE(_Initializer->Device);
@@ -247,11 +246,7 @@ bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHea
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.NodeMask = 0;
-#ifndef DESC_COMBINE
-	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5);//(1 + 4) * MaterialNum = VertexShaderの定数バッファとPixelShaderの定数バッファとテクスチャの枚数
-#else
-	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5) + 1;
-#endif
+	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5) + 1;//(1 + 4) * MaterialNum = VertexShaderの定数バッファとPixelShaderの定数バッファとテクスチャの枚数 + 頂点シェーダー用コンスタントバッファ
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
 	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
@@ -259,24 +254,10 @@ bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHea
 		IID_PPV_ARGS(&_MatHeap)
 	));
 
-	//
-	//------
-	//マテリアルのヒープを描画に使用した際にエラーが出ているので見る。
-	//------
-	//
-
-	// コンスタントバッファのヒープ
-	desc.NumDescriptors = 1;
-
-	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
-		&desc,
-		IID_PPV_ARGS(&_BufHeap)
-	));
-
 	return true;
 }
 
-bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, ID3D12DescriptorHeap*& _BufHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer)
+bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _MatHeap, uint32& _Stride, const FPmdMaterialInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	
@@ -301,12 +282,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	
 	// 頂点シェーダーで使用するバッファ
 	{
-
-#ifndef DESC_COMBINE
-		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _BufHeap->GetCPUDescriptorHandleForHeapStart();
-#else
 		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _MatHeap->GetCPUDescriptorHandleForHeapStart();
-#endif
 
 		D3D12_HEAP_PROPERTIES prop = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(AlignBufferSize(sizeof(FSceneData::MainData)));
@@ -346,11 +322,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 
 	D3D12_CPU_DESCRIPTOR_HANDLE descHandle = _MatHeap->GetCPUDescriptorHandleForHeapStart();
 
-#ifdef DESC_COMBINE
 	descHandle.ptr += handleIncrement;
-#endif
-
-#undef DESC_COMBINE
 
 	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
 	CHECK_RESULT_FALSE(manager);

@@ -238,7 +238,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;DirectXTex.lib</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;d3dcompiler.lib;dxgi.lib;d3d12.lib;DirectXTex.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -263,7 +263,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Eden.lib;d3d12.lib;dxgi.lib;d3dcompiler.lib;DirectXTex.lib</AdditionalDependencies>
+      <AdditionalDependencies>Eden.lib;d3dcompiler.lib;dxgi.lib;d3d12.lib;DirectXTex.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

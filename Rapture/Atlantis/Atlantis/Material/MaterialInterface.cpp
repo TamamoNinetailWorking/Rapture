@@ -35,16 +35,6 @@ ID3D12DescriptorHeap* const* ATLANTIS_NAMESPACE::IMaterialInterface::GetDescript
 	return &m_MaterialDescriptorHeap;
 }
 
-ID3D12DescriptorHeap* ATLANTIS_NAMESPACE::IMaterialInterface::GetBufferDescriptorHeap() const
-{
-	return m_BufferDescriptorHeap;
-}
-
-ID3D12DescriptorHeap* const* ATLANTIS_NAMESPACE::IMaterialInterface::GetBufferDescriptorHeapPtr() const
-{
-	return &m_BufferDescriptorHeap;
-}
-
 uint32 ATLANTIS_NAMESPACE::IMaterialInterface::GetHeapStride() const
 {
 	return m_HeapStride;

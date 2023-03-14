@@ -170,42 +170,19 @@ void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
 		Context->SetPipelineState(material->GetGraphicsPipeline());
 		Context->SetRootSignature(material->GetRootSignature());
 
-#define DESC_COMBINE
-#ifdef DESC_COMBINE
 
 		auto descHeap = material->GetDescriptorHeap();
 
-#endif
-
-		// ConstantBuffer
-#ifdef DESC_COMBINE
 		auto bufDescHeap = descHeap;
-#else
-		auto bufDescHeap = material->GetBufferDescriptorHeap();
-#endif
 		auto bufHeapHandle = bufDescHeap->GetGPUDescriptorHandleForHeapStart();
 		CmdList->SetDescriptorHeaps(1, &bufDescHeap);
 		CmdList->SetGraphicsRootDescriptorTable(0, bufHeapHandle);
-
-
-		//CmdList->SetGraphicsRootDescriptorTable(0, matHeapHandle);
-		//matHeapHandle.ptr += m_Processor->GetDevice()->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		
 		auto heapStride = material->GetHeapStride();
 		
 		// MaterialBuffer
-
-#ifndef DESC_COMBINE
-		auto matDescHeap = material->GetDescriptorHeap();
-		CmdList->SetDescriptorHeaps(1, &matDescHeap);
-		auto matHeapHandle = matDescHeap->GetGPUDescriptorHandleForHeapStart();
-#else
 		auto matHeapHandle = bufHeapHandle;
 		matHeapHandle.ptr += m_Processor->GetDevice()->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-#endif
-
-
-
 
 		uint32 indexOffset = 0;
 		for (uint32 count = 0; count < material->GetMaterialNum(); ++count)
