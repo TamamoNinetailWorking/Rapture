@@ -59,21 +59,69 @@ void CPmdSkeleton::Finalize()
 	EDENS_NAMESPACE::Delete(m_Matrices);
 }
 
+const CPmdSkeleton::FBoneMatrices* CPmdSkeleton::GetBoneMatrices() const
+{
+	return m_Matrices;
+}
+
+uint32 CPmdSkeleton::GetBoneMatricesNum() const
+{
+	if (m_Matrices == nullptr) { return 0; }
+	return SCast<uint32>(m_Matrices->size());
+}
+
+uint32 CPmdSkeleton::GetBoneMatricesSize() const
+{
+	return GetBoneMatricesNum() * sizeof(ATLANTIS_NAMESPACE::Glue::FMatrix);
+}
+
 bool CPmdSkeleton::CreateBoneNodeTable(const FPmdSkeletonInitializer* _Initializer)
 {
 	CHECK_RESULT_FALSE(_Initializer);
 
 	uint32 boneNum = _Initializer->BoneNum;
 
+	const FPmdBoneData* bones = _Initializer->Bones;
+
 	m_Matrices->resize(boneNum);
 
 	for (uint32 index = 0; index < boneNum; ++index)
 	{
-		const auto& boneInfo = _Initializer->Bones[index];
+		const FPmdBoneData& boneInfo = bones[index];
 
 		// ボーンノードのテーブルを作る
+		// >> 一度テーブルを作らないと親子関係も構築できない
 
+		Hash160 name = CHash160(boneInfo.BoneName);
+
+		(*m_Table)[name] = new FPmdBoneNode();
+		(*m_Table)[name]->BoneIndex = index;
+		(*m_Table)[name]->StartPos = boneInfo.BasePos;
 	}
 
-	return false;
+	for (uint32 index = 0; index < boneNum; ++index)
+	{
+		const FPmdBoneData& boneInfo = bones[index];
+		
+		if (boneInfo.ParentNo >= boneNum)
+		{
+			continue;
+		}
+
+		const FPmdBoneData& parentData = bones[boneInfo.ParentNo];
+
+		Hash160 parentName = CHash160(parentData.BoneName);
+
+		(*m_Table)[parentName]->children.emplace_back((*m_Table)[parentName]);
+	}
+
+	std::fill(
+		m_Matrices->begin(),
+		m_Matrices->end(),
+		XMMatrixIdentity()
+	);
+
+	PRINT("PmdSkeleton ready.\n");
+
+	return true;
 }

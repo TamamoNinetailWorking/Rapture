@@ -8,12 +8,12 @@ BIFROST_NAMESPACE_BEGIN
 
 struct FPmdBoneNode
 {
+	using FBoneNodeList = std::vector<FPmdBoneNode*>;
+
+
 	uint32 BoneIndex = 0;
 	ATLANTIS_NAMESPACE::Glue::Vector3 StartPos = {};
 	ATLANTIS_NAMESPACE::Glue::Vector3 EndPos = {};
-
-	using FBoneNodeList = std::vector<FPmdBoneNode*>;
-
 	FBoneNodeList children = {};
 };
 

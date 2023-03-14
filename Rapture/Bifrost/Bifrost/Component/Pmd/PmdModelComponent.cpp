@@ -124,18 +124,6 @@ bool CPmdModelComponent::ReadyPmdData(const FPmdModelComponentInitializer* _Init
 		existMesh = true;
 	}
 
-	//bool existMaterial = false;
-	//if (SearchMaterial(_Initializer))
-	//{
-	//	existMaterial = true;
-	//}
-
-	//if (existMesh && existMaterial)
-	//{
-	//	return true;
-	//}
-
-
 	CHECK_RESULT_FALSE(FileLoad(_Initializer));
 
 	if (!existMesh)
@@ -145,10 +133,7 @@ bool CPmdModelComponent::ReadyPmdData(const FPmdModelComponentInitializer* _Init
 
 	CHECK_RESULT_FALSE(CreateMaterial(_Initializer));
 
-	//if (!existMaterial)
-	//{
-	//	CHECK_RESULT_FALSE(CreateMaterial(_Initializer));
-	//}
+	CHECK_RESULT_FALSE(CreateSkeleton(_Initializer));
 
 	CloseFile();
 
@@ -319,6 +304,11 @@ bool CPmdModelComponent::SetTransform()
 	data.EyePosition = camera->GetPosition();
 	data.LightPosition = light->GetPosition();
 	data.LightColor = light->GetColor();
+
+	CHECK_RESULT_FALSE(m_Skeleton);
+	auto startBone = m_Skeleton->GetBoneMatrices()->data();
+	auto boneMatSize = m_Skeleton->GetBoneMatricesSize();
+	memcpy_s(data.BoneMatrices, BoneMatricesSize, startBone, boneMatSize);
 
 	return true;
 }

@@ -144,7 +144,7 @@ bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 		CHECK_RESULT_BREAK(m_Impl->DeserializeVertices());
 		CHECK_RESULT_BREAK(m_Impl->DeserializerIndicies());
 		CHECK_RESULT_BREAK(m_Impl->DeserializerMaterials());
-		//CHECK_RESULT_BREAK(m_Impl->DeserializeBones());
+		CHECK_RESULT_BREAK(m_Impl->DeserializeBones());
 
 		m_Impl->m_Serializer->Finalize();
 		return true;

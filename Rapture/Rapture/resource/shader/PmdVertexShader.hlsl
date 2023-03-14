@@ -13,6 +13,7 @@ struct VSInput
 
 cbuffer ConstantBuffer0 : register(b0)
 {
+	// SceneData
 	matrix WMatrix;
 	matrix ViewMatrix;
 	matrix VPMatrix;
@@ -23,12 +24,20 @@ cbuffer ConstantBuffer0 : register(b0)
 	float padding2;
 	float3 LightColor;
 	float padding3;
+
+	// BoneMatrix
+	matrix Bones[256];
 };
 
 VSOutput main( VSInput _Input)
 {
 	VSOutput outPut;
-	outPut.svpos = mul(WVPMatrix,float4(_Input.Position, 1.0f));
+
+	float4 position = float4(_Input.Position, 1.0f);
+	matrix boneMat = Bones[_Input.BoneNo[0]];
+	position = mul(boneMat, position);
+
+	outPut.svpos = mul(WVPMatrix,position);
 	outPut.pos = _Input.Position;
 	//outPut.normal = _Input.Normal;
 	outPut.normal = mul(WMatrix, float4(_Input.Normal, 0.0f)).xyz;
@@ -39,7 +48,12 @@ VSOutput main( VSInput _Input)
 	//outPut.eyeRay = normalize(EyePos);
 	outPut.lightRay = normalize(outPut.pos - LightPos);
 	//outPut.lightRay = normalize(LightPos);
+	
 	outPut.lightColor = LightColor;
+
+	// BoneNo[0]が取れているか確認 >> 白飛びすることなく色が乗算されていそうなので、大丈夫だろう
+	//float l2 = _Input.BoneNo[0] / 256;
+	//outPut.lightColor = float3(l2, l2, l2);
 
 	return outPut;
 }

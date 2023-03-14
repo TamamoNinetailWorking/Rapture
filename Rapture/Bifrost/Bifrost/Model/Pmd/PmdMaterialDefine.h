@@ -8,6 +8,9 @@
 
 BIFROST_NAMESPACE_BEGIN
 
+constexpr uint32 BoneMatricesNum = 256;
+constexpr uint32 BoneMatricesSize = BoneMatricesNum * sizeof(ATLANTIS_NAMESPACE::Glue::FMatrix);
+
 // コンスタントバッファ
 struct FSceneData : public ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase
 {
@@ -27,6 +30,9 @@ struct FSceneData : public ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase
 		float padding2 = 0.f;
 		Vec3 LightColor = {};
 		float padding3 = 0.f;
+
+		Matrix BoneMatrices[BoneMatricesNum] = {};
+		//Matrix* BoneMatrices = nullptr;
 	};
 
 	// Mapのリソースの引数が&&（ダブルポインタ）
