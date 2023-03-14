@@ -5,6 +5,8 @@
 
 BIFROST_NAMESPACE_BEGIN
 
+#define M_HANDLE typename FComponentManagerHandle<TComponent>
+
 template <class TComponent>
 bool TComponentManager<TComponent>::Initialize()
 {
@@ -28,7 +30,7 @@ void TComponentManager<TComponent>::Finalize()
 }
 
 template<class TComponent>
-inline typename FComponentManagerHandle<TComponent> 
+inline M_HANDLE
 TComponentManager<TComponent>::RegistComponent
 (
     TComponent* _Component
@@ -48,7 +50,7 @@ TComponentManager<TComponent>::RegistComponent
 }
 
 template<class TComponent>
-inline void TComponentManager<TComponent>::DeleteComponent(typename FComponentManagerHandle<TComponent>& _Handle)
+inline void TComponentManager<TComponent>::DeleteComponent(M_HANDLE& _Handle)
 {
     if (IsHandleInvalid(_Handle)) { return; }
     m_ComponentList->erase(_Handle.Handle);
@@ -56,7 +58,7 @@ inline void TComponentManager<TComponent>::DeleteComponent(typename FComponentMa
 }
 
 template<class TComponent>
-inline const TComponent* TComponentManager<TComponent>::SearchComponent(const typename FComponentManagerHandle<TComponent>& _Handle)
+inline const TComponent* TComponentManager<TComponent>::SearchComponent(const M_HANDLE& _Handle)
 {
     if (IsHandleInvalid(_Handle)) { return nullptr; }
     const TComponent* comp = *(_Handle.Handle);
@@ -64,7 +66,7 @@ inline const TComponent* TComponentManager<TComponent>::SearchComponent(const ty
 }
 
 template<class TComponent>
-inline TComponent* TComponentManager<TComponent>::SearchComponentEdit(const typename FComponentManagerHandle<TComponent>& _Handle)
+inline TComponent* TComponentManager<TComponent>::SearchComponentEdit(const M_HANDLE& _Handle)
 {
     if (IsHandleInvalid(_Handle)) { return nullptr; }
     TComponent* comp = *(_Handle.Handle);
@@ -89,11 +91,13 @@ template<class TComponent>
 inline bool 
 TComponentManager<TComponent>::IsHandleInvalid
 (
-    const typename FComponentManagerHandle<TComponent>& _Handle
+    const M_HANDLE& _Handle
 )
 {
     if (_Handle.IsActive == false) { return true; }
     return _Handle.Handle == m_ComponentList->end();
 }
+
+#undef M_HANDLE
 
 BIFROST_NAMESPACE_END

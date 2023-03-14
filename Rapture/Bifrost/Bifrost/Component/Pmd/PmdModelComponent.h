@@ -17,6 +17,8 @@ struct FPmdModelComponentInitializer;
 
 struct FSceneData;
 
+class CPmdSkeleton;
+
 class CPmdModelComponent : public CRenderingComponent
 {
 public:
@@ -40,11 +42,13 @@ private:
 
 	ObjectPtr(EDENS_NAMESPACE::CFileLoader) m_FileLoader = nullptr;
 	ObjectPtr(CPmdParser) m_PmdParser = nullptr;
+	ObjectPtr(CPmdSkeleton) m_Skeleton = nullptr;
 
 private:
 
 	void FinalizeMesh();
 	void FinalizeMaterial();
+	void FinalizeSkeleton();
 
 	bool ReadyPmdData(const FPmdModelComponentInitializer* _Initializer);
 
@@ -53,6 +57,7 @@ private:
 	bool CreateMeshData(const FPmdModelComponentInitializer* _Initializer);
 	//bool SearchMaterial(const FPmdModelComponentInitializer* _Initializer);
 	bool CreateMaterial(const FPmdModelComponentInitializer* _Initializer);
+	bool CreateSkeleton(const FPmdModelComponentInitializer* _Initializer);
 	void CloseFile();
 
 private:

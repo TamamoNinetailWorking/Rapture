@@ -9,6 +9,7 @@ BIFROST_NAMESPACE_BEGIN
 
 static const uint8 BoneNoLength = 2;
 static const uint8 TexFilePathLength = 20;
+constexpr uint8 BoneNameLength = 20;
 
 struct FPmdVertex
 {
@@ -33,6 +34,20 @@ struct FPmdMaterialData
 	// padding 16bit
 	uint32 IndiciesNum = 0;
 	char TexFilePath[TexFilePathLength] = {};
+};
+
+struct FPmdBoneData
+{
+public:
+	char BoneName[BoneNameLength] = {};
+	uint16 ParentNo = 0;
+	uint16 NextNo = 0;
+	uint8 Type = 0;
+private:
+	uint8 padding1 = 0;
+public:
+	uint16 IKBoneNo = 0;
+	ATLANTIS_GLUE::Vector3 BasePos = {};
 };
 
 #undef ATLANTIS_GLUE

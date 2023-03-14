@@ -18,6 +18,8 @@
 #include <Bifrost/Model/Pmd/PmdMaterialDataInitializer.h>
 #include <Bifrost/Resource/PSO/PipelineStateObjectInitializer.h>
 #include <Bifrost/Model/Pmd/PmdMaterialData.h>
+#include <Bifrost/Model/Pmd/PmdSkeleton.h>
+#include <Bifrost/Model/Pmd/PmdSkeletonInitializer.h>
 
 #include <Bifrost/Model/Pmd/PmdMaterialDefine.h>
 
@@ -65,6 +67,7 @@ bool CPmdModelComponent::Initialize(const FComponentInitializerBase* _Initialize
 
 void CPmdModelComponent::Finalize()
 {
+	FinalizeSkeleton();
 	FinalizeMaterial();
 	FinalizeMesh();
 	Super::Finalize();
@@ -88,6 +91,11 @@ bool CPmdModelComponent::Update(float _DeltaTime)
 	result &= SetTransform();
 
 	return result;
+}
+
+void CPmdModelComponent::FinalizeSkeleton()
+{
+	FinalizeObject(m_Skeleton);
 }
 
 void CPmdModelComponent::FinalizeMesh()
@@ -244,6 +252,21 @@ bool CPmdModelComponent::CreateMaterial(const FPmdModelComponentInitializer* _In
 	initializer.PsoInit = &psoInit;
 
 	return m_MaterialInterface->Initialize(&initializer);
+}
+
+bool CPmdModelComponent::CreateSkeleton(const FPmdModelComponentInitializer* _Initializer)
+{
+	CHECK_RESULT_FALSE(_Initializer);
+	CHECK_RESULT_FALSE(m_PmdParser);
+
+	m_Skeleton = new CPmdSkeleton();
+	CHECK_RESULT_FALSE(m_Skeleton);
+
+	FPmdSkeletonInitializer initializer = {};
+	initializer.Bones = m_PmdParser->GetBones();
+	initializer.BoneNum = m_PmdParser->GetBoneNum();
+
+	return m_Skeleton->Initialize(&initializer);
 }
 
 void CPmdModelComponent::CloseFile()

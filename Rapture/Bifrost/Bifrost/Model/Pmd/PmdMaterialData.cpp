@@ -255,6 +255,12 @@ bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHea
 		IID_PPV_ARGS(&_MatHeap)
 	));
 
+	//
+	//------
+	//マテリアルのヒープを描画に使用した際にエラーが出ているので見る。
+	//------
+	//
+
 	// コンスタントバッファのヒープ
 	desc.NumDescriptors = 1;
 

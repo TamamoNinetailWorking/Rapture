@@ -7,6 +7,8 @@ BIFROST_NAMESPACE_BEGIN
 
 //class CComponent;
 
+#define M_HANDLE typename FComponentManagerHandle<TComponent>
+
 template <class TComponent>
 class TComponentManager
 {
@@ -32,18 +34,18 @@ public:
 	bool Initialize();
 	void Finalize();
 
-	typename FComponentManagerHandle<TComponent> RegistComponent(TComponent* _Component);
-	void DeleteComponent(typename FComponentManagerHandle<TComponent>& _Handle);
+	M_HANDLE RegistComponent(TComponent* _Component);
+	void DeleteComponent(M_HANDLE& _Handle);
 
-	const TComponent* SearchComponent(const typename FComponentManagerHandle<TComponent>& _Handle);
-	TComponent* SearchComponentEdit(const typename FComponentManagerHandle<TComponent>& _Handle);
+	const TComponent* SearchComponent(const M_HANDLE& _Handle);
+	TComponent* SearchComponentEdit(const M_HANDLE& _Handle);
 
 	TComponentManager() {};
 	~TComponentManager() {};
 
 private:
 
-	using TCMHandle = typename FComponentManagerHandle<TComponent>;
+	using TCMHandle = M_HANDLE;
 
 private:
 
@@ -51,9 +53,11 @@ private:
 
 	void ListFinalize();
 
-	bool IsHandleInvalid(const typename FComponentManagerHandle<TComponent>& _Handle);
+	bool IsHandleInvalid(const M_HANDLE& _Handle);
 
 };
+
+#undef M_HANDLE
 
 BIFROST_NAMESPACE_END
 

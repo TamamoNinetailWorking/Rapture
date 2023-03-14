@@ -53,6 +53,9 @@
     <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialResourceInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdParser.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdPreDefine.h" />
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeleton.h" />
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonInitializer.h" />
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonDefine.h" />
     <ClInclude Include="Bifrost\Resource\DefaultResourceDefine.h" />
     <ClInclude Include="Bifrost\Resource\Manager\MaterialManager.h" />
     <ClInclude Include="Bifrost\Resource\Manager\MeshDataManager.h" />
@@ -98,6 +101,7 @@
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialResource.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdParser.cpp" />
+    <ClCompile Include="Bifrost\Model\Pmd\PmdSkeleton.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\MaterialManager.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\MeshDataManager.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\PipelineStateObjectManager.cpp" />

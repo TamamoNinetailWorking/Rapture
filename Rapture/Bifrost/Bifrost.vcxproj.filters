@@ -279,6 +279,15 @@
     <ClInclude Include="Bifrost\Actor\LightActor\LightActor.h">
       <Filter>Bifrost\Actor\LightActor</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeleton.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonInitializer.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonDefine.h">
+      <Filter>Bifrost\Model\Pmd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -373,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Actor\LightActor\LightActor.cpp">
       <Filter>Bifrost\Actor\LightActor</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Pmd\PmdSkeleton.cpp">
+      <Filter>Bifrost\Model\Pmd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,10 @@
 
 #include <vector>
 
+#include <eden/include/utility/ender_utility.h>
+
+#include <Atlantis/DirectX12/DirectXPaste.h>
+
 #include <eden/include/gadget/serializer/serializer.h>
 
 #include <Atlantis/Utility/PrintUtility/PrintUtility.h>
@@ -18,6 +22,7 @@ class CPmdParser::Impl
 public:
 	struct FDeserializeMaterialData
 	{
+	public:
 		struct First
 		{
 			ATLANTIS_NAMESPACE::Glue::Vector3 Diffuse = {};
@@ -37,8 +42,9 @@ public:
 
 		uint8 ToonIndex = {};
 		uint8 EdgeFlag = {};
+	private:
 		uint16 padding = {};
-
+	public:
 		Second second = {};
 	};
 
@@ -48,14 +54,49 @@ public:
 		FDeserializeMaterialData desData;
 	};
 
+	struct FDeserializeBoneData
+	{
+	public:
+		struct First
+		{
+			char BoneName[BoneNameLength] = {};
+			uint16 ParentNo = 0;
+			uint16 NextNo = 0;
+
+		};
+
+		struct Second
+		{
+			ATLANTIS_NAMESPACE::Glue::Vector3 BasePos = {};
+		};
+
+		First first = {};
+		uint8 Type = 0;
+
+	private:
+		uint8 padding1 = 0;
+
+	public:
+		uint16 IKBoneNo = 0;
+		Second second = {};
+	};
+
+	union FPmdBoneUnion
+	{
+		FPmdBoneData Data = {};
+		FDeserializeBoneData desData;
+	};
+
 	typedef std::vector<FPmdVertex> FPmdVertices;
 	typedef std::vector<uint16> FPmdIndicies;
 	typedef std::vector<FPmdMaterialUnion> FPmdMaterials;
+	typedef std::vector<FPmdBoneUnion> FPmdBones;
 
 	bool DeserializeHeader();
 	bool DeserializeVertices();
 	bool DeserializerIndicies();
 	bool DeserializerMaterials();
+	bool DeserializeBones();
 
 private:
 
@@ -66,6 +107,7 @@ private:
 	ObjectPtr(FPmdVertices) m_Vertices = nullptr;
 	ObjectPtr(FPmdIndicies) m_Indices = nullptr;
 	ObjectPtr(FPmdMaterials) m_Materials = nullptr;
+	ObjectPtr(FPmdBones) m_Bones = nullptr;
 
 };
 
@@ -102,6 +144,7 @@ bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 		CHECK_RESULT_BREAK(m_Impl->DeserializeVertices());
 		CHECK_RESULT_BREAK(m_Impl->DeserializerIndicies());
 		CHECK_RESULT_BREAK(m_Impl->DeserializerMaterials());
+		//CHECK_RESULT_BREAK(m_Impl->DeserializeBones());
 
 		m_Impl->m_Serializer->Finalize();
 		return true;
@@ -117,6 +160,9 @@ bool CPmdParser::ParseData(const uint8* _Data, uint32 _Size)
 
 void CPmdParser::Reset()
 {
+	EDENS_NAMESPACE::Delete(m_Impl->m_Bones);
+	EDENS_NAMESPACE::Delete(m_Impl->m_Materials);
+
 	if (m_Impl->m_Indices != nullptr)
 	{
 		delete m_Impl->m_Indices;
@@ -170,6 +216,16 @@ const FPmdMaterialData* CPmdParser::GetMaterials() const
 uint32 CPmdParser::GetMaterialNum() const
 {
 	return SCast<uint32>(m_Impl->m_Materials->size());
+}
+
+const FPmdBoneData* CPmdParser::GetBones() const
+{
+	return RCast<FPmdBoneData*>(m_Impl->m_Bones->data());
+}
+
+uint32 CPmdParser::GetBoneNum() const
+{
+	return SCast<uint32>(m_Impl->m_Bones->size());
 }
 
 bool CPmdParser::Impl::DeserializeHeader()
@@ -330,6 +386,41 @@ bool CPmdParser::Impl::DeserializerMaterials()
 		CHECK_RESULT_FALSE(result);
 	}
 
+
+	return true;
+}
+
+bool CPmdParser::Impl::DeserializeBones()
+{
+	CHECK_RESULT_FALSE(m_Serializer);
+
+	m_Bones = new FPmdBones();
+	CHECK_RESULT_FALSE(m_Bones);
+
+	bool result = false;
+
+
+	// ボーン数を取得
+	uint16 boneNum = 0;
+	result = m_Serializer->ReadDataBlob(&boneNum, sizeof(boneNum));
+	CHECK_RESULT_FALSE(result);
+
+	m_Bones->resize(boneNum);
+
+	for (auto& elem : *m_Bones)
+	{
+		result = m_Serializer->ReadDataBlob(&elem.desData.first, sizeof(FDeserializeBoneData::First));
+		CHECK_RESULT_FALSE(result);
+
+		result = m_Serializer->ReadDataIncRef(&elem.desData.Type);
+		CHECK_RESULT_FALSE(result);
+
+		result = m_Serializer->ReadDataBlob(&elem.desData.IKBoneNo, sizeof(uint16));
+		CHECK_RESULT_FALSE(result);
+
+		result = m_Serializer->ReadDataBlob(&elem.desData.second, sizeof(FDeserializeBoneData::Second));
+		CHECK_RESULT_FALSE(result);
+	}
 
 	return true;
 }
