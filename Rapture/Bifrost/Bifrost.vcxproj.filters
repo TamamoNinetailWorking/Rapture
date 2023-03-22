@@ -88,6 +88,9 @@
     <Filter Include="Bifrost\Actor\LightActor">
       <UniqueIdentifier>{bf8f7684-0104-4542-960c-44967584e093}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Model\Vmd">
+      <UniqueIdentifier>{5d62df32-ba35-4ac5-8983-bf066a4b275a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -288,6 +291,12 @@
     <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonDefine.h">
       <Filter>Bifrost\Model\Pmd</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Model\Vmd\VmdParser.h">
+      <Filter>Bifrost\Model\Vmd</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Vmd\VmdDefine.h">
+      <Filter>Bifrost\Model\Vmd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -385,6 +394,9 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Model\Pmd\PmdSkeleton.cpp">
       <Filter>Bifrost\Model\Pmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Model\Vmd\VmdParser.cpp">
+      <Filter>Bifrost\Model\Vmd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

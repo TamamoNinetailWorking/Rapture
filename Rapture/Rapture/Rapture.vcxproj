@@ -172,6 +172,7 @@
     <ClCompile Include="rapture\Test\MatrixVectorTest.cpp" />
     <ClCompile Include="rapture\Test\RenderSubsystemTest.cpp" />
     <ClCompile Include="rapture\Test\SHA1Test.cpp" />
+    <ClCompile Include="rapture\Test\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h" />

@@ -11,6 +11,8 @@ struct FPmdSkeletonInitializer;
 
 struct FPmdBoneNode;
 
+class CVmdParser;
+
 class CPmdSkeleton
 {
 private:
@@ -34,6 +36,13 @@ private:
 
 	ObjectPtr(FBoneMatrices) m_Matrices = nullptr;
 	ObjectPtr(FBoneNodeTable) m_Table = nullptr;
+
+#define VMD_SKELETON_TEST
+#ifdef VMD_SKELETON_TEST
+
+	ObjectPtr(CVmdParser) m_VmdParser = nullptr;
+
+#endif
 
 private:
 

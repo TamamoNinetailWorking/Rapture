@@ -60,6 +60,9 @@
     <ClCompile Include="rapture\Test\RenderSubsystemTest.cpp">
       <Filter>rapture\Test</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\Test\Test.cpp">
+      <Filter>rapture\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">

@@ -180,15 +180,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		}
 		
 		{
-			auto* mainDevice = m_RenderingSubsystem->GetProcessorEdit()->GetDeviceEdit();
-
-			Test::MatrixVectorTestMain();
-
-			Test::FileLoaderTest(mainDevice);
-			Test::GraphicsPipelineTest(mainDevice);
-			Test::BindFunctionTest();
-
-			Test::RenderSubsystemTest();
+			Test::TestMain();
 		}
 
 		return true;

@@ -1,13 +1,15 @@
 ﻿#pragma once
 
+namespace Test 
+{
+	void TestMain();
+};
+
+
+
+
 ATLANTIS_NAMESPACE_BEGIN
-
-//class CVertexBuffer;
-//class CIndexBuffer;
-//class CMeshData;
-
 class CDX12MainDevice;
-
 ATLANTIS_NAMESPACE_END
 
 BIFROST_NAMESPACE_BEGIN
@@ -24,7 +26,7 @@ class CCameraActor;
 
 BIFROST_NAMESPACE_END
 
-namespace Test 
+namespace Test
 {
 	void SHA1TestMain();
 
