@@ -4,7 +4,7 @@
 
 BIFROST_NAMESPACE_BEGIN
 
-enum EMaterialType : uint8
+enum class EMaterialType : uint8
 {
 	MATERIAL_TYPE_PMD,
 

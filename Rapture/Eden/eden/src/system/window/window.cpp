@@ -74,7 +74,7 @@ HRESULT CWindow::WNDC_initialize(const HINSTANCE hInstance,const c8* name)
 
 	if (!RegisterClassEx(&wcex)) 
 	{
-		return FALSE;
+		return S_FALSE;
 	}
 	else
 	{
@@ -133,7 +133,7 @@ HRESULT CWindow::HWND_initialize(const HINSTANCE hInstance, const c8* name, cons
 	}//ウィンドウモードEnd
 
 	if (!m_hWnd) {
-		return FALSE;
+		return S_FALSE;
 	}else {
 		return S_OK;
 	}

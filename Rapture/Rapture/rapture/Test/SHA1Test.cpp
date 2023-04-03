@@ -195,7 +195,7 @@ namespace Ref
 				context->Length_High++;
 				if (context->Length_High == 0) {
 					/* Message is too long */
-					context->Corrupted = 1;
+					context->Corrupted = shaInputTooLong;
 				}
 			}
 

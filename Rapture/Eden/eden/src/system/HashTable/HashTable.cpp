@@ -59,6 +59,12 @@ const Hash160 CHashTable::CreateHash(const char* _string)
 	return sha1*/;
 }
 
+const Hash160 CHashTable::CreateHash(const uint8* _string)
+{
+	const char* temp = RCast<const char*>(_string);
+	return CreateHash(temp);
+}
+
 const Hash160 CHashTable::GetHash(const DataBlob& _Data) const
 {
 	for (auto& elem : m_HashTable)
@@ -91,6 +97,12 @@ const Hash160 CHashTable::GetHash(const char* _string) const
 	return GetHash(message);
 }
 
+const Hash160 CHashTable::GetHash(const uint8* _string) const
+{
+	const char* temp = RCast<const char*>(_string);
+	return GetHash(temp);
+}
+
 const uint8* CHashTable::GetHashData(const Hash160& _Hash) const
 {
 	const auto& itr = m_HashTable.find(_Hash);
@@ -101,6 +113,6 @@ const uint8* CHashTable::GetHashData(const Hash160& _Hash) const
 const char* CHashTable::GetHashValue(const Hash160& _hash) const
 {
 	const auto& itr = m_StringHashTable.find(_hash);
-	if (itr == m_StringHashTable.cend()) { return string().c_str(); }
+	if (itr == m_StringHashTable.cend()) { return nullptr; }
 	return itr->second.c_str();
 }

@@ -63,7 +63,7 @@ private:
 	ObjectPtr(RTVStruct) m_RTV = nullptr;
 	ObjectPtr(SceneView) m_SceneView = nullptr;
 
-	using RenderGroup = std::array<ObjectPtr(RenderingQueue), ERenderGroup::RENDER_GROUP_NUM>;
+	using RenderGroup = std::array<ObjectPtr(RenderingQueue), UNumCast(ERenderGroup::RENDER_GROUP_NUM)>;
 	RenderGroup m_RenderGroup = {};
 
 private:

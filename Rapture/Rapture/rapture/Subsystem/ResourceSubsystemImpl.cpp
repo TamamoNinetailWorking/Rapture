@@ -26,52 +26,62 @@ using namespace std;
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManager() const
 {
-	return GetManagerFromIndex(RESOURCE_TYPE_TEXTURE);
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_TEXTURE);
 }
 
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManagerEdit()
 {
-	return GetManagerFromIndexEdit(RESOURCE_TYPE_TEXTURE);
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_TEXTURE);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMeshResourceManager() const
 {
-	return GetManagerFromIndex(RESOURCE_TYPE_MESH);
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_MESH);
 }
 
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMeshResourceManagerEdit()
 {
-	return GetManagerFromIndexEdit(RESOURCE_TYPE_MESH);
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_MESH);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManager() const
 {
-	return GetManagerFromIndex(RESOURCE_TYPE_SHADER);
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_SHADER);
 }
 
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManagerEdit()
 {
-	return GetManagerFromIndexEdit(RESOURCE_TYPE_SHADER);
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_SHADER);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManager() const
 {
-	return GetManagerFromIndex(RESOURCE_TYPE_MATERIAL);
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_MATERIAL);
 }
 
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManagerEdit()
 {
-	return GetManagerFromIndexEdit(RESOURCE_TYPE_MATERIAL);
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_MATERIAL);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetPipelineStateObjectManager() const
 {
-	return GetManagerFromIndex(RESOURCE_TYPE_PSO);
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_PSO);
 }
 
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetPipelineStateObjectManagerEdit()
 {
-	return GetManagerFromIndexEdit(RESOURCE_TYPE_PSO);
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_PSO);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMotionResourceManager() const
+{
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_MOTION);
+}
+
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMotionResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_MOTION);
 }
 
 void CResourceSubsystemImpl::Release()
@@ -107,14 +117,14 @@ void CResourceSubsystemImpl::DeletePreDefPso()
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetManagerFromIndexEdit(EResourceManagementType _Type)
 {
 	SUBSYTEM_IS_NULL();
-	uint32 index = _Type;
+	uint32 index = UNumCast(_Type);
 	return GetManager(index);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetManagerFromIndex(EResourceManagementType _Type) const
 {
 	SUBSYTEM_IS_NULL();
-	uint32 index = _Type;
+	uint32 index = UNumCast(_Type);
 	return GetManager(index);
 }
 

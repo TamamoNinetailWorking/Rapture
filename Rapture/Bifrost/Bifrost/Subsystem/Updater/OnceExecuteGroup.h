@@ -2,7 +2,7 @@
 
 BIFROST_NAMESPACE_BEGIN
 
-enum EOnceExecuteGroup
+enum class EOnceExecuteGroup : uint8
 {
 	ONCE_EXECUTE_GROUP_BEGIN_PLAY,
 	

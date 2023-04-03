@@ -45,11 +45,11 @@ public:
 
 private:
 
-	using Updater = std::array<CUpdateProcessor*, EUpdateGroup::UPDATE_GROUP_NUM>;
+	using Updater = std::array<CUpdateProcessor*, UNumCast(EUpdateGroup::UPDATE_GROUP_NUM)>;
 
 	Updater m_Updater = {};
 
-	using OnceExecuter = std::array<COnceExecuteProcessor*, EOnceExecuteGroup::ONCE_EXECUTE_GROUP_NUM>;
+	using OnceExecuter = std::array<COnceExecuteProcessor*, UNumCast(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_NUM)  >;
 
 	OnceExecuter m_OnceExecuter = {};
 

@@ -43,4 +43,7 @@ typedef unsigned	long long		uint64;
 #define RCast reinterpret_cast
 #define CCast const_cast
 
+#define SNumCast SCast<sint32>
+#define UNumCast SCast<uint32>
+
 #endif

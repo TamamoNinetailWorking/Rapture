@@ -10,7 +10,7 @@ ATLANTIS_NAMESPACE_BEGIN
 namespace Glue
 {
 
-	enum ECommandListType : uint8
+	enum class ECommandListType : uint8
 	{
 		COMMAND_LIST_TYPE_DIRECT = 0,
 		COMMAND_LIST_TYPE_BUNDLE = 1,
@@ -24,7 +24,7 @@ namespace Glue
 	const D3D12_COMMAND_LIST_TYPE GetD3DCommandListType(ECommandListType _ListType);
 
 
-	enum ECommandQueueFlag : uint8
+	enum class ECommandQueueFlag : uint8
 	{
 		COMMAND_QUEUE_FLAG_NONE = 0,
 		COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT = 0x1
@@ -33,7 +33,7 @@ namespace Glue
 	const D3D12_COMMAND_QUEUE_FLAGS GetD3DCommandQueueFlag(ECommandQueueFlag _Flag);
 
 
-	enum ECommandQueuePriority : uint32
+	enum class ECommandQueuePriority : uint32
 	{
 		COMMAND_QUEUE_PRIORITY_NORMAL = 0,
 		COMMAND_QUEUE_PRIORITY_HIGH = 100,
@@ -43,7 +43,7 @@ namespace Glue
 	const D3D12_COMMAND_QUEUE_PRIORITY GetD3DCommandQueuePriority(ECommandQueuePriority _Priority);
 
 
-	enum ERootSignatureFlag : uint16
+	enum class ERootSignatureFlag : uint16
 	{
 		ROOT_SIGNATURE_FLAG_NONE = 0,
 		ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT = 0x1,
@@ -61,7 +61,7 @@ namespace Glue
 	const D3D12_ROOT_SIGNATURE_FLAGS GetD3DRootSignatureFlag(ERootSignatureFlag _Flag);
 
 
-	enum EResourceBarrierType : uint8
+	enum class EResourceBarrierType : uint8
 	{
 		BARRIER_TYPE_TRANSITION = 0,
 		BARRIER_TYPE_ALIASING = (BARRIER_TYPE_TRANSITION + 1),
@@ -71,7 +71,7 @@ namespace Glue
 	const D3D12_RESOURCE_BARRIER_TYPE GetD3DResourceBarrierType(EResourceBarrierType _Type);
 
 
-	enum EResourceState : uint32
+	enum class EResourceState : uint32
 	{
 		RESOURCE_STATE_COMMON = 0,
 		RESOURCE_STATE_PRESENT = RESOURCE_STATE_COMMON,
@@ -82,7 +82,7 @@ namespace Glue
 	const D3D12_RESOURCE_STATES GetD3DResourceState(EResourceState _state);
 
 
-	enum EResourceDimension : uint8
+	enum class EResourceDimension : uint8
 	{
 		RESOURCE_DIMENSION_UNKNOWN = 0,
 		RESOURCE_DIMENSION_BUFFER = 1,
@@ -93,7 +93,7 @@ namespace Glue
 
 	const D3D12_RESOURCE_DIMENSION GetD3DResourceDimension(EResourceDimension _dimension);
 
-    enum ERTVDimension : uint8
+    enum class ERTVDimension : uint8
     {
         RTV_DIMENSION_UNKNOWN = 0,
         RTV_DIMENSION_BUFFER = 1,
@@ -108,7 +108,7 @@ namespace Glue
 
     const D3D12_RTV_DIMENSION GetD3DRTVDimension(ERTVDimension _Dimension);
 
-	enum EDataFormat : uint8
+	enum class EDataFormat : uint8
 	{
         FORMAT_UNKNOWN = 0,
         FORMAT_R32G32B32A32_TYPELESS = 1,
@@ -243,7 +243,7 @@ namespace Glue
     const DXGI_FORMAT GetDXGIFormat(EDataFormat _format);
 
 
-    enum EDescriptorHeapRangeType
+    enum class EDescriptorHeapRangeType
     {
         RANGE_TYPE_SRV = 0,
         RANGE_TYPE_UAV,
@@ -254,7 +254,7 @@ namespace Glue
     const D3D12_DESCRIPTOR_RANGE_TYPE GetRangeType(EDescriptorHeapRangeType _Type);
 
 
-    enum EShaderVisibility
+    enum class EShaderVisibility
     {
         SHADER_VISIBILITY_ALL = 0,
         SHADER_VISIBILITY_VERTEX = 1,

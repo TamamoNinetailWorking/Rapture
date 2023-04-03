@@ -19,7 +19,7 @@ bool CUpdateProcessorSubsystem::Initialize()
 {
 	do
 	{
-		for (uint32 index = 0; index < EUpdateGroup::UPDATE_GROUP_NUM; ++index)
+		for (uint32 index = 0; index < UNumCast(EUpdateGroup::UPDATE_GROUP_NUM); ++index)
 		{
 			auto& data = m_Updater[index];
 			data = new CUpdateProcessor();
@@ -27,7 +27,7 @@ bool CUpdateProcessorSubsystem::Initialize()
 			CHECK_RESULT_BREAK(data->Initialize());
 		}
 
-		for (uint32 index = 0; index < EOnceExecuteGroup::ONCE_EXECUTE_GROUP_NUM; ++index)
+		for (uint32 index = 0; index < UNumCast(EOnceExecuteGroup::ONCE_EXECUTE_GROUP_NUM); ++index)
 		{
 			auto& data = m_OnceExecuter[index];
 			data = new COnceExecuteProcessor();
@@ -130,12 +130,12 @@ CUpdateProcessor* CUpdateProcessorSubsystem::GetPostPhysicsProcessor() const
 
 CUpdateProcessor* CUpdateProcessorSubsystem::GetProcessor(EUpdateGroup _Type) const
 {
-	return m_Updater.at(_Type);
+	return m_Updater.at(UNumCast(_Type));
 }
 
 COnceExecuteProcessor* CUpdateProcessorSubsystem::GetOnceExecuter(EOnceExecuteGroup _Type) const
 {
-	return m_OnceExecuter.at(_Type);
+	return m_OnceExecuter.at(UNumCast(_Type));
 }
 
 void CUpdateProcessorSubsystem::Execute(EOnceExecuteGroup _Type)

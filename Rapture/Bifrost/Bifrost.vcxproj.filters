@@ -91,6 +91,9 @@
     <Filter Include="Bifrost\Model\Vmd">
       <UniqueIdentifier>{5d62df32-ba35-4ac5-8983-bf066a4b275a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Resource\Motion">
+      <UniqueIdentifier>{706a2119-dc2b-4355-9424-4ac2dafefaa0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -297,6 +300,21 @@
     <ClInclude Include="Bifrost\Model\Vmd\VmdDefine.h">
       <Filter>Bifrost\Model\Vmd</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Motion\VmdMotionResource.h">
+      <Filter>Bifrost\Resource\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Manager\MotionResourceManager.h">
+      <Filter>Bifrost\Resource\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Motion\VmdMotionResourceInitializer.h">
+      <Filter>Bifrost\Resource\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Resource\Motion\MotionResourceInitializer.h">
+      <Filter>Bifrost\Resource\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Model\Vmd\VmdMotionDefine.h">
+      <Filter>Bifrost\Model\Vmd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -397,6 +415,12 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Model\Vmd\VmdParser.cpp">
       <Filter>Bifrost\Model\Vmd</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Motion\VmdMotionResource.cpp">
+      <Filter>Bifrost\Resource\Motion</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Resource\Manager\MotionResourceManager.cpp">
+      <Filter>Bifrost\Resource\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

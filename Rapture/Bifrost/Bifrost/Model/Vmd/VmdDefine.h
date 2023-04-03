@@ -14,10 +14,7 @@ public:
 private:
 	uint8 padding01 = {};
 public:
-	uint16 FrameNo = 0;
-private:
-	uint16 padding02 = {};
-public:
+	uint32 FrameNo = 0;
 	
 	ATLANTIS_NAMESPACE::Glue::Vector3 Locate = {};
 
@@ -37,10 +34,7 @@ public:
 private:
 	uint8 padding01 = {};
 public:
-	uint16 FlameNo = 0;
-private:
-	uint16 padding02 = {};
-public:
+	uint32 FlameNo = 0;
 	float Weight = 0.f;
 };
 
@@ -50,10 +44,8 @@ constexpr uint8 VmdCameraInterpolateDataSize = 24;
 struct FVmdCameraData
 {
 public:
-	uint16 FlameNo = 0;
-private:
-	uint16 padding01 = {};
-public:
+	uint32 FlameNo = 0;
+
 	float Distance = 0.f;
 
 	ATLANTIS_NAMESPACE::Glue::Vector3 Locate = {};
@@ -74,10 +66,8 @@ private:
 struct FVmdLightData
 {
 public:
-	uint16 FlameNo = 0;
-private:
-	uint16 padding01 = {};
-public:
+	uint32 FlameNo = 0;
+
 	ATLANTIS_NAMESPACE::Glue::Vector3 Color = {};
 
 	ATLANTIS_NAMESPACE::Glue::Vector3 Locate = {};
@@ -87,7 +77,7 @@ public:
 struct FVmdSelfShadowData
 {
 public:
-	uint16 FlameNo = 0;
+	uint32 FlameNo = 0;
 	uint8 Mode = 0;
 private:
 	uint8 padding01 = {};

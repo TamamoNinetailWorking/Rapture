@@ -8,10 +8,11 @@ using namespace std;
 
 bool FileUtility::CompareExtension(const std::string& _extension, EFileExtensionType _type)
 {
-	if (_type >= FILE_TYPE_NUM) { return false; }
+	uint32 type = UNumCast(_type);
+	if (type >= UNumCast(EFileExtensionType::FILE_TYPE_NUM)) { return false; }
 	
-	const string ext = FileExtension[_type];
-	const string extUp = FileExtensionUpper[_type];
+	const string ext = FileExtension[type];
+	const string extUp = FileExtensionUpper[type];
 
 	return _extension == ext || _extension == extUp;
 }

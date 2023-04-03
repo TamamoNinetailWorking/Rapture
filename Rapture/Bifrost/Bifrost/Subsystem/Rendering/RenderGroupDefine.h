@@ -2,7 +2,7 @@
 
 BIFROST_NAMESPACE_BEGIN
 
-enum ERenderGroup
+enum class ERenderGroup
 {
 	RENDER_GROUP_DEFAULT,
 

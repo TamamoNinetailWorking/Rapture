@@ -19,7 +19,9 @@
 #include <Bifrost/Resource/Manager/MeshDataManager.h>
 #include <Bifrost/Resource/Manager/MaterialManager.h>
 #include <Bifrost/Resource/Manager/PipelineStateObjectManager.h>
+#include <Bifrost/Resource/Manager/MotionResourceManager.h>
 #include <rapture/Subsystem/ResourceSubsystemImpl.h>
+
 #include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
 #include <Bifrost/Subsystem/Actor/ActorSubsystem.h>
 #include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
@@ -61,15 +63,15 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 			FRenderingSubsystemInitializer initializer = {};
 			initializer.BarrierType = Glue::EResourceBarrierType::BARRIER_TYPE_TRANSITION;
-			initializer.CommandListType = COMMAND_LIST_TYPE_DIRECT;
-			initializer.CommandQueueFlag = COMMAND_QUEUE_FLAG_NONE;
-			initializer.CommandQueuePriority = COMMAND_QUEUE_PRIORITY_NORMAL;
+			initializer.CommandListType = ECommandListType::COMMAND_LIST_TYPE_DIRECT;
+			initializer.CommandQueueFlag = ECommandQueueFlag::COMMAND_QUEUE_FLAG_NONE;
+			initializer.CommandQueuePriority = ECommandQueuePriority::COMMAND_QUEUE_PRIORITY_NORMAL;
 			initializer.ViewWidth = _Initializer->ViewportWidth;
 			initializer.ViewHeight = _Initializer->ViewportHeight;
 			initializer.WindowHandle = _Initializer->WindowHandle;
 			initializer.QueueReserveNum = 200;
-			initializer.RTVFormat = FORMAT_R8G8B8A8_UNORM;
-			initializer.RTVDimension = RTV_DIMENSION_TEXTURE2D;
+			initializer.RTVFormat = EDataFormat::FORMAT_R8G8B8A8_UNORM;
+			initializer.RTVDimension = ERTVDimension::RTV_DIMENSION_TEXTURE2D;
 			initializer.NearZ = 0.01f;
 			initializer.FarZ = 10000.0f;
 			initializer.FovAngle = DirectX::XM_PIDIV2;
@@ -85,34 +87,39 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CHECK_RESULT_BREAK(m_ResourceSubsystem);
 
 			CResourceManagementSubsystem::FInitializer initializer = {};
-			initializer.ResourceTypeNum = EResourceManagementType::RESOURCE_TYPE_NUM;
+			initializer.ResourceTypeNum = UNumCast(EResourceManagementType::RESOURCE_TYPE_NUM);
 
 			CHECK_RESULT_BREAK(m_ResourceSubsystem->Initialize(initializer));
 
 			
 			// Texture
 			{
-				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CTextureResourceManager>(EResourceManagementType::RESOURCE_TYPE_TEXTURE));
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CTextureResourceManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_TEXTURE)));
 			}
 
 			// Mesh
 			{
-				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMeshDataManager>(EResourceManagementType::RESOURCE_TYPE_MESH));
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMeshDataManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_MESH)));
 			}
 
 			// Shader
 			{
-				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CShaderManager>(EResourceManagementType::RESOURCE_TYPE_SHADER));
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CShaderManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_SHADER)));
 			}
 
 			// Material
 			{
-				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMaterialManager>(EResourceManagementType::RESOURCE_TYPE_MATERIAL));
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMaterialManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_MATERIAL)));
 			}
 
 			// PSO
 			{
-				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CPipelineStateObjectManager>(EResourceManagementType::RESOURCE_TYPE_PSO));
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CPipelineStateObjectManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_PSO)));
+			}
+
+			// Motion
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMotionResourceManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_MOTION)));
 			}
 
 			m_ResSystemInterface = new CResourceSubsystemImpl();

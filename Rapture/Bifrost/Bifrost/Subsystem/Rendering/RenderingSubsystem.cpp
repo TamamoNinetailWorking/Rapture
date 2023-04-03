@@ -71,7 +71,7 @@ void CRenderingSubsystem::SetRenderObject(ERenderGroup _Group, const CRenderingC
 		PRINT("CRenderingSubsystem::SetRenderObject INVALID GROUP.\n");
 		return;
 	}
-	RenderingQueue* queue = m_RenderGroup.at(_Group);
+	RenderingQueue* queue = m_RenderGroup.at(UNumCast(_Group));
 	CHECK(queue);
 	queue->SetRenderComponent(_Component);
 }

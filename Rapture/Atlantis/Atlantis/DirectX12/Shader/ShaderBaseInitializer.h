@@ -4,7 +4,7 @@
 
 ATLANTIS_NAMESPACE_BEGIN
 
-enum EShaderType : uint8
+enum class EShaderType : uint8
 {
 	SHADER_TYPE_VERTEX,
 	SHADER_TYPE_DOMAIN,

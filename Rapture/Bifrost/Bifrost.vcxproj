@@ -57,12 +57,17 @@
     <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdSkeletonDefine.h" />
     <ClInclude Include="Bifrost\Model\Vmd\VmdDefine.h" />
+    <ClInclude Include="Bifrost\Model\Vmd\VmdMotionDefine.h" />
     <ClInclude Include="Bifrost\Model\Vmd\VmdParser.h" />
     <ClInclude Include="Bifrost\Resource\DefaultResourceDefine.h" />
     <ClInclude Include="Bifrost\Resource\Manager\MaterialManager.h" />
     <ClInclude Include="Bifrost\Resource\Manager\MeshDataManager.h" />
+    <ClInclude Include="Bifrost\Resource\Manager\MotionResourceManager.h" />
     <ClInclude Include="Bifrost\Resource\Manager\PipelineStateObjectManager.h" />
     <ClInclude Include="Bifrost\Resource\Material\MaterialInitializerBase.h" />
+    <ClInclude Include="Bifrost\Resource\Motion\MotionResourceInitializer.h" />
+    <ClInclude Include="Bifrost\Resource\Motion\VmdMotionResourceInitializer.h" />
+    <ClInclude Include="Bifrost\Resource\Motion\VmdMotionResource.h" />
     <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObject.h" />
     <ClInclude Include="Bifrost\Resource\PSO\PipelineStateObjectInitializer.h" />
     <ClInclude Include="Bifrost\Resource\Texture\FileLoadTexture.h" />
@@ -107,7 +112,9 @@
     <ClCompile Include="Bifrost\Model\Vmd\VmdParser.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\MaterialManager.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\MeshDataManager.cpp" />
+    <ClCompile Include="Bifrost\Resource\Manager\MotionResourceManager.cpp" />
     <ClCompile Include="Bifrost\Resource\Manager\PipelineStateObjectManager.cpp" />
+    <ClCompile Include="Bifrost\Resource\Motion\VmdMotionResource.cpp" />
     <ClCompile Include="Bifrost\Resource\PSO\PipelineStateObject.cpp" />
     <ClCompile Include="Bifrost\Resource\Texture\FileLoadTexture.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Actor\ActorSubsystem.cpp" />
@@ -132,6 +139,7 @@
     <ProjectGuid>{825a68aa-30df-42c2-8e48-726449efd096}</ProjectGuid>
     <RootNamespace>Bifrost</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>030_Bifrost</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -249,7 +257,7 @@
     </Link>
     <Lib />
     <Lib>
-      <AdditionalDependencies>Atlantis.lib;</AdditionalDependencies>
+      <AdditionalDependencies>020_Atlantis.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -275,7 +283,7 @@
     </Link>
     <Lib />
     <Lib>
-      <AdditionalDependencies>Atlantis.lib;</AdditionalDependencies>
+      <AdditionalDependencies>020_Atlantis.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

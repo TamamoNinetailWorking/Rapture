@@ -38,6 +38,9 @@ public:
 	const ManagerPtr GetPipelineStateObjectManager() const override;
 	ManagerPtr GetPipelineStateObjectManagerEdit() override;
 
+	const ManagerPtr GetMotionResourceManager() const override;
+	ManagerPtr GetMotionResourceManagerEdit() override;
+
 	void Release() override;
 
 	void SetSubsystem(BIFROST_NAMESPACE::CResourceManagementSubsystem* _Subsystem);

@@ -335,13 +335,21 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 		if (resource != nullptr)
 		{
 			srvDesc.Format = resource->GetResource()->GetDesc().Format;
-		}
 
-		device->CreateShaderResourceView(
-			resource->GetResource(),
-			&srvDesc,
-			descHandle
-		);
+			device->CreateShaderResourceView(
+				resource->GetResource(),
+				&srvDesc,
+				descHandle
+			);
+		}
+		else
+		{
+			device->CreateShaderResourceView(
+				nullptr,
+				&srvDesc,
+				descHandle
+			);
+		}
 		
 		descHandle.ptr += handleIncrement;
 

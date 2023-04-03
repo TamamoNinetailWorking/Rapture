@@ -26,10 +26,12 @@ public:
 	const Hash160 CreateHash(const DataBlob& _Data);
 	const Hash160 CreateHash(const String& _string);
 	const Hash160 CreateHash(const char* _string);
+	const Hash160 CreateHash(const uint8* _string);
 
 	const Hash160 GetHash(const DataBlob& _Data) const;
 	const Hash160 GetHash(const char* _string) const;
 	const Hash160 GetHash(const String& _string) const;
+	const Hash160 GetHash(const uint8* _string) const;
 
 	const uint8* GetHashData(const Hash160& _Hash) const;
 	const char* GetHashValue(const Hash160& _hash) const;

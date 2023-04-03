@@ -2,7 +2,7 @@
 
 BIFROST_NAMESPACE_BEGIN
 
-enum EUpdateGroup
+enum class EUpdateGroup : uint8
 {
 	UPDATE_GROUP_PRE_PHYSICS,
 

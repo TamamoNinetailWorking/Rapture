@@ -5,7 +5,7 @@ ATLANTIS_NAMESPACE_BEGIN
 
 namespace FileUtility
 {
-	enum EFileExtensionType : uint32
+	enum class EFileExtensionType : uint32
 	{
 		FILE_TYPE_TGA = 0,
 		FILE_TYPE_DDS,

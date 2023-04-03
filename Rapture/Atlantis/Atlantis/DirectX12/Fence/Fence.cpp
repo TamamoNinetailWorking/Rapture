@@ -20,7 +20,7 @@ void CFence::WaitEvent()
 {
 	if (m_Fence->GetCompletedValue() != m_FenceValue)
 	{
-		auto event = CreateEvent(nullptr, false, false, nullptr);
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 		m_Fence->SetEventOnCompletion(m_FenceValue, event);
 		WaitForSingleObject(event, INFINITE);
 		CloseHandle(event);

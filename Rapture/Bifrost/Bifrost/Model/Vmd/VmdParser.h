@@ -1,5 +1,7 @@
 #pragma once
 
+#include "VmdDefine.h"
+
 BIFROST_NAMESPACE_BEGIN
 
 class CVmdParser
@@ -10,6 +12,16 @@ public:
 
 	void Reset();
 
+	const FVmdMotionData* GetMotionData() const;
+	uint32 GetMotionDataNum() const;
+	const FVmdBlendShapeData* GetFaceData() const;
+	uint32 GetFaceDataNum() const;
+	const FVmdCameraData* GetCameraData() const;
+	uint32 GetCameraDataNum() const;
+	const FVmdLightData* GetLightData() const;
+	uint32 GetLightDataNum() const;
+	const FVmdSelfShadowData* GetSelfShadowData() const;
+	uint32 GetSelfShadowDataNum() const;
 
 	CVmdParser();
 	~CVmdParser();

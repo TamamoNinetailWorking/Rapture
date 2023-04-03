@@ -31,6 +31,7 @@ public:
 		
 		struct Backward
 		{
+			uint32 FrameNo = 0;
 			Vector3 Locate = {};
 			Vector4 Quat = {};
 			uint8 Interpolation[VmdMotionInterpolateDataLength] = {};
@@ -40,10 +41,6 @@ public:
 		Forward ForwardData = {};
 	private:
 		uint8 padding01 = {};
-	public:
-		uint16 FrameNo = 0;
-	private:
-		uint16 padding02 = {};
 	public:
 		Backward BackwardData = {};		
 	};
@@ -63,16 +60,18 @@ public:
 			uint8 Name[VmdBoneNameLength] = {};
 		};
 
+		struct Backward
+		{
+			uint32 FlameNo = 0;
+			float Weight = 0.f;
+		};
+
 	public:
 		Forward ForwardData = {};
 	private:
 		uint8 padding01 = {};
 	public:
-		uint16 FlameNo = 0;
-	private:
-		uint16 padding02 = {};
-	public:
-		float Weight = 0.f;
+		Backward BackwardData = {};
 	};
 
 	union FVmdBlendShapeDataUnion
@@ -85,8 +84,9 @@ public:
 	{
 	public:
 
-		struct Backward
+		struct Data
 		{
+			uint32 FlameNo = 0;
 			float Distance = 0.f;
 			Vector3 Locate = {};
 			Vector3 Rotate = {};
@@ -96,11 +96,7 @@ public:
 		};
 
 	public:
-		uint16 FlameNo = 0;
-	private:
-		uint16 padding01 = {};
-	public:
-		Backward BackwardData = {};
+		Data BackwardData = {};
 	};
 
 	union FVmdCameraDataUnion
@@ -112,17 +108,14 @@ public:
 	struct FDeserializeLightData
 	{
 	public:
-		struct Backward
+		struct Data
 		{
+			uint32 FlameNo = 0;
 			Vector3 Color = {};
 			Vector3 Locate = {};
 		};
 	public:
-		uint16 FlameNo = 0;
-	private:
-		uint16 padding01 = {};
-	public:
-		Backward BackwardData = {};
+		Data BackwardData = {};
 	};
 
 	union FVmdLightDataUnion
@@ -136,7 +129,7 @@ public:
 	public:
 		struct Forward
 		{
-			uint16 FlameNo = 0;
+			uint32 FlameNo = 0;
 			uint8 Mode = 0;
 		};
 	public:
@@ -234,6 +227,76 @@ void CVmdParser::Reset()
 	EDENS_NAMESPACE::FinalizeObject(m_Impl->m_Serializer);
 }
 
+const FVmdMotionData* CVmdParser::GetMotionData() const
+{
+	if (!m_Impl) { return nullptr; }
+	if (!m_Impl->m_Motions) { return nullptr; }
+	return RCast<const FVmdMotionData*>(m_Impl->m_Motions->data());
+}
+
+uint32 CVmdParser::GetMotionDataNum() const
+{
+	if (!m_Impl) { return 0; }
+	if (!m_Impl->m_Motions) { return 0; }
+	return SCast<uint32>(m_Impl->m_Motions->size());
+}
+
+const FVmdBlendShapeData* CVmdParser::GetFaceData() const
+{
+	if (!m_Impl) { return nullptr; }
+	if (!m_Impl->m_Shapes) { return nullptr; }
+	return RCast<const FVmdBlendShapeData*>(m_Impl->m_Shapes->data());
+}
+
+uint32 CVmdParser::GetFaceDataNum() const
+{
+	if (!m_Impl) { return 0; }
+	if (!m_Impl->m_Shapes) { return 0; }
+	return SCast<uint32>(m_Impl->m_Shapes->size());
+}
+
+const FVmdCameraData* CVmdParser::GetCameraData() const
+{
+	if (!m_Impl) { return nullptr; }
+	if (!m_Impl->m_Cameras) { return nullptr; }
+	return RCast<const FVmdCameraData*>(m_Impl->m_Cameras->data());
+}
+
+uint32 CVmdParser::GetCameraDataNum() const
+{
+	if (!m_Impl) { return 0; }
+	if (!m_Impl->m_Cameras) { return 0; }
+	return SCast<uint32>(m_Impl->m_Cameras->size());
+}
+
+const FVmdLightData* CVmdParser::GetLightData() const
+{
+	if (!m_Impl) { return nullptr; }
+	if (!m_Impl->m_Lights) { return nullptr; }
+	return RCast<const FVmdLightData*>(m_Impl->m_Lights->data());
+}
+
+uint32 CVmdParser::GetLightDataNum() const
+{
+	if (!m_Impl) { return 0; }
+	if (!m_Impl->m_Lights) { return 0; }
+	return SCast<uint32>(m_Impl->m_Lights->size());
+}
+
+const FVmdSelfShadowData* CVmdParser::GetSelfShadowData() const
+{
+	if (!m_Impl) { return nullptr; }
+	if (!m_Impl->m_SelfShadows) { return nullptr; }
+	return RCast<const FVmdSelfShadowData*>(m_Impl->m_SelfShadows->data());
+}
+
+uint32 CVmdParser::GetSelfShadowDataNum() const
+{
+	if (!m_Impl) { return 0; }
+	if (!m_Impl->m_SelfShadows) { return 0; }
+	return SCast<uint32>(m_Impl->m_SelfShadows->size());
+}
+
 bool CVmdParser::Impl::DeserializeHeader()
 {
 	CHECK_RESULT_FALSE(m_Serializer);
@@ -263,8 +326,6 @@ bool CVmdParser::Impl::DeserializeMotionData()
 
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.ForwardData, sizeof(FDeserializeMotionData::Forward)));
 
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.FrameNo, sizeof(FDeserializeMotionData::FrameNo)));
-
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeMotionData::Backward)));
 	}
 
@@ -289,9 +350,7 @@ bool CVmdParser::Impl::DeserializeBlendShapeData()
 
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.ForwardData, sizeof(FDeserializeBlendShapeData::Forward)));
 
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.FlameNo, sizeof(FDeserializeBlendShapeData::FlameNo)));
-
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.Weight, sizeof(FDeserializeBlendShapeData::Weight)));
+		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeBlendShapeData::Backward)));
 	}
 
 	return true;
@@ -313,9 +372,7 @@ bool CVmdParser::Impl::DeserializeCameraData()
 	{
 		auto& dest = camera.desData;
 
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.FlameNo, sizeof(FDeserializeCameraData::FlameNo)));
-
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeCameraData::Backward)));
+		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeCameraData::Data)));
 	}
 
 	return true;
@@ -337,9 +394,7 @@ bool CVmdParser::Impl::DeserializeLightData()
 	{
 		auto& dest = light.desData;
 
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.FlameNo, sizeof(FDeserializeLightData::FlameNo)));
-
-		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeLightData::Backward)));
+		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeLightData::Data)));
 	}
 
 	return true;

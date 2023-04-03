@@ -37,6 +37,15 @@
 // ‚Ü‚¸‚Í–‚“±‘‚ÌÍ‚ªI‚í‚é•Ó‚è‚Ü‚Å‚Íˆê“x”ÏG‚É‚È‚Á‚Ä‚à‘g‚İ‚ñ‚Å‚İ‚é‚×‚«‚¾‚ë‚¤
 //
 
+#ifdef VMD_SKELETON_TEST
+#include <eden/include/gadget/FileLoader/FileLoader.h>
+#include <Bifrost/Model/Vmd/VmdParser.h>
+#include <Bifrost/Resource/Motion/VmdMotionResourceInitializer.h>
+#include <Bifrost/Resource/Motion/VmdMotionResource.h>
+#include <Bifrost/Resource/Manager/MotionResourceManager.h>
+#include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
+#include <Bifrost/Subsystem/Resource/ResourceSubsystemInterface.h>
+#endif
 
 
 USING_BIFROST;
@@ -53,6 +62,10 @@ CPmdSkeleton::~CPmdSkeleton()
 {
 }
 
+#ifdef VMD_SKELETON_TEST
+EDENS_NAMESPACE::FResourceHandle MotionHandle = {};
+#endif
+
 bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 {
 	do
@@ -66,6 +79,54 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 		CHECK_RESULT_BREAK(m_Table);
 
 		CHECK_RESULT_FALSE(CreateBoneNodeTable(_Initializer));
+
+#ifdef VMD_SKELETON_TEST
+
+		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
+
+		EDENS_NAMESPACE::CFileLoader loader = {};
+		bool result = loader.FileLoad(fileName);
+
+		if (result)
+		{
+			PRINT("VmdFile load Succeed\n");
+
+			m_VmdParser = new CVmdParser();
+			result = m_VmdParser->ParseData(loader.GetData(), loader.GetSize());
+			if (result)
+			{
+				PRINT("VmdParse Success.\n");
+			}
+			else
+			{
+				PRINT("VmdParse Failed.\n");
+			}
+		}
+		else
+		{
+			PRINT("VmdFile not loaded.\n");
+		}
+
+		loader.ResetData();
+
+		FVmdMotionResourceInitializer initializer = {};
+		initializer.Name = fileName;
+		initializer.Type = EMotionType::MOTION_TYPE_VMD;
+		initializer.Motions = m_VmdParser->GetMotionData();
+		initializer.MotionNum = m_VmdParser->GetMotionDataNum();
+
+		CMotionResourceManager* manager = PCast<CMotionResourceManager*>(CSubsystemServiceLocator::GetResourceSubsystemEdit()->GetMotionResourceManagerEdit());
+		CHECK_RESULT_BREAK(manager);
+
+		MotionHandle = manager->SearchCreateResource(&initializer);
+
+		CHECK_RESULT_BREAK(manager->IsValidHandle(MotionHandle));
+
+		const CVmdMotionResource* res = PCast<const CVmdMotionResource*>(manager->SearchResource(MotionHandle));
+
+		PRINT("VmdMotionResource is Created.\n");
+
+#endif
 
 		return true;
 

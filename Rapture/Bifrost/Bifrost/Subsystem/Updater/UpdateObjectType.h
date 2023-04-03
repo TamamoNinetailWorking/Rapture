@@ -2,7 +2,7 @@
 
 BIFROST_NAMESPACE_BEGIN
 
-enum EObjectType
+enum class EObjectType : uint8
 {
 	OBJECT_TYPE_ACTOR,
 	OBJECT_TYPE_COMPONENT,
