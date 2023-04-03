@@ -45,6 +45,8 @@
 #include <Bifrost/Resource/Manager/MotionResourceManager.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Resource/ResourceSubsystemInterface.h>
+
+#include <Bifrost/Model/Vmd/VmdMotionDefine.h>
 #endif
 
 
@@ -80,7 +82,34 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 
 		CHECK_RESULT_FALSE(CreateBoneNodeTable(_Initializer));
 
+
 #ifdef VMD_SKELETON_TEST
+		std::function<void(FPmdBoneNode* _Node, const FMatrix& _Mat)> RecursiveMatrixMultiply = [&](FPmdBoneNode* _Node, const FMatrix& _Mat)
+		{
+			auto& ret = (*m_Matrices)[_Node->BoneIndex];
+			ret *= _Mat;
+
+			for (auto& child : _Node->children)
+			{
+				RecursiveMatrixMultiply(child, ret);
+			}
+		};
+#endif
+
+#if 0
+
+		FPmdBoneNode* node = (*m_Table)[CHash160("左腕")];
+		Vector3 pos = node->StartPos;
+
+		FMatrix mat = XMMatrixTranslation(-pos.x, -pos.y, -pos.z) * XMMatrixRotationZ(XM_PIDIV2) * XMMatrixTranslation(pos.x, pos.y, pos.z);
+
+		RecursiveMatrixMultiply(node, mat);
+
+#endif
+
+		// VMDファイル適応テスト
+#if 1
+//#ifdef VMD_SKELETON_TEST
 
 		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
 
@@ -125,6 +154,26 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 		const CVmdMotionResource* res = PCast<const CVmdMotionResource*>(manager->SearchResource(MotionHandle));
 
 		PRINT("VmdMotionResource is Created.\n");
+
+		for (auto& bone : *m_Table)
+		{
+			const FVmdMotionPerKeyFrame* data = res->FindMotionDataPerFrame(bone.first, 0);
+			if (data == nullptr) { continue; }
+
+			auto& pos = bone.second->StartPos;
+			FMatrix mat = 
+				XMMatrixTranslation(-pos.x,-pos.y,-pos.z) 
+				* XMMatrixRotationQuaternion(data->Quaternion) 
+				* XMMatrixTranslation(pos.x,pos.y,pos.z);
+
+			(*m_Matrices)[bone.second->BoneIndex] = mat;
+		}
+
+		FPmdBoneNode* node = (*m_Table)[CHash160("センター")];
+
+		RecursiveMatrixMultiply(node, XMMatrixIdentity());
+
+		PRINT("VmdMotionResource reflects.\n");
 
 #endif
 
@@ -202,8 +251,9 @@ bool CPmdSkeleton::CreateBoneNodeTable(const FPmdSkeletonInitializer* _Initializ
 		const FPmdBoneData& parentData = bones[boneInfo.ParentNo];
 
 		Hash160 parentName = CHash160(parentData.BoneName);
+		Hash160 boneName = CHash160(boneInfo.BoneName);
 
-		(*m_Table)[parentName]->children.emplace_back((*m_Table)[parentName]);
+		(*m_Table)[parentName]->children.emplace_back((*m_Table)[boneName]);
 	}
 
 	std::fill(

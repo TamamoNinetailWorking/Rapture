@@ -123,7 +123,7 @@ namespace Test
 			CTransformComponent* trans = m_CameraActor->SearchComponent<CTransformComponent>();
 			CHECK(trans);
 
-			trans->SetWorldPosition(Glue::Vector3(0.f, 16.5f, -8.f));
+			trans->SetWorldPosition(Glue::Vector3(0.f, 13.5f, -15.f));
 
 			CCameraSubsystem* cameraSubsystem = CSubsystemServiceLocator::GetCameraSubsystemEdit();
 			CHECK(cameraSubsystem);

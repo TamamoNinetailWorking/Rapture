@@ -98,6 +98,9 @@ void CRenderingSubsystem::Rendering()
 	}
 
 	m_Processor->RenderEnd(m_RTV);
+
+	// “o˜^‚³‚ê‚éˆ—‡“I‚É‚±‚±
+	ClearRenderGroup();
 }
 
 const CRenderingSubsystem::Processor* CRenderingSubsystem::GetProcessor() const

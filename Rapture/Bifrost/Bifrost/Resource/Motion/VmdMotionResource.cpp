@@ -11,6 +11,8 @@ USING_BIFROST;
 
 using namespace DirectX;
 
+constexpr uint32 KeyFrameDataInitSize = 32;
+
 CVmdMotionResource::CVmdMotionResource()
 {
 }
@@ -39,12 +41,30 @@ void CVmdMotionResource::Finalize()
 {
 	for (auto& elem : m_MotionList)
 	{
-		if (elem.second == nullptr) { continue; }
+		for (auto& data : *(elem.second))
+		{
+			EDENS_NAMESPACE::Delete(data);
+		}
 
+		elem.second->clear();
 		EDENS_NAMESPACE::Delete(elem.second);
 	}
 
 	m_MotionList.clear();
+}
+
+const FVmdKeyFrameData* CVmdMotionResource::GetContinuumMotionData(const Hash160& _Hash) const
+{
+	auto itr = m_MotionList.find(_Hash);
+	if (itr == m_MotionList.end()) { return nullptr; }
+	return itr->second;
+}
+
+const FVmdMotionPerKeyFrame* CVmdMotionResource::FindMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const
+{
+	const FVmdKeyFrameData* motionData = GetContinuumMotionData(_Hash);
+	if (motionData == nullptr) { return nullptr; }
+	return motionData->at(_KeyFrame);
 }
 
 bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _Initializer)
@@ -56,15 +76,28 @@ bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _
 	{
 		const FVmdMotionData& motion = _Initializer->Motions[count];
 
-		FVmdMotionResourceData* data = new FVmdMotionResourceData();
+		FVmdMotionPerKeyFrame* data = new FVmdMotionPerKeyFrame();
 		CHECK_RESULT_FALSE(data);
 
 		Hash160 boneName = CHash160(motion.Name);
-		
-		data->FrameNo = motion.FrameNo;
+
+		if (m_MotionList.find(boneName) == m_MotionList.end())
+		{
+			FVmdKeyFrameData* keyFrameData = new FVmdKeyFrameData();
+			keyFrameData->resize(KeyFrameDataInitSize);
+			m_MotionList[boneName] = keyFrameData;
+		}
+		FVmdKeyFrameData* keyFrameData = m_MotionList[boneName];
+
+		if (motion.FrameNo >= keyFrameData->size())
+		{
+			keyFrameData->resize(motion.FrameNo);
+		}
+
+		//data->FrameNo = motion.FrameNo;
 		data->Quaternion = XMLoadFloat4(&(motion.Quat));
 
-		m_MotionList[boneName] = data;
+		(*keyFrameData)[motion.FrameNo] = data;
 	}
 
 	m_ResourceName = _Initializer->Name;

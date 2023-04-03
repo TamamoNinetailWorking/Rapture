@@ -310,5 +310,8 @@ bool CPmdModelComponent::SetTransform()
 	auto boneMatSize = m_Skeleton->GetBoneMatricesSize();
 	memcpy_s(data.BoneMatrices, BoneMatricesSize, startBone, boneMatSize);
 
+	//static uint32 counter = 0;
+	//PRINT("Pmd Model Transform. %u \n",++counter);
+
 	return true;
 }

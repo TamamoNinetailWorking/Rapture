@@ -34,7 +34,11 @@ VSOutput main( VSInput _Input)
 	VSOutput outPut;
 
 	float4 position = float4(_Input.Position, 1.0f);
-	matrix boneMat = Bones[_Input.BoneNo[0]];
+
+	float weight = _Input.Weight / 100.0f;
+	matrix boneMat = Bones[_Input.BoneNo[0]] * weight + Bones[_Input.BoneNo[1]] * (1 - weight);
+
+
 	position = mul(boneMat, position);
 
 	outPut.svpos = mul(WVPMatrix,position);
