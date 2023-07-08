@@ -167,6 +167,7 @@
     <ClCompile Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.cpp" />
     <ClCompile Include="rapture\Environment\PsoNameDefine.cpp" />
     <ClCompile Include="rapture\game_manager\game_manager.cpp" />
+    <ClCompile Include="rapture\Level\ExperimentationLevel.cpp" />
     <ClCompile Include="rapture\main.cpp" />
     <ClCompile Include="rapture\Subsystem\ResourceSubsystemImpl.cpp" />
     <ClCompile Include="rapture\Test\BindFunction.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="rapture\Environment\ResourceTypeDefine.h" />
     <ClInclude Include="rapture\game_manager\game_manager.h" />
     <ClInclude Include="rapture\game_manager\game_manager_def.h" />
+    <ClInclude Include="rapture\Level\ExperimentationLevel.h" />
     <ClInclude Include="rapture\Subsystem\ResourceSubsystemImpl.h" />
     <ClInclude Include="rapture\Test\Test.h" />
   </ItemGroup>

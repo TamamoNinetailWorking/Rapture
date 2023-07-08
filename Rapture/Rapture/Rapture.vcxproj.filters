@@ -34,6 +34,9 @@
     <Filter Include="rapture\DebugInterface\Infrastructure">
       <UniqueIdentifier>{e9bb1025-6c11-41dc-93fb-fdd49aebec61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapture\Level">
+      <UniqueIdentifier>{660860f2-9a9e-4ea2-9e5d-1b68d5ce1ad6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rapture\main.cpp">
@@ -78,6 +81,9 @@
     <ClCompile Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.cpp">
       <Filter>rapture\DebugInterface\Infrastructure</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\Level\ExperimentationLevel.cpp">
+      <Filter>rapture\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -106,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.h">
       <Filter>rapture\DebugInterface\Infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\Level\ExperimentationLevel.h">
+      <Filter>rapture\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

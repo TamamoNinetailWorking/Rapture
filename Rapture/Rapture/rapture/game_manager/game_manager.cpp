@@ -44,7 +44,7 @@
 #include <Atlantis/RHIProccessor/RHIProcessor.h>
 
 #include <rapture/Test/Test.h>
-#include <Bifrost/Component/Transform/TransformComponent.h>
+#include <rapture/Level/ExperimentationLevel.h>
 
 EDENS_NAMESPACE_USING;
 USING_ATLANTIS;
@@ -67,7 +67,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 {
 	do 
 	{
-
+		// Subsystem Base::Dominator
 		{
 			m_SubsystemDominator = new CSubsystemDominator();
 			CHECK_RESULT_BREAK(m_SubsystemDominator);
@@ -76,6 +76,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			CSubsystemServiceLocator::SetSubsystemDominator(m_SubsystemDominator);
 		}
 
+		// Rendering Subsystem
 		{
 
 			using namespace Glue;
@@ -230,7 +231,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 		//	m_Timer->SetUp();
 		//}
 
-		{
+		{// 各処理時間を計測するためのそれぞれのタイマー
 			for (auto& elem : g_TimerArray)
 			{
 				elem.SetUp();
@@ -254,6 +255,13 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			Test::TestMain();
 		}
 
+		{
+			m_Level = new CExperimentationLevel();
+			CHECK_RESULT_BREAK(m_Level);
+
+			CHECK_RESULT_BREAK(m_Level->Initialize());
+		}
+
 		return true;
 
 	}while (0);
@@ -265,6 +273,7 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 void CGameManager::Finalize()
 {
+	FinalizeObject(m_Level);
 	FinalizeObject(m_DebugWindowSubsystem);
 	//Delete(m_Timer);
 	FinalizeObject(m_CameraSubsystem);
@@ -338,6 +347,7 @@ void CGameManager::GameUpdate(float _DeltaTime)
 
 	m_UpdaterSubsystem->BeginPlayExecute();
 
+#if 0
 	using namespace DirectX;
 
 	using namespace Glue;
@@ -354,16 +364,20 @@ void CGameManager::GameUpdate(float _DeltaTime)
 	//-----------
 	// ActorManagerに生成処理を入れて、Actor処理が走るようになれば概ね形になるはず
 	//-----------
-	Test::m_TransformComponent->SetRotate(Vector3(0.f, yaw, 0.f));
+	//sTest::m_TransformComponent->SetRotate(Vector3(0.f, yaw, 0.f));
 
 	rotSpeed += 1.0f;
 	if (rotSpeed > 360.f)
 	{
 		rotSpeed = 0.f;
 	}
+#endif
+
 	// 処理時間の制限を行う場所を、AppManagerからここに移動させてもいいかもしれない
 	// >> そもそも処理時間を今制限していない問題
 	// ↑に処理時間を入れた
+
+	m_Level->LevelUpdate(timeDeltaTime);
 
 	m_UpdaterSubsystem->ProcessorUpdate(timeDeltaTime);// DeltaTimeを持ってくる
 

@@ -5,6 +5,7 @@
 #include <Bifrost/Component/Light/LightComponentManager.h>
 #include <Bifrost/Component/Light/LightComponent.h>
 
+#include <Bifrost/Actor/LightActor/LightActor.h>
 
 USING_BIFROST;
 
@@ -59,6 +60,14 @@ void CLightSubsystem::SetMainLightComponent(const CLightComponent* _Component)
 {
 	CHECK(_Component);
 	SetMainLightComponent(_Component->GetHandle());
+}
+
+void CLightSubsystem::SetMainLightActor(const CLightActor* _Actor)
+{
+	CHECK(_Actor);
+	auto* Component = _Actor->GetLightComponent();
+	CHECK(Component);
+	SetMainLightComponent(Component);
 }
 
 CLightComponent* CLightSubsystem::GetMainLightComponent() const

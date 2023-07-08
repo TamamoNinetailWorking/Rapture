@@ -111,8 +111,8 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 #ifdef VMD_SKELETON_TEST // VMDファイル適応テスト
 
 		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
-		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing2.vmd");
-		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/motion.vmd");
+		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing2.vmd");
+		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/motion.vmd");
 		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/TellYourWorld.vmd");
 
 		EDENS_NAMESPACE::CFileLoader loader = {};

@@ -44,6 +44,7 @@
     <ClInclude Include="Bifrost\Component\RenderingComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformDefine.h" />
+    <ClInclude Include="Bifrost\Level\LevelBase.h" />
     <ClInclude Include="Bifrost\Model\MeshData\MeshData.h" />
     <ClInclude Include="Bifrost\Model\MeshData\MeshDataInitializer.h" />
     <ClInclude Include="Bifrost\Model\Pmd\PmdMaterialData.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Bifrost\Component\Pmd\PmdModelComponent.cpp" />
     <ClCompile Include="Bifrost\Component\RenderingComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Transform\TransformComponent.cpp" />
+    <ClCompile Include="Bifrost\Level\LevelBase.cpp" />
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialData.cpp" />
     <ClCompile Include="Bifrost\Model\Pmd\PmdMaterialResource.cpp" />
@@ -137,6 +139,7 @@
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bifrost\Level\LevelBase.inl" />
     <None Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

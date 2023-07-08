@@ -6,6 +6,7 @@
 BIFROST_NAMESPACE_BEGIN
 
 class CLightComponent;
+class CLightActor;
 
 class CLightComponentManager;
 
@@ -25,6 +26,7 @@ public:
 
 	void SetMainLightComponent(const FHandle& _Handle);
 	void SetMainLightComponent(const CLightComponent* _Component);
+	void SetMainLightActor(const CLightActor* _Actor);
 
 	CLightComponent* GetMainLightComponent() const;
 	const FHandle& GetMainLightHandle() const;

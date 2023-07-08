@@ -97,6 +97,9 @@
     <Filter Include="Bifrost\Subsystem\UpdateInterval">
       <UniqueIdentifier>{800b0c19-102a-45f8-a83e-1879e924e9f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Level">
+      <UniqueIdentifier>{999be2a0-908f-4d1b-850a-4b724f1361a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -333,6 +336,9 @@
     <ClInclude Include="Bifrost\Subsystem\UpdateInterval\UpdateIntervalSubsystemInitializer.h">
       <Filter>Bifrost\Subsystem\UpdateInterval</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Level\LevelBase.h">
+      <Filter>Bifrost\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -443,10 +449,16 @@
     <ClCompile Include="Bifrost\Subsystem\UpdateInterval\UpdateIntervalSubsystem.cpp">
       <Filter>Bifrost\Subsystem\UpdateInterval</Filter>
     </ClCompile>
+    <ClCompile Include="Bifrost\Level\LevelBase.cpp">
+      <Filter>Bifrost\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.inl">
       <Filter>Bifrost\Subsystem\Resource</Filter>
+    </None>
+    <None Include="Bifrost\Level\LevelBase.inl">
+      <Filter>Bifrost\Level</Filter>
     </None>
   </ItemGroup>
 </Project>

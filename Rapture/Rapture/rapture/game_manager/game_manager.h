@@ -20,6 +20,8 @@ class CCameraSubsystem;
 class CLightSubsystem;
 class CUpdateIntervalSubsystem;
 
+class CLevelBase;
+
 BIFROST_NAMESPACE_END
 
 MAGALLANICA_NAMESPACE_BEGIN
@@ -69,12 +71,8 @@ private: // Subsystem
 
 	ObjectPtr(MAGALLANICA_NAMESPACE::CDebugWindowSubsystem) m_DebugWindowSubsystem = nullptr;
 
-private: // Gadget
+private: // Level
 
-	//ObjectPtr(EDENS_NAMESPACE::CTimer) m_Timer = nullptr;
-
-private: // Parameter
-
-	//uint32 m_FramePerSecond = 60;
+	ObjectPtr(BIFROST_NAMESPACE::CLevelBase) m_Level = nullptr;
 
 };
