@@ -173,6 +173,8 @@ private:
 	ObjectPtr(FVmdLights) m_Lights = nullptr;
 	ObjectPtr(FVmdSelfShadows) m_SelfShadows = nullptr;
 
+	uint32 m_MaxFrameNo = 0;
+
 };
 
 CVmdParser::CVmdParser()
@@ -298,6 +300,12 @@ uint32 CVmdParser::GetSelfShadowDataNum() const
 	return SCast<uint32>(m_Impl->m_SelfShadows->size());
 }
 
+uint32 CVmdParser::GetMaxFrameNo() const
+{
+	if (!m_Impl) { return 0; }
+	return m_Impl->m_MaxFrameNo;
+}
+
 bool CVmdParser::Impl::DeserializeHeader()
 {
 	CHECK_RESULT_FALSE(m_Serializer);
@@ -328,6 +336,12 @@ bool CVmdParser::Impl::DeserializeMotionData()
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.ForwardData, sizeof(FDeserializeMotionData::Forward)));
 
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeMotionData::Backward)));
+
+		// 最終フレームを取得するために最大値を更新
+		if (motion.Data.FrameNo > m_MaxFrameNo)
+		{
+			m_MaxFrameNo = motion.Data.FrameNo;
+		}
 	}
 
 	return true;

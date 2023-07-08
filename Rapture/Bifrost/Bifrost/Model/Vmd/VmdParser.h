@@ -23,6 +23,8 @@ public:
 	const FVmdSelfShadowData* GetSelfShadowData() const;
 	uint32 GetSelfShadowDataNum() const;
 
+	uint32 GetMaxFrameNo() const;
+
 	CVmdParser();
 	~CVmdParser();
 

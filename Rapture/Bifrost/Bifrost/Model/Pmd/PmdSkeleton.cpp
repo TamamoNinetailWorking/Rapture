@@ -111,7 +111,9 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 #ifdef VMD_SKELETON_TEST // VMDファイル適応テスト
 
 		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
-		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing.vmd");
+		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing2.vmd");
+		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/motion.vmd");
+		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/TellYourWorld.vmd");
 
 		EDENS_NAMESPACE::CFileLoader loader = {};
 		bool result = loader.FileLoad(fileName);
@@ -143,6 +145,7 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 		initializer.Type = EMotionType::MOTION_TYPE_VMD;
 		initializer.Motions = m_VmdParser->GetMotionData();
 		initializer.MotionNum = m_VmdParser->GetMotionDataNum();
+		initializer.EndFrameNo = m_VmdParser->GetMaxFrameNo();
 
 		CMotionResourceManager* manager = PCast<CMotionResourceManager*>(CSubsystemServiceLocator::GetResourceSubsystemEdit()->GetMotionResourceManagerEdit());
 		CHECK_RESULT_BREAK(manager);
@@ -221,9 +224,14 @@ uint32 CPmdSkeleton::GetBoneMatricesSize() const
 
 bool IsPlayAnimation = false;
 float AnimationTime = 0.f;
+bool IsPlayLoop = false;
 
 void CPmdSkeleton::PlayAnimation()
 {
+	// アニメーション処理全体、アニメーションクラスを作成するのが妥当だろう
+	// Skeletonクラスはベースのリグデータだけを保持し、
+	// アニメーションデータがそれを計算する形
+	IsPlayLoop = true;
 	IsPlayAnimation = true;
 	AnimationTime = 0.f;
 }
@@ -246,8 +254,6 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 
 	const CVmdMotionResource* res = PCast<const CVmdMotionResource*>(manager->SearchResource(MotionHandle));
 
-	bool IsLast = true;
-
 	for (auto& bone : *m_Table)
 	{
 		const FVmdMotionPerKeyFrame* PrevMotion = res->FindCurrentMotionDataPerFrame(bone.first, frameNo);
@@ -262,17 +268,50 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 		}
 		else
 		{
+			auto GetYFromXOnBezier = [](float _X,const Glue::Vector2& _P1,const Glue::Vector2& _P2,uint8 _N)
+			{
+				if (_P1.x == _P1.y && _P2.x == _P2.y)
+				{
+					return _X;
+				}
+
+				float t = _X;
+				const float c0 = 1 + 3 * _P1.x - 3 * _P2.x;
+				const float c1 = 3 * _P2.x - 6 * _P1.x;
+				const float c2 = 3 * _P1.x;
+
+				// EPSILONが小さすぎると処理時間が長くなってしまうので、
+				// 今回の場合は適当な値で切っておく方が健全だろう
+				//constexpr float epsilon = FLT_EPSILON;
+				constexpr float epsilon = 0.0005f;
+
+				for (uint32 i = 0; i < _N; ++i)
+				{
+					float ft = c0 * t * t * t + c1 * t * t + c2 * t - _X;
+
+					if ((ft <= epsilon) && (ft >= -epsilon))
+					{
+						break;
+					}
+
+					t -= ft * 0.5f;
+				}
+
+				float r = 1 - t;
+
+				float Y = t * t * t + 3 * t * t * r * _P2.y + 3 * t * r * _P1.x;
+
+				return _X;
+			};
+
 			float rate = SCast<float>((frameNo - PrevMotion->FrameNo)) / (LastMotion->FrameNo - PrevMotion->FrameNo);
+
+			// ベジェ曲線によるイージング補間
+			rate = GetYFromXOnBezier(rate, PrevMotion->BezierControlPoint01, PrevMotion->BezierControlPoint02, 12);
 
 			quat = XMQuaternionSlerp(PrevMotion->Quaternion, LastMotion->Quaternion, rate);
 			
-			PRINT("AnimationTime %f,Interpolate. Rate%f CurrentFrame %.3fPrevKey%u,LastKey%u \n",AnimationTime,rate,frameTime,PrevMotion->FrameNo,LastMotion->FrameNo);
-			if (rate < 0.f)
-			{
-				PRINT("Rate is Negative.\n");
-			}
-
-			IsLast = false;
+			//PRINT("AnimationTime %f,Interpolate. Rate%f CurrentFrame %.3fPrevKey%u,LastKey%u \n",AnimationTime,rate,frameTime,PrevMotion->FrameNo,LastMotion->FrameNo);
 		}
 
 		auto& pos = bone.second->StartPos;
@@ -286,10 +325,15 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 
 	AnimationTime += _DeltaTime;
 
-	//if (IsLast)
-	//{
-	//	IsPlayAnimation = false;
-	//}
+	if (frameNo >= res->GetEndFrameNo())
+	{
+		if (!IsPlayLoop)
+		{
+			IsPlayAnimation = false;
+		}
+
+		AnimationTime = 0;
+	}
 
 	MatrixUpdate();
 }

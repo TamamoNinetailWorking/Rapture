@@ -33,6 +33,8 @@ public:
 	const FVmdMotionPerKeyFrame* FindCurrentMotionDataPerFrame(const Hash160& _Hash,uint32 _KeyFrame) const;
 	const FVmdMotionPerKeyFrame* FindNextMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const;
 
+	uint32 GetEndFrameNo() const { return m_EndFrameNo; }
+
 	CVmdMotionResource();
 	~CVmdMotionResource();
 
@@ -50,6 +52,10 @@ private:
 	bool CreateMotionList(const FVmdMotionResourceInitializer* _Initializer);
 
 	const FVmdMotionPerKeyFrame* FindMotionData(const Hash160& _Hash, uint32 _KeyFrame, const FindCondition& _Finder) const;
+
+private:
+
+	uint32 m_EndFrameNo = 0;
 
 };
 

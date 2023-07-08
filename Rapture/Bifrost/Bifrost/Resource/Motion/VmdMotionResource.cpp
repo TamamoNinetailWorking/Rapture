@@ -7,6 +7,8 @@
 
 #include <DirectXMath.h>
 
+#include <algorithm>
+
 USING_BIFROST;
 
 using namespace DirectX;
@@ -119,6 +121,8 @@ bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _
 	CHECK_RESULT_FALSE(_Initializer);
 	CHECK_RESULT_FALSE(_Initializer->Motions);
 
+	m_EndFrameNo = _Initializer->EndFrameNo;
+
 	for (uint32 count = 0; count < _Initializer->MotionNum; ++count)
 	{
 		const FVmdMotionData& motion = _Initializer->Motions[count];
@@ -143,9 +147,28 @@ bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _
 
 		data->FrameNo = motion.FrameNo;
 		data->Quaternion = XMLoadFloat4(&(motion.Quat));
+		data->BezierControlPoint01 = XMFLOAT2(SCast<float>(motion.InterpolateData[3] / 127.f),SCast<float>(motion.InterpolateData[7] / 127.f));
+		data->BezierControlPoint02 = XMFLOAT2(SCast<float>(motion.InterpolateData[11] / 127.f),SCast<float>(motion.InterpolateData[15] / 127.f));
+		
 
 		keyFrameData->push_back(data);
 		//(*keyFrameData)[motion.FrameNo] = data;
+	}
+
+	// モーションデータをフレーム番号順の昇順でソート
+	for (auto& motion : m_MotionList)
+	{
+		auto SortComp = [](const FVmdMotionPerKeyFrame* _Left,const FVmdMotionPerKeyFrame* _Right)
+		{
+			return _Left->FrameNo <= _Right->FrameNo;
+		};
+
+		std::sort
+		(
+			motion.second->begin(),
+			motion.second->end(),
+			SortComp
+		);
 	}
 
 	m_ResourceName = _Initializer->Name;

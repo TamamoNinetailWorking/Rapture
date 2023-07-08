@@ -11,6 +11,7 @@ struct FVmdMotionResourceInitializer : BIFROST_NAMESPACE::FMotionResourceInitial
 	//Hash160 MotionName = {};
 	const FVmdMotionData* Motions = nullptr;
 	uint32 MotionNum = 0;
+	uint32 EndFrameNo = 0;
 };
 
 BIFROST_NAMESPACE_END
