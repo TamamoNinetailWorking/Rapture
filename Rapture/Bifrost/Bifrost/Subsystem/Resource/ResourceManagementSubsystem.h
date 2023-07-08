@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 
 EDENS_NAMESPACE_BEGIN
 
@@ -11,16 +12,13 @@ EDENS_NAMESPACE_END
 //ATLANTIS_NAMESPACE_BEGIN
 BIFROST_NAMESPACE_BEGIN
 
-class CResourceManagementSubsystem
+struct FSubsystemInitializerBase;
+
+class CResourceManagementSubsystem : public CSubsystemBase
 {
 public:
 
-	struct FInitializer
-	{
-		uint32 ResourceTypeNum = 0;
-	};
-
-	bool Initialize(const FInitializer& _Initializer);
+	bool Initialize(const FSubsystemInitializerBase* _Initializer);
 	void Finalize();
 
 	template<class TManager>

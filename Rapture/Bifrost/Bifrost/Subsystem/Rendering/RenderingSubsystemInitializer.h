@@ -1,10 +1,11 @@
 #pragma once
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemInitializerBase.h>
 
 BIFROST_NAMESPACE_BEGIN
 
-struct FRenderingSubsystemInitializer
+struct FRenderingSubsystemInitializer : public FSubsystemInitializerBase
 {
 	ATLANTIS_NAMESPACE::Glue::ECommandListType CommandListType = {};
 

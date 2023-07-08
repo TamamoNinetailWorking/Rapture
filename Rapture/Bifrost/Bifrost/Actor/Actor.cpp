@@ -23,7 +23,7 @@ CActor::~CActor()
 
 bool CActor::Initialize(const FActorInitializerBase* _Initializer)
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK_RESULT_FALSE(subsystem);
 
 	FOnceExecuteFunction function = std::bind(&CActor::BeginPlay, this);
@@ -90,7 +90,7 @@ bool CActor::DetachComponent(CComponent* _Component)
 
 void CActor::BeginPlay()
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK(subsystem);
 
 	FUpdateFunction function = std::bind(&CActor::Update, this, std::placeholders::_1);
@@ -101,7 +101,7 @@ void CActor::BeginPlay()
 
 void CActor::EndPlay()
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK(subsystem);
 
 	subsystem->DeleteData(m_UpdateGroup, m_ProcessorHandle);
@@ -116,7 +116,7 @@ void CActor::ReserveKill()
 		elem->ReserveKill();
 	}
 
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK(subsystem);
 
 	FOnceExecuteFunction function = std::bind(&CActor::EndPlay, this);

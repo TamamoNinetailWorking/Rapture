@@ -44,6 +44,20 @@ private:
 
 #endif
 
+#ifdef VMD_SKELETON_TEST
+public:
+
+	void PlayAnimation();
+	void MotionUpdate(float _DeltaTime);
+	bool IsPlay();
+
+private:
+
+	void MatrixReset();
+	void MatrixUpdate();
+
+#endif
+
 private:
 
 	bool CreateBoneNodeTable(const FPmdSkeletonInitializer* _Initializer);

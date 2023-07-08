@@ -21,16 +21,26 @@
 #include <Bifrost/Resource/Manager/PipelineStateObjectManager.h>
 #include <Bifrost/Resource/Manager/MotionResourceManager.h>
 #include <rapture/Subsystem/ResourceSubsystemImpl.h>
+#include <Bifrost/Subsystem/Resource/ResourceManagementSubsystemInitializer.h>
 
 #include <Bifrost/Subsystem/Updater/UpdateProcessorSubsystem.h>
+#include <Bifrost/Subsystem/UpdateInterval/UpdateIntervalSubsystem.h>
+#include <Bifrost/Subsystem/UpdateInterval/UpdateIntervalSubsystemInitializer.h>
 #include <Bifrost/Subsystem/Actor/ActorSubsystem.h>
 #include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
 #include <Bifrost/Subsystem/Light/LightSubsystem.h>
 
-#include <rapture/Environment/ResourceTypeDefine.h>
+#include <Subsystem/DebugSubsystemServiceLocator.h>
+//#include <Subsystem/DebugWindowSubsystem.h>
+#include <rapture/DebugInterface/Main/DebugWindowSubsystemImpl.h>
+#include <Subsystem/DebugWindowSubsystemInitializer.h>
 
+#include <rapture/Environment/ResourceTypeDefine.h>
 #include <Bifrost/Resource/DefaultResourceDefine.h>
 
+#include <eden/include/gadget/timer/timer.h>
+
+// このヘッダーはSubsystemのServiceLocaterがあるから要らないかも
 #include <Atlantis/RHIProccessor/RHIProcessor.h>
 
 #include <rapture/Test/Test.h>
@@ -39,7 +49,19 @@
 EDENS_NAMESPACE_USING;
 USING_ATLANTIS;
 USING_BIFROST;
+USING_MAGALLANICA;
 
+enum ETimerAttribute
+{
+	Execution = 0,
+	Update,
+	Render,
+
+	NUM_TIMER_ATTRIBUTE,
+};
+
+CTimer g_TimerArray[NUM_TIMER_ATTRIBUTE] = {};
+double g_TimerResult[NUM_TIMER_ATTRIBUTE] = {};
 
 b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 {
@@ -86,10 +108,10 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			m_ResourceSubsystem = new CResourceManagementSubsystem();
 			CHECK_RESULT_BREAK(m_ResourceSubsystem);
 
-			CResourceManagementSubsystem::FInitializer initializer = {};
+			FResourceManagementSubsystemInitializer initializer = {};
 			initializer.ResourceTypeNum = UNumCast(EResourceManagementType::RESOURCE_TYPE_NUM);
 
-			CHECK_RESULT_BREAK(m_ResourceSubsystem->Initialize(initializer));
+			CHECK_RESULT_BREAK(m_ResourceSubsystem->Initialize(&initializer));
 
 			
 			// Texture
@@ -156,7 +178,19 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 			
 			CHECK_RESULT_BREAK(m_UpdaterSubsystem->Initialize());
 
-			m_SubsystemDominator->SetUpdaterSubsystem(m_UpdaterSubsystem);
+			m_SubsystemDominator->SetUpdateProcessorSubsystem(m_UpdaterSubsystem);
+		}
+
+		{
+			m_UpdateIntervalSubsystem = new CUpdateIntervalSubsystem();
+			CHECK_RESULT_BREAK(m_UpdateIntervalSubsystem);
+
+			FUpdateIntervalSubsystemInitializer initializer = {};
+			initializer.FramePerSecond = 60;
+
+			CHECK_RESULT_BREAK(m_UpdateIntervalSubsystem->Initialize(&initializer));
+
+			m_SubsystemDominator->SetUpdateIntervalSubsystem(m_UpdateIntervalSubsystem);
 		}
 
 		{
@@ -185,6 +219,36 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 			m_SubsystemDominator->SetLightSubsystem(m_LightSubsystem);
 		}
+
+		//{
+		//	// フレームレートを制限するための仕組みを作った方が良いかも
+
+		//	// Gadget
+		//	m_Timer = new CTimer();
+		//	CHECK_RESULT_BREAK(m_Timer);
+
+		//	m_Timer->SetUp();
+		//}
+
+		{
+			for (auto& elem : g_TimerArray)
+			{
+				elem.SetUp();
+			}
+		}
+
+		{
+			m_DebugWindowSubsystem = new CDebugWindowSubsystemImpl();
+			CHECK_RESULT_BREAK(m_DebugWindowSubsystem);
+
+			FDebugWindowSubsystemInitializer initializer = {};
+			initializer.hwnd = _Initializer->WindowHandle;
+			initializer.Processor = m_RenderingSubsystem->GetProcessor();
+
+			CHECK_RESULT_BREAK(m_DebugWindowSubsystem->Initialize(&initializer));
+
+			CDebugSubsystemServiceLocator::SetDebugWindowSubsystem(m_DebugWindowSubsystem);
+		}
 		
 		{
 			Test::TestMain();
@@ -201,9 +265,12 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 void CGameManager::Finalize()
 {
+	FinalizeObject(m_DebugWindowSubsystem);
+	//Delete(m_Timer);
 	FinalizeObject(m_CameraSubsystem);
 	FinalizeObject(m_LightSubsystem);
 	FinalizeObject(m_ActorSubsytem);
+	FinalizeObject(m_UpdateIntervalSubsystem);
 	FinalizeObject(m_UpdaterSubsystem);
 	FinalizeObject(m_RenderingSubsystem);
 	Release(m_ResSystemInterface);
@@ -213,15 +280,61 @@ void CGameManager::Finalize()
 
 void CGameManager::GameMain()
 {
-	GameUpdate();
-	Render();
+	// UpdateIntervalSubsystemを使ってフレームレート制御
+	// GameMainの中身をバインドする形になるかと思われる
+
+	//m_Timer->RecordCurrentTime();
+	//
+	//constexpr double FrameTime = 1.0 / 60;
+	//if (m_Timer->CalculateExecuteTime() >= FrameTime)
+	//{
+	//	m_Timer->RecordCurrentTime();
+
+	//	GameUpdate();
+	//	Render();
+
+	//	m_Timer->RecordStartTime();
+	//}
+
+
+
+	std::function<void(float)> ExecuteFunc = [&](float _DeltaTime)
+	{
+		// 処理時間を計測するために一時的に3つのタイマーを用意
+		g_TimerArray[ETimerAttribute::Execution].RecordStartTime();
+
+		g_TimerArray[ETimerAttribute::Update].RecordStartTime();
+		this->GameUpdate(_DeltaTime);
+		g_TimerArray[ETimerAttribute::Update].RecordCurrentTime();
+		g_TimerResult[ETimerAttribute::Update] = g_TimerArray[ETimerAttribute::Update].CalculateExecuteTime();
+
+
+		g_TimerArray[ETimerAttribute::Render].RecordStartTime();
+		this->Render();
+		g_TimerArray[ETimerAttribute::Render].RecordCurrentTime();
+		g_TimerResult[ETimerAttribute::Render] = g_TimerArray[ETimerAttribute::Render].CalculateExecuteTime();
+
+		g_TimerArray[ETimerAttribute::Execution].RecordCurrentTime();
+		g_TimerResult[ETimerAttribute::Execution] = g_TimerArray[ETimerAttribute::Execution].CalculateExecuteTime();
+	};
+
+	m_UpdateIntervalSubsystem->Execution(ExecuteFunc);
 }
 
 
-void CGameManager::GameUpdate()
+void CGameManager::GameUpdate(float _DeltaTime)
 {
 	// 描画処理が終わったあととかに破壊しておきたい
 	m_ActorSubsytem->DestroyActors();
+
+	// 処理時間を入れたが、最初の初期化処理を含めたフレームの待ち時間が長すぎておかしくなるので、1フレーム目だけ一旦すっ飛ばしてみる
+	static bool tempFlag = false;
+	float timeDeltaTime = _DeltaTime;
+	if (!tempFlag)
+	{
+		timeDeltaTime = 0.f;
+		tempFlag = true;
+	} // ※初期化処理を高速化したり、時間初期化位置を変更したりするまで暫定的措置
 
 	m_UpdaterSubsystem->BeginPlayExecute();
 
@@ -250,13 +363,22 @@ void CGameManager::GameUpdate()
 	}
 	// 処理時間の制限を行う場所を、AppManagerからここに移動させてもいいかもしれない
 	// >> そもそも処理時間を今制限していない問題
-	m_UpdaterSubsystem->ProcessorUpdate(0.f);// DeltaTimeを持ってくる
+	// ↑に処理時間を入れた
 
+	m_UpdaterSubsystem->ProcessorUpdate(timeDeltaTime);// DeltaTimeを持ってくる
+
+	m_DebugWindowSubsystem->ShowDebugWindow(timeDeltaTime);
 
 	m_UpdaterSubsystem->EndPlayExecute();
 }
 
 void CGameManager::Render()
 {
+	CHECK(m_RenderingSubsystem->RenderBegin());
+
 	m_RenderingSubsystem->Rendering();
+
+	m_DebugWindowSubsystem->RenderDebugWindow();
+
+	m_RenderingSubsystem->RenderEnd();
 }

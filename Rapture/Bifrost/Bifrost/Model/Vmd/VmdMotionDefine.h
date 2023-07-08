@@ -15,6 +15,7 @@ struct FVmdMotionResourceData
 
 struct FVmdMotionPerKeyFrame
 {
+	uint32 FrameNo = 0;
 	ATLANTIS_NAMESPACE::Glue::FVector Quaternion = {};
 };
 

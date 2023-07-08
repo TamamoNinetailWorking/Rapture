@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RenderGroupDefine.h"
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 
 ATLANTIS_NAMESPACE_BEGIN
 
@@ -17,9 +18,10 @@ class CRenderingQueue;
 
 class CRenderingComponent;
 
+struct FSubsystemInitializerBase;
 struct FRenderingSubsystemInitializer;
 
-class CRenderingSubsystem
+class CRenderingSubsystem : public CSubsystemBase
 {
 public:
 
@@ -29,14 +31,16 @@ public:
 	using RenderingQueue = BIFROST_NAMESPACE::CRenderingQueue;
 
 
-	bool Initialize(const FRenderingSubsystemInitializer* _Initializer);
+	bool Initialize(const FSubsystemInitializerBase* _Initializer);
 	void Finalize();
 
 	void SetRenderObject(ERenderGroup _Group,const CRenderingComponent* _Component);
 
 	void ClearRenderGroup();
 
+	bool RenderBegin();
 	void Rendering();
+	void RenderEnd();
 
 	
 	const Processor* GetProcessor() const;
@@ -73,13 +77,6 @@ private:
 	bool CreateRTV(const FRenderingSubsystemInitializer* _Initializer);
 	bool CreateScreenView(const FRenderingSubsystemInitializer* _Initializer);
 
-// Test--------
-public:
-
-	void RenderBegin();
-	void RenderEnd();
-
-// Test--------
 };
 
 BIFROST_NAMESPACE_END

@@ -76,16 +76,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(SolutionDir)Magallanica\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(SolutionDir)Library\Magallanica\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Eden\;$(SolutionDir)Atlantis\;$(SolutionDir)Rapture\;$(SolutionDir)Bifrost\;$(SolutionDir)Magallanica\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Eden\$(Configuration)\;$(SolutionDir)Library\Atlantis\$(Configuration)\;$(SolutionDir)Library\Bifrost\$(Configuration)\;$(SolutionDir)Library\Magallanica\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -106,13 +106,13 @@
       <PreprocessorDefinitions>DEBUG_MODE;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;MagallanicaDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>010_Eden.lib;020_Atlantis.lib;030_Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>010_Eden.lib;020_Atlantis.lib;030_Bifrost.lib;DirectXTex.lib;090_Magallanica.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -145,7 +145,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;MagallanicaDefine.h</ForcedIncludeFiles>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -153,7 +153,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>010_Eden.lib;020_Atlantis.lib;030_Bifrost.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>010_Eden.lib;020_Atlantis.lib;030_Bifrost.lib;DirectXTex.lib;090_Magallanica.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -163,6 +163,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />
+    <ClCompile Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.cpp" />
+    <ClCompile Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.cpp" />
     <ClCompile Include="rapture\Environment\PsoNameDefine.cpp" />
     <ClCompile Include="rapture\game_manager\game_manager.cpp" />
     <ClCompile Include="rapture\main.cpp" />
@@ -177,6 +179,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h" />
+    <ClInclude Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.h" />
+    <ClInclude Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.h" />
     <ClInclude Include="rapture\Environment\PsoNameDefine.h" />
     <ClInclude Include="rapture\Environment\ResourceTypeDefine.h" />
     <ClInclude Include="rapture\game_manager\game_manager.h" />

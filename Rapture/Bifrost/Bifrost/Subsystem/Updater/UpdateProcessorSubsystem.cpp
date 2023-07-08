@@ -15,7 +15,7 @@ CUpdateProcessorSubsystem::~CUpdateProcessorSubsystem()
 {
 }
 
-bool CUpdateProcessorSubsystem::Initialize()
+bool CUpdateProcessorSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{

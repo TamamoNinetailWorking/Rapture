@@ -1,6 +1,7 @@
 #pragma once
 
 //#include <Bifrost/Component/Camera/CameraComponentManager.h>
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 #include <Bifrost/Component/Camera/CameraComponentHandle.h>
 
 BIFROST_NAMESPACE_BEGIN
@@ -11,7 +12,9 @@ class CCameraComponent;
 
 class CCameraActor;
 
-class CCameraSubsystem
+struct FSubsystemInitializerBase;
+
+class CCameraSubsystem : public CSubsystemBase
 {
 private:
 
@@ -20,7 +23,7 @@ private:
 
 public:
 
-	bool Initialize();
+	bool Initialize(const FSubsystemInitializerBase* _Initializer = nullptr);
 	void Finalize();
 
 	const FHandle SetCameraComponent(CCameraComponent* _Component);

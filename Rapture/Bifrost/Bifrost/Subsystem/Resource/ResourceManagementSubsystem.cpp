@@ -1,22 +1,25 @@
 #include "ResourceManagementSubsystem.h"
 
 #include <eden/include/Resource/ResourceManager.h>
-
+#include <Bifrost/Subsystem/Resource/ResourceManagementSubsystemInitializer.h>
 #include <Bifrost/Resource/DefaultResourceDefine.h>
 
 USING_BIFROST;
 EDENS_NAMESPACE_USING;
 
-bool CResourceManagementSubsystem::Initialize(const FInitializer& _Initializer)
+bool CResourceManagementSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{
-		if (_Initializer.ResourceTypeNum <= 0)
+		const FResourceManagementSubsystemInitializer* initializer = PCast<const FResourceManagementSubsystemInitializer*>(_Initializer);
+		CHECK_RESULT_FALSE(initializer);
+
+		if (initializer->ResourceTypeNum <= 0)
 		{
 			break;
 		}
 
-		m_Managers.resize(_Initializer.ResourceTypeNum);
+		m_Managers.resize(initializer->ResourceTypeNum);
 
 		//CHECK_RESULT_BREAK(CreateManagers(_Initializer));
 

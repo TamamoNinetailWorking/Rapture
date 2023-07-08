@@ -1,18 +1,20 @@
 #pragma once
 
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 
 BIFROST_NAMESPACE_BEGIN
 
 class CActorManager;
 class CActor;
 
+struct FSubsystemInitializerBase;
 struct FActorInitializerBase;
 
-class CActorSubsystem
+class CActorSubsystem : public CSubsystemBase
 {
 public:
 
-	bool Initialize();
+	bool Initialize(const FSubsystemInitializerBase* _Initializer = nullptr);
 	void Finalize();
 
 	template <class Actor>

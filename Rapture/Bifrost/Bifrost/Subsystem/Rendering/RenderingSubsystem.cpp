@@ -32,16 +32,18 @@ CRenderingSubsystem::~CRenderingSubsystem()
 {
 }
 
-bool CRenderingSubsystem::Initialize(const FRenderingSubsystemInitializer* _Initializer)
+bool CRenderingSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{
 		CHECK_RESULT_BREAK(_Initializer);
+		const FRenderingSubsystemInitializer* initializer = PCast<const FRenderingSubsystemInitializer*>(_Initializer);
+		CHECK_RESULT_BREAK(initializer);
 
-		CHECK_RESULT_BREAK(CreateProcessor(_Initializer));
-		CHECK_RESULT_BREAK(CreateRenderingQueue(_Initializer));
-		CHECK_RESULT_BREAK(CreateRTV(_Initializer));
-		CHECK_RESULT_BREAK(CreateScreenView(_Initializer));
+		CHECK_RESULT_BREAK(CreateProcessor(initializer));
+		CHECK_RESULT_BREAK(CreateRenderingQueue(initializer));
+		CHECK_RESULT_BREAK(CreateRTV(initializer));
+		CHECK_RESULT_BREAK(CreateScreenView(initializer));
 
 		return true;
 	} while (0);
@@ -84,11 +86,16 @@ void CRenderingSubsystem::ClearRenderGroup()
 	}
 }
 
+bool CRenderingSubsystem::RenderBegin()
+{
+	return m_Processor->RenderBegin(m_RTV, m_SceneView);
+}
+
 void CRenderingSubsystem::Rendering()
 {
 	// RenderBegin“I‚ÈŠ´‚¶‚ÅProcessor’B‚Ìˆ—‚ð‚Ü‚Æ‚ß‚é
 	// >> Execute‚·‚é‚Ì‚ÍProcessor‚ÌƒCƒ[ƒW
-	CHECK(m_Processor->RenderBegin(m_RTV, m_SceneView));
+	//CHECK(m_Processor->RenderBegin(m_RTV, m_SceneView));
 
 	for (auto& elem : m_RenderGroup)
 	{
@@ -97,8 +104,16 @@ void CRenderingSubsystem::Rendering()
 		RenderQueue(elem);
 	}
 
-	m_Processor->RenderEnd(m_RTV);
+	//m_Processor->RenderEnd(m_RTV);
 
+	//// “o˜^‚³‚ê‚éˆ—‡“I‚É‚±‚±
+	//ClearRenderGroup();
+}
+
+void CRenderingSubsystem::RenderEnd()
+{
+	m_Processor->RenderEnd(m_RTV);
+	
 	// “o˜^‚³‚ê‚éˆ—‡“I‚É‚±‚±
 	ClearRenderGroup();
 }
@@ -271,14 +286,4 @@ bool CRenderingSubsystem::CreateScreenView(const FRenderingSubsystemInitializer*
 	initializer.FarZ = _Initializer->FarZ;
 
 	return m_SceneView->Initialize(&initializer);
-}
-
-void CRenderingSubsystem::RenderBegin()
-{
-	CHECK(m_Processor->RenderBegin(m_RTV, m_SceneView));
-}
-
-void CRenderingSubsystem::RenderEnd()
-{
-	m_Processor->RenderEnd(m_RTV);
 }

@@ -83,7 +83,7 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 		CHECK_RESULT_FALSE(CreateBoneNodeTable(_Initializer));
 
 
-#ifdef VMD_SKELETON_TEST
+#if 0
 		std::function<void(FPmdBoneNode* _Node, const FMatrix& _Mat)> RecursiveMatrixMultiply = [&](FPmdBoneNode* _Node, const FMatrix& _Mat)
 		{
 			auto& ret = (*m_Matrices)[_Node->BoneIndex];
@@ -107,11 +107,11 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 
 #endif
 
-		// VMDファイル適応テスト
-#if 1
-//#ifdef VMD_SKELETON_TEST
+		
+#ifdef VMD_SKELETON_TEST // VMDファイル適応テスト
 
-		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
+		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
+		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing.vmd");
 
 		EDENS_NAMESPACE::CFileLoader loader = {};
 		bool result = loader.FileLoad(fileName);
@@ -155,6 +155,8 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 
 		PRINT("VmdMotionResource is Created.\n");
 
+#if 0
+
 		for (auto& bone : *m_Table)
 		{
 			const FVmdMotionPerKeyFrame* data = res->FindMotionDataPerFrame(bone.first, 0);
@@ -170,10 +172,10 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 		}
 
 		FPmdBoneNode* node = (*m_Table)[CHash160("センター")];
-
 		RecursiveMatrixMultiply(node, XMMatrixIdentity());
 
 		PRINT("VmdMotionResource reflects.\n");
+#endif
 
 #endif
 
@@ -214,6 +216,116 @@ uint32 CPmdSkeleton::GetBoneMatricesSize() const
 {
 	return GetBoneMatricesNum() * sizeof(ATLANTIS_NAMESPACE::Glue::FMatrix);
 }
+
+#ifdef VMD_SKELETON_TEST
+
+bool IsPlayAnimation = false;
+float AnimationTime = 0.f;
+
+void CPmdSkeleton::PlayAnimation()
+{
+	IsPlayAnimation = true;
+	AnimationTime = 0.f;
+}
+
+void CPmdSkeleton::MotionUpdate(float _DeltaTime)
+{
+	if (!IsPlayAnimation) { return; }
+
+	MatrixReset();
+
+	// 補完処理を入れる
+	//float frameTime = 30 * (AnimationTime / 1000.f);
+	float frameTime = AnimationTime;
+	uint32 frameNo = UNumCast(30 * frameTime);
+	//PRINT("AnimationFrameTime %f,  FrameNo %d\n", frameTime, frameNo);
+
+	CMotionResourceManager* manager = PCast<CMotionResourceManager*>(CSubsystemServiceLocator::GetResourceSubsystemEdit()->GetMotionResourceManagerEdit());
+	CHECK(manager);
+	CHECK(manager->IsValidHandle(MotionHandle));
+
+	const CVmdMotionResource* res = PCast<const CVmdMotionResource*>(manager->SearchResource(MotionHandle));
+
+	bool IsLast = true;
+
+	for (auto& bone : *m_Table)
+	{
+		const FVmdMotionPerKeyFrame* PrevMotion = res->FindCurrentMotionDataPerFrame(bone.first, frameNo);
+		if (PrevMotion == nullptr) { continue; }
+
+		FVector quat = {};
+
+		const FVmdMotionPerKeyFrame* LastMotion = res->FindNextMotionDataPerFrame(bone.first, frameNo);
+		if ((LastMotion == PrevMotion) || (LastMotion == nullptr))
+		{
+			quat = PrevMotion->Quaternion;
+		}
+		else
+		{
+			float rate = SCast<float>((frameNo - PrevMotion->FrameNo)) / (LastMotion->FrameNo - PrevMotion->FrameNo);
+
+			quat = XMQuaternionSlerp(PrevMotion->Quaternion, LastMotion->Quaternion, rate);
+			
+			PRINT("AnimationTime %f,Interpolate. Rate%f CurrentFrame %.3fPrevKey%u,LastKey%u \n",AnimationTime,rate,frameTime,PrevMotion->FrameNo,LastMotion->FrameNo);
+			if (rate < 0.f)
+			{
+				PRINT("Rate is Negative.\n");
+			}
+
+			IsLast = false;
+		}
+
+		auto& pos = bone.second->StartPos;
+		FMatrix mat =
+			XMMatrixTranslation(-pos.x, -pos.y, -pos.z)
+			* XMMatrixRotationQuaternion(quat)
+			* XMMatrixTranslation(pos.x, pos.y, pos.z);
+
+		(*m_Matrices)[bone.second->BoneIndex] = mat;
+	}
+
+	AnimationTime += _DeltaTime;
+
+	//if (IsLast)
+	//{
+	//	IsPlayAnimation = false;
+	//}
+
+	MatrixUpdate();
+}
+
+bool CPmdSkeleton::IsPlay()
+{
+	return IsPlayAnimation;
+}
+
+void CPmdSkeleton::MatrixReset()
+{
+	std::fill(
+		m_Matrices->begin(),
+		m_Matrices->end(),
+		XMMatrixIdentity()
+	);
+}
+
+void CPmdSkeleton::MatrixUpdate()
+{
+	std::function<void(FPmdBoneNode* _Node, const FMatrix& _Mat)> RecursiveMatrixMultiply = [&](FPmdBoneNode* _Node, const FMatrix& _Mat)
+	{
+		auto& ret = (*m_Matrices)[_Node->BoneIndex];
+		ret *= _Mat;
+
+		for (auto& child : _Node->children)
+		{
+			RecursiveMatrixMultiply(child, ret);
+		}
+	};
+
+	FPmdBoneNode* node = (*m_Table)[CHash160("センター")];
+	RecursiveMatrixMultiply(node, XMMatrixIdentity());
+}
+
+#endif
 
 bool CPmdSkeleton::CreateBoneNodeTable(const FPmdSkeletonInitializer* _Initializer)
 {

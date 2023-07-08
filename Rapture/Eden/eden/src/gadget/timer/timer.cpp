@@ -14,22 +14,25 @@ EDENS_NAMESPACE_BEGIN
 
 void CTimer::SetUp()
 {
-	m_StartTime = m_CurrentTime = timeGetTime();
+	//m_StartTime = m_CurrentTime = timeGetTime();
+	QueryPerformanceFrequency(&m_CPUFrequency);
 }
 
 void CTimer::RecordStartTime()
 {
-	m_StartTime = timeGetTime();
+	//m_StartTime = timeGetTime();
+	QueryPerformanceCounter(&m_StartTime);
 }
 
 void CTimer::RecordCurrentTime()
 {
-	m_CurrentTime = timeGetTime();
+	//m_CurrentTime = timeGetTime();
+	QueryPerformanceCounter(&m_CurrentTime);
 }
 
-u32 CTimer::CalculateExecuteTime()
+double CTimer::CalculateExecuteTime()
 {
-	return m_CurrentTime - m_StartTime;
+	return (SCast<double>(m_CurrentTime.QuadPart) - SCast<double>(m_StartTime.QuadPart)) / m_CPUFrequency.QuadPart;
 }
 
 

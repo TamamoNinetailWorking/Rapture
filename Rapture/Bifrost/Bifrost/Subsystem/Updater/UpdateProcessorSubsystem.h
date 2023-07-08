@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 #include <Bifrost/Subsystem/Updater/UpdateGroupDefine.h>
 #include <Bifrost/Subsystem/Updater/OnceExecuteGroup.h>
 #include "UpdateProcessData.h"
@@ -13,11 +14,13 @@ class COnceExecuteProcessor;
 class CActor;
 class CComponent;
 
-class CUpdateProcessorSubsystem
+struct FSubsystemInitializerBase;
+
+class CUpdateProcessorSubsystem : public CSubsystemBase
 {
 public:
 
-	bool Initialize();
+	bool Initialize(const FSubsystemInitializerBase* _Initializer = nullptr);
 	void Finalize();
 
 	void BeginPlayExecute();

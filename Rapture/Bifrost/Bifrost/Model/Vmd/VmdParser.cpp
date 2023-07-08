@@ -197,6 +197,7 @@ bool CVmdParser::ParseData(const uint8* _Data, uint32 _Size)
 
 	do 
 	{
+		// モーションデータ以外はデータが無くてもデシリアライズできるように許容
 		CHECK_RESULT_BREAK(m_Impl->DeserializeHeader());
 		CHECK_RESULT_BREAK(m_Impl->DeserializeMotionData());
 		CHECK_RESULT_BREAK(m_Impl->DeserializeBlendShapeData());
@@ -340,7 +341,11 @@ bool CVmdParser::Impl::DeserializeBlendShapeData()
 	CHECK_RESULT_FALSE(m_Shapes);
 
 	uint32 shapeNum = 0;
-	CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&shapeNum, sizeof(shapeNum)));
+	//CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&shapeNum, sizeof(shapeNum)));
+	if (!m_Serializer->ReadDataBlob(&shapeNum, sizeof(shapeNum)))
+	{
+		return true;
+	}
 
 	m_Shapes->resize(shapeNum);
 
@@ -364,7 +369,11 @@ bool CVmdParser::Impl::DeserializeCameraData()
 	CHECK_RESULT_FALSE(m_Cameras);
 
 	uint32 cameraNum = 0;
-	CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&cameraNum, sizeof(cameraNum)));
+	//CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&cameraNum, sizeof(cameraNum)));
+	if (!m_Serializer->ReadDataBlob(&cameraNum, sizeof(cameraNum)))
+	{
+		return true;
+	}
 
 	m_Cameras->resize(cameraNum);
 
@@ -386,7 +395,11 @@ bool CVmdParser::Impl::DeserializeLightData()
 	CHECK_RESULT_FALSE(m_Lights);
 
 	uint32 lightNum = 0;
-	CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&lightNum, sizeof(lightNum)));
+	//CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&lightNum, sizeof(lightNum)));
+	if (!m_Serializer->ReadDataBlob(&lightNum, sizeof(lightNum)))
+	{
+		return true;
+	}
 
 	m_Lights->resize(lightNum);
 
@@ -407,7 +420,12 @@ bool CVmdParser::Impl::DeserializeSelfShadowData()
 	m_SelfShadows = new FVmdSelfShadows();
 
 	uint32 shadowNum = 0;
-	CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&shadowNum, sizeof(shadowNum)));
+	//CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&shadowNum, sizeof(shadowNum)));
+	
+	if (!m_Serializer->ReadDataBlob(&shadowNum, sizeof(shadowNum)))
+	{
+		return true;
+	}
 
 	m_SelfShadows->resize(shadowNum);
 

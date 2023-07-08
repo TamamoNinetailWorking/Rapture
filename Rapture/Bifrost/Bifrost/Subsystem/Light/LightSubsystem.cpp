@@ -16,7 +16,7 @@ CLightSubsystem::~CLightSubsystem()
 {
 }
 
-bool CLightSubsystem::Initialize()
+bool CLightSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{

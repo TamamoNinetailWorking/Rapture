@@ -6,7 +6,8 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
-#include <time.h>
+//#include <time.h>
+#include <mmsystem.h>
 
 EDENS_NAMESPACE_BEGIN
 
@@ -23,12 +24,16 @@ public:
 
 	void RecordCurrentTime();
 
-	u32 CalculateExecuteTime();
+	//u32 CalculateExecuteTime();
+	double CalculateExecuteTime();
 
 private:
 
-	u32 m_StartTime = 0;
-	u32 m_CurrentTime = 0;
+	LARGE_INTEGER m_StartTime = {};
+	//u32 m_StartTime = 0;
+	LARGE_INTEGER m_CurrentTime = {};
+	//u32 m_CurrentTime = 0;
+	LARGE_INTEGER m_CPUFrequency = {};
 
 };
 

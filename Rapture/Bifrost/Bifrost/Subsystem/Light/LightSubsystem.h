@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 #include <Bifrost/Component/Light/LightComponentHandle.h>
 
 BIFROST_NAMESPACE_BEGIN
@@ -8,7 +9,7 @@ class CLightComponent;
 
 class CLightComponentManager;
 
-class CLightSubsystem
+class CLightSubsystem : public CSubsystemBase
 {
 private:
 
@@ -16,7 +17,7 @@ private:
 
 public:
 
-	bool Initialize();
+	bool Initialize(const FSubsystemInitializerBase* _Initializer = nullptr);
 	void Finalize();
 
 	const FHandle SetLightComponent(CLightComponent* _Component);
@@ -34,6 +35,8 @@ public:
 private:
 
 	ObjectPtr(CLightComponentManager) m_LightManager = nullptr;
+	
+	// フォワードレンダリングのテスト用
 	FHandle m_MainLightHandle = {};
 };
 

@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Magallanica">
+      <UniqueIdentifier>{b06d08f7-472d-427f-9cf3-6ab7b286bf32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Magallanica\Imgui">
+      <UniqueIdentifier>{03e57627-6eac-42f2-a1d0-5574a82bc23f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Magallanica\Imgui\DirectX12">
+      <UniqueIdentifier>{fb192cd8-6862-43cc-8b58-24be255bf3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Magallanica\Subsystem">
+      <UniqueIdentifier>{febca7a6-2d01-463c-9b00-f9f0aa26d491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Magallanica\DebugWindow">
+      <UniqueIdentifier>{3ba73e07-0912-4ed3-9676-9566e74b797d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Imgui\imconfig.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui_internal.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\DirectX12\imgui_impl_dx12.h">
+      <Filter>Magallanica\Imgui\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\DirectX12\imgui_impl_win32.h">
+      <Filter>Magallanica\Imgui\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imstb_textedit.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imstb_truetype.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imstb_rectpack.h">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystem\DebugWindowSubsystem.h">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystem\DebugWindowSubsystemInitializer.h">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MagallanicaDefine.h">
+      <Filter>Magallanica</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugWindow\DebugWindow.h">
+      <Filter>Magallanica\DebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystem\DebugWindowSubsystemDefine.h">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugWindow\DebugWindowInitializer.h">
+      <Filter>Magallanica\DebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Subsystem\DebugSubsystemServiceLocator.h">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Imgui\imgui.cpp">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_demo.cpp">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_draw.cpp">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_tables.cpp">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_widgets.cpp">
+      <Filter>Magallanica\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\DirectX12\imgui_impl_dx12.cpp">
+      <Filter>Magallanica\Imgui\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\DirectX12\imgui_impl_win32.cpp">
+      <Filter>Magallanica\Imgui\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystem\DebugWindowSubsystem.cpp">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugWindow\DebugWindow.cpp">
+      <Filter>Magallanica\DebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Subsystem\DebugSubsystemServiceLocator.cpp">
+      <Filter>Magallanica\Subsystem</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

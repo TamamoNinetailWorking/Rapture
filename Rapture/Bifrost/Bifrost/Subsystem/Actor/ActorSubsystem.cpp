@@ -13,7 +13,7 @@ CActorSubsystem::~CActorSubsystem()
 {
 }
 
-bool CActorSubsystem::Initialize()
+bool CActorSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{

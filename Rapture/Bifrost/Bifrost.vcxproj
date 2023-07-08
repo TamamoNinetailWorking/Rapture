@@ -82,8 +82,13 @@
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.h" />
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystemInitializer.h" />
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.h" />
+    <ClInclude Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystemInitializer.h" />
     <ClInclude Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.h" />
     <ClInclude Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.h" />
+    <ClInclude Include="Bifrost\Subsystem\SubsystemBase\SubsystemBase.h" />
+    <ClInclude Include="Bifrost\Subsystem\SubsystemBase\SubsystemInitializerBase.h" />
+    <ClInclude Include="Bifrost\Subsystem\UpdateInterval\UpdateIntervalSubsystem.h" />
+    <ClInclude Include="Bifrost\Subsystem\UpdateInterval\UpdateIntervalSubsystemInitializer.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuteGroup.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.h" />
     <ClInclude Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessorDefine.h" />
@@ -126,6 +131,7 @@
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceManagementSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Resource\ResourceSubsystemInterface.cpp" />
     <ClCompile Include="Bifrost\Subsystem\ServiceLocator\SubsystemServiceLocator.cpp" />
+    <ClCompile Include="Bifrost\Subsystem\UpdateInterval\UpdateIntervalSubsystem.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Updater\OnceExecuter\OnceExecuteProcessor.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessor.cpp" />
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.cpp" />

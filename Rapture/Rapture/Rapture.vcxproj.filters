@@ -25,6 +25,15 @@
     <Filter Include="rapture\Subsystem">
       <UniqueIdentifier>{b3fc1e5e-a0b0-4afa-9359-4a2bcb1da1d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapture\DebugInterface">
+      <UniqueIdentifier>{7cc3a0c2-f80e-456d-957e-fce105e01f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture\DebugInterface\Main">
+      <UniqueIdentifier>{8f851057-4bb3-4633-99a5-351fc365e499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapture\DebugInterface\Infrastructure">
+      <UniqueIdentifier>{e9bb1025-6c11-41dc-93fb-fdd49aebec61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rapture\main.cpp">
@@ -63,6 +72,12 @@
     <ClCompile Include="rapture\Test\Test.cpp">
       <Filter>rapture\Test</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.cpp">
+      <Filter>rapture\DebugInterface\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.cpp">
+      <Filter>rapture\DebugInterface\Infrastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -85,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="rapture\Environment\PsoNameDefine.h">
       <Filter>rapture\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.h">
+      <Filter>rapture\DebugInterface\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.h">
+      <Filter>rapture\DebugInterface\Infrastructure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

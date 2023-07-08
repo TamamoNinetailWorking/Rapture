@@ -10,7 +10,7 @@ USING_BIFROST;
 
 bool CComponent::Initialize(const FComponentInitializerBase* _Initializer)
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK_RESULT_FALSE(subsystem);
 
 	FOnceExecuteFunction function = std::bind(&CComponent::BeginPlay, this);
@@ -27,7 +27,7 @@ void CComponent::BeginPlay()
 	// 　コンソールとかで一度テストしたほうがいいかもしれない
 	// 
 	//-----------------------
-    CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+    CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
     CHECK(subsystem);
 
     FUpdateFunction function = std::bind(&CComponent::Update, this, std::placeholders::_1);
@@ -36,7 +36,7 @@ void CComponent::BeginPlay()
 
 void CComponent::EndPlay()
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK(subsystem);
 
 	subsystem->DeleteData(m_UpdateGroup, m_ProcessorHandle);
@@ -46,7 +46,7 @@ void CComponent::EndPlay()
 
 void CComponent::ReserveKill()
 {
-	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdaterSubsystemEdit();
+	CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();
 	CHECK(subsystem);
 
 	FOnceExecuteFunction function = std::bind(&CComponent::EndPlay, this);

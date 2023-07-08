@@ -88,6 +88,19 @@ bool CPmdModelComponent::Update(float _DeltaTime)
 {
 	bool result = Super::Update(_DeltaTime);
 
+#ifdef VMD_SKELETON_TEST
+	//PRINT("Print DeltaTime %f\n", _DeltaTime);
+	if (!m_Skeleton->IsPlay())
+	{
+		m_Skeleton->PlayAnimation();
+	}
+	
+	if(m_Skeleton->IsPlay())
+	{
+		m_Skeleton->MotionUpdate(_DeltaTime);
+	}
+#endif
+
 	result &= SetTransform();
 
 	return result;
@@ -306,6 +319,7 @@ bool CPmdModelComponent::SetTransform()
 	data.LightColor = light->GetColor();
 
 	CHECK_RESULT_FALSE(m_Skeleton);
+
 	auto startBone = m_Skeleton->GetBoneMatrices()->data();
 	auto boneMatSize = m_Skeleton->GetBoneMatricesSize();
 	memcpy_s(data.BoneMatrices, BoneMatricesSize, startBone, boneMatSize);

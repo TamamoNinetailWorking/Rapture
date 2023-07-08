@@ -8,6 +8,8 @@
 #include <rapture/app_manager/app_manager.h>
 #include <eden/include/system/window/window.h>
 
+#include <Imgui/imgui.h>
+
 using namespace EDENS_NAMESPACE;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cmd)
@@ -28,8 +30,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine
 	return 0;
 }
 
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+	{
+		return true;
+	}
+
 	return CAppManager::GetInstance().GetWindow()->MsgProc(hWnd,uMsg,wParam,lParam);
 }

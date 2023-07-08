@@ -60,11 +60,58 @@ const FVmdKeyFrameData* CVmdMotionResource::GetContinuumMotionData(const Hash160
 	return itr->second;
 }
 
-const FVmdMotionPerKeyFrame* CVmdMotionResource::FindMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const
+const FVmdMotionPerKeyFrame* CVmdMotionResource::FindCurrentMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const
 {
-	const FVmdKeyFrameData* motionData = GetContinuumMotionData(_Hash);
+	//const FVmdKeyFrameData* motionData = GetContinuumMotionData(_Hash);
+	//auto itr = m_MotionList.find(_Hash);
+	//if (itr == m_MotionList.end()) { return nullptr; }
+	//const FVmdKeyFrameData* motionData =  itr->second;
+	//if (motionData == nullptr) { return nullptr; }
+	//
+	//auto findItr = std::find_if(
+	//	motionData->rbegin(),
+	//	motionData->rend(),
+	//	[_KeyFrame](const FVmdMotionPerKeyFrame* _Motion)
+	//	{
+	//		if (_Motion == nullptr) { return false; }
+	//		return _Motion->FrameNo <= _KeyFrame;
+	//	});
+	//if (findItr == motionData->rend()) { return nullptr; }
+
+	//return (*findItr);
+
+	FindCondition findCondition = [_KeyFrame](const FVmdMotionPerKeyFrame* _Motion)
+	{
+		if (_Motion == nullptr) { return false; }
+		return _Motion->FrameNo <= _KeyFrame;
+	};
+
+	return FindMotionData(_Hash, _KeyFrame, findCondition);
+}
+
+const FVmdMotionPerKeyFrame* CVmdMotionResource::FindNextMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const
+{
+	FindCondition findCondition = [_KeyFrame](const FVmdMotionPerKeyFrame* _Motion)
+	{
+		if (_Motion == nullptr) { return false; }
+		return _Motion->FrameNo < _KeyFrame;
+	};
+
+	//return FindMotionData(_Hash,_KeyFrame,findCondition);
+
+	auto itr = m_MotionList.find(_Hash);
+	if (itr == m_MotionList.end()) { return nullptr; }
+	const FVmdKeyFrameData* motionData = itr->second;
 	if (motionData == nullptr) { return nullptr; }
-	return motionData->at(_KeyFrame);
+
+	auto findItr = std::find_if(
+		motionData->rbegin(),
+		motionData->rend(),
+		findCondition);
+	auto revItrBase = findItr.base();
+	if (revItrBase == motionData->end()) { return nullptr; }
+
+	return (*revItrBase);
 }
 
 bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _Initializer)
@@ -84,23 +131,40 @@ bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _
 		if (m_MotionList.find(boneName) == m_MotionList.end())
 		{
 			FVmdKeyFrameData* keyFrameData = new FVmdKeyFrameData();
-			keyFrameData->resize(KeyFrameDataInitSize);
+			keyFrameData->reserve(KeyFrameDataInitSize);
 			m_MotionList[boneName] = keyFrameData;
 		}
 		FVmdKeyFrameData* keyFrameData = m_MotionList[boneName];
 
-		if (motion.FrameNo >= keyFrameData->size())
+		if (motion.FrameNo >= keyFrameData->capacity())
 		{
-			keyFrameData->resize(motion.FrameNo);
+			keyFrameData->reserve(motion.FrameNo);
 		}
 
-		//data->FrameNo = motion.FrameNo;
+		data->FrameNo = motion.FrameNo;
 		data->Quaternion = XMLoadFloat4(&(motion.Quat));
 
-		(*keyFrameData)[motion.FrameNo] = data;
+		keyFrameData->push_back(data);
+		//(*keyFrameData)[motion.FrameNo] = data;
 	}
 
 	m_ResourceName = _Initializer->Name;
 
 	return true;
+}
+
+const FVmdMotionPerKeyFrame* CVmdMotionResource::FindMotionData(const Hash160& _Hash, uint32 _KeyFrame, const FindCondition& _Finder) const
+{
+	auto itr = m_MotionList.find(_Hash);
+	if (itr == m_MotionList.end()) { return nullptr; }
+	const FVmdKeyFrameData* motionData = itr->second;
+	if (motionData == nullptr) { return nullptr; }
+
+	auto findItr = std::find_if(
+		motionData->rbegin(),
+		motionData->rend(),
+		_Finder);
+	if (findItr == motionData->rend()) { return nullptr; }
+
+	return (*findItr);
 }

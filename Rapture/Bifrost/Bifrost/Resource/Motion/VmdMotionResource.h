@@ -30,7 +30,8 @@ public:
 	void Finalize() override;
 
 	const FVmdKeyFrameData* GetContinuumMotionData(const Hash160& _Hash) const;
-	const FVmdMotionPerKeyFrame* FindMotionDataPerFrame(const Hash160& _Hash,uint32 _KeyFrame) const;
+	const FVmdMotionPerKeyFrame* FindCurrentMotionDataPerFrame(const Hash160& _Hash,uint32 _KeyFrame) const;
+	const FVmdMotionPerKeyFrame* FindNextMotionDataPerFrame(const Hash160& _Hash, uint32 _KeyFrame) const;
 
 	CVmdMotionResource();
 	~CVmdMotionResource();
@@ -39,11 +40,16 @@ private:
 
 	//typedef std::vector<FVmdMotionPerKeyFrame*> FVmdKeyFrameData;
 	typedef std::map<Hash160, FVmdKeyFrameData*> FVmdMotionList;
+	
 	FVmdMotionList m_MotionList = {};
+
+	typedef std::function<bool(const FVmdMotionPerKeyFrame*)> FindCondition;
 
 private:
 
 	bool CreateMotionList(const FVmdMotionResourceInitializer* _Initializer);
+
+	const FVmdMotionPerKeyFrame* FindMotionData(const Hash160& _Hash, uint32 _KeyFrame, const FindCondition& _Finder) const;
 
 };
 

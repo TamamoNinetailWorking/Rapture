@@ -1,5 +1,5 @@
 #include "SubsystemDominator.h"
-#include <Bifrost/Subsystem/Resource/ResourceSubsystemInterface.h>
+//#include <Bifrost/Subsystem/Resource/ResourceSubsystemInterface.h>
 
 USING_BIFROST;
 
@@ -12,7 +12,7 @@ void CSubsystemDominator::Finalize()
 {
 
 }
-
+#if 0
 void CSubsystemDominator::SetResourceSubsystem(IResourceSubsystem* _ResSubsystem)
 {
 	m_ResourceSubsystem = _ResSubsystem;
@@ -42,3 +42,4 @@ void CSubsystemDominator::SetLightSubsystem(CLightSubsystem* _LightSubsystem)
 {
 	m_LightSubsystem = _LightSubsystem;
 }
+#endif

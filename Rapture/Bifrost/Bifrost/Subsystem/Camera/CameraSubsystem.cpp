@@ -16,7 +16,7 @@ CCameraSubsystem::~CCameraSubsystem()
 {
 }
 
-bool CCameraSubsystem::Initialize()
+bool CCameraSubsystem::Initialize(const FSubsystemInitializerBase* _Initializer)
 {
 	do
 	{
