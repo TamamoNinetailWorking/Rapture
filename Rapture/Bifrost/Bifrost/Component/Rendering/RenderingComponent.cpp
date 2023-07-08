@@ -3,6 +3,8 @@
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>
 
+#include <Atlantis/Material/MaterialInterface.h>
+
 USING_BIFROST;
 
 CRenderingComponent::CRenderingComponent() : Super()
@@ -49,6 +51,11 @@ void CRenderingComponent::EndPlay()
 bool CRenderingComponent::Update(float _DeltaTime)
 {
     return RegistRenderer();
+}
+
+bool CRenderingComponent::Draw() const
+{
+    return true;
 }
 
 const BIFROST_NAMESPACE::CMeshData* CRenderingComponent::GetMeshData() const

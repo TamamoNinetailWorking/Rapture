@@ -1,6 +1,6 @@
 #include "DebugFrameRate.h"
 
-#include <Imgui/imgui.h>
+#include <Magallanica/Imgui/imgui.h>
 
 #include <Bifrost/Subsystem/UpdateInterval/UpdateIntervalSubsystem.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>

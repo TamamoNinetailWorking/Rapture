@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Subsystem/DebugWindowSubsystem.h>
+#include <Magallanica/Subsystem/DebugWindowSubsystem.h>
 
 class CDebugWindowSubsystemImpl : public MAGALLANICA_NAMESPACE::CDebugWindowSubsystem
 {

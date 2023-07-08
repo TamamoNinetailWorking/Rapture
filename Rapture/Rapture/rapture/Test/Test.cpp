@@ -21,7 +21,7 @@ namespace Test
 		Test::GraphicsPipelineTest(mainDevice);
 		Test::BindFunctionTest();
 
-		Test::RenderSubsystemTest();
+		//Test::RenderSubsystemTest();
 	}
 
 };

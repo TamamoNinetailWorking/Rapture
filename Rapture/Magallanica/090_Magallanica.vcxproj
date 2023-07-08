@@ -124,7 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;MagallanicaDefine.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;Magallanica/MagallanicaDefine.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,7 +144,7 @@
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;MagallanicaDefine.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>eden/eden_base.h;eden/eden_define.h;windows.h;Atlantis/AtlantisBase.h;Atlantis/AtlantisDefine.h;Bifrost/BifrostBase.h;Bifrost/BifrostDefine.h;Magallanica/MagallanicaDefine.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,33 +157,33 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DebugWindow\DebugWindow.h" />
-    <ClInclude Include="DebugWindow\DebugWindowInitializer.h" />
-    <ClInclude Include="Imgui\DirectX12\imgui_impl_dx12.h" />
-    <ClInclude Include="Imgui\DirectX12\imgui_impl_win32.h" />
-    <ClInclude Include="Imgui\imconfig.h" />
-    <ClInclude Include="Imgui\imgui.h" />
-    <ClInclude Include="Imgui\imgui_internal.h" />
-    <ClInclude Include="Imgui\imstb_rectpack.h" />
-    <ClInclude Include="Imgui\imstb_textedit.h" />
-    <ClInclude Include="Imgui\imstb_truetype.h" />
-    <ClInclude Include="MagallanicaDefine.h" />
-    <ClInclude Include="Subsystem\DebugSubsystemServiceLocator.h" />
-    <ClInclude Include="Subsystem\DebugWindowSubsystem.h" />
-    <ClInclude Include="Subsystem\DebugWindowSubsystemDefine.h" />
-    <ClInclude Include="Subsystem\DebugWindowSubsystemInitializer.h" />
+    <ClInclude Include="Magallanica\DebugWindow\DebugWindow.h" />
+    <ClInclude Include="Magallanica\DebugWindow\DebugWindowInitializer.h" />
+    <ClInclude Include="Magallanica\Imgui\DirectX12\imgui_impl_dx12.h" />
+    <ClInclude Include="Magallanica\Imgui\DirectX12\imgui_impl_win32.h" />
+    <ClInclude Include="Magallanica\Imgui\imconfig.h" />
+    <ClInclude Include="Magallanica\Imgui\imgui.h" />
+    <ClInclude Include="Magallanica\Imgui\imgui_internal.h" />
+    <ClInclude Include="Magallanica\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="Magallanica\Imgui\imstb_textedit.h" />
+    <ClInclude Include="Magallanica\Imgui\imstb_truetype.h" />
+    <ClInclude Include="Magallanica\MagallanicaDefine.h" />
+    <ClInclude Include="Magallanica\Subsystem\DebugSubsystemServiceLocator.h" />
+    <ClInclude Include="Magallanica\Subsystem\DebugWindowSubsystem.h" />
+    <ClInclude Include="Magallanica\Subsystem\DebugWindowSubsystemDefine.h" />
+    <ClInclude Include="Magallanica\Subsystem\DebugWindowSubsystemInitializer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DebugWindow\DebugWindow.cpp" />
-    <ClCompile Include="Imgui\DirectX12\imgui_impl_dx12.cpp" />
-    <ClCompile Include="Imgui\DirectX12\imgui_impl_win32.cpp" />
-    <ClCompile Include="Imgui\imgui.cpp" />
-    <ClCompile Include="Imgui\imgui_demo.cpp" />
-    <ClCompile Include="Imgui\imgui_draw.cpp" />
-    <ClCompile Include="Imgui\imgui_tables.cpp" />
-    <ClCompile Include="Imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Subsystem\DebugSubsystemServiceLocator.cpp" />
-    <ClCompile Include="Subsystem\DebugWindowSubsystem.cpp" />
+    <ClCompile Include="Magallanica\DebugWindow\DebugWindow.cpp" />
+    <ClCompile Include="Magallanica\Imgui\DirectX12\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Magallanica\Imgui\DirectX12\imgui_impl_win32.cpp" />
+    <ClCompile Include="Magallanica\Imgui\imgui.cpp" />
+    <ClCompile Include="Magallanica\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="Magallanica\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="Magallanica\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="Magallanica\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Magallanica\Subsystem\DebugSubsystemServiceLocator.cpp" />
+    <ClCompile Include="Magallanica\Subsystem\DebugWindowSubsystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

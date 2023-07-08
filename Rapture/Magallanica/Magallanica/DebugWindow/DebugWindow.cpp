@@ -1,6 +1,6 @@
 #include "DebugWindow.h"
 
-#include <Imgui/imgui.h>
+#include <Magallanica/Imgui/imgui.h>
 
 USING_MAGALLANICA
 

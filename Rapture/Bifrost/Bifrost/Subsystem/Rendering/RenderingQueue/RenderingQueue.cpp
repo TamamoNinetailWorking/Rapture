@@ -1,7 +1,7 @@
 #include "RenderingQueue.h"
 #include "RenderingQueueInitializer.h"
 
-#include <Bifrost/Component/RenderingComponent.h>
+#include <Bifrost/Component/Rendering/RenderingComponent.h>
 
 USING_BIFROST;
 

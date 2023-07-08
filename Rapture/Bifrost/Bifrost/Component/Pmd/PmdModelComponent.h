@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Bifrost/Component/RenderingComponent.h>
+#include <Bifrost/Component/Rendering/ModelRendering/ModelRenderingComponent.h>
 
 EDENS_NAMESPACE_BEGIN
 
@@ -19,7 +19,7 @@ struct FSceneData;
 
 class CPmdSkeleton;
 
-class CPmdModelComponent : public CRenderingComponent
+class CPmdModelComponent : public CModelRenderingComponent
 {
 public:
 
@@ -36,7 +36,7 @@ public:
 
 private:
 
-	using Super = CRenderingComponent;
+	using Super = CModelRenderingComponent;
 
 private:
 

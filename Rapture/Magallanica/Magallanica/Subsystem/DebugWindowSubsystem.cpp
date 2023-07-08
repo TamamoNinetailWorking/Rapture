@@ -2,9 +2,9 @@
 #include "DebugWindowSubsystemInitializer.h"
 #include "DebugWindowSubsystemDefine.h"
 
-#include <Imgui/imgui.h>
-#include <Imgui/DirectX12/imgui_impl_win32.h>
-#include <Imgui/DirectX12/imgui_impl_dx12.h>
+#include <Magallanica/Imgui/imgui.h>
+#include <Magallanica/Imgui/DirectX12/imgui_impl_win32.h>
+#include <Magallanica/Imgui/DirectX12/imgui_impl_dx12.h>
 #include <d3d12.h>
 
 #include <Atlantis/RHIProccessor/RHIProcessor.h>
@@ -15,7 +15,7 @@
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>
 #include <Atlantis/DirectX12/Command/CommandContext.h>
 
-#include <DebugWindow/DebugWindow.h>
+#include <Magallanica/DebugWindow/DebugWindow.h>
 
 #include <eden/include/utility/ender_utility.h>
 

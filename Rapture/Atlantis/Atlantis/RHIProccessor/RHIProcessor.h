@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Atlantis/DirectX12/DirectXPaste.h>
+
 ATLANTIS_NAMESPACE_BEGIN
 
 class CDX12MainDevice;
@@ -12,6 +14,10 @@ class CBarrier;
 #ifdef ATLANTIS_DEBUG
 class CDirectXDebug;
 #endif
+
+class CVertexBuffer;
+class CIndexBuffer;
+class IMaterialInterface;
 
 struct FRHIProcessorInitialize;
 
@@ -39,6 +45,19 @@ public:
 
 	CRHIProcessor();
 	~CRHIProcessor();
+
+public:
+
+	uint64 GetDescriptorHandleIncrementSize(Glue::EDescriptorHeapType _HeapType);
+
+	bool SetPrimitiveTopology(Glue::EPrimitiveTopology _Topology);
+	void SetVertexBuffer(const CVertexBuffer* _VertexBuffer);
+	void SetIndexBuffer(const CIndexBuffer* _IndexBuffer);
+	void SetGraphicsPipeline(const IMaterialInterface* _Material);
+	bool SetDescriptorHeaps(uint32 _Num, ID3D12DescriptorHeap* _DescHeap);
+	bool SetGraphicsRootDescriptorTable(uint32 _Offset,uint64 _Handle);
+
+	bool DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset);
 
 private:
 

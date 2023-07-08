@@ -100,6 +100,12 @@
     <Filter Include="Bifrost\Level">
       <UniqueIdentifier>{999be2a0-908f-4d1b-850a-4b724f1361a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Component\Rendering">
+      <UniqueIdentifier>{7c24fb02-21e2-4817-a978-d442d90b9ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Component\Rendering\ModelRendering">
+      <UniqueIdentifier>{fe7de423-4fc8-48f2-be1c-224705a1ef77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -194,9 +200,6 @@
     </ClInclude>
     <ClInclude Include="Bifrost\Subsystem\Updater\UpdateGroupDefine.h">
       <Filter>Bifrost\Subsystem\Updater</Filter>
-    </ClInclude>
-    <ClInclude Include="Bifrost\Component\RenderingComponent.h">
-      <Filter>Bifrost\Component</Filter>
     </ClInclude>
     <ClInclude Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.h">
       <Filter>Bifrost\Subsystem\Rendering</Filter>
@@ -339,6 +342,12 @@
     <ClInclude Include="Bifrost\Level\LevelBase.h">
       <Filter>Bifrost\Level</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Component\Rendering\RenderingComponent.h">
+      <Filter>Bifrost\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.h">
+      <Filter>Bifrost\Component\Rendering\ModelRendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -395,9 +404,6 @@
     <ClCompile Include="Bifrost\Subsystem\Updater\UpdateProcessorSubsystem.cpp">
       <Filter>Bifrost\Subsystem\Updater</Filter>
     </ClCompile>
-    <ClCompile Include="Bifrost\Component\RenderingComponent.cpp">
-      <Filter>Bifrost\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Bifrost\Subsystem\Rendering\RenderingSubsystem.cpp">
       <Filter>Bifrost\Subsystem\Rendering</Filter>
     </ClCompile>
@@ -451,6 +457,12 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Level\LevelBase.cpp">
       <Filter>Bifrost\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Rendering\RenderingComponent.cpp">
+      <Filter>Bifrost\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.cpp">
+      <Filter>Bifrost\Component\Rendering\ModelRendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

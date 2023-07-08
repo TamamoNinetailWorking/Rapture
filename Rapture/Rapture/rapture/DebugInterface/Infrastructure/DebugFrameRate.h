@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DebugWindow/DebugWindow.h>
+#include <Magallanica/DebugWindow/DebugWindow.h>
 
 class CDebugFrameRate : public MAGALLANICA_NAMESPACE::CDebugWindow
 {
@@ -11,7 +11,5 @@ public:
 protected:
 
 	void ShowWindowImpl(float _DeltaTime) override;
-
-
 
 };

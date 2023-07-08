@@ -267,6 +267,66 @@ namespace Glue
     };
 
     const D3D12_SHADER_VISIBILITY GetShaderVisibility(EShaderVisibility _Visibility);
+
+    enum class EPrimitiveTopology
+    {
+        UNDEFINED = 0,
+        POINTLIST = 1,
+        LINELIST = 2,
+        LINESTRIP = 3,
+        TRIANGLELIST = 4,
+        TRIANGLESTRIP = 5,
+        LINELIST_ADJ = 10,
+        LINESTRIP_ADJ = 11,
+        TRIANGLELIST_ADJ = 12,
+        TRIANGLESTRIP_ADJ = 13,
+        //CONTROL_POINT_PATCHLIST = 33,
+        //CONTROL_POINT_PATCHLIST = 34,
+        //CONTROL_POINT_PATCHLIST = 35,
+        //CONTROL_POINT_PATCHLIST = 36,
+        //CONTROL_POINT_PATCHLIST = 37,
+        //CONTROL_POINT_PATCHLIST = 38,
+        //CONTROL_POINT_PATCHLIST = 39,
+        //CONTROL_POINT_PATCHLIST = 40,
+        //CONTROL_POINT_PATCHLIST = 41,
+        //CONTROL_POINT_PATCHLIST = 42,
+        //CONTROL_POINT_PATCHLIST = 43,
+        //CONTROL_POINT_PATCHLIST = 44,
+        //CONTROL_POINT_PATCHLIST = 45,
+        //CONTROL_POINT_PATCHLIST = 46,
+        //CONTROL_POINT_PATCHLIST = 47,
+        //CONTROL_POINT_PATCHLIST = 48,
+        //CONTROL_POINT_PATCHLIST = 49,
+        //CONTROL_POINT_PATCHLIST = 50,
+        //CONTROL_POINT_PATCHLIST = 51,
+        //CONTROL_POINT_PATCHLIST = 52,
+        //CONTROL_POINT_PATCHLIST = 53,
+        //CONTROL_POINT_PATCHLIST = 54,
+        //CONTROL_POINT_PATCHLIST = 55,
+        //CONTROL_POINT_PATCHLIST = 56,
+        //CONTROL_POINT_PATCHLIST = 57,
+        //CONTROL_POINT_PATCHLIST = 58,
+        //CONTROL_POINT_PATCHLIST = 59,
+        //CONTROL_POINT_PATCHLIST = 60,
+        //CONTROL_POINT_PATCHLIST = 61,
+        //CONTROL_POINT_PATCHLIST = 62,
+        //CONTROL_POINT_PATCHLIST = 63,
+        //CONTROL_POINT_PATCHLIST = 64,
+    };
+
+    const D3D12_PRIMITIVE_TOPOLOGY GetPrimitiveTopology(EPrimitiveTopology _Topology);
+
+    enum class EDescriptorHeapType
+    {
+        CBV_SRV_UAV = 0,
+        SAMPLER = (CBV_SRV_UAV + 1),
+        RTV = (SAMPLER + 1),
+        DSV = (RTV + 1),
+
+        NUM_TYPES,
+    };
+
+    const D3D12_DESCRIPTOR_HEAP_TYPE GetDescriptorHeapType(EDescriptorHeapType _HeapType);
 };
 
 

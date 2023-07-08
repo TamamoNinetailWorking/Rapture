@@ -44,7 +44,7 @@ CPmdModelComponent::CPmdModelComponent() : Super()
 
 CPmdModelComponent::~CPmdModelComponent()
 {
-	Super::~CRenderingComponent();
+	CRenderingComponent::~CRenderingComponent();
 }
 
 bool CPmdModelComponent::Initialize(const FComponentInitializerBase* _Initializer)

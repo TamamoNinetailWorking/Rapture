@@ -16,6 +16,8 @@
 #include <Atlantis/DirectX12/SwapChain/SwapChain.h>
 #include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
 
+#include <Atlantis/Material/MaterialInterface.h>
+
 USING_ATLANTIS;
 
 ATLANTIS_NAMESPACE::CRHIProcessor::CRHIProcessor()
@@ -114,6 +116,70 @@ void ATLANTIS_NAMESPACE::CRHIProcessor::RenderEnd(const CRHIRenderTargetView* _R
 	m_CommandContext->Reset();
 
 	_RTV->GetSwapChain()->Present();
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::SetPrimitiveTopology(Glue::EPrimitiveTopology _Topology)
+{
+	ID3D12GraphicsCommandList* CmdList = m_CommandContext->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	CmdList->IASetPrimitiveTopology(Glue::GetPrimitiveTopology(_Topology));
+
+	return true;
+}
+
+uint64 ATLANTIS_NAMESPACE::CRHIProcessor:: GetDescriptorHandleIncrementSize(Glue::EDescriptorHeapType _HeapType)
+{
+	return m_Device->GetDevice()->GetDescriptorHandleIncrementSize(Glue::GetDescriptorHeapType( _HeapType));
+}
+
+void ATLANTIS_NAMESPACE::CRHIProcessor::SetVertexBuffer(const CVertexBuffer* _VertexBuffer)
+{
+	m_CommandContext->SetVertexBuffer(_VertexBuffer);
+}
+
+void ATLANTIS_NAMESPACE::CRHIProcessor::SetIndexBuffer(const CIndexBuffer* _IndexBuffer)
+{
+	m_CommandContext->SetIndexBuffer(_IndexBuffer);
+}
+
+void ATLANTIS_NAMESPACE::CRHIProcessor::SetGraphicsPipeline(const IMaterialInterface* _Material)
+{
+	m_CommandContext->SetPipelineState(_Material->GetGraphicsPipeline());
+	m_CommandContext->SetRootSignature(_Material->GetRootSignature());
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::SetDescriptorHeaps(uint32 _Num, ID3D12DescriptorHeap* _DescHeap)
+{
+	ID3D12GraphicsCommandList* CmdList = m_CommandContext->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	CmdList->SetDescriptorHeaps(_Num, &_DescHeap);
+
+	return true;
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::SetGraphicsRootDescriptorTable(uint32 _Offset,uint64 _Handle)
+{
+	ID3D12GraphicsCommandList* CmdList = m_CommandContext->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	D3D12_GPU_DESCRIPTOR_HANDLE handle = {};
+	handle.ptr = _Handle;
+
+	CmdList->SetGraphicsRootDescriptorTable(_Offset, handle);
+
+	return true;
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset)
+{
+	ID3D12GraphicsCommandList* CmdList = m_CommandContext->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	CmdList->DrawIndexedInstanced(_CurrentIndex, 1, _IndexOffset, 0, 0);
+	
+	return true;
 }
 
 #ifdef ATLANTIS_DEBUG

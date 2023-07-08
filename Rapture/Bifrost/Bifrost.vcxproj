@@ -41,7 +41,8 @@
     <ClInclude Include="Bifrost\Component\Light\LightComponentManager.h" />
     <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponent.h" />
     <ClInclude Include="Bifrost\Component\Pmd\PmdModelComponentInitializer.h" />
-    <ClInclude Include="Bifrost\Component\RenderingComponent.h" />
+    <ClInclude Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.h" />
+    <ClInclude Include="Bifrost\Component\Rendering\RenderingComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformDefine.h" />
     <ClInclude Include="Bifrost\Level\LevelBase.h" />
@@ -108,7 +109,8 @@
     <ClCompile Include="Bifrost\Component\Component.cpp" />
     <ClCompile Include="Bifrost\Component\Light\LightComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Pmd\PmdModelComponent.cpp" />
-    <ClCompile Include="Bifrost\Component\RenderingComponent.cpp" />
+    <ClCompile Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.cpp" />
+    <ClCompile Include="Bifrost\Component\Rendering\RenderingComponent.cpp" />
     <ClCompile Include="Bifrost\Component\Transform\TransformComponent.cpp" />
     <ClCompile Include="Bifrost\Level\LevelBase.cpp" />
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp" />

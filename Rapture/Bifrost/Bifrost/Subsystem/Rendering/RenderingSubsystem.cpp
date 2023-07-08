@@ -15,7 +15,7 @@
 #include <Atlantis/DirectX12/Command/CommandContext.h>
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 
-#include <Bifrost/Component/RenderingComponent.h>
+#include <Bifrost/Component/Rendering/RenderingComponent.h>
 #include <Atlantis/Material/MaterialInterface.h>
 #include <Bifrost/Model/MeshData/MeshData.h>
 #include <Atlantis/DirectX12/VertexBuffer/VertexBuffer.h>
@@ -153,6 +153,54 @@ void CRenderingSubsystem::SortQueue()
 	// ソート処理が必要になったら入れる
 }
 
+bool CRenderingSubsystem::SetPrimitiveTopology(Glue::EPrimitiveTopology _Topology)
+{
+	return m_Processor->SetPrimitiveTopology(_Topology);
+}
+
+bool CRenderingSubsystem::SetMeshData(const CMeshData* _Mesh)
+{
+	CHECK_RESULT_FALSE(_Mesh);
+	m_Processor->SetVertexBuffer(_Mesh->GetVertexBuffer());
+	m_Processor->SetIndexBuffer(_Mesh->GetIndexBuffer());
+
+	return true;
+}
+
+bool CRenderingSubsystem::SetMaterialInterface(const IMaterialInterface* _Material)
+{
+	CHECK_RESULT_FALSE(_Material);
+	m_Processor->SetGraphicsPipeline(_Material);
+
+	auto bufDescHeap = _Material->GetDescriptorHeap();
+	auto bufHeapHandle = bufDescHeap->GetGPUDescriptorHandleForHeapStart();
+	CHECK_RESULT_FALSE(m_Processor->SetDescriptorHeaps(1, bufDescHeap));
+	CHECK_RESULT_FALSE(SetGraphicsRootDescriptorTable(0,bufHeapHandle.ptr));
+
+	return true;
+}
+
+bool CRenderingSubsystem::SetGraphicsRootDescriptorTable(uint32 _Offset, uint64 _HeapHandle)
+{
+	return m_Processor->SetGraphicsRootDescriptorTable(_Offset, _HeapHandle);
+}
+
+uint64 CRenderingSubsystem::GetMaterialHeapHandle(const IMaterialInterface* _Material)
+{
+	if (!_Material) { return 0; };
+	
+	auto matHeapHandle = _Material->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	matHeapHandle.ptr += m_Processor->GetDescriptorHandleIncrementSize(Glue::EDescriptorHeapType::CBV_SRV_UAV);
+
+	return matHeapHandle.ptr;
+}
+
+bool CRenderingSubsystem::DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset)
+{
+	return m_Processor->DrawIndexedInstanced(_CurrentIndex, _IndexOffset);
+}
+
 void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
 {
 	CHECK(_Queue);
@@ -169,7 +217,9 @@ void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
 	{
 		auto elem = _Queue->GetRenderData(index);
 
-		
+		elem->Draw();
+
+#if 0
 		// ここはせめてCmdListを表に出さない形に直さないといけないだろう
 		// >>CommandContextの処理の方を
 		CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -213,7 +263,33 @@ void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
 			indexOffset += currentIndex;
 			matHeapHandle.ptr += heapStride;
 		}
+#endif
+#if 0
+		SetPrimitiveTopology(Glue::EPrimitiveTopology::TRIANGLELIST);
 
+		SetMeshData(elem->GetMeshData());
+
+		auto material = elem->GetMaterialInterface();
+
+		SetMaterialInterface(elem->GetMaterialInterface());
+
+		auto heapStride = material->GetHeapStride();
+
+		// MaterialBuffer
+		uint64 handle = GetMaterialHeapHandle(material);
+
+		uint32 indexOffset = 0;
+		for (uint32 count = 0; count < material->GetMaterialNum(); ++count)
+		{
+			uint32 currentIndex = material->GetDrawIndex(count);
+
+			SetGraphicsRootDescriptorTable(1, handle);
+			DrawIndexedInstanced(currentIndex, indexOffset);
+
+			indexOffset += currentIndex;
+			handle += heapStride;
+		}
+#endif
 	}
 }
 

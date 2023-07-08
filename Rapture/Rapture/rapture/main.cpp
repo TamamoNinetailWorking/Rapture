@@ -8,7 +8,7 @@
 #include <rapture/app_manager/app_manager.h>
 #include <eden/include/system/window/window.h>
 
-#include <Imgui/imgui.h>
+#include <Magallanica/Imgui/imgui.h>
 
 using namespace EDENS_NAMESPACE;
 

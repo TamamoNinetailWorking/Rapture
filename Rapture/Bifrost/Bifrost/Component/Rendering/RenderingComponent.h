@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.h"
+#include <Bifrost/Component/Component.h>
 #include <Bifrost/Subsystem/Rendering/RenderGroupDefine.h>
 
 ATLANTIS_NAMESPACE_BEGIN
@@ -26,9 +26,10 @@ public:
 
 	virtual bool Update(float _DeltaTime) override;
 
+	virtual bool Draw() const;
+
 	const BIFROST_NAMESPACE::CMeshData* GetMeshData() const;
 	const ATLANTIS_NAMESPACE::IMaterialInterface* GetMaterialInterface() const;
-
 
 
 	ERenderGroup GetRenderGroup() const;

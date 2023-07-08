@@ -3,11 +3,14 @@
 #include "RenderGroupDefine.h"
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 
+#include <Atlantis/DirectX12/DirectXPaste.h>
+
 ATLANTIS_NAMESPACE_BEGIN
 
 class CRHIProcessor;
 class CRHIRenderTargetView;
 class CSceneView;
+class IMaterialInterface;
 
 ATLANTIS_NAMESPACE_END
 
@@ -21,6 +24,8 @@ class CRenderingComponent;
 struct FSubsystemInitializerBase;
 struct FRenderingSubsystemInitializer;
 
+class CMeshData;
+
 class CRenderingSubsystem : public CSubsystemBase
 {
 public:
@@ -30,6 +35,7 @@ public:
 	using SceneView = ATLANTIS_NAMESPACE::CSceneView;
 	using RenderingQueue = BIFROST_NAMESPACE::CRenderingQueue;
 
+public:
 
 	bool Initialize(const FSubsystemInitializerBase* _Initializer);
 	void Finalize();
@@ -42,7 +48,11 @@ public:
 	void Rendering();
 	void RenderEnd();
 
-	
+	CRenderingSubsystem();
+	~CRenderingSubsystem();
+
+public:
+
 	const Processor* GetProcessor() const;
 	Processor* GetProcessorEdit() const;
 
@@ -53,8 +63,14 @@ public:
 	SceneView* GetSceneViewEdit() const;
 
 
-	CRenderingSubsystem();
-	~CRenderingSubsystem();
+public:
+
+	bool SetPrimitiveTopology(ATLANTIS_NAMESPACE::Glue::EPrimitiveTopology _Topology);
+	bool SetMeshData(const CMeshData* _Mesh);
+	bool SetMaterialInterface(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
+	bool SetGraphicsRootDescriptorTable(uint32 _Offset, uint64 _HeapHandle);
+	uint64 GetMaterialHeapHandle(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
+	bool DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset);
 
 private:
 

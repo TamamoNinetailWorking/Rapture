@@ -30,10 +30,10 @@
 #include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
 #include <Bifrost/Subsystem/Light/LightSubsystem.h>
 
-#include <Subsystem/DebugSubsystemServiceLocator.h>
+#include <Magallanica/Subsystem/DebugSubsystemServiceLocator.h>
 //#include <Subsystem/DebugWindowSubsystem.h>
 #include <rapture/DebugInterface/Main/DebugWindowSubsystemImpl.h>
-#include <Subsystem/DebugWindowSubsystemInitializer.h>
+#include <Magallanica/Subsystem/DebugWindowSubsystemInitializer.h>
 
 #include <rapture/Environment/ResourceTypeDefine.h>
 #include <Bifrost/Resource/DefaultResourceDefine.h>
