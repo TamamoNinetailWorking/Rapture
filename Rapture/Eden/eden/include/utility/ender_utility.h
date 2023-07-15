@@ -8,6 +8,11 @@
 
 EDENS_NAMESPACE_BEGIN
 
+/**
+ * @brief ポインタの削除とダングリング化防止
+ * 
+ * \param[in] p 削除するポインタ
+ */
 template <class T>
 inline void Delete(T*& p)
 {
@@ -18,6 +23,12 @@ inline void Delete(T*& p)
 	p = nullptr;
 }
 
+/**
+ * @brief ポインタの解放とダングリング化防止
+ *
+ * \param[in] p 解放するポインタ
+ * @details DirectX12オブジェクトなどで使用する
+ */
 template <class T>
 inline void Release(T*& p)
 {
@@ -28,6 +39,11 @@ inline void Release(T*& p)
 	p = nullptr;
 }
 
+/**
+ * @brief　終了処理とダングリング化防止
+ * 
+ * \param[in] p 終了処理するポインタ
+ */
 template <class T>
 inline void Exit(T*& p)
 {
@@ -38,6 +54,11 @@ inline void Exit(T*& p)
 	p = nullptr;
 }
 
+/**
+ * @brief 終了処理とユニークポインタのリセット
+ * 
+ * \param[in] p 終了処理するユニークポインタ
+ */
 template <class T>
 inline void FinalizePtr(T& p)
 {
@@ -48,6 +69,11 @@ inline void FinalizePtr(T& p)
 	}
 }
 
+/**
+ * @brief ユニークポインタのリセット
+ *
+ * \param[in] p ユニークポインタ
+ */
 template <class T>
 inline void ResetPtr(T& p)
 {
@@ -57,6 +83,11 @@ inline void ResetPtr(T& p)
 	}
 }
 
+/**
+ * @brief　終了処理とダングリング化防止
+ *
+ * \param[in] p 終了処理するポインタ
+ */
 template <class T>
 inline void FinalizeObject(T& p)
 {
@@ -68,6 +99,11 @@ inline void FinalizeObject(T& p)
 	p = nullptr;
 }
 
+/**
+ * @brief　配列の削除とダングリング化防止
+ *
+ * \param[in] p 削除する配列ポインタ
+ */
 template <class T>
 inline void DeleteArray(T*& p)
 {
@@ -78,7 +114,11 @@ inline void DeleteArray(T*& p)
 	p = nullptr;
 }
 
-
+/**
+ * @brief　解放の削除とダングリング化防止
+ *
+ * \param[in] p 解放する配列ポインタ
+ */
 template <class T>
 inline void ReleasePtr(T& _Ptr)
 {

@@ -14,7 +14,8 @@ EDENS_NAMESPACE_BEGIN
 
 
 /*
-*	フレームレート管理
+*	@brief フレームレート管理クラス
+*	@note 旧システムの一部のため、現在は使用していない
 */
 class CFrameRateManager : public CSingleton<CFrameRateManager>
 {
