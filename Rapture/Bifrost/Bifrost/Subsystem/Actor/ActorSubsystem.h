@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 
@@ -20,12 +20,15 @@ public:
 	template <class Actor>
 	Actor* CreateActor(const FActorInitializerBase* _Initializer = nullptr);
 
+	template<class Actor>
+	Actor* SearchActor(const Hash160& _Name);
+
 	void DeleteActor(const Hash160& _Name);
 	void DeleteActor(const CActor* _Actor);
 
 	void DestroyActors();
 
-	// Actor‚É‘Î‚µ‚ÄƒƒbƒZ[ƒW‚ğ‘—M‚·‚é‚æ‚¤‚ÈƒVƒXƒeƒ€‚à‚±‚±‚ÉÚ‚¹‚ç‚ê‚»‚¤
+	// Actorã«å¯¾ã—ã¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹ã‚ˆã†ãªã‚·ã‚¹ãƒ†ãƒ ã‚‚ã“ã“ã«è¼‰ã›ã‚‰ã‚Œãã†
 
 	const CActorManager* GetsActorManager() const;
 	CActorManager* GetActorManagerEdit() const;

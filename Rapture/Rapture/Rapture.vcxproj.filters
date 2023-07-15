@@ -37,6 +37,9 @@
     <Filter Include="rapture\Level">
       <UniqueIdentifier>{660860f2-9a9e-4ea2-9e5d-1b68d5ce1ad6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapture\DebugInterface\PostEffect">
+      <UniqueIdentifier>{c6a1fe6d-6ec8-44f6-a7a5-23c1b50e456b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rapture\main.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="rapture\Level\ExperimentationLevel.cpp">
       <Filter>rapture\Level</Filter>
     </ClCompile>
+    <ClCompile Include="rapture\DebugInterface\PostEffect\DebugPostEffect.cpp">
+      <Filter>rapture\DebugInterface\PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rapture\app_manager\app_manager.h">
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="rapture\Level\ExperimentationLevel.h">
       <Filter>rapture\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="rapture\DebugInterface\PostEffect\DebugPostEffect.h">
+      <Filter>rapture\DebugInterface\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

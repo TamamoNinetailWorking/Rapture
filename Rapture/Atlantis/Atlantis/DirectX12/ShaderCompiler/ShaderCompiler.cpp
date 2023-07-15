@@ -1,4 +1,4 @@
-#include "ShaderCompiler.h"
+ï»¿#include "ShaderCompiler.h"
 #include <Atlantis/DirectX12/Shader/ShaderData.h>
 
 #include <Atlantis/Utility/FileUtility/FileTypeDefine.h>
@@ -113,7 +113,7 @@ bool CShaderCompiler::Impl::CompileShaderFromMemory(FShaderData* _DestData, cons
 	{
 		if (result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
 		{
-			PRINT("ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñB");
+			PRINT("ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚");
 		}
 		else
 		{
@@ -170,13 +170,13 @@ bool CShaderCompiler::Impl::CompileShaderFromFile(FShaderData* _DestData, const 
 	{
 		if (result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
 		{
-			PRINT("ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñB\n");
+			PRINT("ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚\n");
 		}
 		else
 		{
 			if (errorBlob == nullptr)
 			{
-				PRINT("ƒtƒ@ƒCƒ‹Œ`®‚Å’e‚©‚ê‚Ä‚¢‚éH %s\n",m_FileName.c_str());
+				PRINT("ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã§å¼¾ã‹ã‚Œã¦ã„ã‚‹ï¼Ÿ %s\n",m_FileName.c_str());
 				return false;
 			}
 			string errorString;

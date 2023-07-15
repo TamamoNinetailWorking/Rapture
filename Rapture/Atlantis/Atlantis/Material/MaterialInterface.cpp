@@ -1,4 +1,4 @@
-#include "MaterialInterface.h"
+﻿#include "MaterialInterface.h"
 #include "MaterialInterfaceInitializer.h"
 
 #include <d3d12.h>

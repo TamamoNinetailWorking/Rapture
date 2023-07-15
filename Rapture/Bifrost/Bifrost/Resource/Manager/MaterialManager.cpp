@@ -1,4 +1,4 @@
-#include "MaterialManager.h"
+﻿#include "MaterialManager.h"
 #include <Bifrost/Resource/Material/MaterialInitializerBase.h>
 
 #include <Bifrost/Model/Pmd/PmdMaterialResource.h>

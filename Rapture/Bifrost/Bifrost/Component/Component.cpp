@@ -1,4 +1,4 @@
-#include <Bifrost/Component/Component.h>
+﻿#include <Bifrost/Component/Component.h>
 
 #include <Bifrost/Actor/Actor.h>
 
@@ -22,9 +22,9 @@ void CComponent::BeginPlay()
 {
     //-----------------------
 	// 
-	// ����AComponent��BeginPlay�ɂ�点�Đe���ĂԌ`�ɂ���
-	// >>����Update�̊֐��|�C���^�̕������|�����[�t�B�Y���ɑΉ��ł��邩�������̂ŁA
-	// �@�R���\�[���Ƃ��ň�x�e�X�g�����ق���������������Ȃ�
+	// これ、ComponentのBeginPlayにやらせて親を呼ぶ形にする
+	// >>ただUpdateの関数ポインタの部分がポリモーフィズムに対応できるか怪しいので、
+	// 　コンソールとかで一度テストしたほうがいいかもしれない
 	// 
 	//-----------------------
     CUpdateProcessorSubsystem* subsystem = CSubsystemServiceLocator::GetUpdateProcessorSubsystemEdit();

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Component/Rendering/ModelRendering/ModelRenderingComponent.h>
 

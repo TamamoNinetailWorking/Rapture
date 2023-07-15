@@ -1,4 +1,4 @@
-#include "UpdateProcessorSubsystem.h"
+﻿#include "UpdateProcessorSubsystem.h"
 #include "UpdateProcessor.h"
 #include <Bifrost/Subsystem/Updater/OnceExecuter/OnceExecuteProcessor.h>
 

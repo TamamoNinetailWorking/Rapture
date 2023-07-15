@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <eden/include/Resource/ResourceInitializer.h>
 #include <Atlantis/DirectX12/DirectXPaste.h>

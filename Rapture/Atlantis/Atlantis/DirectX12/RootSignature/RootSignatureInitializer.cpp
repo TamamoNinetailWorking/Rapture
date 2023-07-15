@@ -1,10 +1,10 @@
-#include "RootSignatureInitializer.h"
+ï»¿#include "RootSignatureInitializer.h"
 
 USING_ATLANTIS;
 
 FRootParameterInitializer::FRootParameterInitializer()
 {
-	// Œˆ‚ß‘Å‚¿‚Å¡‘‚¢‚Ä‚é
+	// æ±ºã‚æ‰“ã¡ã§ä»Šæ›¸ã„ã¦ã‚‹
 	m_RootParameter.reserve(10);
 }
 

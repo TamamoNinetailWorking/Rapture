@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Component/Rendering/RenderingComponent.h>
 
@@ -9,6 +9,10 @@ class CModelRenderingComponent : public CRenderingComponent
 private:
 
 	using Super = CRenderingComponent;
+
+public:
+
+	CModelRenderingComponent();
 
 public:
 

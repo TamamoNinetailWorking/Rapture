@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //#include <Atlantis/DirectX12/DirectXPaste.h>
 #include <Atlantis/DirectX12/GlueMath.h>
@@ -19,7 +19,7 @@ struct FPmdVertex
 	uint16 BoneNo[BoneNoLength] = {};
 	uint8 BoneWeight = {};
 	uint8 EdgeFlag = {};
-	uint16 padding = {};	// ƒf[ƒ^‚Ì‹l‚ß•û‚Ì‚¹‚¢‚Å4ByteƒAƒ‰ƒCƒ“‚¾‚ÆƒpƒfƒBƒ“ƒO‚ª”­¶‚·‚é
+	uint16 padding = {};	// ãƒ‡ãƒ¼ã‚¿ã®è©°ã‚æ–¹ã®ã›ã„ã§4Byteã‚¢ãƒ©ã‚¤ãƒ³ã ã¨ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ãŒç™ºç”Ÿã™ã‚‹
 };
 
 struct FPmdMaterialData

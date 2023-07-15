@@ -1,4 +1,4 @@
-#include <functional>
+﻿#include <functional>
 
 namespace Test
 {

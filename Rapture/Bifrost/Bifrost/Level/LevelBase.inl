@@ -1,4 +1,4 @@
-#include <Bifrost/Actor/ActorInitializerBase.h>
+﻿#include <Bifrost/Actor/ActorInitializerBase.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Actor/ActorSubsystem.h>
 
@@ -12,8 +12,8 @@ Actor* CLevelBase::SpawnActor(const Hash160& _Name, const FActorInitializerBase*
 	CActorSubsystem* subsystem = CSubsystemServiceLocator::GetActorSubsystemEdit();
 	if (!subsystem) { return nullptr; };
 
-	FActorInitializerBase* initializer = nullptr;
-	Actor* actor = subsystem->CreateActor<Actor>(initializer);
+	//FActorInitializerBase* initializer = nullptr;
+	Actor* actor = subsystem->CreateActor<Actor>(_Initializer);
 
 	Hash160 hash = _Name;
 	if (m_ActorList.find(_Name) != m_ActorList.end())

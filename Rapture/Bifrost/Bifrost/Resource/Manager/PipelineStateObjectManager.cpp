@@ -1,4 +1,4 @@
-#include "PipelineStateObjectManager.h"
+﻿#include "PipelineStateObjectManager.h"
 
 #include <Bifrost/Resource/PSO/PipelineStateObject.h>
 

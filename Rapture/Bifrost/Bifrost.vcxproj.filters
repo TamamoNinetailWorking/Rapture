@@ -106,6 +106,21 @@
     <Filter Include="Bifrost\Component\Rendering\ModelRendering">
       <UniqueIdentifier>{fe7de423-4fc8-48f2-be1c-224705a1ef77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bifrost\Component\Rendering\PostEffect">
+      <UniqueIdentifier>{b088b733-6591-486a-a8b0-512ebd4fb30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\RenderTarget">
+      <UniqueIdentifier>{d07bbd66-1e57-4902-9fc7-f5c23da088d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\GeometricPrimitive">
+      <UniqueIdentifier>{c6fd2622-3126-41c9-84f0-6ec648b11d88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Material">
+      <UniqueIdentifier>{22794094-44ff-40f8-9b92-ce149b4d6c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bifrost\Actor\PostEffectActor">
+      <UniqueIdentifier>{96967110-f970-4b4c-9e3e-1435ef46872a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bifrost\BifrostBase.h">
@@ -348,6 +363,36 @@
     <ClInclude Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.h">
       <Filter>Bifrost\Component\Rendering\ModelRendering</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponent.h">
+      <Filter>Bifrost\Component\Rendering\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\RenderTarget\RenderTarget.h">
+      <Filter>Bifrost\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\RenderTarget\RenderTargetInitializer.h">
+      <Filter>Bifrost\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\GeometricPrimitive\Plain.h">
+      <Filter>Bifrost\GeometricPrimitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponentInitializer.h">
+      <Filter>Bifrost\Component\Rendering\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Material\QuadPolygonMaterial.h">
+      <Filter>Bifrost\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\PostEffecctActor\PostEffectActor.h">
+      <Filter>Bifrost\Actor\PostEffectActor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Actor\PostEffecctActor\PostEffectActorInitializer.h">
+      <Filter>Bifrost\Actor\PostEffectActor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Material\QuadPolygonMaterialInitializer.h">
+      <Filter>Bifrost\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Bifrost\Material\QuadPolygonMaterialPreDefine.h">
+      <Filter>Bifrost\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">
@@ -463,6 +508,21 @@
     </ClCompile>
     <ClCompile Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.cpp">
       <Filter>Bifrost\Component\Rendering\ModelRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponent.cpp">
+      <Filter>Bifrost\Component\Rendering\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\RenderTarget\RenderTarget.cpp">
+      <Filter>Bifrost\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\GeometricPrimitive\Plain.cpp">
+      <Filter>Bifrost\GeometricPrimitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Material\QuadPolygonMaterial.cpp">
+      <Filter>Bifrost\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Bifrost\Actor\PostEffecctActor\PostEffectActor.cpp">
+      <Filter>Bifrost\Actor\PostEffectActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

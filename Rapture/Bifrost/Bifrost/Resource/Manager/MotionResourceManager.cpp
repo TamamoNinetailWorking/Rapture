@@ -1,4 +1,4 @@
-#include "MotionResourceManager.h"
+﻿#include "MotionResourceManager.h"
 
 #include <Bifrost/Resource/Motion/VmdMotionResourceInitializer.h>
 #include <Bifrost/Resource/Motion/VmdMotionResource.h>

@@ -1,4 +1,4 @@
-#include "CameraActor.h"
+﻿#include "CameraActor.h"
 
 #include <Bifrost/Component/Transform/TransformComponent.h>
 #include <Bifrost/Component/Camera/CameraComponent.h>

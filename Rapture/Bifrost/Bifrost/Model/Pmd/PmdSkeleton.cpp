@@ -1,4 +1,4 @@
-#include "PmdSkeleton.h"
+ï»¿#include "PmdSkeleton.h"
 #include "PmdSkeletonInitializer.h"
 #include "PmdPreDefine.h"
 #include "PmdSkeletonDefine.h"
@@ -9,32 +9,32 @@
 
 //
 // 
-// Skeleton‚Åˆê‚Â‚É‚Ü‚Æ‚ß‚Ä‚¢‚é‚ªEEE
-// >> ‚à‚Æ‚ÌƒŠƒOƒf[ƒ^‚ª‹¤’Ê‚Ìê‡‚Ég‚¢‰ñ‚¹‚é‚æ‚¤‚É•ª—£‚µ‚½‚¢
-// >> UE5‚ğQl‚É‚µ‚Ä
+// Skeletonã§ä¸€ã¤ã«ã¾ã¨ã‚ã¦ã„ã‚‹ãŒãƒ»ãƒ»ãƒ»
+// >> ã‚‚ã¨ã®ãƒªã‚°ãƒ‡ãƒ¼ã‚¿ãŒå…±é€šã®å ´åˆã«ä½¿ã„å›ã›ã‚‹ã‚ˆã†ã«åˆ†é›¢ã—ãŸã„
+// >> UE5ã‚’å‚è€ƒã«ã—ã¦
 // 
 // PmdRig
-// >> ƒƒCƒ“‚ÌƒŠƒOƒf[ƒ^iƒXƒPƒ‹ƒgƒ“ƒf[ƒ^j
-// >> ƒŠƒ\[ƒXƒf[ƒ^‚Æ‚µ‚Ä‚Â
+// >> ãƒ¡ã‚¤ãƒ³ã®ãƒªã‚°ãƒ‡ãƒ¼ã‚¿ï¼ˆã‚¹ã‚±ãƒ«ãƒˆãƒ³ãƒ‡ãƒ¼ã‚¿ï¼‰
+// >> ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã¨ã—ã¦æŒã¤
 // 
 // PmdAnimationData
-// >> VMDƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾ƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^
-// >> ƒŠƒ\[ƒXƒf[ƒ^‚Æ‚µ‚Ä‚Â
+// >> VMDãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿
+// >> ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã¨ã—ã¦æŒã¤
 // 
 // PmdAnimationDrive
-// >> AnimationData‚ÆRig‚ğQÆ‚µ‚ÄAÀÛ‚É‰ñ“]î•ñ‚ğ¶¬‚·‚é
-// >> ƒ‚ƒfƒ‹ƒf[ƒ^’PˆÊ‚Å‚Â
-// >> Before‚ÆAfterA‚»‚µ‚ÄCurrent‚Ìî•ñ‚ª•K—v‚É‚È‚é‚Í‚¸
+// >> AnimationDataã¨Rigã‚’å‚ç…§ã—ã¦ã€å®Ÿéš›ã«å›è»¢æƒ…å ±ã‚’ç”Ÿæˆã™ã‚‹
+// >> ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿å˜ä½ã§æŒã¤
+// >> Beforeã¨Afterã€ãã—ã¦Currentã®æƒ…å ±ãŒå¿…è¦ã«ãªã‚‹ã¯ãš
 // 
 // PmdAnimationState
-// >> ƒAƒjƒ[ƒVƒ‡ƒ““¯m‚ÌŒq‚ª‚è‚ğƒXƒe[ƒgƒ}ƒVƒ“‚Å•Û‚µAˆ—‚·‚é
-// >> UE5‚ÌAnimationBP‚ğƒCƒ[ƒW
-// >> AnimationBP‚Íg‚¢‚Ü‚í‚µ‘O’ñ‚È‚Ì‚ÅA‚±‚ê‚àƒŠƒ\[ƒXƒf[ƒ^‚¾‚ë‚¤
+// >> ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åŒå£«ã®ç¹‹ãŒã‚Šã‚’ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã§ä¿æŒã—ã€å‡¦ç†ã™ã‚‹
+// >> UE5ã®AnimationBPã‚’ã‚¤ãƒ¡ãƒ¼ã‚¸
+// >> AnimationBPã¯ä½¿ã„ã¾ã‚ã—å‰æãªã®ã§ã€ã“ã‚Œã‚‚ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã ã‚ã†
 //
 // 
-// ¦‚½‚¾ƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^‚ğÀÛ‚Éæ‚èˆµ‚Á‚Ä
-// ƒvƒƒOƒ‰ƒ~ƒ“ƒO‚·‚é‚Ì‚Í‰‚ß‚Ä‚È‚Ì‚ÅA
-// ‚Ü‚¸‚Í–‚“±‘‚ÌÍ‚ªI‚í‚é•Ó‚è‚Ü‚Å‚Íˆê“x”ÏG‚É‚È‚Á‚Ä‚à‘g‚İ‚ñ‚Å‚İ‚é‚×‚«‚¾‚ë‚¤
+// â€»ãŸã ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’å®Ÿéš›ã«å–ã‚Šæ‰±ã£ã¦
+// ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã™ã‚‹ã®ã¯åˆã‚ã¦ãªã®ã§ã€
+// ã¾ãšã¯é­”å°æ›¸ã®ç« ãŒçµ‚ã‚ã‚‹è¾ºã‚Šã¾ã§ã¯ä¸€åº¦ç…©é›‘ã«ãªã£ã¦ã‚‚çµ„ã¿è¾¼ã‚“ã§ã¿ã‚‹ã¹ãã ã‚ã†
 //
 
 #ifdef VMD_SKELETON_TEST
@@ -98,7 +98,7 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 
 #if 0
 
-		FPmdBoneNode* node = (*m_Table)[CHash160("¶˜r")];
+		FPmdBoneNode* node = (*m_Table)[CHash160("å·¦è…•")];
 		Vector3 pos = node->StartPos;
 
 		FMatrix mat = XMMatrixTranslation(-pos.x, -pos.y, -pos.z) * XMMatrixRotationZ(XM_PIDIV2) * XMMatrixTranslation(pos.x, pos.y, pos.z);
@@ -108,7 +108,7 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 #endif
 
 		
-#ifdef VMD_SKELETON_TEST // VMDƒtƒ@ƒCƒ‹“K‰ƒeƒXƒg
+#ifdef VMD_SKELETON_TEST // VMDãƒ•ã‚¡ã‚¤ãƒ«é©å¿œãƒ†ã‚¹ãƒˆ
 
 		//Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/pose.vmd");
 		Hash160 fileName = CHash160("resource/mmd/UserFile/Motion/swing2.vmd");
@@ -174,7 +174,7 @@ bool CPmdSkeleton::Initialize(const FPmdSkeletonInitializer* _Initializer)
 			(*m_Matrices)[bone.second->BoneIndex] = mat;
 		}
 
-		FPmdBoneNode* node = (*m_Table)[CHash160("ƒZƒ“ƒ^[")];
+		FPmdBoneNode* node = (*m_Table)[CHash160("ã‚»ãƒ³ã‚¿ãƒ¼")];
 		RecursiveMatrixMultiply(node, XMMatrixIdentity());
 
 		PRINT("VmdMotionResource reflects.\n");
@@ -228,9 +228,9 @@ bool IsPlayLoop = false;
 
 void CPmdSkeleton::PlayAnimation()
 {
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—‘S‘ÌAƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚ğì¬‚·‚é‚Ì‚ª‘Ã“–‚¾‚ë‚¤
-	// SkeletonƒNƒ‰ƒX‚Íƒx[ƒX‚ÌƒŠƒOƒf[ƒ^‚¾‚¯‚ğ•Û‚µA
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^‚ª‚»‚ê‚ğŒvZ‚·‚éŒ`
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†å…¨ä½“ã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã‚’ä½œæˆã™ã‚‹ã®ãŒå¦¥å½“ã ã‚ã†
+	// Skeletonã‚¯ãƒ©ã‚¹ã¯ãƒ™ãƒ¼ã‚¹ã®ãƒªã‚°ãƒ‡ãƒ¼ã‚¿ã ã‘ã‚’ä¿æŒã—ã€
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ãŒãã‚Œã‚’è¨ˆç®—ã™ã‚‹å½¢
 	IsPlayLoop = true;
 	IsPlayAnimation = true;
 	AnimationTime = 0.f;
@@ -242,7 +242,7 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 
 	MatrixReset();
 
-	// •âŠ®ˆ—‚ğ“ü‚ê‚é
+	// è£œå®Œå‡¦ç†ã‚’å…¥ã‚Œã‚‹
 	//float frameTime = 30 * (AnimationTime / 1000.f);
 	float frameTime = AnimationTime;
 	uint32 frameNo = UNumCast(30 * frameTime);
@@ -280,8 +280,8 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 				const float c1 = 3 * _P2.x - 6 * _P1.x;
 				const float c2 = 3 * _P1.x;
 
-				// EPSILON‚ª¬‚³‚·‚¬‚é‚Æˆ—ŠÔ‚ª’·‚­‚È‚Á‚Ä‚µ‚Ü‚¤‚Ì‚ÅA
-				// ¡‰ñ‚Ìê‡‚Í“K“–‚È’l‚ÅØ‚Á‚Ä‚¨‚­•û‚ªŒ’‘S‚¾‚ë‚¤
+				// EPSILONãŒå°ã•ã™ãã‚‹ã¨å‡¦ç†æ™‚é–“ãŒé•·ããªã£ã¦ã—ã¾ã†ã®ã§ã€
+				// ä»Šå›ã®å ´åˆã¯é©å½“ãªå€¤ã§åˆ‡ã£ã¦ãŠãæ–¹ãŒå¥å…¨ã ã‚ã†
 				//constexpr float epsilon = FLT_EPSILON;
 				constexpr float epsilon = 0.0005f;
 
@@ -306,7 +306,7 @@ void CPmdSkeleton::MotionUpdate(float _DeltaTime)
 
 			float rate = SCast<float>((frameNo - PrevMotion->FrameNo)) / (LastMotion->FrameNo - PrevMotion->FrameNo);
 
-			// ƒxƒWƒF‹Èü‚É‚æ‚éƒC[ƒWƒ“ƒO•âŠÔ
+			// ãƒ™ã‚¸ã‚§æ›²ç·šã«ã‚ˆã‚‹ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°è£œé–“
 			rate = GetYFromXOnBezier(rate, PrevMotion->BezierControlPoint01, PrevMotion->BezierControlPoint02, 12);
 
 			quat = XMQuaternionSlerp(PrevMotion->Quaternion, LastMotion->Quaternion, rate);
@@ -365,7 +365,7 @@ void CPmdSkeleton::MatrixUpdate()
 		}
 	};
 
-	FPmdBoneNode* node = (*m_Table)[CHash160("ƒZƒ“ƒ^[")];
+	FPmdBoneNode* node = (*m_Table)[CHash160("ã‚»ãƒ³ã‚¿ãƒ¼")];
 	RecursiveMatrixMultiply(node, XMMatrixIdentity());
 }
 
@@ -385,8 +385,8 @@ bool CPmdSkeleton::CreateBoneNodeTable(const FPmdSkeletonInitializer* _Initializ
 	{
 		const FPmdBoneData& boneInfo = bones[index];
 
-		// ƒ{[ƒ“ƒm[ƒh‚Ìƒe[ƒuƒ‹‚ğì‚é
-		// >> ˆê“xƒe[ƒuƒ‹‚ğì‚ç‚È‚¢‚ÆeqŠÖŒW‚à\’z‚Å‚«‚È‚¢
+		// ãƒœãƒ¼ãƒ³ãƒãƒ¼ãƒ‰ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œã‚‹
+		// >> ä¸€åº¦ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œã‚‰ãªã„ã¨è¦ªå­é–¢ä¿‚ã‚‚æ§‹ç¯‰ã§ããªã„
 
 		Hash160 name = CHash160(boneInfo.BoneName);
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 

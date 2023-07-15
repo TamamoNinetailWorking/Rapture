@@ -1,4 +1,4 @@
-#include "SubsystemServiceLocator.h"
+﻿#include "SubsystemServiceLocator.h"
 
 #include <Bifrost/Subsystem/Dominator/SubsystemDominator.h>
 

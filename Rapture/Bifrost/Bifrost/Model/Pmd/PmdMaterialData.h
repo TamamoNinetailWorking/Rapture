@@ -1,16 +1,16 @@
-#pragma once
+﻿#pragma once
 
 /*
-*     PmdMaterialData���쐬����
-     >>�}�e���A���f�[�^���V���A���C�U�[����z���グ��HLSL�ɑ���o���f�[�^���܂Ƃ߂ĕێ�����
-       >>Pmd���f����`�悷��ۂɂ͕K�{
-     >>TextureData�������Ă���
-        >>�t���C�E�F�C�g�p�^�[���I�ɁA��x�쐬�������\�[�X���č쐬�������Ȃ�
-            >>����toonXX.bmp����
-        >> �܂肱�̃^�C�~���O��Texture��ID3D12Resource���p�b�L���O�����N���X�ƁA
-            Texture�̊Ǘ����s��Subsystem���K�v�ɂȂ�
-            >> Subsystem�̋N�����ɔ��e�N�X�`���⍕�e�N�X�`�������悤�ɂ��Ă���
-                >> ��邽�߂̃N���X�I�u�W�F�N�g��Atlantis���Œ�`���Ă����Ƃ������낤
+*     PmdMaterialDataを作成する
+     >>マテリアルデータをシリアライザーから吸い上げてHLSLに送り出すデータをまとめて保持する
+       >>Pmdモデルを描画する際には必須
+     >>TextureDataを持っている
+        >>フライウェイトパターン的に、一度作成したリソースを再作成したくない
+            >>特にtoonXX.bmp周り
+        >> つまりこのタイミングでTextureのID3D12Resourceをパッキングしたクラスと、
+            Textureの管理を行うSubsystemが必要になる
+            >> Subsystemの起動時に白テクスチャや黒テクスチャを作るようにしておく
+                >> 作るためのクラスオブジェクトはAtlantis側で定義しておくといいだろう
 */
 
 

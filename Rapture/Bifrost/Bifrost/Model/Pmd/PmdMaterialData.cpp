@@ -1,4 +1,4 @@
-#include "PmdMaterialData.h"
+ï»¿#include "PmdMaterialData.h"
 #include "PmdPreDefine.h"
 #include "PmdMaterialDataInitializer.h"
 #include "PmdMaterialDefine.h"
@@ -242,11 +242,11 @@ bool CPmdMaterialData::Impl::CreateDescriptorHeap(ID3D12DescriptorHeap*& _MatHea
 	CHECK_RESULT_FALSE(_Initializer->Device);
 	CHECK_RESULT_FALSE(_Initializer->Device->GetDevice());
 
-	// ƒ}ƒeƒŠƒAƒ‹‚Ìƒq[ƒv
+	// ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ’ãƒ¼ãƒ—
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	desc.NodeMask = 0;
-	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5) + 1;//(1 + 4) * MaterialNum = VertexShader‚Ì’è”ƒoƒbƒtƒ@‚ÆPixelShader‚Ì’è”ƒoƒbƒtƒ@‚ÆƒeƒNƒXƒ`ƒƒ‚Ì–‡” + ’¸“_ƒVƒF[ƒ_[—pƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+	desc.NumDescriptors = SCast<uint32>(m_MaterialData.size() * 5) + 1;//(1 + 4) * MaterialNum = VertexShaderã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨PixelShaderã®å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æšæ•° + é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
 	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateDescriptorHeap(
@@ -264,7 +264,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	ID3D12Device* device = _Initializer->Device->GetDevice();
 	CHECK_RESULT_FALSE(device);
 
-	// ƒrƒ…[‚Ìì¬
+	// ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 	uint32 bufferSize = AlignBufferSize(sizeof(FMaterialConstantData));
 	cbvDesc.SizeInBytes = bufferSize;
@@ -280,7 +280,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	uint32 handleIncrement = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	
-	// ’¸“_ƒVƒF[ƒ_[‚Åg—p‚·‚éƒoƒbƒtƒ@
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§ä½¿ç”¨ã™ã‚‹ãƒãƒƒãƒ•ã‚¡
 	{
 		D3D12_CPU_DESCRIPTOR_HANDLE bufHeap = _MatHeap->GetCPUDescriptorHandleForHeapStart();
 
@@ -327,7 +327,7 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 	CResourceManager* manager = CSubsystemServiceLocator::GetResourceSubsystem()->GetTextureResourceManager();
 	CHECK_RESULT_FALSE(manager);
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÌƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğì¬‚·‚é‚½‚ß‚Ìè‡
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®æ‰‹é †
 	auto CreateSRV = [&](const FResourceHandle& _Handle)
 	{
 		const CTextureResource* resource = PCast<const CTextureResource*>(manager->SearchResource(_Handle));
@@ -370,10 +370,10 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 
 		//const auto& data = m_MaterialData.at(index).Data;
 
-		// ƒCƒ“ƒfƒbƒNƒX‚ğ“ü‚ê‚é
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å…¥ã‚Œã‚‹
 		data.DrawIndex = srcData.IndiciesNum;
 
-		// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
 			cbvDesc.BufferLocation = material->GetConstantResource()->GetGPUVirtualAddress();
 
@@ -385,32 +385,32 @@ bool CPmdMaterialData::Impl::CreateShaderResourceView(ID3D12DescriptorHeap*& _Ma
 			descHandle.ptr += handleIncrement;
 		}
 
-		// ƒJƒ‰[ƒeƒNƒXƒ`ƒƒ
+		// ã‚«ãƒ©ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		{
 			//CreateSRV(data.ColorTexture);
 			CreateSRV(material->GetDecalTextureHandle());
 		}
 
-		// ƒXƒtƒBƒAƒeƒNƒXƒ`ƒƒ
+		// ã‚¹ãƒ•ã‚£ã‚¢ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		{
 			//CreateSRV(data.SphereTexture);
 			CreateSRV(material->GetSphereTextureHandle());
 		}
 
-		// ‰ÁZƒXƒtƒBƒAƒeƒNƒXƒ`ƒƒ
+		// åŠ ç®—ã‚¹ãƒ•ã‚£ã‚¢ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		{
 			//CreateSRV(data.SphereAddTexture);
 			CreateSRV(material->GetSphereAddTextureHandle());
 		}
 
-		// ƒgƒD[ƒ“ƒeƒNƒXƒ`ƒƒ
+		// ãƒˆã‚¥ãƒ¼ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		{
 			//CreateSRV(data.ToonResource);
 			CreateSRV(material->GetToonTextureHandle());
 		}
 	}
 
-	_Stride = handleIncrement * 5; // ’è” + ƒeƒNƒXƒ`ƒƒ4–‡
+	_Stride = handleIncrement * 5; // å®šæ•° + ãƒ†ã‚¯ã‚¹ãƒãƒ£4æš
 
 	return true;
 }

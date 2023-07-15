@@ -1,4 +1,4 @@
-#include "ShaderManager.h"
+﻿#include "ShaderManager.h"
 
 #include <eden/include/Resource/ResourceInitializer.h>
 #include <Atlantis/DirectX12/Shader/ShaderBase.h>

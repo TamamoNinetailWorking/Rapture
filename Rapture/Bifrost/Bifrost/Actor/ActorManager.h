@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 
 /*
 
-���[�v�̃C���[�W��
+ループのイメージは
 
 
 Physics Update
@@ -12,15 +12,15 @@ Actor Update
 Rendering
 
 
-�܂���Unity��Lifecycle�������낤��
+まずはUnityのLifecycle準拠だろうか
 
 
 
-Component��Update���̂��ƂȂǂ��l����ƁA
-UnrealEngine��TickGroup���䂪�����̂�������Ȃ�
+ComponentのUpdate順のことなどを考えると、
+UnrealEngineのTickGroup制御がいいのかもしれない
 
-TickGroup�AVisibility��RendererComponent�̗L����
-�X�V�������ɏ����ƕ`�惊�X�g�����
+TickGroup、VisibilityとRendererComponentの有無で
+更新処理毎に処理と描画リストを作る
 
 ActorManager->Update
 	GroupSeparation
@@ -29,12 +29,12 @@ ActorManager->Update
 		PostPhysicsUpdate
 		RenderUpdate
 
-Component�̂��Ƃ��l����ƁAUpdateSubsystem�݂����Ȃ��̂��K�v��������Ȃ�
-	>> Component��Manager�ŊǗ�����ƁAActor�Ɠ�d��ComponentList����������
+Componentのことも考えると、UpdateSubsystemみたいなものが必要かもしれない
+	>> ComponentをManagerで管理すると、Actorと二重でComponentListを持ちそう
 
 
-�`�揈���͐؂蕪���Ă����΁A�����_�����O�X���b�h�Ƃ���Draw�R�[�����s��������؂蕪���₷����������Ȃ�
-GPU�Ƀf�[�^�]�����Ă��Ȃ����̂ɂ��Ă̓����_�����O�X���b�h���ɃR�s�[����K�v���������肷�邾�낤��
+描画処理は切り分けておけば、レンダリングスレッドとしてDrawコールを行う部分を切り分けやすいかもしれない
+GPUにデータ転送していないものについてはレンダリングスレッド側にコピーする必要があったりするだろうが
 
 */
 
@@ -58,6 +58,8 @@ public:
 
 	template <class Actor>
 	CActor* CreateActor(const FActorInitializerBase* _Initializer);
+
+	CActor* SearchActor(const Hash160& _Name);
 
 	void DeleteActor(const Hash160& _Name);
 	void DeleteActor(const CActor* _Actor);

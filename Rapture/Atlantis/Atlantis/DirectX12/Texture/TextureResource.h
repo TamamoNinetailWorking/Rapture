@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 
 /*
-*    Texture‚âƒVƒF[ƒ_[‚ÌFileLoadŽü‚è‚ð•ª—£‚µ‚ÄA
-    Memory‚©‚çƒf[ƒ^ì¬‚·‚éAPI‚É·‚µ‘Ö‚¦‚Ä‚à‚¢‚¢‚©‚àB
-    @>>¡‚Í“Á‚É¢‚ç‚È‚¢‚ªA
-    @@ƒvƒ‰ƒbƒgƒtƒH[ƒ€‚ª•Ï‚í‚Á‚½‚Æ‚«‚Éƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€‚ª·‚µ‘Ö‚¦‚ç‚ê‚éB
-    GraphicsShader‚à
-        >> •ª—£‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢‚Ì‚ÍShaderBase‘¤‚É‹Lq‚ª‘½‚»‚¤
+*    Textureã‚„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®FileLoadå‘¨ã‚Šã‚’åˆ†é›¢ã—ã¦ã€
+    Memoryã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ä½œæˆã™ã‚‹APIã«å·®ã—æ›¿ãˆã¦ã‚‚ã„ã„ã‹ã‚‚ã€‚
+    ã€€>>ä»Šã¯ç‰¹ã«å›°ã‚‰ãªã„ãŒã€
+    ã€€ã€€ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ãŒå¤‰ã‚ã£ãŸã¨ãã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒå·®ã—æ›¿ãˆã‚‰ã‚Œã‚‹ã€‚
+    GraphicsShaderã‚‚
+        >> åˆ†é›¢ã—ãªã„ã¨ã„ã‘ãªã„ã®ã¯ShaderBaseå´ã«è¨˜è¿°ãŒå¤šãã†
 */
 
 #include <eden/include/Resource/Resource.h>

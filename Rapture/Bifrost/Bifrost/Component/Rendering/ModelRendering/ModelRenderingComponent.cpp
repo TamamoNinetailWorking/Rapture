@@ -1,4 +1,4 @@
-#include "ModelRenderingComponent.h"
+﻿#include "ModelRenderingComponent.h"
 
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>
@@ -6,6 +6,11 @@
 #include <Atlantis/Material/MaterialInterface.h>
 
 USING_BIFROST;
+
+CModelRenderingComponent::CModelRenderingComponent() : Super()
+{
+	m_RenderGroup = ERenderGroup::RENDER_GROUP_DEFAULT;
+}
 
 bool CModelRenderingComponent::Draw() const
 {
@@ -18,8 +23,12 @@ bool CModelRenderingComponent::Draw() const
 
 	auto& Material = m_MaterialInterface;
 	Subsystem->SetMaterialInterface(m_MaterialInterface);
+	Subsystem->SetDescriptorHeap(m_MaterialInterface);
 
 	uint64 Handle = Subsystem->GetMaterialHeapHandle(Material);
+	Subsystem->SetGraphicsRootDescriptorTable(0, Handle);
+	Handle = Subsystem->IncrementHeapHandle(Handle);
+
 	uint64 HeapStride = Material->GetHeapStride();
 
 	for (uint32 Count = 0, IndexOffset = 0; Count < Material->GetMaterialNum(); ++Count)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Component/Component.h>
 #include <Atlantis/DirectX12/GlueMath.h>

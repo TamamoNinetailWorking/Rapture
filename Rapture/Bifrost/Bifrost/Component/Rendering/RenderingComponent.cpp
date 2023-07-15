@@ -1,4 +1,4 @@
-#include "RenderingComponent.h"
+﻿#include "RenderingComponent.h"
 
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>

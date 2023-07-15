@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 
 #include "Actor.h"
+#include "ActorInitializerBase.h"
 
 BIFROST_NAMESPACE_BEGIN
 
@@ -11,6 +12,16 @@ CActor* CActorManager::CreateActor(const FActorInitializerBase* _Initializer)
     if(!param) { return nullptr; } \
 
     //CHECK_RETURN_NULL(_Initializer);
+
+    //FActorInitializerBase initializer = *_Initializer;
+
+ //   CActor* temp = SearchActor(_Initializer->Name);
+ //   if (temp != nullptr)
+ //   {
+ //       std::string name = RHash160(_Initializer->Name);
+ //       name += "(2)";
+ //       initializer.Name = CHash160(name);
+	//}
 
     Actor* actor = new Actor();
     CHECK_RETURN_NULL(actor);
@@ -28,6 +39,5 @@ CActor* CActorManager::CreateActor(const FActorInitializerBase* _Initializer)
 
     return actor;
 }
-
 
 BIFROST_NAMESPACE_END

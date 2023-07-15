@@ -16,6 +16,7 @@
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystemInitializer.h>
 #include <Atlantis/Resource/TextureResourceManager.h>
 #include <Atlantis/Resource/ShaderManager.h>
+#include <Atlantis/Resource/RenderTargetViewManager.h>
 #include <Bifrost/Resource/Manager/MeshDataManager.h>
 #include <Bifrost/Resource/Manager/MaterialManager.h>
 #include <Bifrost/Resource/Manager/PipelineStateObjectManager.h>
@@ -130,6 +131,11 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CShaderManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_SHADER)));
 			}
 
+			// RenderTargetView
+			{
+				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CRenderTargetViewManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_RENDER_TARGET)));
+			}
+
 			// Material
 			{
 				CHECK_RESULT_BREAK(m_ResourceSubsystem->SetupManager<CMaterialManager>(UNumCast(EResourceManagementType::RESOURCE_TYPE_MATERIAL)));
@@ -169,6 +175,17 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 					nameBlock.PS.Function = "main";
 
 					CHECK_RESULT_BREAK(ptr->CreatePmdPipelineStateObject(mainDevice, nameBlock));
+				}
+
+				// Polygon
+				{
+					FShaderNameBlock nameBlock = {};
+					nameBlock.VS.File = "resource/cso/BasicVertexShader.cso";
+					nameBlock.VS.Function = "main";
+					nameBlock.PS.File = "resource/cso/BasicPixelShader.cso";
+					nameBlock.PS.Function = "main";
+
+					CHECK_RESULT_BREAK(ptr->CreateQuadPolygonPipelineStateObject(mainDevice, nameBlock));
 				}
 			}
 		}

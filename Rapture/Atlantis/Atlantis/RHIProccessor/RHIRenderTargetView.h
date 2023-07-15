@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "RHIRenderTargetDefine.h"
 
@@ -20,7 +20,7 @@ public:
 	CSwapChain* GetSwapChain() const { return m_SwapChain; }
 	CRenderTargetView* GetRenderTargetView(uint32 _Index) const { return m_RTVBuffer.at(_Index); };
 	CDepthStencilView* GetDepthStencilView() const { return m_DepthStencilView; }
-
+	CRenderTargetView* GetCurrentRenderTargetView() const;
 
 	CRHIRenderTargetView();
 	~CRHIRenderTargetView();

@@ -1,4 +1,4 @@
-#include "RootParamBuilder.h"
+ï»¿#include "RootParamBuilder.h"
 #include "RootSignatureInitializer.h"
 
 #include <vector>
@@ -29,9 +29,9 @@ private:
 	//std::vector<D3D12_DESCRIPTOR_RANGE> m_Ranges = {};
 	//std::vector<D3D12_ROOT_PARAMETER> m_Parameters = {};
 
-	// RootParam‚Íƒ^ƒCƒv•Ê‚Åƒf[ƒ^‚ğ‚Â•û‚ª‚¢‚¢‚¾‚ë‚¤
-	// ƒf[ƒ^‚ğ‚¿’¼‚µ‚Ä‚â‚è’¼‚µ‚½•û‚ª‚«‚Á‚Æ‚·‚Á‚«‚èI‚í‚é‚Í‚¸
-	// map‚Å‚â‚é‚ÆƒŒƒWƒXƒ^[ˆÊ’u‚ª‚¸‚ê‚é‹C‚ª‚·‚éEEE
+	// RootParamã¯ã‚¿ã‚¤ãƒ—åˆ¥ã§ãƒ‡ãƒ¼ã‚¿ã‚’æŒã¤æ–¹ãŒã„ã„ã ã‚ã†
+	// ãƒ‡ãƒ¼ã‚¿ã‚’æŒã¡ç›´ã—ã¦ã‚„ã‚Šç›´ã—ãŸæ–¹ãŒãã£ã¨ã™ã£ãã‚Šçµ‚ã‚ã‚‹ã¯ãš
+	// mapã§ã‚„ã‚‹ã¨ãƒ¬ã‚¸ã‚¹ã‚¿ãƒ¼ä½ç½®ãŒãšã‚Œã‚‹æ°—ãŒã™ã‚‹ãƒ»ãƒ»ãƒ»
 	std::vector<D3D12_DESCRIPTOR_RANGE> m_Ranges = {};
 	std::vector<D3D12_ROOT_PARAMETER> m_Parameters = {};
 };
@@ -154,7 +154,7 @@ void CRootParamBuilder::Impl::SetupDescritproRange(const FRootParameterInitializ
 	{
 		auto& srcData = m_Parameters.at(i);
 		rangeIndex += srcData.DescriptorTable.NumDescriptorRanges;
-		// ƒ‹[ƒgƒpƒ‰ƒ[ƒ^‚ÌVisibility‡‚ÉRangeType•Ê‚Éd•ª‚¯‚µ‚Ä‚¢‚­
+		// ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®Visibilityé †ã«RangeTypeåˆ¥ã«ä»•åˆ†ã‘ã—ã¦ã„ã
 		for (auto& elem : _Initializer->m_RootParameter)
 		{
 			Glue::EShaderVisibility visibility = elem.ShaderVisibility;
@@ -164,9 +164,9 @@ void CRootParamBuilder::Impl::SetupDescritproRange(const FRootParameterInitializ
 				continue;
 			}
 
-			// ‚±‚±‚ÍDescirptors‚Ì”‚ğƒJƒEƒ“ƒg‚·‚é
-			// ‚¢‚­‚Â–Ú‚Ü‚Å‚ªRootParameter‚É‘Î‰‚µ‚Ä‚¢‚é‚Ì‚©‚ª•K—v
-			// >>‚»‚ê‚ªNumDescriptorRanges‚É‘Î‰‚µ‚Ä‚¢‚é‚Í‚¸
+			// ã“ã“ã¯Descirptorsã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+			// ã„ãã¤ç›®ã¾ã§ãŒRootParameterã«å¯¾å¿œã—ã¦ã„ã‚‹ã®ã‹ãŒå¿…è¦
+			// >>ãã‚ŒãŒNumDescriptorRangesã«å¯¾å¿œã—ã¦ã„ã‚‹ã¯ãš
 			bool isExist = false;
 			//uint32 index = 0;
 			//for (uint32 k = rangeIndex - 1; k < m_Ranges.size(); ++k)

@@ -1,4 +1,4 @@
-#include "VmdMotionResource.h"
+ï»¿#include "VmdMotionResource.h"
 #include "VmdMotionResourceInitializer.h"
 #include <Bifrost/Model/Vmd/VmdMotionDefine.h>
 #include <Bifrost/Model/Vmd/VmdDefine.h>
@@ -155,7 +155,7 @@ bool CVmdMotionResource::CreateMotionList(const FVmdMotionResourceInitializer* _
 		//(*keyFrameData)[motion.FrameNo] = data;
 	}
 
-	// ƒ‚[ƒVƒ‡ƒ“ƒf[ƒ^‚ğƒtƒŒ[ƒ€”Ô†‡‚Ì¸‡‚Åƒ\[ƒg
+	// ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ãƒ¬ãƒ¼ãƒ ç•ªå·é †ã®æ˜‡é †ã§ã‚½ãƒ¼ãƒˆ
 	for (auto& motion : m_MotionList)
 	{
 		auto SortComp = [](const FVmdMotionPerKeyFrame* _Left,const FVmdMotionPerKeyFrame* _Right)

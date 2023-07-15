@@ -46,6 +46,8 @@
     <ClInclude Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.h" />
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h" />
     <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.h" />
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResource.h" />
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResourceInitializer.h" />
     <ClInclude Include="Atlantis\DirectX12\RootSignature\RootSignature.h" />
     <ClInclude Include="Atlantis\DirectX12\ScissorRect\ScissorRect.h" />
     <ClInclude Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.h" />
@@ -66,6 +68,7 @@
     <ClInclude Include="Atlantis\Material\MaterialInterface.h" />
     <ClInclude Include="Atlantis\Material\MaterialInterfaceDefine.h" />
     <ClInclude Include="Atlantis\Material\MaterialInterfaceInitializer.h" />
+    <ClInclude Include="Atlantis\Resource\RenderTargetViewManager.h" />
     <ClInclude Include="Atlantis\Resource\ShaderManager.h" />
     <ClInclude Include="Atlantis\Resource\TextureResourceManager.h" />
     <ClInclude Include="Atlantis\RHIProccessor\RHIProcessor.h" />
@@ -92,6 +95,7 @@
     <ClCompile Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.cpp" />
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp" />
     <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetView.cpp" />
+    <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResource.cpp" />
     <ClCompile Include="Atlantis\DirectX12\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Atlantis\DirectX12\ScissorRect\ScissorRect.cpp" />
     <ClCompile Include="Atlantis\DirectX12\ShaderCompiler\ShaderCompiler.cpp" />
@@ -104,6 +108,7 @@
     <ClCompile Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp" />
     <ClCompile Include="Atlantis\Material\MaterialInterface.cpp" />
+    <ClCompile Include="Atlantis\Resource\RenderTargetViewManager.cpp" />
     <ClCompile Include="Atlantis\Resource\ShaderManager.cpp" />
     <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp" />
     <ClCompile Include="Atlantis\RHIProccessor\RHIProcessor.cpp" />

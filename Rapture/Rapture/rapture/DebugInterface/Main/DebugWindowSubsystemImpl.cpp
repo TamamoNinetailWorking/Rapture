@@ -1,6 +1,7 @@
-#include "DebugWindowSubsystemImpl.h"
+﻿#include "DebugWindowSubsystemImpl.h"
 
 #include "../Infrastructure/DebugFrameRate.h"
+#include "../PostEffect/DebugPostEffect.h"
 
 #define REGIST_DEBUG_WINDOW(param) \
 	param = new C##param(); \
@@ -30,6 +31,7 @@ bool CDebugWindowSubsystemImpl::InitializeImpl()
 	//REGIST_DEBUG_WINDOW(DebugFrameRate);
 
 	REGIST_DEBUG_WINDOW_PROCESS(DebugFrameRate);
+	REGIST_DEBUG_WINDOW_PROCESS(DebugPostEffect);
 
 	return true;
 }

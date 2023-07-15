@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Component/Component.h>
 #include <Bifrost/Subsystem/Rendering/RenderGroupDefine.h>
@@ -12,7 +12,7 @@ ATLANTIS_NAMESPACE_END
 
 BIFROST_NAMESPACE_BEGIN
 
-class CMeshData; // Bifrost�̃f�[�^�𒼂Ŏ����Ă�̂��C�ɂȂ�I
+class CMeshData; // Bifrostのデータを直で持ってるのが気になる！
 
 class CRenderingComponent : public CComponent
 {

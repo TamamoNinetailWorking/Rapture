@@ -1,4 +1,4 @@
-#include "Test.h"
+ï»¿#include "Test.h"
 #include <Bifrost/Component/Pmd/PmdModelComponent.h>
 #include <Bifrost/Component/Pmd/PmdModelComponentInitializer.h>
 
@@ -29,6 +29,7 @@ USING_ATLANTIS;
 
 namespace Test
 {
+#if 0
 	CTransformComponent* m_TransformComponent = nullptr;
 	CPmdModelComponent* m_PmdModelComponent = nullptr;
 	//CLightComponent* m_LightComponent = nullptr;
@@ -38,6 +39,7 @@ namespace Test
 	CCameraActor* m_CameraActor = nullptr;
 
 	CActor* m_TestActor = nullptr;
+#endif
 
 #if 0
 	TComponentManager<CTransformComponent> m_Manager = {};
@@ -48,11 +50,13 @@ namespace Test
 
 	void RenderSubsystemTest()
 	{
+
+#if 0
 		{
 			m_PmdModelComponent = new CPmdModelComponent();
 			CHECK(m_PmdModelComponent);
 
-			const char* fileName = "resource/mmd/UserFile/Model/‰‰¹ƒ~ƒNmetal.pmd";
+			const char* fileName = "resource/mmd/UserFile/Model/åˆéŸ³ãƒŸã‚¯metal.pmd";
 
 			FPmdModelComponentInitializer initializer = {};
 			initializer.FileName = CHash160(fileName);
@@ -157,6 +161,8 @@ namespace Test
 
 		}
 
+#endif
+
 #if 0
 
 
@@ -187,17 +193,18 @@ namespace Test
 			CameraManager.Finalize();
 
 
-			//‚±‚¤‚¢‚¤ƒƒ“ƒtƒŒ[ƒ€‚ÅObject‚Ì¶¬”jŠü‚ª‚Å‚«‚È‚¢
-			// >> •K—v‚ª‚ ‚é‚©‚Í•Ê‚É‚µ‚ÄAˆÀ‘S«‚Ì‚½‚ß‚É‚ÍOnceExecuter‚É‚àƒnƒ“ƒhƒ‹‚ð—pˆÓ‚µAFinalizeŽž‚É‚ÍExecuter‚©‚çŠO‚·ˆ—‚ª•K—v‚¾‚ë‚¤
-			// 
-			// ‚»‚±‚É•t‚µ‚ÄASubsystemŽü‚è‚ÍHandle‚àŠÜ‚ß‚ÄTemplate‰»‚·‚é‚Ì‚ª‚¢‚¢‚©‚à‚µ‚ê‚È‚¢
-			// >>ComponentManager‚ª‚¢‚¢Template‰»‚ÌŒ©–{‚©‚à
-			// 
-			//TestCameraComponent->Finalize();
-			//delete TestCameraComponent;
-			//TestCameraComponent = nullptr;
+
 		}
 #endif
+//ã“ã†ã„ã†ãƒ¯ãƒ³ãƒ•ãƒ¬ãƒ¼ãƒ ã§Objectã®ç”Ÿæˆç ´æ£„ãŒã§ããªã„
+// >> å¿…è¦ãŒã‚ã‚‹ã‹ã¯åˆ¥ã«ã—ã¦ã€å®‰å…¨æ€§ã®ãŸã‚ã«ã¯OnceExecuterã«ã‚‚ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”¨æ„ã—ã€Finalizeæ™‚ã«ã¯Executerã‹ã‚‰å¤–ã™å‡¦ç†ãŒå¿…è¦ã ã‚ã†
+// 
+// ãã“ã«ä»˜éšã—ã¦ã€Subsystemå‘¨ã‚Šã¯Handleã‚‚å«ã‚ã¦TemplateåŒ–ã™ã‚‹ã®ãŒã„ã„ã‹ã‚‚ã—ã‚Œãªã„
+// >>ComponentManagerãŒã„ã„TemplateåŒ–ã®è¦‹æœ¬ã‹ã‚‚
+// 
+//TestCameraComponent->Finalize();
+//delete TestCameraComponent;
+//TestCameraComponent = nullptr;
 	}
 
 };

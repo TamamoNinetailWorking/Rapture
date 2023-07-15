@@ -1,4 +1,4 @@
-#include "LevelBase.h"
+﻿#include "LevelBase.h"
 
 #include <Bifrost/Actor/ActorInitializerBase.h>
 

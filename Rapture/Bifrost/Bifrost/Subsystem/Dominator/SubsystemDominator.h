@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <eden/include/template/NonCopyable.h>
 
@@ -13,7 +13,7 @@ class CCameraSubsystem;
 class CLightSubsystem;
 class CUpdateIntervalSubsystem;
 
-// ���Ƃ���
+// たとえば
 /*
 #define REGIST_DOMINATOR_SUBSYSTEM(_Subsystem) \
 public:	\
@@ -22,14 +22,14 @@ private: \
 	C##_Subsystem* m_##_Subsystem = nullptr; \
 */
 
-// ����ȕϐ�����֐��܂ł̈ꊇ��`�}�N��������Ă��܂��āA
-// SubsystemDominator���̂������쐬�ł��Ȃ����낤��
+// こんな変数から関数までの一括定義マクロを作ってしまって、
+// SubsystemDominator自体を自動作成できないだろうか
 
-// ���O��Ԃ��ႤSubsystem���Ǘ�����ۂɒʗp���Ȃ��Ȃ邩������Ȃ����E�E�E
-// �\�[�X�R�[�h���쐬���邽�߂̃X�N���v�g�͈ꉞ�C���[�W�ł���(Python����)
-// ������Ǘ��E�ύX���邽�߂̃c�[���̃x�[�X��Excel�̂悤�ȗ񋓂��₷���X�v���b�h�V�[�g����
+// 名前空間が違うSubsystemを管理する際に通用しなくなるかもしれないが・・・
+// ソースコードを作成するためのスクリプトは一応イメージできる(Python等で)
+// それを管理・変更するためのツールのベースはExcelのような列挙しやすいスプレッドシートかな
 
-// �Ƃ肠�������̓}�N���ő����͊y�ɂ������Ƃ���
+// とりあえず今はマクロで多少は楽にしたいところ
 
 #define REGIST_DOMINATOR_PROCEDURE(_HeadChar,_Class) \
 public: \

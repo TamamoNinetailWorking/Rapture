@@ -165,6 +165,7 @@
     <ClCompile Include="rapture\app_manager\app_manager.cpp" />
     <ClCompile Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.cpp" />
     <ClCompile Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.cpp" />
+    <ClCompile Include="rapture\DebugInterface\PostEffect\DebugPostEffect.cpp" />
     <ClCompile Include="rapture\Environment\PsoNameDefine.cpp" />
     <ClCompile Include="rapture\game_manager\game_manager.cpp" />
     <ClCompile Include="rapture\Level\ExperimentationLevel.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="rapture\app_manager\app_manager.h" />
     <ClInclude Include="rapture\DebugInterface\Infrastructure\DebugFrameRate.h" />
     <ClInclude Include="rapture\DebugInterface\Main\DebugWindowSubsystemImpl.h" />
+    <ClInclude Include="rapture\DebugInterface\PostEffect\DebugPostEffect.h" />
     <ClInclude Include="rapture\Environment\PsoNameDefine.h" />
     <ClInclude Include="rapture\Environment\ResourceTypeDefine.h" />
     <ClInclude Include="rapture\game_manager\game_manager.h" />

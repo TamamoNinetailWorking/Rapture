@@ -1,4 +1,4 @@
-#include "LightActor.h"
+﻿#include "LightActor.h"
 
 #include <Bifrost/Component/Transform/TransformComponent.h>
 #include <Bifrost/Component/Light/LightComponent.h>

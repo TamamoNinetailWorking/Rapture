@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //#include <Atlantis/DirectX12/DirectXPaste.h>
 #include <Atlantis/DirectX12/GlueMath.h>
@@ -11,7 +11,7 @@ BIFROST_NAMESPACE_BEGIN
 constexpr uint32 BoneMatricesNum = 256;
 constexpr uint32 BoneMatricesSize = BoneMatricesNum * sizeof(ATLANTIS_NAMESPACE::Glue::FMatrix);
 
-// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 struct FSceneData : public ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase
 {
 
@@ -35,11 +35,11 @@ struct FSceneData : public ATLANTIS_NAMESPACE::FMaterialGeometryBufferBase
 		//Matrix* BoneMatrices = nullptr;
 	};
 
-	// Map‚ÌƒŠƒ\[ƒX‚Ìˆø”‚ª&&iƒ_ƒuƒ‹ƒ|ƒCƒ“ƒ^j
-	// >>‚Æ‚¢‚¤‚±‚Æ‚Í‚Â‚Ü‚èAMainData‚Ìƒ|ƒCƒ“ƒ^‚ğMap‚É“n‚µ‚½‚ñ‚Å‚ÍA
-	//   ƒf[ƒ^‚Ì‰ğß‚Ìd•û‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤‚Æ‚¢‚¤‚±‚Æ‚È‚Ì‚Å‚ÍH
-	// >>‚¾‚©‚ç³Šm‚É“®ì‚µ‚Ä‚¢‚È‚¢H
-	// Map‚Ì‚½‚ß‚É’è”ƒoƒbƒtƒ@‚ğÅI“I‚Éˆ¬‚é‚â‚Â‚Íƒ|ƒCƒ“ƒ^[‚©
+	// Mapã®ãƒªã‚½ãƒ¼ã‚¹ã®å¼•æ•°ãŒ&&ï¼ˆãƒ€ãƒ–ãƒ«ãƒã‚¤ãƒ³ã‚¿ï¼‰
+	// >>ã¨ã„ã†ã“ã¨ã¯ã¤ã¾ã‚Šã€MainDataã®ãƒã‚¤ãƒ³ã‚¿ã‚’Mapã«æ¸¡ã—ãŸã‚“ã§ã¯ã€
+	//   ãƒ‡ãƒ¼ã‚¿ã®è§£é‡ˆã®ä»•æ–¹ãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ã¨ã„ã†ã“ã¨ãªã®ã§ã¯ï¼Ÿ
+	// >>ã ã‹ã‚‰æ­£ç¢ºã«å‹•ä½œã—ã¦ã„ãªã„ï¼Ÿ
+	// Mapã®ãŸã‚ã«å®šæ•°ãƒãƒƒãƒ•ã‚¡ã‚’æœ€çµ‚çš„ã«æ¡ã‚‹ã‚„ã¤ã¯ãƒã‚¤ãƒ³ã‚¿ãƒ¼ã‹
 	//MainData Data = {};
 	ObjectPtr(MainData) pData = nullptr;
 };

@@ -1,4 +1,4 @@
-#include "FileUtility.h"
+﻿#include "FileUtility.h"
 #include "FileTypeDefine.h"
 
 #include <eden/include/utility/StringUtility.h>

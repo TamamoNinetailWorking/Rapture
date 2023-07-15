@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
 #include <Bifrost/Component/Light/LightComponentHandle.h>
@@ -38,7 +38,7 @@ private:
 
 	ObjectPtr(CLightComponentManager) m_LightManager = nullptr;
 	
-	// ƒtƒHƒ[ƒhƒŒƒ“ƒ_ƒŠƒ“ƒO‚ÌƒeƒXƒg—p
+	// ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã®ãƒ†ã‚¹ãƒˆç”¨
 	FHandle m_MainLightHandle = {};
 };
 

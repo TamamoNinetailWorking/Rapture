@@ -1,4 +1,4 @@
-#include "RenderingQueue.h"
+﻿#include "RenderingQueue.h"
 #include "RenderingQueueInitializer.h"
 
 #include <Bifrost/Component/Rendering/RenderingComponent.h>

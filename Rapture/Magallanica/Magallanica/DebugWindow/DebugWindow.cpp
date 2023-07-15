@@ -1,4 +1,4 @@
-#include "DebugWindow.h"
+﻿#include "DebugWindow.h"
 
 #include <Magallanica/Imgui/imgui.h>
 

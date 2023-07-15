@@ -267,6 +267,15 @@
     <ClInclude Include="Atlantis\Material\MaterialInterfaceDefine.h">
       <Filter>Atlantis\Material</Filter>
     </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResource.h">
+      <Filter>Atlantis\DirectX12\RenderTargetView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResourceInitializer.h">
+      <Filter>Atlantis\DirectX12\RenderTargetView</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Resource\RenderTargetViewManager.h">
+      <Filter>Atlantis\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Atlantis\DirectX12\MainDevice\MainDevice.cpp">
@@ -361,6 +370,12 @@
     </ClCompile>
     <ClCompile Include="Atlantis\SceneView\SceneView.cpp">
       <Filter>Atlantis\SceneView</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\DirectX12\RenderTargetView\RenderTargetViewResource.cpp">
+      <Filter>Atlantis\DirectX12\RenderTargetView</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Resource\RenderTargetViewManager.cpp">
+      <Filter>Atlantis\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

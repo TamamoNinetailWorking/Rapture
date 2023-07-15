@@ -9,4 +9,5 @@ float4 main(VSOutput input) : SV_TARGET
 	//return float4(input.uv , 1.f,1.f);
 
 	return float4(Texture0.Sample(Sampler,input.uv));
+	//return float4(1.0f,0.3f,0.3f,1.0f);
 }

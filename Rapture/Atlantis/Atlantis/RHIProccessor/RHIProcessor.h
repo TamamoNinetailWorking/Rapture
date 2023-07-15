@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
 
@@ -10,6 +10,8 @@ class CCommandQueue;
 class CSwapChain;
 class CFence;
 class CBarrier;
+
+class CRenderTargetView;
 
 #ifdef ATLANTIS_DEBUG
 class CDirectXDebug;
@@ -58,6 +60,10 @@ public:
 	bool SetGraphicsRootDescriptorTable(uint32 _Offset,uint64 _Handle);
 
 	bool DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset);
+
+	bool ChangeRenderTargetBarrierBefore(const CRenderTargetView* _RTV);
+	bool ChangeRenderTargetBarrierAfter(const CRenderTargetView* _RTV);
+	bool ChangeRenderTargetBarrier(const CRenderTargetView* _RTV, Glue::EResourceState _Prev, Glue::EResourceState _Next);
 
 private:
 

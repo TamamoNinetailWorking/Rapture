@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 MAGALLANICA_NAMESPACE_BEGIN
 

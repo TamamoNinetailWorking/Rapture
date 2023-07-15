@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <BIFROST/Subsystem/Resource/ResourceSubsystemInterface.h>
 #include <rapture/Environment/ResourceTypeDefine.h>
@@ -31,6 +31,9 @@ public:
 	
 	const ManagerPtr GetShaderResourceManager() const override;
 	ManagerPtr GetShaderResourceManagerEdit() override;
+
+	const ManagerPtr GetRenderTargetViewResourceManager() const override;
+	ManagerPtr GetRenderTargetViewResourceManagerEdit() override;
 	
 	const ManagerPtr GetMaterialResourceManager() const override;
 	ManagerPtr GetMaterialResourceManagerEdit() override;
@@ -48,6 +51,8 @@ public:
 	bool CreateDefaultTextureResource(const ATLANTIS_NAMESPACE::CDX12MainDevice* _Device);
 
 	bool CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
+
+	bool CreateQuadPolygonPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
 
 private:
 

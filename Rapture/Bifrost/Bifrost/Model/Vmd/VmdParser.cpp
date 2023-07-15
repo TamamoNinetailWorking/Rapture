@@ -1,4 +1,4 @@
-#include "VmdParser.h"
+ï»¿#include "VmdParser.h"
 #include "VmdDefine.h"
 
 #include <Atlantis/DirectX12/GlueMath.h>
@@ -199,7 +199,7 @@ bool CVmdParser::ParseData(const uint8* _Data, uint32 _Size)
 
 	do 
 	{
-		// ƒ‚[ƒVƒ‡ƒ“ƒf[ƒ^ˆÈŠO‚Íƒf[ƒ^‚ª–³‚­‚Ä‚àƒfƒVƒŠƒAƒ‰ƒCƒY‚Å‚«‚é‚æ‚¤‚É‹–—e
+		// ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ä»¥å¤–ã¯ãƒ‡ãƒ¼ã‚¿ãŒç„¡ãã¦ã‚‚ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã§ãã‚‹ã‚ˆã†ã«è¨±å®¹
 		CHECK_RESULT_BREAK(m_Impl->DeserializeHeader());
 		CHECK_RESULT_BREAK(m_Impl->DeserializeMotionData());
 		CHECK_RESULT_BREAK(m_Impl->DeserializeBlendShapeData());
@@ -337,7 +337,7 @@ bool CVmdParser::Impl::DeserializeMotionData()
 
 		CHECK_RESULT_FALSE(m_Serializer->ReadDataBlob(&dest.BackwardData, sizeof(FDeserializeMotionData::Backward)));
 
-		// ÅIƒtƒŒ[ƒ€‚ðŽæ“¾‚·‚é‚½‚ß‚ÉÅ‘å’l‚ðXV
+		// æœ€çµ‚ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å–å¾—ã™ã‚‹ãŸã‚ã«æœ€å¤§å€¤ã‚’æ›´æ–°
 		if (motion.Data.FrameNo > m_MaxFrameNo)
 		{
 			m_MaxFrameNo = motion.Data.FrameNo;

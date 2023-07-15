@@ -1,8 +1,10 @@
-#include "ResourceSubsystemImpl.h"
+Ôªø#include "ResourceSubsystemImpl.h"
 #include <Bifrost/Subsystem/Resource/ResourceManagementSubsystem.h>
 #include <eden/include/Resource/ResourceManager.h>
 
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
+
+#include <Atlantis/DirectX12/DirectXHelper/d3dx12.h>
 
 #include <eden/include/Resource/ResourceManagerPreDefine.h>
 #include <Bifrost/Resource/DefaultResourceDefine.h>
@@ -52,6 +54,16 @@ const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceMa
 IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetShaderResourceManagerEdit()
 {
 	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_SHADER);
+}
+
+const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetRenderTargetViewResourceManager() const
+{
+	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_RENDER_TARGET);
+}
+
+IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetRenderTargetViewResourceManagerEdit()
+{
+	return GetManagerFromIndexEdit(EResourceManagementType::RESOURCE_TYPE_RENDER_TARGET);
 }
 
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetMaterialResourceManager() const
@@ -138,13 +150,13 @@ bool CResourceSubsystemImpl::CreateDefaultTextureResource(const CDX12MainDevice*
 	FTextureInitializer initializer = {};
 	{
 		initializer.Device = _Device->GetDevice();
-		initializer.Format = Glue::EDataFormat::FORMAT_R8G8B8A8_UNORM;
-		initializer.Width = 4;
-		initializer.Height = 4;
-		initializer.DepthOrArraySize = 1;
-		initializer.Dimension = Glue::EResourceDimension::RESOURCE_DIMENSION_TEXTURE2D;
-		initializer.RowPitch = initializer.SlicePitch * initializer.Height;
-		initializer.SlicePitch = initializer.Width * sizeof(uint8) * 4;
+		initializer.ResDesc.Format = Glue::EDataFormat::FORMAT_R8G8B8A8_UNORM;
+		initializer.ResDesc.Width = 4;
+		initializer.ResDesc.Height = 4;
+		initializer.ResDesc.DepthOrArraySize = 1;
+		initializer.ResDesc.Dimension = Glue::EResourceDimension::RESOURCE_DIMENSION_TEXTURE2D;
+		initializer.RowPitch = initializer.SlicePitch * initializer.ResDesc.Height;
+		initializer.SlicePitch = initializer.ResDesc.Width * sizeof(uint8) * 4;
 	}
 
 	// White
@@ -181,8 +193,8 @@ bool CResourceSubsystemImpl::CreateDefaultTextureResource(const CDX12MainDevice*
 
 	// GrayGradation
 	{
-		initializer.Height = 256;
-		initializer.RowPitch = initializer.Width * sizeof(uint32);
+		initializer.ResDesc.Height = 256;
+		initializer.RowPitch = initializer.ResDesc.Width * sizeof(uint32);
 
 		vector<uint32> grayData(4 * 256);
 		uint32 color = 0xff;
@@ -216,7 +228,7 @@ bool CResourceSubsystemImpl::CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CD
 	D3D12_ROOT_PARAMETER rootParam[2] = {};
 	D3D12_STATIC_SAMPLER_DESC samplerDesc[2] = {};
 	{
-		// ÉfÉBÉXÉNÉäÉvÉ^Å\ÉeÅ[ÉuÉã << ÉVÉFÅ[É_Å[Ç≈àµÇ§ÉåÉWÉXÉ^ÇÃê›íË
+		// „Éá„Ç£„Çπ„ÇØ„É™„Éó„Çø‚Äï„ÉÜ„Éº„Éñ„É´ << „Ç∑„Çß„Éº„ÉÄ„Éº„ÅßÊâ±„ÅÜ„É¨„Ç∏„Çπ„Çø„ÅÆË®≠ÂÆö
 
 		descTableRange[0].NumDescriptors = 1;
 		descTableRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
@@ -228,8 +240,8 @@ bool CResourceSubsystemImpl::CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CD
 		descTableRange[1].BaseShaderRegister = 1;
 		descTableRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-		// ÉeÉNÉXÉ`ÉÉópÉeÅ[ÉuÉã
-		descTableRange[2].NumDescriptors = 4; //(ïÅí ÇÃÉeÉNÉXÉ`ÉÉÇ∆sphÇ∆spaÇ∆toon)
+		// „ÉÜ„ÇØ„Çπ„ÉÅ„É£Áî®„ÉÜ„Éº„Éñ„É´
+		descTableRange[2].NumDescriptors = 4; //(ÊôÆÈÄö„ÅÆ„ÉÜ„ÇØ„Çπ„ÉÅ„É£„Å®sph„Å®spa„Å®toon)
 		descTableRange[2].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 		descTableRange[2].BaseShaderRegister = 0;
 		descTableRange[2].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
@@ -269,7 +281,7 @@ bool CResourceSubsystemImpl::CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CD
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC desc = {};
 	{
 		desc.BlendState.AlphaToCoverageEnable = true;
-		desc.BlendState.IndependentBlendEnable = false;// Ç±Ç¢Ç¬Ç™falseÇ»ÇÁRenderTargetÇÃê›íËÇÕç≈èâÇÃ1Ç¬ÇæÇØÇ≈OKÇ…Ç»ÇÈ Independent => å¬ï Ç…
+		desc.BlendState.IndependentBlendEnable = false;// „Åì„ÅÑ„Å§„Ååfalse„Å™„ÇâRenderTarget„ÅÆË®≠ÂÆö„ÅØÊúÄÂàù„ÅÆ1„Å§„Å†„Åë„ÅßOK„Å´„Å™„Çã Independent => ÂÄãÂà•„Å´
 
 
 		D3D12_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc = {};
@@ -297,7 +309,7 @@ bool CResourceSubsystemImpl::CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CD
 
 		desc.DepthStencilState.DepthEnable = true;
 		desc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-		desc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS; // è¨Ç≥Ç¢ï˚ÅiãﬂÇ¢ï˚ÅjÇçÃóp
+		desc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS; // Â∞è„Åï„ÅÑÊñπÔºàËøë„ÅÑÊñπÔºâ„ÇíÊé°Áî®
 		desc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 		desc.DepthStencilState.StencilEnable = false;
 
@@ -415,6 +427,151 @@ bool CResourceSubsystemImpl::CreatePmdPipelineStateObject(ATLANTIS_NAMESPACE::CD
 	gsLoader.ResetData();
 	psLoader.ResetData();
 
+	return result;
+}
+
+bool CResourceSubsystemImpl::CreateQuadPolygonPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName)
+{
+	FPipelineStateObjectInitializer initializer = {};
+
+	bool result = false;
+	
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC Desc = {};
+	{
+		Desc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		Desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		Desc.NumRenderTargets = 1;
+		Desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Desc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+
+		Desc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		Desc.SampleDesc.Count = 1;
+		Desc.SampleDesc.Quality = 0;
+
+		Desc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+	}
+
+	D3D12_DESCRIPTOR_RANGE Range = {};
+	{
+		Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		Range.BaseShaderRegister = 0;
+		Range.NumDescriptors = 1;
+	}
+
+	D3D12_ROOT_PARAMETER RootParam = {};
+	{
+		RootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		RootParam.DescriptorTable.NumDescriptorRanges = 1;
+		RootParam.DescriptorTable.pDescriptorRanges = &Range;
+		RootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	}
+
+	D3D12_STATIC_SAMPLER_DESC Sampler = {};
+	{
+		Sampler = CD3DX12_STATIC_SAMPLER_DESC(0);
+	}
+
+	CFileLoader vsLoader = {};
+	CFileLoader hsLoader = {};
+	CFileLoader dsLoader = {};
+	CFileLoader gsLoader = {};
+	CFileLoader psLoader = {};
+
+	FVertexShaderInitializer vsInit = {};
+	FHullShaderInitializer hsInit = {};
+	FDomainShaderInitializer dsInit = {};
+	FGeometryShaderInitializer gsInit = {};
+	FPixelShaderInitializer psInit = {};
+	{
+
+		{
+			vsLoader.FileLoad(_ShaderName.VS.File.c_str());
+
+			vsInit.Data = vsLoader.GetData();
+			vsInit.Size = vsLoader.GetSize();
+			vsInit.Name = _ShaderName.VS.GetShaderName();
+			vsInit.Device = _Device->GetDevice();
+			vsInit.Type = EShaderType::SHADER_TYPE_VERTEX;
+		}
+
+		{
+			hsLoader.FileLoad(_ShaderName.HS.File.c_str());
+
+			hsInit.Data = hsLoader.GetData();
+			hsInit.Size = hsLoader.GetSize();
+			hsInit.Name = _ShaderName.HS.GetShaderName();
+			hsInit.Type = EShaderType::SHADER_TYPE_HULL;
+		}
+
+		{
+			dsLoader.FileLoad(_ShaderName.DS.File.c_str());
+
+			dsInit.Data = dsLoader.GetData();
+			dsInit.Size = dsLoader.GetSize();
+			dsInit.Name = _ShaderName.DS.GetShaderName();
+			dsInit.Type = EShaderType::SHADER_TYPE_DOMAIN;
+		}
+
+		{
+			gsLoader.FileLoad(_ShaderName.GS.File.c_str());
+
+			gsInit.Data = gsLoader.GetData();
+			gsInit.Size = gsLoader.GetSize();
+			gsInit.Name = _ShaderName.GS.GetShaderName();
+			gsInit.Type = EShaderType::SHADER_TYPE_GEOMETRY;
+		}
+
+		{
+			psLoader.FileLoad(_ShaderName.PS.File.c_str());
+
+			psInit.Data = psLoader.GetData();
+			psInit.Size = psLoader.GetSize();
+			psInit.Name = _ShaderName.PS.GetShaderName();
+			psInit.Type = EShaderType::SHADER_TYPE_PIXEL;
+		}
+	}
+
+	initializer.Device = _Device;
+	initializer.Flag = Glue::ERootSignatureFlag::ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+	initializer.pParameters = &RootParam;
+	initializer.NumParameters = 1;
+	initializer.pStaticSamplers = &Sampler;
+	initializer.NumStaticSamplers = 1;
+
+	initializer.pPipelineDesc = &Desc;
+
+	initializer.VertexShaderInit = &vsInit;
+	initializer.HullShaderInit = &hsInit;
+	initializer.DomainShaderInit = &dsInit;
+	initializer.GeometryShaderInit = &gsInit;
+	initializer.PixelShaderInit = &psInit;
+
+	{
+		using String = std::string;
+		String name = {};
+		if (vsInit.Name != INVALID_HASH) name += RHash160(vsInit.Name);
+		if (hsInit.Name != INVALID_HASH) name += RHash160(hsInit.Name);
+		if (dsInit.Name != INVALID_HASH) name += RHash160(dsInit.Name);
+		if (gsInit.Name != INVALID_HASH) name += RHash160(gsInit.Name);
+		if (psInit.Name != INVALID_HASH) name += RHash160(psInit.Name);
+
+		initializer.Name = CHash160(name);
+	}
+
+	result = CreateRenderPipelineStateObject(&initializer);
+
+	if (result)
+	{
+		PsoName::QuadPolygonRenderingPso = initializer.Name;
+	}
+
+	vsLoader.ResetData();
+	hsLoader.ResetData();
+	dsLoader.ResetData();
+	gsLoader.ResetData();
+	psLoader.ResetData();
+	
 	return result;
 }
 

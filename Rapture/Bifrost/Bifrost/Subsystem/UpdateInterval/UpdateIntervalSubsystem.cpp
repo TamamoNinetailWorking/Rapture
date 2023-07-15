@@ -1,4 +1,4 @@
-#include "UpdateIntervalSubsystem.h"
+﻿#include "UpdateIntervalSubsystem.h"
 #include "UpdateIntervalSubsystemInitializer.h"
 
 #include <eden/include/gadget/timer/timer.h>

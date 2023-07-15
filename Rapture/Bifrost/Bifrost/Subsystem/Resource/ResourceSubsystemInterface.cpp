@@ -1,4 +1,4 @@
-#include "ResourceSubsystemInterface.h"
+﻿#include "ResourceSubsystemInterface.h"
 
 #include "ResourceManagementSubsystem.h"
 

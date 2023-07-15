@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //#include <Bifrost/Component/Camera/CameraComponentManager.h>
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>

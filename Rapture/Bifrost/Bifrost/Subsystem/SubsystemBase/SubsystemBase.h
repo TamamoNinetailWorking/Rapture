@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 BIFROST_NAMESPACE_BEGIN

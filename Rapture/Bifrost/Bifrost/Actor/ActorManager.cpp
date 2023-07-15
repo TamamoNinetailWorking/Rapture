@@ -1,4 +1,4 @@
-#include <Bifrost/Actor/ActorManager.h>
+﻿#include <Bifrost/Actor/ActorManager.h>
 
 #include <eden/include/utility/ender_utility.h>
 
@@ -35,6 +35,20 @@ void CActorManager::Finalize()
     ListFinalize();
     Delete(m_ActorList);
 }
+
+CActor* CActorManager::SearchActor(const Hash160& _Name)
+{
+    for (auto& actor : *m_ActorList)
+    {
+        if (actor->GetHash() == _Name)
+        {
+            return actor;
+        }
+    }
+
+    return nullptr;
+}
+
 
 void CActorManager::DeleteActor(const Hash160& _Name)
 {

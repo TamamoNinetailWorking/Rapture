@@ -1,4 +1,4 @@
-#include "RHIRenderTargetView.h"
+﻿#include "RHIRenderTargetView.h"
 #include "RHIRenderTargetDefine.h"
 #include "RHIRenderTargetViewInitializer.h"
 
@@ -49,6 +49,12 @@ void ATLANTIS_NAMESPACE::CRHIRenderTargetView::Finalize()
 	}
 
 	EDENS_NAMESPACE::FinalizeObject(m_SwapChain);
+}
+
+CRenderTargetView* ATLANTIS_NAMESPACE::CRHIRenderTargetView::GetCurrentRenderTargetView() const
+{
+	uint32 Index = m_SwapChain->GetCurrentBufferIndex();
+	return GetRenderTargetView(Index);
 }
 
 bool ATLANTIS_NAMESPACE::CRHIRenderTargetView::CreateSwapChain(const FRHIRenderTargetInitializer* _Initializer)

@@ -1,4 +1,4 @@
-#include "FileLoadTexture.h"
+﻿#include "FileLoadTexture.h"
 
 #include <eden/include/utility/ender_utility.h>
 
@@ -93,12 +93,12 @@ const FResourceHandle CFileLoadTexture::Impl::CreateTextureResource(const CTextu
 	FTextureInitializer initializer = {};
 	initializer.Device = _Initializer.Device;
 	initializer.Name = _Initializer.FileName;
-	initializer.Width = SCast<uint32>(_Texture.GetMetaData()->width);
-	initializer.Height = SCast<uint32>(_Texture.GetMetaData()->height);
-	initializer.DepthOrArraySize = SCast<uint32>(_Texture.GetMetaData()->arraySize);
-	initializer.MipLevels = SCast<uint32>(_Texture.GetMetaData()->mipLevels);
-	initializer.Format = SCast<Glue::EDataFormat>(_Texture.GetMetaData()->format);
-	initializer.Dimension = SCast<Glue::EResourceDimension>(_Texture.GetMetaData()->dimension);
+	initializer.ResDesc.Width = SCast<uint32>(_Texture.GetMetaData()->width);
+	initializer.ResDesc.Height = SCast<uint32>(_Texture.GetMetaData()->height);
+	initializer.ResDesc.DepthOrArraySize = SCast<uint32>(_Texture.GetMetaData()->arraySize);
+	initializer.ResDesc.MipLevels = SCast<uint32>(_Texture.GetMetaData()->mipLevels);
+	initializer.ResDesc.Format = SCast<Glue::EDataFormat>(_Texture.GetMetaData()->format);
+	initializer.ResDesc.Dimension = SCast<Glue::EResourceDimension>(_Texture.GetMetaData()->dimension);
 	initializer.SourceData = _Texture.GetImage()->pixels;
 	initializer.RowPitch = SCast<uint32>(_Texture.GetImage()->rowPitch);
 	initializer.SlicePitch = SCast<uint32>(_Texture.GetImage()->slicePitch);

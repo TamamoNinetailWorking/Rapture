@@ -1,13 +1,17 @@
+ï»¿/*****************************************************************//**
+ * \file   ResourceManagerPreDefine.h
+ * \brief  ãƒªã‚½ãƒ¼ã‚¹ã®ç®¡ç†ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
+ *********************************************************************/
 #pragma once
 
 /*
-*    @>>Handle‚Í•Ê‚Ìƒwƒbƒ_[‚É’è‹`‚µ’¼‚µ‚½‚Ù‚¤‚ª‚¢‚¢‚©‚à‚µ‚ê‚È‚¢BHandle‚¾‚¯‚Å‚Â‚Æ‚«‚ÉƒI[ƒo[ƒwƒbƒh‚ª‘å‚«‚­‚È‚é
-      >>ResourceƒNƒ‰ƒX‚ÌInitializer‚à—‚½——R‚Å•Ê’è‹`‚µ‚½‚Ù‚¤‚ª—Ç‚³‚»‚¤
+*    ã€€>>Handleã¯åˆ¥ã®ãƒ˜ãƒƒãƒ€ãƒ¼ã«å®šç¾©ã—ç›´ã—ãŸã»ã†ãŒã„ã„ã‹ã‚‚ã—ã‚Œãªã„ã€‚Handleã ã‘ã§æŒã¤ã¨ãã«ã‚ªãƒ¼ãƒãƒ¼ãƒ˜ãƒƒãƒ‰ãŒå¤§ãããªã‚‹
+      >>Resourceã‚¯ãƒ©ã‚¹ã®Initializerã‚‚ä¼¼ãŸç†ç”±ã§åˆ¥å®šç¾©ã—ãŸã»ã†ãŒè‰¯ã•ãã†
 	  
 
 
-	  >>‚±‚¢‚ÂList‚ÌIterator‚Å‚Á‚Ä‚é‚©‚ç•ÊHeader‰»‚Å‚«‚È‚¢
-		Handle‚ÌŒ`‚ğ‰ü‚ß‚Äl‚¦’¼‚µ‚½‚Ù‚¤‚ª‚¢‚¢‚©‚à‚µ‚ê‚È‚¢
+	  >>ã“ã„ã¤Listã®Iteratorã§æŒã£ã¦ã‚‹ã‹ã‚‰åˆ¥HeaderåŒ–ã§ããªã„
+		Handleã®å½¢ã‚’æ”¹ã‚ã¦è€ƒãˆç›´ã—ãŸã»ã†ãŒã„ã„ã‹ã‚‚ã—ã‚Œãªã„
 * 
 */
 
@@ -15,24 +19,35 @@
 
 EDENS_NAMESPACE_BEGIN
 
+/** ãƒªã‚½ãƒ¼ã‚¹ã®åŸºåº•ã‚¯ãƒ©ã‚¹  */
 class CResource;
 
+/**
+ * @brief ãƒªã‚½ãƒ¼ã‚¹ã®ç®¡ç†ã‚¯ãƒ©ã‚¹ã§å®Ÿéš›ã«ç®¡ç†ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹é€ ä½“
+ */
 struct FManagementResource
 {
 private:
 	friend class CResourceManager;
 	
+	/** ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ */
 	ObjectPtr(CResource) ResPtr = nullptr;
+
+	/** å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ */
 	sint32 RefCount = 0;
 };
 
 
-// ƒnƒ“ƒhƒ‹‚Å’¼Úiterator‚ğ‚Â‚Ì‚Í”äŠrˆ—‚ª–Ê“|‚É‚È‚é
-// —LŒøE–³Œø”»’è‚ªŠÈ’P‚É‚Ís‚¦‚È‚¢
-// >> iterator‚ª‹ó‚Ìó‘Ô‚Å”äŠr‚µ‚æ‚¤‚Æ‚·‚é‚Æexception‚ª”ò‚ñ‚Å‚­‚é
+// ãƒãƒ³ãƒ‰ãƒ«ã§ç›´æ¥iteratorã‚’æŒã¤ã®ã¯æ¯”è¼ƒå‡¦ç†ãŒé¢å€’ã«ãªã‚‹
+// æœ‰åŠ¹ãƒ»ç„¡åŠ¹åˆ¤å®šãŒç°¡å˜ã«ã¯è¡Œãˆãªã„
+// >> iteratorãŒç©ºã®çŠ¶æ…‹ã§æ¯”è¼ƒã—ã‚ˆã†ã¨ã™ã‚‹ã¨exceptionãŒé£›ã‚“ã§ãã‚‹
 
+/** ãƒªã‚½ãƒ¼ã‚¹ãƒªã‚¹ãƒˆ */
 typedef std::list<FManagementResource> FResourceList;
 
+/**
+ * @brief ãƒªã‚½ãƒ¼ã‚¹ã®ç®¡ç†ç”¨ãƒãƒ³ãƒ‰ãƒ«
+ */
 struct FResourceHandle
 {
 private:
@@ -40,17 +55,31 @@ private:
 
 	typedef FResourceList::iterator Handle;
 
+	/** ãƒãƒ³ãƒ‰ãƒ«ã§å–ã‚Šæ‰±ã†ãƒªã‚¹ãƒˆã¸ã®ã‚¢ã‚¯ã‚»ãƒƒã‚µãƒ¼ */
 	Handle iterator = {};
 
+	/** ãƒãƒ³ãƒ‰ãƒ«ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ */
 	bool isActive = false;
 
 public:
 
+	/**
+	 * @brief ãƒãƒ³ãƒ‰ãƒ«ãŒåŒã˜ã‹ã©ã†ã‹
+	 * 
+	 * \param[in] _handle æ¯”è¼ƒã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«
+	 * \return ãƒãƒ³ãƒ‰ãƒ«ãŒåŒã˜ã‹ã©ã†ã‹
+	 */
 	bool operator==(const FResourceHandle& _handle) const
 	{
 		return iterator == _handle.iterator;
 	}
 
+	/**
+	 * @brief ãƒãƒ³ãƒ‰ãƒ«ãŒé•ã†ã‹ã©ã†ã‹
+	 * 
+	 * \param[in] _handle æ¯”è¼ƒã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«
+	 * \return ãƒãƒ³ãƒ‰ãƒ«ãŒé•ã†ã‹ã©ã†ã‹
+	 */
 	bool operator !=(const FResourceHandle& _handle) const
 	{
 		return *this != _handle;

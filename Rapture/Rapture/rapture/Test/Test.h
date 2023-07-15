@@ -47,8 +47,10 @@ namespace Test
 	extern BIFROST_NAMESPACE::CPmdMaterialData* m_MaterialData;
 
 	//extern BIFROST_NAMESPACE::CPmdModelComponent* m_PmdModelComponent;
+#if 0
 	extern BIFROST_NAMESPACE::CTransformComponent* m_TransformComponent;
 
 	extern BIFROST_NAMESPACE::CLightActor* m_LightActor;
 	extern BIFROST_NAMESPACE::CCameraActor* m_CameraActor;
+#endif
 };

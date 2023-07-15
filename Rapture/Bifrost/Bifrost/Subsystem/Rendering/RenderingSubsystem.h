@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "RenderGroupDefine.h"
 #include <Bifrost/Subsystem/SubsystemBase/SubsystemBase.h>
@@ -11,6 +11,7 @@ class CRHIProcessor;
 class CRHIRenderTargetView;
 class CSceneView;
 class IMaterialInterface;
+class CRenderTargetView;
 
 ATLANTIS_NAMESPACE_END
 
@@ -68,9 +69,19 @@ public:
 	bool SetPrimitiveTopology(ATLANTIS_NAMESPACE::Glue::EPrimitiveTopology _Topology);
 	bool SetMeshData(const CMeshData* _Mesh);
 	bool SetMaterialInterface(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
+	bool SetDescriptorHeap(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
 	bool SetGraphicsRootDescriptorTable(uint32 _Offset, uint64 _HeapHandle);
 	uint64 GetMaterialHeapHandle(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
+	uint64 IncrementHeapHandle(uint64 _Handle) const;
 	bool DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset);
+
+	bool SwitchRenderTargetViewBefore(ATLANTIS_NAMESPACE::CRenderTargetView* _RTV);
+	bool SwitchRenderTargetViewAfter(const ATLANTIS_NAMESPACE::CRenderTargetView* _RTV);
+
+	bool SetDefaultRenderTargetToSRV(uint32 _Index);
+
+	bool SwitchDefaultRenderTargetViewBefore();
+	bool SwitchDefaultRenderTargetViewAfter();
 
 private:
 

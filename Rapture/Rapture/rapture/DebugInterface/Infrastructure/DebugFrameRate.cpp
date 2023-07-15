@@ -1,4 +1,4 @@
-#include "DebugFrameRate.h"
+﻿#include "DebugFrameRate.h"
 
 #include <Magallanica/Imgui/imgui.h>
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <eden/include/utility/ender_utility.h>
 #include "ComponentManager.h"
@@ -30,7 +30,8 @@ void TComponentManager<TComponent>::Finalize()
 }
 
 template<class TComponent>
-inline M_HANDLE
+//inline M_HANDLE 
+inline FComponentManagerHandle<TComponent>
 TComponentManager<TComponent>::RegistComponent
 (
     TComponent* _Component

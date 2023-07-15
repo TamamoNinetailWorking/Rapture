@@ -1,4 +1,4 @@
-#include <Bifrost/Actor/Actor.h>
+ï»¿#include <Bifrost/Actor/Actor.h>
 
 #include <eden/include/utility/ender_utility.h>
 
@@ -13,7 +13,7 @@ USING_BIFROST;
 CActor::CActor()
 {
 	m_ComponentList = new ComponentList();
-	m_ComponentList->reserve(10); // ‚Æ‚è‚ ‚¦‚¸‚ÅƒTƒCƒY’¼‘‚«
+	m_ComponentList->reserve(10); // ã¨ã‚Šã‚ãˆãšã§ã‚µã‚¤ã‚ºç›´æ›¸ã
 }
 
 CActor::~CActor()

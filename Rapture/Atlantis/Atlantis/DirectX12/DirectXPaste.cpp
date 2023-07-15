@@ -65,6 +65,11 @@ namespace Glue
 		return SCast<D3D12_PRIMITIVE_TOPOLOGY>(_Topology);
 	}
 
+	const D3D12_HEAP_TYPE GetHeapType(EHeapType _Type)
+	{
+		return SCast<D3D12_HEAP_TYPE>(_Type);
+	}
+
 	const D3D12_DESCRIPTOR_HEAP_TYPE GetDescriptorHeapType(EDescriptorHeapType _HeapType)
 	{
 		return SCast<D3D12_DESCRIPTOR_HEAP_TYPE>(_HeapType);

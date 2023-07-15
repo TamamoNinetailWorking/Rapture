@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Bifrost/Actor/ActorManager.h>
 
@@ -10,5 +10,10 @@ inline Actor* CActorSubsystem::CreateActor(const FActorInitializerBase* _Initial
 	return PCast<Actor*>(m_ActorManager->CreateActor<Actor>(_Initializer));
 }
 
+template<class Actor>
+Actor* CActorSubsystem::SearchActor(const Hash160& _Name)
+{
+	return PCast<Actor*>(m_ActorManager->SearchActor(_Name));
+}
 
 BIFROST_NAMESPACE_END

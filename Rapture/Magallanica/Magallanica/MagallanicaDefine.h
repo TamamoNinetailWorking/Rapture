@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define MAGALLANICA_NAMESPACE magallanica
 

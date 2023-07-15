@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
 #include <DirectXmath.h>
 
 ATLANTIS_NAMESPACE_BEGIN
 
-// Zp‰‰ZŒn
+// ç®—è¡“æ¼”ç®—ç³»
 namespace Glue
 {
 

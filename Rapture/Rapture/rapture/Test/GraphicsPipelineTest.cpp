@@ -1,4 +1,4 @@
-#include <d3d12.h>
+ï»¿#include <d3d12.h>
 
 #include <Atlantis/DirectX12/MainDevice/MainDevice.h>
 
@@ -41,7 +41,7 @@ namespace Test
 			D3D12_ROOT_PARAMETER rootParam[2] = {};
 			D3D12_STATIC_SAMPLER_DESC samplerDesc[2] = {};
 			{
-				// ƒfƒBƒXƒNƒŠƒvƒ^\ƒe[ƒuƒ‹ << ƒVƒF[ƒ_[‚Åˆµ‚¤ƒŒƒWƒXƒ^‚Ìİ’è
+				// ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿â€•ãƒ†ãƒ¼ãƒ–ãƒ« << ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã§æ‰±ã†ãƒ¬ã‚¸ã‚¹ã‚¿ã®è¨­å®š
 
 				descTableRange[0].NumDescriptors = 1;
 				descTableRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
@@ -53,8 +53,8 @@ namespace Test
 				descTableRange[1].BaseShaderRegister = 1;
 				descTableRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
-				// ƒeƒNƒXƒ`ƒƒ—pƒe[ƒuƒ‹
-				descTableRange[2].NumDescriptors = 4; //(•’Ê‚ÌƒeƒNƒXƒ`ƒƒ‚Æsph‚Æspa‚Ætoon)
+				// ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”¨ãƒ†ãƒ¼ãƒ–ãƒ«
+				descTableRange[2].NumDescriptors = 4; //(æ™®é€šã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨sphã¨spaã¨toon)
 				descTableRange[2].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 				descTableRange[2].BaseShaderRegister = 0;
 				descTableRange[2].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
@@ -96,7 +96,7 @@ namespace Test
 
 
 				desc.BlendState.AlphaToCoverageEnable = true;
-				desc.BlendState.IndependentBlendEnable = false;// ‚±‚¢‚Â‚ªfalse‚È‚çRenderTarget‚Ìİ’è‚ÍÅ‰‚Ì1‚Â‚¾‚¯‚ÅOK‚É‚È‚é Independent => ŒÂ•Ê‚É
+				desc.BlendState.IndependentBlendEnable = false;// ã“ã„ã¤ãŒfalseãªã‚‰RenderTargetã®è¨­å®šã¯æœ€åˆã®1ã¤ã ã‘ã§OKã«ãªã‚‹ Independent => å€‹åˆ¥ã«
 
 
 				D3D12_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc = {};
@@ -124,7 +124,7 @@ namespace Test
 
 				desc.DepthStencilState.DepthEnable = true;
 				desc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-				desc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS; // ¬‚³‚¢•ûi‹ß‚¢•ûj‚ğÌ—p
+				desc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS; // å°ã•ã„æ–¹ï¼ˆè¿‘ã„æ–¹ï¼‰ã‚’æ¡ç”¨
 				desc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 				desc.DepthStencilState.StencilEnable = false;
 

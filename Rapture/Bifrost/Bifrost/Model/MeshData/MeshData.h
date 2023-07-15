@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <eden/include/Resource/Resource.h>
 
@@ -21,8 +21,8 @@ BIFROST_NAMESPACE_BEGIN
 
 struct FMeshResourceInitializer;
 
-// ’¸“_î•ñ‚Ì‚İ‚Í‹–—e‚·‚é‚ªAƒCƒ“ƒfƒbƒNƒXî•ñ‚Ì‚İ‚Í‹–—e‚µ‚È‚¢‚æ‚¤‚É‚µ‚½‚¢
-// >> ’¸“_‚¾‚¯‚È‚ç•`‰æ‚Å‚«‚é
+// é ‚ç‚¹æƒ…å ±ã®ã¿ã¯è¨±å®¹ã™ã‚‹ãŒã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æƒ…å ±ã®ã¿ã¯è¨±å®¹ã—ãªã„ã‚ˆã†ã«ã—ãŸã„
+// >> é ‚ç‚¹ã ã‘ãªã‚‰æç”»ã§ãã‚‹
 class CMeshData : public EDENS_NAMESPACE::CResource
 {
 public:

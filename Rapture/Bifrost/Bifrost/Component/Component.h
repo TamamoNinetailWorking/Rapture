@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <eden/include/Object/Object.h>
 #include <Bifrost/Subsystem/Updater/UpdateGroupDefine.h>

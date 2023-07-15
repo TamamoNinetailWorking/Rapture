@@ -1,4 +1,4 @@
-#include "RHIProcessor.h"
+﻿#include "RHIProcessor.h"
 #include "RHIProcessorInitialize.h"
 #include "RHIRenderTargetDefine.h"
 
@@ -10,6 +10,8 @@
 #include <Atlantis/DirectX12/Command/CommandQueue.h>
 #include <Atlantis/DirectX12/Barrier/Barrier.h>
 #include <Atlantis/DirectX12/Fence/Fence.h>
+
+#include <Atlantis/DirectX12/DirectXHelper/d3dx12.h>
 
 #include <Atlantis/RHIProccessor/RHIRenderTargetView.h>
 #include <Atlantis/SceneView/SceneView.h>
@@ -179,6 +181,35 @@ bool ATLANTIS_NAMESPACE::CRHIProcessor::DrawIndexedInstanced(uint32 _CurrentInde
 
 	CmdList->DrawIndexedInstanced(_CurrentIndex, 1, _IndexOffset, 0, 0);
 	
+	return true;
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::ChangeRenderTargetBarrierAfter(const CRenderTargetView* _RTV)
+{
+	return ChangeRenderTargetBarrier(_RTV,
+		Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET,
+		Glue::EResourceState::RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::ChangeRenderTargetBarrierBefore(const CRenderTargetView* _RTV)
+{
+	return ChangeRenderTargetBarrier(_RTV,
+		Glue::EResourceState::RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET);
+}
+
+bool ATLANTIS_NAMESPACE::CRHIProcessor::ChangeRenderTargetBarrier(const CRenderTargetView* _RTV, Glue::EResourceState _Prev, Glue::EResourceState _Next)
+{
+	ID3D12GraphicsCommandList* CmdList = m_CommandContext->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	const auto Transition = CD3DX12_RESOURCE_BARRIER::Transition(
+		_RTV->GetResource(),
+		Glue::GetD3DResourceState(_Prev),
+		Glue::GetD3DResourceState(_Next));
+
+	CmdList->ResourceBarrier(1, &Transition);
+
 	return true;
 }
 

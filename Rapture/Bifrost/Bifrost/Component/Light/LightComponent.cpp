@@ -1,4 +1,4 @@
-#include "LightComponent.h"
+ï»¿#include "LightComponent.h"
 
 #include <DirectXMath.h>
 
@@ -80,8 +80,8 @@ const ATLANTIS_NAMESPACE::Glue::Vector3 CLightComponent::GetPosition() const
 	if (!trans) { return pos; }
 
 	//
-	// LocalPosition‚ª•K—v‚È‚â‚Â‚ÍŽ‚Â‚æ‚¤‚É‚µ‚ÄA
-	// ƒ[ƒJƒ‹À•W‚Æƒ[ƒ‹ƒhÀ•W‚ð•Ê‚ÅŽæ‚ê‚é‚æ‚¤‚É‚·‚é‚Ì‚ª‚¢‚¢‚¾‚ë‚¤
+	// LocalPositionãŒå¿…è¦ãªã‚„ã¤ã¯æŒã¤ã‚ˆã†ã«ã—ã¦ã€
+	// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¨ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’åˆ¥ã§å–ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã®ãŒã„ã„ã ã‚ã†
 	//
 	//
 	pos = trans->GetWorldPosition();

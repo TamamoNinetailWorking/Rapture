@@ -1,4 +1,4 @@
-#include "SceneView.h"
+﻿#include "SceneView.h"
 #include "SceneViewInitializer.h"
 
 #include <eden/include/utility/ender_utility.h>

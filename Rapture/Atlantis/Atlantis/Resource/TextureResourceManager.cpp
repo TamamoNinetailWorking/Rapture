@@ -1,4 +1,4 @@
-#include "TextureResourceManager.h"
+﻿#include "TextureResourceManager.h"
 
 #include <Atlantis/DirectX12/Texture/TextureResource.h>
 

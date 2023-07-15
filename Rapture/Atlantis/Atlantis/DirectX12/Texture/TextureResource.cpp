@@ -1,4 +1,4 @@
-#include "TextureResource.h"
+﻿#include "TextureResource.h"
 #include "TextureResourceInitializer.h"
 
 #include <Atlantis/DirectX12/DirectXHelper/d3dx12.h>
@@ -34,30 +34,67 @@ bool CTextureResource::CreateTextureResource(const FTextureInitializer* _Initial
 	CHECK_RESULT_FALSE(_Initializer->Device);
 
 	D3D12_HEAP_PROPERTIES prop = {};
-	prop.Type = D3D12_HEAP_TYPE_CUSTOM;
-	prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	prop.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-	prop.CreationNodeMask = 0;
-	prop.VisibleNodeMask = 0;
+	switch (_Initializer->HeapType)
+	{
+	case Glue::EHeapType::CUSTOM:
+		
+		prop.Type = D3D12_HEAP_TYPE_CUSTOM;
+		prop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+		prop.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+		prop.CreationNodeMask = 0;
+		prop.VisibleNodeMask = 0;
+		
+		break;
+
+	default:
+
+		prop = CD3DX12_HEAP_PROPERTIES(Glue::GetHeapType(_Initializer->HeapType));
+
+		break;
+	}
+
 
 	D3D12_RESOURCE_DESC desc = {};
-	desc.Format = Glue::GetDXGIFormat(_Initializer->Format);
-	desc.Width = _Initializer->Width;
-	desc.Height = _Initializer->Height;
-	desc.DepthOrArraySize = _Initializer->DepthOrArraySize;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.MipLevels = _Initializer->MipLevels;
-	desc.Dimension = Glue::GetD3DResourceDimension(_Initializer->Dimension);
-	desc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-	desc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	if (!_Initializer->pResDesc)
+	{
+		desc.Format = Glue::GetDXGIFormat(_Initializer->ResDesc.Format);
+		desc.Width = _Initializer->ResDesc.Width;
+		desc.Height = _Initializer->ResDesc.Height;
+		desc.DepthOrArraySize = _Initializer->ResDesc.DepthOrArraySize;
+		desc.SampleDesc.Count = 1;
+		desc.SampleDesc.Quality = 0;
+		desc.MipLevels = _Initializer->ResDesc.MipLevels;
+		desc.Dimension = Glue::GetD3DResourceDimension(_Initializer->ResDesc.Dimension);
+		desc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+		desc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	}
+
+	const D3D12_RESOURCE_DESC* pDesc = nullptr;
+
+	if (_Initializer->pResDesc)
+	{
+		pDesc = PCast<const D3D12_RESOURCE_DESC*>(_Initializer->pResDesc);
+	}
+	else
+	{
+		pDesc = &desc;
+	}
+
+	D3D12_CLEAR_VALUE ClearValue = {};
+	D3D12_CLEAR_VALUE* pClearValue = nullptr;
+
+	if (_Initializer->ClearValue != nullptr)
+	{
+		ClearValue = CD3DX12_CLEAR_VALUE(pDesc->Format, _Initializer->ClearValue);
+		pClearValue = &ClearValue;
+	}
 
 	D3D_ERROR_CHECK(_Initializer->Device->CreateCommittedResource(
 		&prop,
 		D3D12_HEAP_FLAG_NONE,
-		&desc,
+		pDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-		nullptr,
+		pClearValue,
 		IID_PPV_ARGS(&m_Resource)
 	));
 
@@ -70,9 +107,14 @@ bool CTextureResource::CopyToVideoMemory(const FTextureInitializer* _Initializer
 {
 	CHECK_RESULT_FALSE(_Initializer);
 	CHECK_RESULT_FALSE(_Initializer->Device);
-	CHECK_RESULT_FALSE(_Initializer->SourceData);
 
 	CHECK_RESULT_FALSE(m_Resource);
+
+	// レンダーターゲットのようなピクセル情報がないデータでも許容できるようにここを修正しておく
+	if (!_Initializer->SourceData)
+	{
+		return true;
+	}
 
 	D3D_ERROR_CHECK(m_Resource->WriteToSubresource(
 		0,

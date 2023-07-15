@@ -1,4 +1,4 @@
-#include "MeshDataManager.h"
+﻿#include "MeshDataManager.h"
 
 #include <Bifrost/Model/MeshData/MeshDataInitializer.h>
 #include <Bifrost/Model/MeshData/MeshData.h>

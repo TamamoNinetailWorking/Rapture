@@ -1,4 +1,4 @@
-#include "RenderingSubsystem.h"
+ï»¿#include "RenderingSubsystem.h"
 #include "RenderingSubsystemInitializer.h"
 
 #include <eden/include/utility/ender_utility.h>
@@ -20,6 +20,8 @@
 #include <Bifrost/Model/MeshData/MeshData.h>
 #include <Atlantis/DirectX12/VertexBuffer/VertexBuffer.h>
 #include <Atlantis/DirectX12/IndexBuffer/IndexBuffer.h>
+#include <Atlantis/DirectX12/RenderTargetView/RenderTargetView.h>
+#include <Atlantis/DirectX12/DepthStencilView/DepthStencilView.h>
 
 USING_BIFROST;
 USING_ATLANTIS;
@@ -93,20 +95,20 @@ bool CRenderingSubsystem::RenderBegin()
 
 void CRenderingSubsystem::Rendering()
 {
-	// RenderBegin“I‚ÈŠ´‚¶‚ÅProcessor’B‚Ìˆ—‚ð‚Ü‚Æ‚ß‚é
-	// >> Execute‚·‚é‚Ì‚ÍProcessor‚ÌƒCƒ[ƒW
+	// RenderBeginçš„ãªæ„Ÿã˜ã§Processoré”ã®å‡¦ç†ã‚’ã¾ã¨ã‚ã‚‹
+	// >> Executeã™ã‚‹ã®ã¯Processorã®ã‚¤ãƒ¡ãƒ¼ã‚¸
 	//CHECK(m_Processor->RenderBegin(m_RTV, m_SceneView));
 
 	for (auto& elem : m_RenderGroup)
 	{
-		// RenderComponent‚ðTestƒR[ƒh‚Åì¬‚µ‚ÄASubsystem‚ðƒeƒXƒg
-		// •`‰æ‚Å‚«‚ê‚ÎModelComponent‚ðì¬‚·‚é
+		// RenderComponentã‚’Testã‚³ãƒ¼ãƒ‰ã§ä½œæˆã—ã¦ã€Subsystemã‚’ãƒ†ã‚¹ãƒˆ
+		// æç”»ã§ãã‚Œã°ModelComponentã‚’ä½œæˆã™ã‚‹
 		RenderQueue(elem);
 	}
 
 	//m_Processor->RenderEnd(m_RTV);
 
-	//// “o˜^‚³‚ê‚éˆ—‡“I‚É‚±‚±
+	//// ç™»éŒ²ã•ã‚Œã‚‹å‡¦ç†é †çš„ã«ã“ã“
 	//ClearRenderGroup();
 }
 
@@ -114,7 +116,7 @@ void CRenderingSubsystem::RenderEnd()
 {
 	m_Processor->RenderEnd(m_RTV);
 	
-	// “o˜^‚³‚ê‚éˆ—‡“I‚É‚±‚±
+	// ç™»éŒ²ã•ã‚Œã‚‹å‡¦ç†é †çš„ã«ã“ã“
 	ClearRenderGroup();
 }
 
@@ -150,7 +152,7 @@ CRenderingSubsystem::SceneView* CRenderingSubsystem::GetSceneViewEdit() const
 
 void CRenderingSubsystem::SortQueue()
 {
-	// ƒ\[ƒgˆ—‚ª•K—v‚É‚È‚Á‚½‚ç“ü‚ê‚é
+	// ã‚½ãƒ¼ãƒˆå‡¦ç†ãŒå¿…è¦ã«ãªã£ãŸã‚‰å…¥ã‚Œã‚‹
 }
 
 bool CRenderingSubsystem::SetPrimitiveTopology(Glue::EPrimitiveTopology _Topology)
@@ -172,11 +174,18 @@ bool CRenderingSubsystem::SetMaterialInterface(const IMaterialInterface* _Materi
 	CHECK_RESULT_FALSE(_Material);
 	m_Processor->SetGraphicsPipeline(_Material);
 
+	return true;
+}
+
+bool CRenderingSubsystem::SetDescriptorHeap(const IMaterialInterface* _Material)
+{
+	CHECK_RESULT_FALSE(_Material);
+
 	auto bufDescHeap = _Material->GetDescriptorHeap();
 	auto bufHeapHandle = bufDescHeap->GetGPUDescriptorHandleForHeapStart();
-	CHECK_RESULT_FALSE(m_Processor->SetDescriptorHeaps(1, bufDescHeap));
-	CHECK_RESULT_FALSE(SetGraphicsRootDescriptorTable(0,bufHeapHandle.ptr));
 
+	CHECK_RESULT_FALSE(m_Processor->SetDescriptorHeaps(1, bufDescHeap));
+	
 	return true;
 }
 
@@ -191,14 +200,91 @@ uint64 CRenderingSubsystem::GetMaterialHeapHandle(const IMaterialInterface* _Mat
 	
 	auto matHeapHandle = _Material->GetDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 
-	matHeapHandle.ptr += m_Processor->GetDescriptorHandleIncrementSize(Glue::EDescriptorHeapType::CBV_SRV_UAV);
-
 	return matHeapHandle.ptr;
+}
+
+uint64 CRenderingSubsystem::IncrementHeapHandle(uint64 _Handle) const
+{
+	return 	_Handle + m_Processor->GetDescriptorHandleIncrementSize(Glue::EDescriptorHeapType::CBV_SRV_UAV);
 }
 
 bool CRenderingSubsystem::DrawIndexedInstanced(uint32 _CurrentIndex, uint32 _IndexOffset)
 {
 	return m_Processor->DrawIndexedInstanced(_CurrentIndex, _IndexOffset);
+}
+
+bool CRenderingSubsystem::SwitchRenderTargetViewBefore(ATLANTIS_NAMESPACE::CRenderTargetView* _RTV)
+{
+	CHECK_RESULT_FALSE(_RTV);
+	CHECK_RESULT_FALSE(_RTV->GetDescriptorHeap());
+	auto Handle = _RTV->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+
+	CHECK_RESULT_FALSE(m_RTV->GetDepthStencilView());
+	auto DSV = m_RTV->GetDepthStencilView()->GetDescriptorHeap();
+	CHECK_RESULT_FALSE(DSV);
+	auto DSVHandle = DSV->GetCPUDescriptorHandleForHeapStart();
+
+	auto Context = m_Processor->GetContextEdit();
+	CHECK_RESULT_FALSE(Context);
+	auto CmdList = Context->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	CHECK_RESULT_FALSE(m_Processor->ChangeRenderTargetBarrierBefore(_RTV));
+
+	CmdList->OMSetRenderTargets(1, &Handle, false, &DSVHandle);
+	Context->ClearRenderTargetView(_RTV, RenderTargetClearColor);
+
+	return true;
+}
+
+bool CRenderingSubsystem::SwitchRenderTargetViewAfter(const ATLANTIS_NAMESPACE::CRenderTargetView* _RTV)
+{
+	CHECK_RESULT_FALSE(m_Processor->ChangeRenderTargetBarrierAfter(_RTV));
+
+	return true;
+}
+
+bool CRenderingSubsystem::SetDefaultRenderTargetToSRV(uint32 _Index)
+{
+	auto Context = m_Processor->GetContextEdit();
+	CHECK_RESULT_FALSE(Context);
+	auto CmdList = Context->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	auto Handle = m_RTV->GetCurrentRenderTargetView()->GetShaderResourceView()->GetGPUDescriptorHandleForHeapStart();
+
+	CHECK_RESULT_FALSE(SetGraphicsRootDescriptorTable(_Index, Handle.ptr));
+
+	return true;
+}
+
+bool CRenderingSubsystem::SwitchDefaultRenderTargetViewBefore()
+{
+	CHECK_RESULT_FALSE(m_Processor->ChangeRenderTargetBarrier(m_RTV->GetCurrentRenderTargetView(), Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET, Glue::EResourceState::RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+
+	return true;
+}
+
+bool CRenderingSubsystem::SwitchDefaultRenderTargetViewAfter()
+{
+	CHECK_RESULT_FALSE(m_RTV->GetCurrentRenderTargetView());
+	auto Handle = m_RTV->GetCurrentRenderTargetView()->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+
+	CHECK_RESULT_FALSE(m_RTV->GetDepthStencilView());
+	auto DSV = m_RTV->GetDepthStencilView()->GetDescriptorHeap();
+	CHECK_RESULT_FALSE(DSV);
+	auto DSVHandle = DSV->GetCPUDescriptorHandleForHeapStart();
+
+	auto Context = m_Processor->GetContextEdit();
+	CHECK_RESULT_FALSE(Context);
+	auto CmdList = Context->GetCommandList();
+	CHECK_RESULT_FALSE(CmdList);
+
+	CHECK_RESULT_FALSE(m_Processor->ChangeRenderTargetBarrier(m_RTV->GetCurrentRenderTargetView(), Glue::EResourceState::RESOURCE_STATE_PIXEL_SHADER_RESOURCE, Glue::EResourceState::RESOURCE_STATE_RENDER_TARGET));
+
+	CmdList->OMSetRenderTargets(1, &Handle, false, &DSVHandle);
+
+	return true;
 }
 
 void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
@@ -220,8 +306,8 @@ void CRenderingSubsystem::RenderQueue(const RenderingQueue* _Queue)
 		elem->Draw();
 
 #if 0
-		// ‚±‚±‚Í‚¹‚ß‚ÄCmdList‚ð•\‚Éo‚³‚È‚¢Œ`‚É’¼‚³‚È‚¢‚Æ‚¢‚¯‚È‚¢‚¾‚ë‚¤
-		// >>CommandContext‚Ìˆ—‚Ì•û‚ð
+		// ã“ã“ã¯ã›ã‚ã¦CmdListã‚’è¡¨ã«å‡ºã•ãªã„å½¢ã«ç›´ã•ãªã„ã¨ã„ã‘ãªã„ã ã‚ã†
+		// >>CommandContextã®å‡¦ç†ã®æ–¹ã‚’
 		CmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		auto meshData = elem->GetMeshData();

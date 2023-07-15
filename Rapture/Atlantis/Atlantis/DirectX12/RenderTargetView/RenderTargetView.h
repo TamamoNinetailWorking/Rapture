@@ -25,7 +25,6 @@ public:
 		//D3D12_RENDER_TARGET_VIEW_DESC* RtvDesc = nullptr;
 		Glue::EDataFormat Format = {};
 		Glue::ERTVDimension RTVDimension = {};
-
 	};
 
 	bool Initialize(const FRenderTargetViewInitializer& _Initializer);
@@ -34,6 +33,7 @@ public:
 
 	// ゲッター
 	ID3D12DescriptorHeap* GetDescriptorHeap() const { return m_MaterialDescriptorHeap; };
+	ID3D12DescriptorHeap* GetShaderResourceView() const { return m_ShaderResourceView; };
 	ID3D12Resource* GetResource() const { return m_Resource; };
 
 	CRenderTargetView() {};
@@ -48,6 +48,9 @@ private:
 
 	// ディスクリプタ―ヒープ
 	ObjectPtr(ID3D12DescriptorHeap) m_MaterialDescriptorHeap = nullptr;
+
+	// シェーダーリソースヒープ
+	ObjectPtr(ID3D12DescriptorHeap) m_ShaderResourceView = nullptr;
 
 	// RTVリソース
 	ObjectPtr(ID3D12Resource) m_Resource = nullptr;

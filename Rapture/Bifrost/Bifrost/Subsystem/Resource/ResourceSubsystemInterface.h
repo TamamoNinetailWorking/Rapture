@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 EDENS_NAMESPACE_BEGIN
 
@@ -27,6 +27,9 @@ public:
 	virtual const ManagerPtr GetShaderResourceManager() const = 0;
 	virtual ManagerPtr GetShaderResourceManagerEdit() = 0;
 	
+	virtual const ManagerPtr GetRenderTargetViewResourceManager() const = 0;
+	virtual ManagerPtr GetRenderTargetViewResourceManagerEdit() = 0;
+
 	virtual const ManagerPtr GetMaterialResourceManager() const = 0;
 	virtual ManagerPtr GetMaterialResourceManagerEdit() = 0;
 

@@ -1,4 +1,4 @@
-#include "TransformComponent.h"
+﻿#include "TransformComponent.h"
 
 #include <Atlantis/DirectX12/GlueMath.h>
 #include <DirectXMath.h>

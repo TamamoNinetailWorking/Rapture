@@ -1,4 +1,4 @@
-#include "ResourceManagementSubsystem.h"
+﻿#include "ResourceManagementSubsystem.h"
 
 #include <eden/include/Resource/ResourceManager.h>
 #include <Bifrost/Subsystem/Resource/ResourceManagementSubsystemInitializer.h>

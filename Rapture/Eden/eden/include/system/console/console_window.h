@@ -12,19 +12,27 @@
 EDENS_NAMESPACE_BEGIN
 
 /*
-*	CUIウィンドウ生成クラス
+*	@brief CUIウィンドウ生成クラス
 */
 class CConsoleWindow
 {
 public:
 
+	/**
+	 * @brief CUIウィンドウの生成
+	 * 
+	 */
 	void CreateConsoleWindow();
 
-
+	/**
+	 * @brief CUIウィンドウの破棄
+	 * 
+	 */
 	void CloseConsoleWindow();
 
 private:
 
+	/** 入力のためのストリーム出力先 */
 	FILE* m_pFileStream = nullptr;
 
 };

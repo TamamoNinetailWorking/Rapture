@@ -1,4 +1,4 @@
-#include "SubsystemDominator.h"
+﻿#include "SubsystemDominator.h"
 //#include <Bifrost/Subsystem/Resource/ResourceSubsystemInterface.h>
 
 USING_BIFROST;

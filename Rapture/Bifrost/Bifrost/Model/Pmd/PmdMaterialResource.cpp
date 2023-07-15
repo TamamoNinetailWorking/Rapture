@@ -1,4 +1,4 @@
-#include "PmdMaterialResource.h"
+ï»¿#include "PmdMaterialResource.h"
 #include "PmdMaterialDefine.h"
 #include "PmdMaterialResourceInitializer.h"
 #include "PmdPreDefine.h"
@@ -91,7 +91,7 @@ bool CPmdMaterialResource::CreateConstantBuffer(const FPmdMaterialResourceInitia
 	heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 
 	D3D12_RESOURCE_DESC resDesc = {};
-	resDesc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);//256ƒoƒCƒgƒAƒ‰ƒCƒ“‚È‚Ì‚ÅAƒCƒ[ƒW‚Í‚µ‚â‚·‚¢‚ªƒAƒ‰ƒCƒƒ“ƒg‚ÌƒpƒfƒBƒ“ƒO‚Å‚·‚ñ‚²‚¢ƒƒ‚ƒŠ‚ª—]‚é
+	resDesc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);//256ãƒã‚¤ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãªã®ã§ã€ã‚¤ãƒ¡ãƒ¼ã‚¸ã¯ã—ã‚„ã™ã„ãŒã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆã®ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã§ã™ã‚“ã”ã„ãƒ¡ãƒ¢ãƒªãŒä½™ã‚‹
 
 	D3D_ERROR_CHECK(_Initializer->Device->GetDevice()->CreateCommittedResource(
 		&heapProp,
@@ -137,7 +137,7 @@ bool CPmdMaterialResource::CreateMaterialTexture(const FPmdMaterialResourceIniti
 	String sphName = {};
 	String spaName = {};
 
-	// ƒeƒNƒXƒ`ƒƒ–¼‚ğ•ª—£
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åã‚’åˆ†é›¢
 	{
 		constexpr char splitter = '*';
 		if (StringUtility::ExitChara(texPath, splitter))
@@ -195,7 +195,7 @@ bool CPmdMaterialResource::CreateMaterialTexture(const FPmdMaterialResourceIniti
 	CFileLoadTexture::FInitializer initializer = {};
 	initializer.Device = _Initializer->Device->GetDevice();
 
-	// ƒJƒ‰[ƒeƒNƒXƒ`ƒƒ
+	// ã‚«ãƒ©ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	{
 		const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, textureName);
 
@@ -213,7 +213,7 @@ bool CPmdMaterialResource::CreateMaterialTexture(const FPmdMaterialResourceIniti
 		loader.Finalize();
 	}
 
-	// ƒXƒtƒBƒAƒeƒNƒXƒ`ƒƒ
+	// ã‚¹ãƒ•ã‚£ã‚¢ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	{
 		const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, sphName);
 
@@ -231,7 +231,7 @@ bool CPmdMaterialResource::CreateMaterialTexture(const FPmdMaterialResourceIniti
 		loader.Finalize();
 	}
 
-	// ‰ÁZƒXƒtƒBƒAƒeƒNƒXƒ`ƒƒ
+	// åŠ ç®—ã‚¹ãƒ•ã‚£ã‚¢ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	{
 		const String& texFolderFilePath = FileUtility::ConvertTexturePathWithModel(modelName, spaName);
 
@@ -249,7 +249,7 @@ bool CPmdMaterialResource::CreateMaterialTexture(const FPmdMaterialResourceIniti
 		loader.Finalize();
 	}
 
-	// ƒgƒD[ƒ“ƒeƒNƒXƒ`ƒƒ
+	// ãƒˆã‚¥ãƒ¼ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	{
 		constexpr uint8 toonTexNameLength = 16;
 		char toonTexName[toonTexNameLength] = {};

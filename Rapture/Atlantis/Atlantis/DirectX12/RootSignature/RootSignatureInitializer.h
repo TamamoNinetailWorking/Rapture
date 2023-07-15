@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Atlantis/DirectX12/DirectXPaste.h>
 #include <vector>

@@ -1,4 +1,4 @@
-#include "eden/include/Resource/ResourceManager.h"
+ï»¿#include "eden/include/Resource/ResourceManager.h"
 
 #include <eden/include/Resource/Resource.h>
 #include <eden/include/Resource/ResourceInitializer.h>
@@ -117,10 +117,10 @@ bool CResourceManager::IsInvalidHandle(const FResourceHandle& _Handle) const
 {
 	if (!_Handle.isActive) { return true; }
 
-	// –³ˆÓ–¡‚Èiterator‚ª‚Ü‚¸‹–‚³‚ê‚È‚¢EEE
+	// ç„¡æ„å‘³ãªiteratorãŒã¾ãšè¨±ã•ã‚Œãªã„ãƒ»ãƒ»ãƒ»
 	//if (_Handle == GetInvalidHandle()) { return true; }
 
-	// end‚ğæ‚É”»’è‚µ‚æ‚¤‚Æ‚·‚é‚ÆA‚Ü‚¸List‚Ì®‡«‚ğƒ`ƒFƒbƒN‚µ‚æ‚¤‚Æ‚·‚é‚Ì‚ÅA–³ˆÓ–¡‚Èiterator‚ğ‚Á‚Ä‚¢‚é‚Æexception”»’è‚É‚È‚é
+	// endã‚’å…ˆã«åˆ¤å®šã—ã‚ˆã†ã¨ã™ã‚‹ã¨ã€ã¾ãšListã®æ•´åˆæ€§ã‚’ãƒã‚§ãƒƒã‚¯ã—ã‚ˆã†ã¨ã™ã‚‹ã®ã§ã€ç„¡æ„å‘³ãªiteratorã‚’æŒã£ã¦ã„ã‚‹ã¨exceptionåˆ¤å®šã«ãªã‚‹
 	return _Handle.iterator == m_ResourceList.end();
 	//return _Handle.iterator == m_ResourceList.end() || _Handle == INVALID_RESOURCE_HANDLE;
 	//return _Handle == GetInvalidHandle();
