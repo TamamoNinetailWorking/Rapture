@@ -26,6 +26,8 @@
 
 #include <Atlantis/Material/MaterialInterface.h>
 
+#include <Atlantis/DirectX12/ConstantBuffer/ConstantBufferPreDefine.h>
+
 #include <eden/include/utility/ender_utility.h>
 #include <string>
 
@@ -51,6 +53,8 @@ bool CBloomEffectComponent::Initialize(const FComponentInitializerBase* _Initial
 		CHECK_RESULT_FALSE(CreateMeshData());
 		CHECK_RESULT_FALSE(CreateMaterial(initializer));
 
+		CHECK_RESULT_FALSE(CreateParameterBuffer());
+
 		return true;
 	} while (0);
 
@@ -73,6 +77,8 @@ void CBloomEffectComponent::Finalize()
 		FinalizeObject(elem);
 	}
 
+	EDENS_NAMESPACE::Delete(m_ParameterBuffer);
+
 	Super::Finalize();
 }
 
@@ -81,14 +87,17 @@ bool CBloomEffectComponent::Draw() const
 	CRenderingSubsystem* Subsystem = CSubsystemServiceLocator::GetRenderingSubsystemEdit();
 	CHECK_RESULT_FALSE(Subsystem);
 
-	CRenderTargetView* RTV = m_RTVBuffers.at(0)->GetRenderTargetView()->GetRenderTargetView();
+	CRenderTargetView* RTV = m_RTVBuffers.at(SCast<uint8>(EBloomPostEffectRTVBufferIndex::Bright))->GetRenderTargetView()->GetRenderTargetView();
 	CHECK_RESULT_FALSE(RTV);
 	Subsystem->SwitchDefaultRenderTargetViewBefore();
 	
 	{
+		// 一括で複数のRTVに書き込む処理は次に対応する
+
 		Subsystem->SwitchRenderTargetViewBefore(RTV);
 
 		{
+			Subsystem->SetPrimitiveTopology(Glue::EPrimitiveTopology::TRIANGLELIST);
 			Subsystem->SetMeshData(m_MeshData);
 
 			auto& Material = m_MaterialInterface;
@@ -100,7 +109,7 @@ bool CBloomEffectComponent::Draw() const
 
 			//Subsystem->SetGraphicsRootDescriptorTable(1, Handle);
 
-			Subsystem->SetDefaultRenderTargetToSRV(0);
+			Subsystem->SetDefaultRenderTargetToSRV(1,0);
 			Subsystem->DrawIndexedInstanced(CPrimitivePlain::GetIndicesNum(), 0);
 		}
 
@@ -110,14 +119,16 @@ bool CBloomEffectComponent::Draw() const
 	Subsystem->SwitchDefaultRenderTargetViewAfter();
 
 	{
+		Subsystem->SetPrimitiveTopology(Glue::EPrimitiveTopology::TRIANGLELIST);
 		Subsystem->SetMeshData(m_MeshData);
 
 		auto& Material = m_MaterialInterface;
 		Subsystem->SetMaterialInterface(m_MaterialInterface);
 		
-		auto Handle = RTV->GetShaderResourceView()->GetGPUDescriptorHandleForHeapStart().ptr;
+		auto Handle = RTV->GetShaderResourceView()->GetGPUDescriptorHandleForHeapStart();
 
-		Subsystem->SetGraphicsRootDescriptorTable(0, Handle);
+		Subsystem->SetDescriptorHeap(1, RTV);
+		Subsystem->SetGraphicsRootDescriptorTable(0, Handle.ptr);
 		Subsystem->DrawIndexedInstanced(CPrimitivePlain::GetIndicesNum(), 0);
 	}
 
@@ -140,7 +151,7 @@ bool CBloomEffectComponent::CreateRTVBuffers()
 	CHECK_RESULT_FALSE(BackBuffer1);
 	auto Desc = BackBuffer1->GetDesc();
 
-	for (uint32 Count = 0; Count < RTV_BUFFER_NUM; ++Count)
+	for (uint32 Count = 0; Count < SCast<uint8>(EBloomPostEffectRTVBufferIndex::RTV_BUFFER_NUM); ++Count)
 	{
 		auto& elem = m_RTVBuffers.at(Count);
 
@@ -154,6 +165,10 @@ bool CBloomEffectComponent::CreateRTVBuffers()
 		initializer.Name = CHash160(Name);
 
 		// 縮小バッファを作成する
+		if(
+			(Count != SCast<uint8>(EBloomPostEffectRTVBufferIndex::Result)) 
+			&& (Count != SCast<uint8>(EBloomPostEffectRTVBufferIndex::Bright))
+			)
 		{
 			uint32 Divide = Count + 1;
 			Desc.Width = Desc.Width / Divide;
@@ -207,13 +222,112 @@ bool CBloomEffectComponent::CreateMeshData()
 
 bool CBloomEffectComponent::CreateMaterial(const FBloomPostEffectComponentInitializer* _Initializer)
 {
-	m_MaterialInterface = new CQuadPolygonMaterial();
-	CHECK_RESULT_FALSE(m_MaterialInterface);
+	CHECK_RESULT_FALSE(_Initializer);
 
-	FQuadPolygonMaterialInitializer Initializer = {};
-	Initializer.PsoName = _Initializer->QuadPolygonPsoName;
+	{
+		m_MaterialInterface = new CQuadPolygonMaterial();
+		CHECK_RESULT_FALSE(m_MaterialInterface);
 
-	CHECK_RESULT_FALSE(m_MaterialInterface->Initialize(&Initializer));
+		FQuadPolygonMaterialInitializer Initializer = {};
+		Initializer.PsoName = _Initializer->QuadPolygonPsoName;
+
+		CHECK_RESULT_FALSE(m_MaterialInterface->Initialize(&Initializer));
+	}
+
+	{
+		m_BrightnessInterface = new CQuadPolygonMaterial();
+		CHECK_RESULT_FALSE(m_BrightnessInterface);
+
+		FQuadPolygonMaterialInitializer Initializer = {};
+		Initializer.PsoName = _Initializer->BrightnessPsoName;
+
+		CHECK_RESULT_FALSE(m_BrightnessInterface->Initialize(&Initializer));
+	}
+
+	{
+		m_BlurInterface = new CQuadPolygonMaterial();
+		CHECK_RESULT_FALSE(m_BlurInterface);
+
+		FQuadPolygonMaterialInitializer Initializer = {};
+		Initializer.PsoName = _Initializer->BlurPsoName;
+
+		CHECK_RESULT_FALSE(m_BlurInterface->Initialize(&Initializer));
+	}
+
+	{
+		m_FetchColorInterface = new CQuadPolygonMaterial();
+		CHECK_RESULT_FALSE(m_FetchColorInterface);
+
+		FQuadPolygonMaterialInitializer Initializer = {};
+		Initializer.PsoName = _Initializer->FetchColorPsoName;
+
+		CHECK_RESULT_FALSE(m_FetchColorInterface->Initialize(&Initializer));
+	}
+	return true;
+}
+
+bool CBloomEffectComponent::CreateParameterBuffer()
+{
+	m_ParameterBuffer = new FBloomPostEffectParameterBuffer();
+	CHECK_RESULT_FALSE(m_ParameterBuffer);
+
+	D3D12_CONSTANT_BUFFER_VIEW_DESC Desc = {};
+	uint32 bufferSize = AlignBufferSize(sizeof(FBloomPostEffectParameterBuffer));
+	Desc.SizeInBytes = bufferSize;
+
+	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_BlurInterface->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	
+	//----------------
+	// 途中
+	//----------------
 
 	return true;
+}
+
+const FBloomPostEffectParameterBuffer CBloomEffectComponent::CalcBlurParam(uint32 _Width, uint32 _Height, const ATLANTIS_NAMESPACE::Glue::Vector2& _Direction, float _Deviation)
+{
+	auto GaussianDistribution = [](const Glue::Vector2& _Base, float _Rho)
+	{
+		return expf(-(_Base.x * _Base.x + _Base.y * _Base.y) / (2.0f * _Rho * _Rho));
+	};
+
+	FBloomPostEffectParameterBuffer Result = {};
+	Result.SampleCount = 15;
+
+	auto tu = 1.f / _Width;
+	auto tv = 1.f / _Height;
+
+	{
+		Result.Offset[0].x = 0.f;
+		Result.Offset[0].y = 0.f;
+		Result.Offset[0].z = GaussianDistribution(Glue::Vector2(0.f, 0.f), _Deviation);
+	}
+
+	auto TotalWeight = Result.Offset[0].z;
+
+	for (uint32 Count = 1; Count / 8; ++Count)
+	{
+		Result.Offset[Count].x = _Direction.x * Count * tu;
+		Result.Offset[Count].y = _Direction.y * Count * tv;
+
+		Glue::Vector2 MultiDir(_Direction.x * Count, _Direction.y * Count);
+		Result.Offset[Count].z = GaussianDistribution(MultiDir, _Deviation);
+		
+		TotalWeight += Result.Offset[Count].z * 2.f;
+	}
+
+	for (uint32 Count = 0; Count < 8; ++Count)
+	{
+		Result.Offset[Count].z /= TotalWeight;
+	}
+
+	for (uint32 Count = 8; Count < 15; ++Count)
+	{
+		Result.Offset[Count].x = -Result.Offset[Count - 7].x;
+		Result.Offset[Count].y = -Result.Offset[Count - 7].y;
+		Result.Offset[Count].z = -Result.Offset[Count - 7].z;
+	}
+
+	return Result;
+
 }

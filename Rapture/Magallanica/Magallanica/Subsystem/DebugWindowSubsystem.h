@@ -3,6 +3,7 @@
 #include <list>
 
 struct ID3D12DescriptorHeap;
+struct ID3D12Resource;
 
 MAGALLANICA_NAMESPACE_BEGIN
 
@@ -23,6 +24,12 @@ public:
 
 	CDebugWindowSubsystem() {};
 	~CDebugWindowSubsystem() {};
+
+public:
+
+	uint32 SetSRV(ID3D12Resource* _Resource);
+
+	uint64 GetSRVGPUHandle(uint32 _Index) const;
 
 protected:
 
@@ -47,6 +54,11 @@ private:
 private:
 
 	ID3D12DescriptorHeap* m_SRVDesc = nullptr;
+
+	uint32 m_SrvCurrentNum = 0;
+
+	uint32 m_HandleIncrementSize = 0;
+
 	bool m_ShowDemoWindow = false;
 	bool m_ShowAnotherWindow = false;
 

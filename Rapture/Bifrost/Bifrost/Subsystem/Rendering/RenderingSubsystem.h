@@ -70,6 +70,7 @@ public:
 	bool SetMeshData(const CMeshData* _Mesh);
 	bool SetMaterialInterface(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
 	bool SetDescriptorHeap(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
+	bool SetDescriptorHeap(uint32 _Num, const ATLANTIS_NAMESPACE::CRenderTargetView* _RTV);
 	bool SetGraphicsRootDescriptorTable(uint32 _Offset, uint64 _HeapHandle);
 	uint64 GetMaterialHeapHandle(const ATLANTIS_NAMESPACE::IMaterialInterface* _Material);
 	uint64 IncrementHeapHandle(uint64 _Handle) const;
@@ -78,7 +79,7 @@ public:
 	bool SwitchRenderTargetViewBefore(ATLANTIS_NAMESPACE::CRenderTargetView* _RTV);
 	bool SwitchRenderTargetViewAfter(const ATLANTIS_NAMESPACE::CRenderTargetView* _RTV);
 
-	bool SetDefaultRenderTargetToSRV(uint32 _Index);
+	bool SetDefaultRenderTargetToSRV(uint32 _Num,uint32 _Index);
 
 	bool SwitchDefaultRenderTargetViewBefore();
 	bool SwitchDefaultRenderTargetViewAfter();

@@ -10,16 +10,18 @@
 
 u32 __eden_printf(const c8* _format, ...)
 {
-#ifdef EDENS_DEBUG
+	u32 done = 0;
+//#ifdef EDENS_DEBUG
 	va_list arg;
-	u32 done;
+
 
 	va_start(arg, _format);
 	done = vfprintf(stdout, _format, arg);
 	va_end(arg);
 
+
+//#endif
 	return done;
-#endif
 }
 
 

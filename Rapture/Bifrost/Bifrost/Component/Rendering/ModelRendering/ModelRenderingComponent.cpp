@@ -1,11 +1,14 @@
 ﻿#include "ModelRenderingComponent.h"
 
+#include <Atlantis/DirectX12/DirectXPaste.h>
+
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 #include <Bifrost/Subsystem/Rendering/RenderingSubsystem.h>
 
 #include <Atlantis/Material/MaterialInterface.h>
 
 USING_BIFROST;
+USING_ATLANTIS;
 
 CModelRenderingComponent::CModelRenderingComponent() : Super()
 {
@@ -19,6 +22,7 @@ bool CModelRenderingComponent::Draw() const
 	CRenderingSubsystem* Subsystem = CSubsystemServiceLocator::GetRenderingSubsystemEdit();
 	CHECK_RESULT_FALSE(Subsystem);
 
+	Subsystem->SetPrimitiveTopology(Glue::EPrimitiveTopology::TRIANGLELIST);
 	Subsystem->SetMeshData(m_MeshData);
 
 	auto& Material = m_MaterialInterface;

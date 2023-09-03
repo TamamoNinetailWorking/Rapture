@@ -26,6 +26,9 @@ bool CPostEffectActor::Initialize(const FActorInitializerBase* _Initializer)
 		{
 			FBloomPostEffectComponentInitializer bloomInit = {};
 			bloomInit.QuadPolygonPsoName = initializer->QuadPolygonPsoName;
+			bloomInit.BrightnessPsoName = initializer->BrightnessPsoName;
+			bloomInit.BlurPsoName = initializer->BlurPsoName;
+			bloomInit.FetchColorPsoName = initializer->FetchColorPsoName;
 			
 			m_BloomPostEffectComponent = new CBloomEffectComponent();
 			CHECK_RESULT_FALSE(m_BloomPostEffectComponent);

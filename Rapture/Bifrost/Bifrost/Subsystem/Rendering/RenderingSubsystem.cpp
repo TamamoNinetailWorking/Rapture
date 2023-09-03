@@ -189,6 +189,16 @@ bool CRenderingSubsystem::SetDescriptorHeap(const IMaterialInterface* _Material)
 	return true;
 }
 
+bool CRenderingSubsystem::SetDescriptorHeap(uint32 _Num, const ATLANTIS_NAMESPACE::CRenderTargetView* _RTV)
+{
+	CHECK_RESULT_FALSE(_RTV);
+
+	auto SRV = _RTV->GetShaderResourceView();
+	CHECK_RESULT_FALSE(m_Processor->SetDescriptorHeaps(_Num, SRV));
+
+	return true;
+}
+
 bool CRenderingSubsystem::SetGraphicsRootDescriptorTable(uint32 _Offset, uint64 _HeapHandle)
 {
 	return m_Processor->SetGraphicsRootDescriptorTable(_Offset, _HeapHandle);
@@ -244,14 +254,18 @@ bool CRenderingSubsystem::SwitchRenderTargetViewAfter(const ATLANTIS_NAMESPACE::
 	return true;
 }
 
-bool CRenderingSubsystem::SetDefaultRenderTargetToSRV(uint32 _Index)
+bool CRenderingSubsystem::SetDefaultRenderTargetToSRV(uint32 _Num,uint32 _Index)
 {
 	auto Context = m_Processor->GetContextEdit();
 	CHECK_RESULT_FALSE(Context);
 	auto CmdList = Context->GetCommandList();
 	CHECK_RESULT_FALSE(CmdList);
 
-	auto Handle = m_RTV->GetCurrentRenderTargetView()->GetShaderResourceView()->GetGPUDescriptorHandleForHeapStart();
+	auto DescHeap = m_RTV->GetCurrentRenderTargetView()->GetShaderResourceView();
+	
+	CHECK_RESULT_FALSE(m_Processor->SetDescriptorHeaps(_Num,DescHeap));
+
+	auto Handle = DescHeap->GetGPUDescriptorHandleForHeapStart();
 
 	CHECK_RESULT_FALSE(SetGraphicsRootDescriptorTable(_Index, Handle.ptr));
 

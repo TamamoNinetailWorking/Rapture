@@ -43,7 +43,7 @@ bool CDebugWindowSubsystem::Initialize(const FDebugWindowSubsystemInitializer* _
 
     D3D12_DESCRIPTOR_HEAP_DESC desc = {};
     desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-    desc.NumDescriptors = 1;
+    desc.NumDescriptors = NUM_SRV_DESC;
     desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
     
     if (FAILED(d3dDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_SRVDesc))))
@@ -59,6 +59,8 @@ bool CDebugWindowSubsystem::Initialize(const FDebugWindowSubsystemInitializer* _
         m_SRVDesc->GetCPUDescriptorHandleForHeapStart(),
         m_SRVDesc->GetGPUDescriptorHandleForHeapStart()
     );
+
+    ++m_SrvCurrentNum;
 
     CHECK_RESULT_FALSE(InitializeImpl());
 
@@ -162,6 +164,53 @@ void CDebugWindowSubsystem::RenderDebugWindow()
 void CDebugWindowSubsystem::RegistDebugWindow(CDebugWindow* _DebugWindow)
 {
     m_DebugWindowList.push_back(_DebugWindow);
+}
+
+uint32 CDebugWindowSubsystem::SetSRV(ID3D12Resource* _Resource)
+{
+    const BIFROST_NAMESPACE::CRenderingSubsystem* Subsystem = BIFROST_NAMESPACE::CSubsystemServiceLocator::GetRenderingSubsystem();
+
+    const ATLANTIS_NAMESPACE::CRHIProcessor* processor = Subsystem->GetProcessor();
+    CHECK_RESULT_FALSE(processor);
+    const ATLANTIS_NAMESPACE::CDX12MainDevice* device = processor->GetDevice();
+    CHECK_RESULT_FALSE(device);
+    ID3D12Device* d3dDevice = device->GetDevice();
+    CHECK_RESULT_FALSE(d3dDevice);
+
+    const uint32 HandleIncrement = d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+    m_HandleIncrementSize = HandleIncrement;
+
+    D3D12_SHADER_RESOURCE_VIEW_DESC Desc = {};
+    Desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    Desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    Desc.Texture2D.MipLevels = 1;
+    Desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+
+    D3D12_CPU_DESCRIPTOR_HANDLE Handle = {};
+    Handle = m_SRVDesc->GetCPUDescriptorHandleForHeapStart();
+    Handle.ptr += HandleIncrement * m_SrvCurrentNum;
+    
+    d3dDevice->CreateShaderResourceView(_Resource, &Desc, Handle);
+
+    if (m_SrvCurrentNum >= NUM_SRV_DESC)
+    {
+        PRINT("DebugWindowSubsystem SRV is full.\n");
+		return -1;
+	}
+
+    ++m_SrvCurrentNum;
+
+    return m_SrvCurrentNum;
+}
+
+uint64 CDebugWindowSubsystem::GetSRVGPUHandle(uint32 _Index) const
+{
+    D3D12_GPU_DESCRIPTOR_HANDLE Handle = {};
+    Handle = m_SRVDesc->GetGPUDescriptorHandleForHeapStart();
+    Handle.ptr += m_HandleIncrementSize * _Index;
+    
+    return Handle.ptr;
 }
 
 bool CDebugWindowSubsystem::InitializeImpl()

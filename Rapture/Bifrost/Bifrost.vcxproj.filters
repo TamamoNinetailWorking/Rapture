@@ -393,6 +393,9 @@
     <ClInclude Include="Bifrost\Material\QuadPolygonMaterialPreDefine.h">
       <Filter>Bifrost\Material</Filter>
     </ClInclude>
+    <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponentPreDefine.h">
+      <Filter>Bifrost\Component\Rendering\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bifrost\Model\MeshData\MeshData.cpp">

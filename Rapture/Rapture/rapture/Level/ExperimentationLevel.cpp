@@ -193,6 +193,9 @@ bool CExperimentationLevel::Initialize()
 		{
 			FPostEffectActorInitializer initializer = {};
 			initializer.QuadPolygonPsoName = PsoName::QuadPolygonRenderingPso;
+			initializer.BrightnessPsoName = PsoName::BrightnessThresholdPso;
+			initializer.BlurPsoName = PsoName::BlurRenderingPso;
+			initializer.FetchColorPsoName = PsoName::FetchColorPso;
 
 			CPostEffectActor* PostEffectActor = SpawnActor<CPostEffectActor>(CHash160("PostEffectActor01"),&initializer);
 		}

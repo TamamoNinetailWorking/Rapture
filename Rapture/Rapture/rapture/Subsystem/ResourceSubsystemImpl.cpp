@@ -26,6 +26,15 @@ using namespace std;
 #define SUBSYTEM_IS_NULL() \
 	if(m_Subsystem == nullptr) { return nullptr; } \
 
+struct FPipelineStateInitializerParameters
+{
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC* pPipelineStateDesc = nullptr;
+	D3D12_ROOT_PARAMETER* pRootParam = nullptr;
+	uint32 RootParamNum = 0;
+	D3D12_STATIC_SAMPLER_DESC* pStaticSamplerDesc = nullptr;
+	uint32 SamplerParamNum = 0;
+};
+
 const IResourceSubsystem::ManagerPtr CResourceSubsystemImpl::GetTextureResourceManager() const
 {
 	return GetManagerFromIndex(EResourceManagementType::RESOURCE_TYPE_TEXTURE);
@@ -575,6 +584,157 @@ bool CResourceSubsystemImpl::CreateQuadPolygonPipelineStateObject(ATLANTIS_NAMES
 	return result;
 }
 
+bool CResourceSubsystemImpl::CreateBrightnessPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName)
+{
+	FPipelineStateInitializerParameters InitParam = {};
+
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC Desc = {};
+	{
+		Desc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		Desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		Desc.NumRenderTargets = 1;
+		Desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Desc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+
+		Desc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		Desc.SampleDesc.Count = 1;
+		Desc.SampleDesc.Quality = 0;
+
+		Desc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+	}
+
+	D3D12_DESCRIPTOR_RANGE Range = {};
+	{
+		Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		Range.BaseShaderRegister = 0;
+		Range.NumDescriptors = 1;
+	}
+
+	D3D12_ROOT_PARAMETER RootParam = {};
+	{
+		RootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		RootParam.DescriptorTable.NumDescriptorRanges = 1;
+		RootParam.DescriptorTable.pDescriptorRanges = &Range;
+		RootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	}
+
+	D3D12_STATIC_SAMPLER_DESC Sampler = {};
+	{
+		Sampler = CD3DX12_STATIC_SAMPLER_DESC(0);
+	}
+
+	InitParam.pPipelineStateDesc = &Desc;
+	InitParam.pRootParam = &RootParam;
+	InitParam.RootParamNum = 1;
+	InitParam.pStaticSamplerDesc = &Sampler;
+	InitParam.SamplerParamNum = 1;
+
+	return CreatePipelineStateObjectImpl(PsoName::BrightnessThresholdPso, _Device, _ShaderName, &InitParam);
+}
+
+bool CResourceSubsystemImpl::CreateBlurPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName)
+{
+	FPipelineStateInitializerParameters InitParam = {};
+
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC Desc = {};
+	{
+		Desc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		Desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		Desc.NumRenderTargets = 1;
+		Desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Desc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+
+		Desc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		Desc.SampleDesc.Count = 1;
+		Desc.SampleDesc.Quality = 0;
+
+		Desc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+	}
+
+	D3D12_DESCRIPTOR_RANGE Range[2] = {};
+	{
+		Range[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+		Range[0].BaseShaderRegister = 0;
+		Range[0].NumDescriptors = 1;
+		Range[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+		Range[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		Range[1].BaseShaderRegister = 0;
+		Range[1].NumDescriptors = 2;
+		Range[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	}
+
+	D3D12_ROOT_PARAMETER RootParam = {};
+	{
+		RootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		RootParam.DescriptorTable.NumDescriptorRanges = 2;
+		RootParam.DescriptorTable.pDescriptorRanges = Range;
+		RootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	}
+
+	D3D12_STATIC_SAMPLER_DESC Sampler = {};
+	{
+		Sampler = CD3DX12_STATIC_SAMPLER_DESC(0);
+	}
+
+	InitParam.pPipelineStateDesc = &Desc;
+	InitParam.pRootParam = &RootParam;
+	InitParam.RootParamNum = 1;
+	InitParam.pStaticSamplerDesc = &Sampler;
+	InitParam.SamplerParamNum = 1;
+
+	return CreatePipelineStateObjectImpl(PsoName::BlurRenderingPso,_Device,_ShaderName,&InitParam);
+}
+
+bool CResourceSubsystemImpl::CreateFetchColorPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName)
+{
+	FPipelineStateInitializerParameters InitParam = {};
+
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC Desc = {};
+	{
+		Desc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		Desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		Desc.NumRenderTargets = 1;
+		Desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Desc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+
+		Desc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+		Desc.SampleDesc.Count = 1;
+		Desc.SampleDesc.Quality = 0;
+
+		Desc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+	}
+
+	D3D12_DESCRIPTOR_RANGE Range = {};
+	{
+		Range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+		Range.BaseShaderRegister = 0;
+		Range.NumDescriptors = 5;
+		Range.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+	}
+
+	D3D12_ROOT_PARAMETER RootParam = {};
+	{
+		RootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+		RootParam.DescriptorTable.NumDescriptorRanges = 1;
+		RootParam.DescriptorTable.pDescriptorRanges = &Range;
+		RootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	}
+
+	D3D12_STATIC_SAMPLER_DESC Sampler = {};
+	{
+		Sampler = CD3DX12_STATIC_SAMPLER_DESC(0);
+	}
+
+	InitParam.pPipelineStateDesc = &Desc;
+	InitParam.pRootParam = &RootParam;
+	InitParam.RootParamNum = 1;
+	InitParam.pStaticSamplerDesc = &Sampler;
+	InitParam.SamplerParamNum = 1;
+
+	return CreatePipelineStateObjectImpl(PsoName::FetchColorPso, _Device, _ShaderName, &InitParam);
+}
+
 bool CResourceSubsystemImpl::CreateRenderPipelineStateObject(const BIFROST_NAMESPACE::FPipelineStateObjectInitializer* _Init)
 {
 	ManagerPtr manager = GetPipelineStateObjectManager();
@@ -589,4 +749,122 @@ bool CResourceSubsystemImpl::CreateRenderPipelineStateObject(const BIFROST_NAMES
 	}
 
 	return true;
+}
+
+bool CResourceSubsystemImpl::CreatePipelineStateObjectImpl(Hash160& _OutPsoName,ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName, const FPipelineStateInitializerParameters* _InitParam)
+{
+	FPipelineStateObjectInitializer initializer = {};
+
+	bool result = false;
+
+	CFileLoader vsLoader = {};
+	CFileLoader hsLoader = {};
+	CFileLoader dsLoader = {};
+	CFileLoader gsLoader = {};
+	CFileLoader psLoader = {};
+
+	FVertexShaderInitializer vsInit = {};
+	FHullShaderInitializer hsInit = {};
+	FDomainShaderInitializer dsInit = {};
+	FGeometryShaderInitializer gsInit = {};
+	FPixelShaderInitializer psInit = {};
+	{
+
+		{
+			result = vsLoader.FileLoad(_ShaderName.VS.File.c_str());
+			if (!result)
+			{
+				PRINT("Vertex Shader Load Failed.\n");
+			}
+
+			vsInit.Data = vsLoader.GetData();
+			vsInit.Size = vsLoader.GetSize();
+			vsInit.Name = _ShaderName.VS.GetShaderName();
+			vsInit.Device = _Device->GetDevice();
+			vsInit.Type = EShaderType::SHADER_TYPE_VERTEX;
+		}
+
+		{
+			hsLoader.FileLoad(_ShaderName.HS.File.c_str());
+
+			hsInit.Data = hsLoader.GetData();
+			hsInit.Size = hsLoader.GetSize();
+			hsInit.Name = _ShaderName.HS.GetShaderName();
+			hsInit.Type = EShaderType::SHADER_TYPE_HULL;
+		}
+
+		{
+			dsLoader.FileLoad(_ShaderName.DS.File.c_str());
+
+			dsInit.Data = dsLoader.GetData();
+			dsInit.Size = dsLoader.GetSize();
+			dsInit.Name = _ShaderName.DS.GetShaderName();
+			dsInit.Type = EShaderType::SHADER_TYPE_DOMAIN;
+		}
+
+		{
+			gsLoader.FileLoad(_ShaderName.GS.File.c_str());
+
+			gsInit.Data = gsLoader.GetData();
+			gsInit.Size = gsLoader.GetSize();
+			gsInit.Name = _ShaderName.GS.GetShaderName();
+			gsInit.Type = EShaderType::SHADER_TYPE_GEOMETRY;
+		}
+
+		{
+			result = psLoader.FileLoad(_ShaderName.PS.File.c_str());
+			if (!result)
+			{
+				PRINT("Pixel Shader Load Failed.\n");
+			}
+
+			psInit.Data = psLoader.GetData();
+			psInit.Size = psLoader.GetSize();
+			psInit.Name = _ShaderName.PS.GetShaderName();
+			psInit.Type = EShaderType::SHADER_TYPE_PIXEL;
+		}
+	}
+
+	initializer.Device = _Device;
+	initializer.Flag = Glue::ERootSignatureFlag::ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+	initializer.pParameters = _InitParam->pRootParam;
+	initializer.NumParameters = _InitParam->RootParamNum;
+	initializer.pStaticSamplers = _InitParam->pStaticSamplerDesc;
+	initializer.NumStaticSamplers = _InitParam->SamplerParamNum;
+
+	initializer.pPipelineDesc = _InitParam->pPipelineStateDesc;
+
+	initializer.VertexShaderInit = &vsInit;
+	initializer.HullShaderInit = &hsInit;
+	initializer.DomainShaderInit = &dsInit;
+	initializer.GeometryShaderInit = &gsInit;
+	initializer.PixelShaderInit = &psInit;
+
+	{
+		using String = std::string;
+		String name = {};
+		if (vsInit.Name != INVALID_HASH) name += RHash160(vsInit.Name);
+		if (hsInit.Name != INVALID_HASH) name += RHash160(hsInit.Name);
+		if (dsInit.Name != INVALID_HASH) name += RHash160(dsInit.Name);
+		if (gsInit.Name != INVALID_HASH) name += RHash160(gsInit.Name);
+		if (psInit.Name != INVALID_HASH) name += RHash160(psInit.Name);
+
+		initializer.Name = CHash160(name);
+	}
+
+	result = CreateRenderPipelineStateObject(&initializer);
+
+	if (result)
+	{
+		_OutPsoName = initializer.Name;
+	}
+
+	vsLoader.ResetData();
+	hsLoader.ResetData();
+	dsLoader.ResetData();
+	gsLoader.ResetData();
+	psLoader.ResetData();
+
+	return result;
 }

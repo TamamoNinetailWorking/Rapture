@@ -46,6 +46,7 @@ void CFrameRateManager::UpdateTime()
 	return;
 }
 
+#ifdef EDENS_DEBUG
 void CFrameRateManager::Measurement_FPS()
 {
 
@@ -62,6 +63,6 @@ void CFrameRateManager::Measurement_FPS()
 
 	return;
 }
-
+#endif
 
 EDENS_NAMESPACE_END

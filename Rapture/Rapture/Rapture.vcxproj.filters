@@ -139,6 +139,15 @@
     <FxCompile Include="resource\shader\PmdPixelShader.hlsl">
       <Filter>resource\shader</Filter>
     </FxCompile>
+    <FxCompile Include="resource\shader\BrightThresholdPixelShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resource\shader\BlurEffectPixelShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resource\shader\FetchTexturePixelShader.hlsl">
+      <Filter>resource\shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shader\BasicShader.hlsli">

@@ -18,6 +18,7 @@ struct FPipelineStateObjectInitializer;
 
 BIFROST_NAMESPACE_END
 
+struct FPipelineStateInitializerParameters;
 
 class CResourceSubsystemImpl : public BIFROST_NAMESPACE::IResourceSubsystem
 {
@@ -54,9 +55,17 @@ public:
 
 	bool CreateQuadPolygonPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
 
+	bool CreateBrightnessPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
+
+	bool CreateBlurPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
+
+	bool CreateFetchColorPipelineStateObject(ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName);
+
 private:
 
 	bool CreateRenderPipelineStateObject(const BIFROST_NAMESPACE::FPipelineStateObjectInitializer* _Init);
+
+	bool CreatePipelineStateObjectImpl(Hash160& _OutPsoName, ATLANTIS_NAMESPACE::CDX12MainDevice* _Device, const ATLANTIS_NAMESPACE::FShaderNameBlock& _ShaderName,const FPipelineStateInitializerParameters* _InitParam);
 
 	void DeleteDefaultTextureResource();
 

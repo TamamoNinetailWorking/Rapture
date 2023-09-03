@@ -187,6 +187,42 @@ b8 CGameManager::Initialize(FGameManagerInitializer * _Initializer)
 
 					CHECK_RESULT_BREAK(ptr->CreateQuadPolygonPipelineStateObject(mainDevice, nameBlock));
 				}
+
+#if 1
+
+				// Brightness
+				{
+					FShaderNameBlock nameBlock = {};
+					nameBlock.VS.File = "resource/cso/BasicVertexShader.cso";
+					nameBlock.VS.Function = "main";
+					nameBlock.PS.File = "resource/cso/BrightThresholdPixelShader.cso";
+					nameBlock.PS.Function = "main";
+
+					CHECK_RESULT_BREAK(ptr->CreateBrightnessPipelineStateObject(mainDevice, nameBlock));
+				}
+
+				// Blur
+				{
+					FShaderNameBlock nameBlock = {};
+					nameBlock.VS.File = "resource/cso/BasicVertexShader.cso";
+					nameBlock.VS.Function = "main";
+					nameBlock.PS.File = "resource/cso/BlurEffectPixelShader.cso";
+					nameBlock.PS.Function = "main";
+
+					CHECK_RESULT_BREAK(ptr->CreateBlurPipelineStateObject(mainDevice, nameBlock));
+				}
+
+				// FetchColor
+				{
+					FShaderNameBlock nameBlock = {};
+					nameBlock.VS.File = "resource/cso/BasicVertexShader.cso";
+					nameBlock.VS.Function = "main";
+					nameBlock.PS.File = "resource/cso/FetchTexturePixelShader.cso";
+					nameBlock.PS.Function = "main";
+
+					CHECK_RESULT_BREAK(ptr->CreateFetchColorPipelineStateObject(mainDevice, nameBlock));
+				}
+#endif
 			}
 		}
 

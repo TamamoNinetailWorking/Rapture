@@ -14,6 +14,11 @@ Actor* CLevelBase::SpawnActor(const Hash160& _Name, const FActorInitializerBase*
 
 	//FActorInitializerBase* initializer = nullptr;
 	Actor* actor = subsystem->CreateActor<Actor>(_Initializer);
+	if (actor == nullptr)
+	{
+		PRINT("LevelBase::SpawnActor() : Failed to create actor.\n");
+		return nullptr;
+	}
 
 	Hash160 hash = _Name;
 	if (m_ActorList.find(_Name) != m_ActorList.end())

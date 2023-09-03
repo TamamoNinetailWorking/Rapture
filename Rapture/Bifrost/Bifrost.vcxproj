@@ -46,6 +46,7 @@
     <ClInclude Include="Bifrost\Component\Rendering\ModelRendering\ModelRenderingComponent.h" />
     <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponent.h" />
     <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponentInitializer.h" />
+    <ClInclude Include="Bifrost\Component\Rendering\PostEffect\BloomPostEffectComponentPreDefine.h" />
     <ClInclude Include="Bifrost\Component\Rendering\RenderingComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformComponent.h" />
     <ClInclude Include="Bifrost\Component\Transform\TransformDefine.h" />
