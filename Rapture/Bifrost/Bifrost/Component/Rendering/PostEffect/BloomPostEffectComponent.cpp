@@ -275,7 +275,7 @@ bool CBloomEffectComponent::CreateParameterBuffer()
 	uint32 bufferSize = AlignBufferSize(sizeof(FBloomPostEffectParameterBuffer));
 	Desc.SizeInBytes = bufferSize;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE handle = m_BlurInterface->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	//D3D12_CPU_DESCRIPTOR_HANDLE handle = m_BlurInterface->GetDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	
 	//----------------
 	// 途中

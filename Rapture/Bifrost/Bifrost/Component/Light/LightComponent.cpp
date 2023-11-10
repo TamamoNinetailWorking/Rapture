@@ -1,6 +1,6 @@
 ﻿#include "LightComponent.h"
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 #include <Bifrost/Actor/Actor.h>
 #include <Bifrost/Component/Transform/TransformComponent.h>
@@ -8,7 +8,7 @@
 #include <Bifrost/Subsystem/Light/LightSubsystem.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 
-using namespace DirectX;
+//using namespace DirectX;
 
 using namespace ATLANTIS_NAMESPACE::Glue;
 

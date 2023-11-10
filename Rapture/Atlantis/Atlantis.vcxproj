@@ -41,7 +41,6 @@
     <ClInclude Include="Atlantis\DirectX12\DirectXPaste.h" />
     <ClInclude Include="Atlantis\DirectX12\DirectXTex\DirectXTex.h" />
     <ClInclude Include="Atlantis\DirectX12\Fence\Fence.h" />
-    <ClInclude Include="Atlantis\DirectX12\GlueMath.h" />
     <ClInclude Include="Atlantis\DirectX12\GraphicsPipeline\GraphicsPipeline.h" />
     <ClInclude Include="Atlantis\DirectX12\IndexBuffer\IndexBuffer.h" />
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h" />
@@ -68,6 +67,8 @@
     <ClInclude Include="Atlantis\Material\MaterialInterface.h" />
     <ClInclude Include="Atlantis\Material\MaterialInterfaceDefine.h" />
     <ClInclude Include="Atlantis\Material\MaterialInterfaceInitializer.h" />
+    <ClInclude Include="Atlantis\Math\GlueMath.h" />
+    <ClInclude Include="Atlantis\Math\MathLibrary.h" />
     <ClInclude Include="Atlantis\Resource\RenderTargetViewManager.h" />
     <ClInclude Include="Atlantis\Resource\ShaderManager.h" />
     <ClInclude Include="Atlantis\Resource\TextureResourceManager.h" />
@@ -108,6 +109,7 @@
     <ClCompile Include="Atlantis\DirectX12\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="Atlantis\DirectX12\Viewport\Viewport.cpp" />
     <ClCompile Include="Atlantis\Material\MaterialInterface.cpp" />
+    <ClCompile Include="Atlantis\Math\MathLibrary.cpp" />
     <ClCompile Include="Atlantis\Resource\RenderTargetViewManager.cpp" />
     <ClCompile Include="Atlantis\Resource\ShaderManager.cpp" />
     <ClCompile Include="Atlantis\Resource\TextureResourceManager.cpp" />

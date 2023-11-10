@@ -3,9 +3,10 @@
 #include <Bifrost/Component/Transform/TransformComponent.h>
 #include <Bifrost/Component/Camera/CameraComponent.h>
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
+//#include <Atlantis/Math/MathLibrary.h>
 
-using namespace DirectX;
+//using namespace DirectX;
 
 USING_ATLANTIS;
 

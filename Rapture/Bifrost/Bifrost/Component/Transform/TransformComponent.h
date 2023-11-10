@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <Bifrost/Component/Component.h>
-#include <Atlantis/DirectX12/GlueMath.h>
+#include <Atlantis/Math/GlueMath.h>
 #include <Bifrost/Component/Transform/TransformDefine.h>
 
 BIFROST_NAMESPACE_BEGIN

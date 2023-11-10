@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Atlantis/DirectX12/GlueMath.h>
+#include <Atlantis/Math/GlueMath.h>
 
 BIFROST_NAMESPACE_BEGIN
 

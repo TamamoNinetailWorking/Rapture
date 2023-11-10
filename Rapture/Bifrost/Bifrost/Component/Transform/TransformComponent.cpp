@@ -1,10 +1,13 @@
 ﻿#include "TransformComponent.h"
 
-#include <Atlantis/DirectX12/GlueMath.h>
-#include <DirectXMath.h>
+#include <Atlantis/Math/GlueMath.h>
+//#include <DirectXMath.h>
 
-using namespace DirectX;
+#include <Atlantis/Math/MathLibrary.h>
 
+//using namespace DirectX;
+
+USING_ATLANTIS;
 USING_BIFROST;
 
 CTransformComponent::CTransformComponent() : CComponent()
@@ -88,17 +91,17 @@ const CTransformComponent::Matrix CTransformComponent::GetTransformMatrix() cons
 	
 	{
 		Vector3 transVec = GetWorldPosition();
-		trans = XMMatrixTranslation(transVec.x, transVec.y, transVec.z);
+		trans = FMathLibrary::MatrixTranslation(transVec.x, transVec.y, transVec.z);
 	}
 
 	{
 		Vector3 rotateVec = GetRotate();
-		pose = XMMatrixRotationRollPitchYaw(rotateVec.x, rotateVec.y, rotateVec.z);
+		pose = FMathLibrary::MatrixRotationRollPitchYaw(rotateVec.x, rotateVec.y, rotateVec.z);
 	}
 
 	{
 		Vector3 scaleVec = GetScale();
-		scale = XMMatrixScaling(scaleVec.x, scaleVec.y, scaleVec.z);
+		scale = FMathLibrary::MatrixScaling(scaleVec.x, scaleVec.y, scaleVec.z);
 	}
 
 	mat = scale * pose * trans;

@@ -6,9 +6,11 @@
 #include <Atlantis/DirectX12/Viewport/Viewport.h>
 #include <Atlantis/DirectX12/ScissorRect/ScissorRect.h>
 
+#include <Atlantis/Math/MathLibrary.h>
+
 USING_ATLANTIS;
 
-using namespace DirectX;
+//using namespace DirectX;
 
 bool ATLANTIS_NAMESPACE::CSceneView::Initialize(const FSceneViewInitializer* _Initializer)
 {
@@ -68,7 +70,7 @@ void ATLANTIS_NAMESPACE::CSceneView::SetupProjectionMatrix(const FSceneViewIniti
 
 	float aspectRatio = _Initializer->ViewportWidth / _Initializer->ViewportHeight;
 
-	m_ProjectionMatrix = XMMatrixPerspectiveFovLH(
+	m_ProjectionMatrix = FMathLibrary::MatrixPerspectiveFovLH(
 		_Initializer->FovAngle,
 		aspectRatio,
 		_Initializer->NearZ,

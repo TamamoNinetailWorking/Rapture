@@ -1,6 +1,6 @@
 ﻿#include "Plain.h"
 
-#include <Atlantis/DirectX12/GlueMath.h>
+#include <Atlantis/Math/GlueMath.h>
 
 USING_BIFROST;
 USING_ATLANTIS;

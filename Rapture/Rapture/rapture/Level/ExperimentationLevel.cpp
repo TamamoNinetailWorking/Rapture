@@ -16,7 +16,7 @@
 
 #include <Bifrost/Component/Transform/TransformComponent.h>
 
-#include <Atlantis/DirectX12/GlueMath.h>
+#include <Atlantis/Math/GlueMath.h>
 
 #include <rapture/Environment/PsoNameDefine.h>
 
@@ -189,6 +189,7 @@ bool CExperimentationLevel::Initialize()
 		}
 #endif
 
+#if 0
 		// ポストエフェクトアクターの作成
 		{
 			FPostEffectActorInitializer initializer = {};
@@ -199,6 +200,7 @@ bool CExperimentationLevel::Initialize()
 
 			CPostEffectActor* PostEffectActor = SpawnActor<CPostEffectActor>(CHash160("PostEffectActor01"),&initializer);
 		}
+#endif
 
 		PRINT("ExperimentationLevel Start\n");
 

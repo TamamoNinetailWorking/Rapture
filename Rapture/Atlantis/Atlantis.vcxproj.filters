@@ -88,6 +88,9 @@
     <Filter Include="Atlantis\SceneView">
       <UniqueIdentifier>{469d8437-704e-4ac8-afc5-98daec992d58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Atlantis\Math">
+      <UniqueIdentifier>{eafa96f4-9362-4995-8860-3805f097d76f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atlantis\DirectX12\MainDevice\MainDevice.h">
@@ -234,9 +237,6 @@
     <ClInclude Include="Atlantis\Material\MaterialInterfaceInitializer.h">
       <Filter>Atlantis\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Atlantis\DirectX12\GlueMath.h">
-      <Filter>Atlantis\DirectX12</Filter>
-    </ClInclude>
     <ClInclude Include="Atlantis\DirectX12\Shader\ShaderName.h">
       <Filter>Atlantis\DirectX12\Shader</Filter>
     </ClInclude>
@@ -275,6 +275,12 @@
     </ClInclude>
     <ClInclude Include="Atlantis\Resource\RenderTargetViewManager.h">
       <Filter>Atlantis\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Math\MathLibrary.h">
+      <Filter>Atlantis\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlantis\Math\GlueMath.h">
+      <Filter>Atlantis\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Atlantis\Resource\RenderTargetViewManager.cpp">
       <Filter>Atlantis\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlantis\Math\MathLibrary.cpp">
+      <Filter>Atlantis\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

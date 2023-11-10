@@ -1,7 +1,7 @@
 ﻿#include "VmdParser.h"
 #include "VmdDefine.h"
 
-#include <Atlantis/DirectX12/GlueMath.h>
+#include <Atlantis/Math/GlueMath.h>
 
 #include <eden/include/utility/ender_utility.h>
 

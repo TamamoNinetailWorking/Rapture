@@ -3,8 +3,8 @@
 
 #include <eden/include/utility/ender_utility.h>
 
-#include <DirectXMath.h>
-#include <Atlantis/DirectX12/GlueMath.h>
+//#include <DirectXMath.h>
+#include <Atlantis/Math/GlueMath.h>
 
 #include <Atlantis/DirectX12/DirectX12BaseDefine.h>
 

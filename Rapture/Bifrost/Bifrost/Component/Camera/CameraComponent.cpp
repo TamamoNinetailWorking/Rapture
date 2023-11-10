@@ -1,6 +1,6 @@
 ﻿#include "CameraComponent.h"
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 #include <Bifrost/Actor/Actor.h>
 #include <Bifrost/Component/Transform/TransformComponent.h>
@@ -8,7 +8,11 @@
 #include <Bifrost/Subsystem/Camera/CameraSubsystem.h>
 #include <Bifrost/Subsystem/ServiceLocator/SubsystemServiceLocator.h>
 
-using namespace DirectX;
+#include <Atlantis/Math/MathLibrary.h>
+
+//using namespace DirectX;
+
+USING_ATLANTIS;
 
 using namespace ATLANTIS_NAMESPACE::Glue;
 
@@ -79,13 +83,13 @@ const ATLANTIS_NAMESPACE::Glue::FMatrix CCameraComponent::GetViewMatrix() const
 
 	FMatrix transMatrix = trans->GetTransformMatrix();
 
-	transMatrix.r[3] = XMVectorSet(0.f,0.f,0.f,0.f);
+	transMatrix.r[3] = FMathLibrary::VectorSet(0.f,0.f,0.f,0.f);
 
-	transMatrix = XMMatrixTranspose(transMatrix);
+	transMatrix = FMathLibrary::MatrixTranspose(transMatrix);
 
 	Vector3 transPos = trans->GetWorldPosition();
 	FVector position = {};
-	position = XMVectorSet(-transPos.x, -transPos.y, -transPos.z, 1.0f);
+	position = FMathLibrary::VectorSet(-transPos.x, -transPos.y, -transPos.z, 1.0f);
 
 	transMatrix.r[3] = position;
 
@@ -103,6 +107,5 @@ const ATLANTIS_NAMESPACE::Glue::Vector3 CCameraComponent::GetPosition() const
 
 const FCameraComponentManagerHandle& CCameraComponent::GetHandle() const
 {
-	// TODO: return ステートメントをここに挿入します
 	return m_Handle;
 }
